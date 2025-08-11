@@ -48,6 +48,9 @@ ritual_section = re.compile(
 )
 seen_rituals = set()
 
+# Log of (relative_path, first_line) for quick summary after extraction
+SUMMARY_LOG = []
+
 
 def safe_filename(text: str) -> str:
     """Create a filesystem-safe filename from a string."""
@@ -156,6 +159,14 @@ for root, _, files in os.walk(SEARCH_DIR):
                             with file_path.open("w", encoding="utf-8") as out:
                                 out.write(entry_text)
 
+                        # Track the file and its first line for the summary log
+                        SUMMARY_LOG.append(
+                            (
+                                file_path.relative_to(BASE_DIR),
+                                entry_text.splitlines()[0],
+                            )
+                        )
+
                         entries_dict[entry_type][num].append(entry_text)
 
                         # If this is a ritual, also export to grimoire
@@ -177,6 +188,14 @@ for root, _, files in os.walk(SEARCH_DIR):
                                         rfile.write(f"{key}: |\n")
                                         for l in val.splitlines():
                                             rfile.write(f"  {l}\n")
+
+                            # Log ritual file creation with the first line of the entry
+                            SUMMARY_LOG.append(
+                                (
+                                    ritual_path.relative_to(BASE_DIR),
+                                    entry_text.splitlines()[0],
+                                )
+                            )
                     i += j
                 else:
                     i += 1
@@ -212,6 +231,14 @@ for root, _, files in os.walk(SEARCH_DIR):
                                     rf.write(f"{key}: |\n")
                                     for l in val.splitlines():
                                         rf.write(f"  {l}\n")
+
+                        # Record standalone ritual output for the summary
+                        SUMMARY_LOG.append(
+                            (
+                                ritual_file.relative_to(BASE_DIR),
+                                ritual_text.splitlines()[0],
+                            )
+                        )
                     i += j
                 else:
                     i += 1
@@ -251,6 +278,11 @@ def main():
     """Main function to run the extraction and file writing process."""
     write_combined(entries_am, COMBINED_DIR / "amandamap.md", "AmandaMap")
     write_combined(entries_pc, COMBINED_DIR / "phoenixcodex.md", "Phoenix Codex")
+    summary_path = BASE_DIR / "extraction_summary.md"
+    with summary_path.open("w", encoding="utf-8") as sfile:
+        for rel_path, first_line in SUMMARY_LOG:
+            sfile.write(f"{rel_path} | {first_line}\n")
+    print(f"[+] Summary written to: {summary_path}")
     print("\n[+] Extraction complete.")
 
 
