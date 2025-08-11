@@ -43,74 +43,90 @@ class AmandaMapAnalyzer:
         self.model = None
         
     def load_amandamap_data(self):
-        """Load and parse AmandaMap structured data."""
-        print("Loading AmandaMap data...")
+        """Load AmandaMap data from individual entry files instead of structured markdown."""
+        print("Loading AmandaMap data from individual files...")
         
-        with open(self.amandamap_file, 'r', encoding='utf-8') as f:
-            content = f.read()
+        # Load from the extracted entries directory
+        am_dir = "extracted_entries/am"
+        if not os.path.exists(am_dir):
+            print(f"Directory {am_dir} not found")
+            return
         
-        # Parse the structured markdown
-        sections = content.split('## ')
+        for filename in os.listdir(am_dir):
+            if filename.endswith('.md'):
+                filepath = os.path.join(am_dir, filename)
+                try:
+                    with open(filepath, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                    
+                    # Parse filename to extract info
+                    info = self._parse_filename_info(filename)
+                    info['content'] = content
+                    info['clean_content'] = content  # Will be cleaned in preprocessing
+                    info['word_count'] = len(content.split())
+                    
+                    self.entries.append(info)
+                except Exception as e:
+                    print(f"Error reading {filepath}: {e}")
         
-        for section in sections:
-            if 'Chronological Entries' in section:
-                self._parse_chronological_entries(section)
-            elif 'Undated Entries' in section:
-                self._parse_undated_entries(section)
-        
-        print(f"Loaded {len(self.entries)} entries")
-        
-    def _parse_chronological_entries(self, section):
-        """Parse chronological entries section."""
-        lines = section.split('\n')
-        current_date = None
-        current_entry = None
-        
-        for line in lines:
-            if line.startswith('### ') and len(line) > 4:
-                current_date = line[4:].strip()
-            elif line.startswith('#### '):
-                if current_entry:
-                    self.entries.append(current_entry)
-                
-                entry_type = line[5:].strip()
-                current_entry = {
-                    'date': current_date,
-                    'type': entry_type,
-                    'content': '',
-                    'has_date': True
-                }
-            elif current_entry and line.strip():
-                current_entry['content'] += line + '\n'
-        
-        if current_entry:
-            self.entries.append(current_entry)
+        print(f"Loaded {len(self.entries)} entries from individual files")
     
-    def _parse_undated_entries(self, section):
-        """Parse undated entries section."""
-        lines = section.split('\n')
-        current_type = None
-        current_entry = None
+    def _parse_filename_info(self, filename):
+        """Parse filename to extract number, date, and entry type."""
+        # Remove .md extension
+        name = filename.replace('.md', '')
         
-        for line in lines:
-            if line.startswith('### ') and len(line) > 4:
-                current_type = line[4:].replace('s', '').strip()
-            elif line.startswith('#### '):
-                if current_entry:
-                    self.entries.append(current_entry)
-                
-                entry_type = line[5:].strip()
-                current_entry = {
-                    'date': None,
-                    'type': entry_type,
-                    'content': '',
-                    'has_date': False
-                }
-            elif current_entry and line.strip():
-                current_entry['content'] += line + '\n'
+        # Extract number and date
+        parts = name.split('-', 2)
         
-        if current_entry:
-            self.entries.append(current_entry)
+        number = None
+        date = None
+        entry_type = None
+        
+        if len(parts) >= 2:
+            # Check if first part is a number
+            if parts[0].isdigit():
+                number = int(parts[0])
+                if len(parts) >= 3 and parts[1] != 'nodate':
+                    # Try to parse date
+                    try:
+                        date = datetime.strptime(parts[1], '%Y-%m-%d')
+                    except ValueError:
+                        pass
+            elif parts[0] == 'x':
+                number = None
+                if len(parts) >= 3 and parts[1] != 'nodate':
+                    try:
+                        date = datetime.strptime(parts[1], '%Y-%m-%d')
+                    except ValueError:
+                        pass
+        
+        # Determine entry type from filename
+        if 'threshold' in name.lower():
+            entry_type = 'Threshold'
+        elif 'whispered flame' in name.lower():
+            entry_type = 'Whispered Flame'
+        elif 'field pulse' in name.lower():
+            entry_type = 'Field Pulse'
+        elif 'flame vow' in name.lower():
+            entry_type = 'Flame Vow'
+        elif 'anchor site' in name.lower():
+            entry_type = 'Anchor Site'
+        elif 'protocol' in name.lower():
+            entry_type = 'Protocol'
+        elif 'entry' in name.lower():
+            entry_type = 'Entry'
+        else:
+            entry_type = 'Other'
+        
+        return {
+            'number': number,
+            'date': date,
+            'type': entry_type,
+            'filename': filename,
+            'name': name,
+            'has_date': date is not None
+        }
     
     def load_chat_data(self):
         """Load chat text data if available."""
@@ -140,7 +156,7 @@ class AmandaMapAnalyzer:
         print("Preprocessing text data...")
         
         # Clean entry content
-        for entry in self.entries:
+        for i, entry in enumerate(self.entries):
             # Remove markdown formatting
             content = re.sub(r'\*\*([^*]+)\*\*', r'\1', entry['content'])
             content = re.sub(r'__([^_]+)__', r'\1', content)
@@ -154,6 +170,10 @@ class AmandaMapAnalyzer:
             
             entry['clean_content'] = content
             entry['word_count'] = len(content.split())
+            
+            # Debug first few entries
+            if i < 3:
+                print(f"Entry {i}: type='{entry['type']}', content_length={len(entry['content'])}, clean_length={len(content)}, words={entry['word_count']}")
         
         # Clean chat content
         for chat in self.chat_texts:
@@ -166,6 +186,8 @@ class AmandaMapAnalyzer:
             
             chat['clean_content'] = content
             chat['word_count'] = len(content.split())
+        
+        print(f"Preprocessing complete. Entry content lengths: {[len(e.get('content', '')) for e in self.entries[:5]]}")
     
     def create_text_embeddings(self):
         """Create TF-IDF embeddings for text analysis."""
@@ -207,19 +229,27 @@ class AmandaMapAnalyzer:
         for entry_type, count in sorted(type_counts.items(), key=lambda x: x[1], reverse=True):
             print(f"  {entry_type}: {count}")
         
-        # Word count analysis
-        word_counts = [entry['word_count'] for entry in self.entries]
-        print(f"\nWord Count Statistics:")
-        print(f"  Average: {np.mean(word_counts):.1f}")
-        print(f"  Median: {np.median(word_counts):.1f}")
-        print(f"  Min: {min(word_counts)}")
-        print(f"  Max: {max(word_counts)}")
+        # Word count analysis with safety checks
+        word_counts = [entry['word_count'] for entry in self.entries if entry['word_count'] > 0]
+        if word_counts:
+            print(f"\nWord Count Statistics:")
+            print(f"  Average: {np.mean(word_counts):.1f}")
+            print(f"  Median: {np.median(word_counts):.1f}")
+            print(f"  Min: {min(word_counts)}")
+            print(f"  Max: {max(word_counts)}")
+        else:
+            print("\nWord Count Statistics: No valid entries found")
         
         # Date analysis
         dated_entries = [e for e in self.entries if e['has_date']]
         if dated_entries:
             print(f"\nDated Entries: {len(dated_entries)}")
             print(f"Undated Entries: {len(self.entries) - len(dated_entries)}")
+        
+        # Debug info
+        print(f"\nTotal entries loaded: {len(self.entries)}")
+        print(f"Entries with content: {len([e for e in self.entries if e.get('content', '').strip()])}")
+        print(f"Entries with word counts: {len([e for e in self.entries if e.get('word_count', 0) > 0])}")
     
     def perform_topic_modeling(self, n_topics=5):
         """Perform LDA topic modeling on entries."""
@@ -383,17 +413,26 @@ class AmandaMapAnalyzer:
         axes[1, 0].tick_params(axis='x', rotation=45)
         
         # 4. Date distribution (if available)
-        dated_entries = [e for e in self.entries if e['has_date']]
+        dated_entries = [e for e in self.entries if e['has_date'] and e['date']]
         if dated_entries:
-            dates = [datetime.strptime(e['date'], '%Y-%m-%d') for e in dated_entries]
-            date_counts = defaultdict(int)
-            for date in dates:
-                date_counts[date.strftime('%Y-%m')] += 1
-            
-            months, month_counts = zip(*sorted(date_counts.items()))
-            axes[1, 1].plot(months, month_counts, marker='o')
-            axes[1, 1].set_title('Entries Over Time')
-            axes[1, 1].tick_params(axis='x', rotation=45)
+            try:
+                dates = [datetime.strptime(e['date'], '%Y-%m-%d') for e in dated_entries if e['date']]
+                if dates:
+                    date_counts = defaultdict(int)
+                    for date in dates:
+                        date_counts[date.strftime('%Y-%m')] += 1
+                    
+                    months, month_counts = zip(*sorted(date_counts.items()))
+                    axes[1, 1].plot(months, month_counts, marker='o')
+                    axes[1, 1].set_title('Entries Over Time')
+                    axes[1, 1].tick_params(axis='x', rotation=45)
+                else:
+                    axes[1, 1].text(0.5, 0.5, 'No valid dates found', ha='center', va='center', transform=axes[1, 1].transAxes)
+                    axes[1, 1].set_title('Entries Over Time')
+            except Exception as e:
+                print(f"Error processing dates: {e}")
+                axes[1, 1].text(0.5, 0.5, f'Date processing error: {e}', ha='center', va='center', transform=axes[1, 1].transAxes)
+                axes[1, 1].set_title('Entries Over Time')
         else:
             axes[1, 1].text(0.5, 0.5, 'No dated entries', ha='center', va='center', transform=axes[1, 1].transAxes)
             axes[1, 1].set_title('Entries Over Time')
