@@ -229,6 +229,10 @@ def main():
     for entry in all_entries:
         grouped_entries[entry['system']][entry['type']].append(entry)
     
+    # Create individual files for each entry
+    if not DRY_RUN:
+        create_entry_files(grouped_entries)
+    
     # Generate summary
     summary_lines = []
     summary_lines.append("# Enhanced Extraction Summary")
@@ -263,6 +267,81 @@ def main():
         print("\n=== DRY RUN SUMMARY ===")
         print('\n'.join(summary_lines))
         print("\n=== END DRY RUN ===")
+
+def create_entry_files(grouped_entries):
+    """Create individual files for each entry"""
+    timestamp = datetime.now().strftime("%Y-%m-%d")
+    
+    for system in grouped_entries.keys():
+        system_entries = grouped_entries[system]
+        
+        for entry_type in grouped_entries[system].keys():
+            entries = grouped_entries[system][entry_type]
+            
+            for i, entry in enumerate(entries):
+                # Determine output directory
+                if system == 'AmandaMap':
+                    output_dir = OUTPUT_DIR_AM
+                elif system == 'Phoenix Codex':
+                    output_dir = OUTPUT_DIR_PC
+                else:
+                    output_dir = OUTPUT_DIR_AM  # Default to AmandaMap for unknown
+                
+                # Create filename
+                safe_type = entry_type.lower().replace(' ', '_')
+                filename = f"{safe_type}-{i+1}_{timestamp}.md"
+                filepath = output_dir / filename
+                
+                # Create file content
+                file_content = f"# {system} {entry_type}\n\n"
+                file_content += f"**Date:** {timestamp}\n"
+                file_content += f"**Type:** {entry_type}\n"
+                file_content += f"**System:** {system}\n\n"
+                file_content += "---\n\n"
+                file_content += entry['content']
+                
+                # Write file
+                with open(filepath, 'w', encoding='utf-8') as f:
+                    f.write(file_content)
+                
+                print(f"Created: {filepath}")
+    
+    # Create combined files
+    create_combined_files(grouped_entries, timestamp)
+
+def create_combined_files(grouped_entries, timestamp):
+    """Create combined markdown files"""
+    # Combined AmandaMap
+    am_content = "# AmandaMap Combined Entries\n\n"
+    am_content += f"**Generated:** {timestamp}\n\n"
+    
+    if 'AmandaMap' in grouped_entries:
+        for entry_type in sorted(grouped_entries['AmandaMap'].keys()):
+            entries = grouped_entries['AmandaMap'][entry_type]
+            am_content += f"## {entry_type} ({len(entries)} entries)\n\n"
+            
+            for entry in entries:
+                am_content += f"### {entry_type} Entry\n\n"
+                am_content += entry['content'] + "\n\n---\n\n"
+    
+    with open(COMBINED_DIR / f"AmandaMap_Combined_{timestamp}.md", 'w', encoding='utf-8') as f:
+        f.write(am_content)
+    
+    # Combined Phoenix Codex
+    pc_content = "# Phoenix Codex Combined Entries\n\n"
+    pc_content += f"**Generated:** {timestamp}\n\n"
+    
+    if 'Phoenix Codex' in grouped_entries:
+        for entry_type in sorted(grouped_entries['Phoenix Codex'].keys()):
+            entries = grouped_entries['Phoenix Codex'][entry_type]
+            pc_content += f"## {entry_type} ({len(entries)} entries)\n\n"
+            
+            for entry in entries:
+                pc_content += f"### {entry_type} Entry\n\n"
+                pc_content += entry['content'] + "\n\n---\n\n"
+    
+    with open(COMBINED_DIR / f"Phoenix_Codex_Combined_{timestamp}.md", 'w', encoding='utf-8') as f:
+        f.write(pc_content)
 
 if __name__ == "__main__":
     main()
