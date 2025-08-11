@@ -4,15 +4,24 @@ amandamap_gui_analyzer.py — GUI application for AmandaMap analysis.
 Provides interactive interface for selecting analysis options and viewing results.
 """
 
+import warnings
+import os
+
+# Suppress warnings before importing other modules
+warnings.filterwarnings('ignore', message='.*protobuf.*')
+warnings.filterwarnings('ignore', message='.*Protobuf.*')
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
-import os
 import json
 import re
 import numpy as np
 import pandas as pd
 from datetime import datetime
 from collections import defaultdict
+import matplotlib
+matplotlib.use('TkAgg')  # Use TkAgg backend to prevent blocking
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import seaborn as sns
@@ -136,9 +145,16 @@ class AmandaMapGUIAnalyzer:
         viz_frame.columnconfigure(0, weight=1)
         viz_frame.rowconfigure(0, weight=1)
         
+        # Visualization controls
+        viz_controls = ttk.Frame(viz_frame)
+        viz_controls.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 5))
+        
+        ttk.Button(viz_controls, text="Clear Visualization", 
+                  command=self.clear_visualization).grid(row=0, column=0, padx=(0, 10))
+        
         self.viz_canvas = None
         self.viz_label = ttk.Label(viz_frame, text="Visualizations will appear here after analysis")
-        self.viz_label.grid(row=0, column=0)
+        self.viz_label.grid(row=1, column=0)
     
     def auto_load_data(self):
         """Automatically load data if available."""
@@ -188,21 +204,43 @@ class AmandaMapGUIAnalyzer:
                 return
             
             self.chat_texts = []
+            failed_files = []
+            
             for filename in os.listdir(chat_dir):
                 if filename.endswith('.md'):
                     filepath = os.path.join(chat_dir, filename)
                     try:
-                        with open(filepath, 'r', encoding='utf-8') as f:
-                            content = f.read()
+                        # Try multiple encodings
+                        content = None
+                        for encoding in ['utf-8', 'latin-1', 'cp1252', 'iso-8859-1']:
+                            try:
+                                with open(filepath, 'r', encoding=encoding) as f:
+                                    content = f.read()
+                                break
+                            except UnicodeDecodeError:
+                                continue
+                        
+                        if content is None:
+                            failed_files.append(filename)
+                            continue
+                            
                         self.chat_texts.append({
                             'filename': filename,
                             'content': content
                         })
                     except Exception as e:
+                        failed_files.append(filename)
                         print(f"Error reading {filepath}: {e}")
             
+            if failed_files:
+                print(f"Failed to load {len(failed_files)} chat files due to encoding issues")
+                print(f"Failed files: {failed_files[:5]}...")  # Show first 5
+            
             self.update_status(f"Loaded {len(self.chat_texts)} chat files")
-            messagebox.showinfo("Success", f"Loaded {len(self.chat_texts)} chat files")
+            if self.chat_texts:
+                messagebox.showinfo("Success", f"Loaded {len(self.chat_texts)} chat files")
+            else:
+                messagebox.showwarning("Warning", "No chat files could be loaded due to encoding issues")
             
         except Exception as e:
             messagebox.showerror("Error", f"Failed to load chat data: {e}")
@@ -268,6 +306,9 @@ class AmandaMapGUIAnalyzer:
         self.update_status(f"Running {analysis_type} analysis...")
         self.results_title.config(text=f"Results: {analysis_type.replace('_', ' ').title()}")
         
+        # Disable all analysis buttons during processing
+        self.disable_analysis_buttons()
+        
         try:
             if analysis_type == "type_distribution":
                 self.analyze_entry_types()
@@ -291,6 +332,29 @@ class AmandaMapGUIAnalyzer:
             print(f"Traceback: {e.__traceback__}")
             messagebox.showerror("Error", error_msg)
             self.update_status("Analysis failed")
+        finally:
+            # Re-enable all analysis buttons
+            self.enable_analysis_buttons()
+    
+    def disable_analysis_buttons(self):
+        """Disable analysis buttons during processing."""
+        for child in self.root.winfo_children():
+            if isinstance(child, ttk.Frame):
+                for grandchild in child.winfo_children():
+                    if isinstance(grandchild, ttk.LabelFrame):
+                        for great_grandchild in grandchild.winfo_children():
+                            if isinstance(great_grandchild, ttk.Button) and "Analysis" in great_grandchild.cget("text"):
+                                great_grandchild.config(state="disabled")
+    
+    def enable_analysis_buttons(self):
+        """Re-enable analysis buttons after processing."""
+        for child in self.root.winfo_children():
+            if isinstance(child, ttk.Frame):
+                for grandchild in child.winfo_children():
+                    if isinstance(grandchild, ttk.LabelFrame):
+                        for great_grandchild in grandchild.winfo_children():
+                            if isinstance(great_grandchild, ttk.Button) and "Analysis" in great_grandchild.cget("text"):
+                                great_grandchild.config(state="normal")
     
     def analyze_entry_types(self):
         """Analyze entry type distribution."""
@@ -687,23 +751,39 @@ class AmandaMapGUIAnalyzer:
     
     def display_chart(self, fig):
         """Display a matplotlib chart in the GUI."""
-        self.viz_canvas = FigureCanvasTkAgg(fig, self.root)
-        self.viz_canvas.draw()
-        
-        # Get the widget and place it in the visualization frame
-        chart_widget = self.viz_canvas.get_tk_widget()
-        
-        # Find the visualization frame and place the chart there
-        for child in self.root.winfo_children():
-            if isinstance(child, ttk.Frame):
-                for grandchild in child.winfo_children():
-                    if isinstance(grandchild, ttk.LabelFrame) and grandchild.winfo_name() == '':
-                        # This is likely our visualization frame
-                        chart_widget.grid(row=0, column=0, in_=grandchild)
-                        return
-        
-        # Fallback: place in the main window
-        chart_widget.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
+        try:
+            # Clear any existing visualization
+            self.clear_visualization()
+            
+            # Create the canvas
+            self.viz_canvas = FigureCanvasTkAgg(fig, self.root)
+            self.viz_canvas.draw()
+            
+            # Get the widget and place it in the visualization frame
+            chart_widget = self.viz_canvas.get_tk_widget()
+            
+            # Find the visualization frame by looking for the specific label
+            for child in self.root.winfo_children():
+                if isinstance(child, ttk.Frame):
+                    for grandchild in child.winfo_children():
+                        if isinstance(grandchild, ttk.LabelFrame):
+                            # Check if this is the visualization frame by looking for our label
+                            for great_grandchild in grandchild.winfo_children():
+                                if isinstance(great_grandchild, ttk.Label) and "Visualizations will appear here" in great_grandchild.cget("text"):
+                                    # Hide the placeholder label
+                                    great_grandchild.grid_remove()
+                                    # Place the chart
+                                    chart_widget.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+                                    return
+            
+            # Fallback: place in the main window
+            chart_widget.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
+            
+        except Exception as e:
+            print(f"Error displaying chart: {e}")
+            # Show error in visualization area
+            self.viz_label.config(text=f"Error displaying visualization: {e}")
+            self.viz_label.grid()
     
     def export_results(self):
         """Export analysis results to a file."""
