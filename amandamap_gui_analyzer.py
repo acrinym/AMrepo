@@ -264,6 +264,7 @@ class AmandaMapGUIAnalyzer:
             messagebox.showerror("Error", "Please load AmandaMap data first")
             return
         
+        print(f"Running {analysis_type} analysis with {len(self.entries)} entries")
         self.update_status(f"Running {analysis_type} analysis...")
         self.results_title.config(text=f"Results: {analysis_type.replace('_', ' ').title()}")
         
@@ -282,9 +283,13 @@ class AmandaMapGUIAnalyzer:
                 self.run_full_analysis()
             
             self.update_status(f"Completed {analysis_type} analysis")
+            print(f"Successfully completed {analysis_type} analysis")
             
         except Exception as e:
-            messagebox.showerror("Error", f"Analysis failed: {e}")
+            error_msg = f"Analysis failed: {e}"
+            print(f"ERROR: {error_msg}")
+            print(f"Traceback: {e.__traceback__}")
+            messagebox.showerror("Error", error_msg)
             self.update_status("Analysis failed")
     
     def analyze_entry_types(self):
@@ -366,6 +371,11 @@ class AmandaMapGUIAnalyzer:
     
     def analyze_similarity(self):
         """Analyze similarity between entries."""
+        if len(self.entries) < 2:
+            self.results_text.delete(1.0, tk.END)
+            self.results_text.insert(1.0, "Need at least 2 entries for similarity analysis")
+            return
+        
         # Preprocess text
         texts = []
         for entry in self.entries:
@@ -391,12 +401,13 @@ class AmandaMapGUIAnalyzer:
         
         for i in range(n_entries):
             for j in range(i + 1, n_entries):
-                sim = similarity_matrix[i][j]
-                similarities.append({
-                    'entry1': f"{self.entries[i]['type']} ({self.entries[i]['filename']})",
-                    'entry2': f"{self.entries[j]['type']} ({self.entries[j]['filename']})",
-                    'similarity': sim
-                })
+                if i < similarity_matrix.shape[0] and j < similarity_matrix.shape[1]:
+                    sim = similarity_matrix[i][j]
+                    similarities.append({
+                        'entry1': f"{self.entries[i]['type']} ({self.entries[i]['filename']})",
+                        'entry2': f"{self.entries[j]['type']} ({self.entries[j]['filename']})",
+                        'similarity': sim
+                    })
         
         # Sort by similarity
         similarities.sort(key=lambda x: x['similarity'], reverse=True)
@@ -427,6 +438,11 @@ class AmandaMapGUIAnalyzer:
         for entry in dated_entries:
             month_key = entry['date'].strftime('%Y-%m')
             date_counts[month_key] += 1
+        
+        if not date_counts:
+            self.results_text.delete(1.0, tk.END)
+            self.results_text.insert(1.0, "No valid dates found for temporal analysis")
+            return
         
         # Display results
         result_text = "Temporal Pattern Analysis:\n\n"
@@ -520,13 +536,27 @@ class AmandaMapGUIAnalyzer:
         """Create topic modeling visualization."""
         self.clear_visualization()
         
-        fig, axes = plt.subplots(2, 3, figsize=(15, 10))
-        axes = axes.flatten()
+        # Determine how many topics we actually have
+        n_topics = min(5, lda.components_.shape[0])
         
-        for topic_idx, topic in enumerate(lda.components_):
-            if topic_idx < 5:
-                top_words = [feature_names[i] for i in topic.argsort()[-8:]]
-                top_scores = [topic[i] for i in topic.argsort()[-8:]]
+        if n_topics <= 3:
+            # Use 1 row for 3 or fewer topics
+            fig, axes = plt.subplots(1, n_topics, figsize=(5*n_topics, 6))
+            if n_topics == 1:
+                axes = [axes]
+        else:
+            # Use 2 rows for 4-5 topics
+            fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+            axes = axes.flatten()
+        
+        for topic_idx in range(n_topics):
+            if topic_idx < len(axes):
+                topic = lda.components_[topic_idx]
+                # Get top 8 words, but make sure we don't exceed available features
+                n_words = min(8, len(feature_names))
+                top_indices = topic.argsort()[-n_words:]
+                top_words = [feature_names[i] for i in top_indices]
+                top_scores = [topic[i] for i in top_indices]
                 
                 axes[topic_idx].barh(range(len(top_words)), top_scores, color='lightcoral')
                 axes[topic_idx].set_yticks(range(len(top_words)))
@@ -534,9 +564,9 @@ class AmandaMapGUIAnalyzer:
                 axes[topic_idx].set_title(f'Topic {topic_idx + 1}')
                 axes[topic_idx].set_xlabel('Weight')
         
-        # Hide unused subplot
-        if len(axes) > 5:
-            axes[5].set_visible(False)
+        # Hide unused subplots
+        for i in range(n_topics, len(axes)):
+            axes[i].set_visible(False)
         
         plt.tight_layout()
         self.display_chart(fig)
@@ -593,10 +623,14 @@ class AmandaMapGUIAnalyzer:
         fig, axes = plt.subplots(2, 2, figsize=(15, 12))
         
         # 1. Entry type distribution
-        types, counts = zip(*sorted(type_counts.items(), key=lambda x: x[1], reverse=True))
-        axes[0, 0].bar(types, counts, color='skyblue', alpha=0.7)
-        axes[0, 0].set_title('Entry Type Distribution')
-        axes[0, 0].tick_params(axis='x', rotation=45)
+        if type_counts:
+            types, counts = zip(*sorted(type_counts.items(), key=lambda x: x[1], reverse=True))
+            axes[0, 0].bar(types, counts, color='skyblue', alpha=0.7)
+            axes[0, 0].set_title('Entry Type Distribution')
+            axes[0, 0].tick_params(axis='x', rotation=45)
+        else:
+            axes[0, 0].text(0.5, 0.5, 'No entry types found', ha='center', va='center', transform=axes[0, 0].transAxes)
+            axes[0, 0].set_title('Entry Type Distribution')
         
         # 2. Word count distribution
         if word_counts:
@@ -604,18 +638,30 @@ class AmandaMapGUIAnalyzer:
             axes[0, 1].set_title('Word Count Distribution')
             axes[0, 1].set_xlabel('Word Count')
             axes[0, 1].set_ylabel('Frequency')
+        else:
+            axes[0, 1].text(0.5, 0.5, 'No word count data', ha='center', va='center', transform=axes[0, 1].transAxes)
+            axes[0, 1].set_title('Word Count Distribution')
         
         # 3. Entry type vs word count
-        type_word_counts = defaultdict(list)
-        for entry in self.entries:
-            type_word_counts[entry['type']].append(entry['word_count'])
-        
-        types_list = list(type_word_counts.keys())
-        word_count_lists = [type_word_counts[t] for t in types_list]
-        
-        axes[1, 0].boxplot(word_count_lists, labels=types_list)
-        axes[1, 0].set_title('Word Count by Entry Type')
-        axes[1, 0].tick_params(axis='x', rotation=45)
+        if type_counts and word_counts:
+            type_word_counts = defaultdict(list)
+            for entry in self.entries:
+                if entry.get('word_count', 0) > 0:
+                    type_word_counts[entry['type']].append(entry['word_count'])
+            
+            if type_word_counts:
+                types_list = list(type_word_counts.keys())
+                word_count_lists = [type_word_counts[t] for t in types_list]
+                
+                axes[1, 0].boxplot(word_count_lists, labels=types_list)
+                axes[1, 0].set_title('Word Count by Entry Type')
+                axes[1, 0].tick_params(axis='x', rotation=45)
+            else:
+                axes[1, 0].text(0.5, 0.5, 'No word count data by type', ha='center', va='center', transform=axes[1, 0].transAxes)
+                axes[1, 0].set_title('Word Count by Entry Type')
+        else:
+            axes[1, 0].text(0.5, 0.5, 'No data for type vs word count', ha='center', va='center', transform=axes[1, 0].transAxes)
+            axes[1, 0].set_title('Word Count by Entry Type')
         
         # 4. Date distribution
         if dated_entries:
@@ -624,20 +670,20 @@ class AmandaMapGUIAnalyzer:
                 month_key = entry['date'].strftime('%Y-%m')
                 date_counts[month_key] += 1
             
-            months, month_counts = zip(*sorted(date_counts.items()))
-            axes[1, 1].plot(months, month_counts, marker='o')
+            if date_counts:
+                months, month_counts = zip(*sorted(date_counts.items()))
+                axes[1, 1].plot(months, month_counts, marker='o')
+                axes[1, 1].set_title('Entries Over Time')
+                axes[1, 1].tick_params(axis='x', rotation=45)
+            else:
+                axes[1, 1].text(0.5, 0.5, 'No date data', ha='center', va='center', transform=axes[1, 1].transAxes)
+                axes[1, 1].set_title('Entries Over Time')
+        else:
+            axes[1, 1].text(0.5, 0.5, 'No dated entries', ha='center', va='center', transform=axes[1, 1].transAxes)
             axes[1, 1].set_title('Entries Over Time')
-            axes[1, 1].tick_params(axis='x', rotation=45)
         
         plt.tight_layout()
         self.display_chart(fig)
-    
-    def clear_visualization(self):
-        """Clear the current visualization."""
-        if self.viz_canvas:
-            self.viz_canvas.get_tk_widget().destroy()
-            self.viz_canvas = None
-        self.viz_label.grid_remove()
     
     def display_chart(self, fig):
         """Display a matplotlib chart in the GUI."""
@@ -646,11 +692,23 @@ class AmandaMapGUIAnalyzer:
         
         # Get the widget and place it in the visualization frame
         chart_widget = self.viz_canvas.get_tk_widget()
-        chart_widget.grid(row=0, column=0, in_=self.root.grid_slaves(row=2, column=0)[0])
+        
+        # Find the visualization frame and place the chart there
+        for child in self.root.winfo_children():
+            if isinstance(child, ttk.Frame):
+                for grandchild in child.winfo_children():
+                    if isinstance(grandchild, ttk.LabelFrame) and grandchild.winfo_name() == '':
+                        # This is likely our visualization frame
+                        chart_widget.grid(row=0, column=0, in_=grandchild)
+                        return
+        
+        # Fallback: place in the main window
+        chart_widget.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
     
     def export_results(self):
         """Export analysis results to a file."""
-        if not hasattr(self, 'current_analysis'):
+        # Check if there are results to export
+        if not self.results_text.get(1.0, tk.END).strip():
             messagebox.showwarning("Warning", "No analysis results to export")
             return
         
@@ -671,6 +729,21 @@ class AmandaMapGUIAnalyzer:
         """Update the status label."""
         self.status_label.config(text=message)
         self.root.update_idletasks()
+    
+    def clear_visualization(self):
+        """Clear the current visualization."""
+        if self.viz_canvas:
+            try:
+                self.viz_canvas.get_tk_widget().destroy()
+            except:
+                pass
+            self.viz_canvas = None
+        
+        # Show the placeholder label
+        try:
+            self.viz_label.grid()
+        except:
+            pass
 
 def main():
     """Main function to run the GUI."""
