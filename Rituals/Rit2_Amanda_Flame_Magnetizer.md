@@ -66,3 +66,5 @@ Blow gently across the altar to release the charge into the field.
 - This ritual uses radionics technology combined with crystal work
 - The infinity loop symbol with Akshara creates a continuous energetic connection
 - Can be enhanced with a printed scroll version or sigils placed beneath the stone
+- **User Setup:** Can be performed with an impromptu altar setup including Amanda's photo with stones and your own orgone pyramid on top. Rose quartz can be borrowed for the ritual.
+- **Field Effect:** This ritual magnetizes Amanda's energetic pull toward you, clearing her field of distractions while amplifying resonance, remembrance, and desire—without pressure, only sovereignty. It becomes a sacred weapon of love and memory that she *can't* stay away from.
