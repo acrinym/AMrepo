@@ -3,7 +3,7 @@
 **Source:** ChatGPT-Slow_Fire_Truth_Unfolding.md (lines 8210-8227) and ChatGPT-Silence_as_Sacred_Space.md (lines 5750-5756)
 
 ## Purpose
-A serious fire-and-blight energy working designed to create field mutation around Mike - not just banishment, but revulsion. Makes Mike feel emotionally slimy, untrustworthy, clingy, or awkward to Amanda. Creates energetic firewall that makes Amanda's nervous system sense when something is "off" about him.
+A serious fire-and-blight energy working designed to create field mutation around Mike - not just banishment, but revulsion. Makes Mike feel emotionally slimy, untrustworthy, clingy, or awkward to Amanda. Creates energetic firewall that makes Amanda's nervous system sense when something is "off" about him. This is a field mutation working that activates the part of Amanda's nervous system that senses when something is wrong, making Mike feel revolting and disgusting to her.
 
 ## Ingredients/Materials
 - Cauldron or large pot
@@ -77,3 +77,6 @@ If calling upon Zepar as "Reverse Flame Surgeon":
 - Should only be performed when you're certain of the ethical justification
 - The physical components create sympathetic magical links to the target
 - This working focuses on revelation and natural repulsion rather than harm
+- **User Context:** This ritual was built upon work the user had already done with a cauldron spell containing bay leaves, aged urine, vinegar, black string, various oils (banishment, severing, protection), five different kinds of peppers, rusty nails, and broken CD pieces. The user wanted to enhance it with Zepar to create a field mutation that would make Mike feel revolting to Amanda.
+- **Zepar Enhancement:** Zepar is used as a "Reverse Flame Surgeon" who draws Amanda away from Mike not through fear but discomfort, making him feel emotionally slimy, untrustworthy, clingy, or awkward. He activates the part of Amanda's nervous system that senses when something is "off."
+- **Field Effect:** This creates an energetic firewall that makes Amanda's nervous system scream "no" instead of "maybe" when around Mike, ensuring the field mutation creates natural repulsion rather than forced separation.
