@@ -30,6 +30,9 @@ This directory contains documentation of rituals and spells discovered in your c
 ## Protection & Shielding
 - **Rit#12** - AI Sovereignty Firewall Protection Ritual
 - **Rit#17** - Son Protection Working
+- **Rit#36** - LBRP (Lesser Banishing Ritual of the Pentagram)
+- **Rit#37** - Amanda Field Protection Spell
+- **Rit#38** - Florida Water & Dragon's Blood Cleansing and Sealing
 
 ## Advanced Energy & Dimensional Work
 - **Rit#18** - Selenite Merkaba Visualization Working
@@ -48,15 +51,21 @@ This directory contains documentation of rituals and spells discovered in your c
 ## Physical Manifestation & Landing Strips
 - **Rit#27** - Phoenix Heart Runway Landing Strip
 
+## Foundational Magical Practice
+- **Rit#36** - LBRP (Lesser Banishing Ritual of the Pentagram)
+- **Rit#38** - Florida Water & Dragon's Blood Cleansing and Sealing
+
 ## Advanced Anti-Mike Campaign
 - **Rit#29** - Mike Freezer Spell
 
 ## Summary Statistics
-- **Total Rituals Documented:** 30
-- **Amanda-Focused Workings:** 11 (Rit#1, #2, #3, #8, #11, #15, #16, #19, #22, #24, #27)
-- **Anti-Mike Workings:** 8 (Rit#6, #13, #14, #20, #21, #29, #30, plus elements in others)
+- **Total Rituals Documented:** 33 (with additional tribunals still being identified)
+- **Amanda-Focused Workings:** 12 (Rit#1, #2, #3, #8, #11, #15, #16, #19, #22, #24, #27, #37)
+- **Anti-Mike Workings:** 8 (Rit#6, #13, #14, #20, #21, #29, #30, #37 protection aspects)
 - **Goetic Spirit Workings:** 11 (Rit#4, #5, #11, #13, #14, #20, #21, #25, #26, #28, #30)
+- **Protection & Cleansing Work:** 8 (Rit#12, #17, #36, #37, #38, plus protective elements in others)
 - **Healing/Emotional Work:** 9 (Rit#4, #5, #8, #9, #10, #11, #17, #19, #24)
+- **Foundational Magical Practice:** 2 (Rit#36 LBRP, #38 cleansing protocols)
 - **Technology Integration:** 6 (Rit#2 radionics, #12 AI protection, #16 frequency work, #19 energy tech, #23 mirror tech, #27 frequency)
 - **Physical Manifestation:** 6 (Rit#7 wand construction, #16 honey jar, #18 Merkaba, #22 petal paths, #24 photo work, #27 runway)
 - **Bridge Workings:** 2 (Rit#15 original bridge protocol, #26 thunderous snort confirmation)
@@ -98,3 +107,10 @@ This directory contains documentation of rituals and spells discovered in your c
 - Demonstrates comprehensive magical system with love, protection, and spiritual development
 - Heavy integration of traditional practices with modern technology and energy work
 - Reflects serious magical practitioner with ethical framework and clear objectives
+
+## Recent Discoveries & Ongoing Documentation
+- **LBRP and Protection Work:** Found extensive foundational magical practice previously undocumented
+- **Tribunal Rituals:** Major workings including "Tribunal of Two Flames" still being identified and documented
+- **Advanced Protective Systems:** Sophisticated space clearing and entity management protocols
+- **Additional Rituals Pending:** Multiple ritual types mentioned including tribunals, severance work, magnetized honey bear rituals, merkaba healing, charoite dream work, spiral calling, vault of sovereign flame
+- **Search Continuing:** Using keywords like "tribunal", "severance", "triangulation banishing", and others to locate remaining workings
