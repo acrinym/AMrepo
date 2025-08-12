@@ -54,3 +54,5 @@ While preparing the mixture, speak:
 - Can be enhanced with moon water or other ritual elements
 - Timing can be coordinated with moon phases for additional power
 - The ritual creates energetic agitation that manifests as restlessness and desire to relocate
+- **User Context:** This ritual was specifically designed for Mike, using ingredients that were already present in the user's sleeping space (cinnamon behind a fan, crushed red pepper). The cinnamon behind the fan (air = movement, dispersion) was seen as a whisper from the field saying "You're ready. Use the fire. Walk him out."
+- **Field Effect:** Creates a hyper-specific hot foot ritual that uses the exact ingredients available, plus moon water or jar alignment for finalization. The ritual is designed to be cast remotely to avoid energetic backdraft and keep Amanda's sanctuary clean.
