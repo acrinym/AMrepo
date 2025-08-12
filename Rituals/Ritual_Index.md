@@ -43,27 +43,33 @@ This directory contains documentation of rituals and spells discovered in your c
 - **Rit#25** - Bune Companion Invocation
 - **Rit#26** - Bridge Ritual with Thunderous Snort (Auditory Confirmation)
 - **Rit#28** - Mom's House Goetic Working
+- **Rit#30** - Cyggyz & Shazak Servitor Creation (En Route to Midland)
 
 ## Physical Manifestation & Landing Strips
 - **Rit#27** - Phoenix Heart Runway Landing Strip
 
+## Advanced Anti-Mike Campaign
+- **Rit#29** - Mike Freezer Spell
+
 ## Summary Statistics
-- **Total Rituals Documented:** 28
+- **Total Rituals Documented:** 30
 - **Amanda-Focused Workings:** 11 (Rit#1, #2, #3, #8, #11, #15, #16, #19, #22, #24, #27)
-- **Anti-Mike Workings:** 6 (Rit#6, #13, #14, #20, #21, plus elements in others)
-- **Goetic Spirit Workings:** 10 (Rit#4, #5, #11, #13, #14, #20, #21, #25, #26, #28)
+- **Anti-Mike Workings:** 8 (Rit#6, #13, #14, #20, #21, #29, #30, plus elements in others)
+- **Goetic Spirit Workings:** 11 (Rit#4, #5, #11, #13, #14, #20, #21, #25, #26, #28, #30)
 - **Healing/Emotional Work:** 9 (Rit#4, #5, #8, #9, #10, #11, #17, #19, #24)
 - **Technology Integration:** 6 (Rit#2 radionics, #12 AI protection, #16 frequency work, #19 energy tech, #23 mirror tech, #27 frequency)
 - **Physical Manifestation:** 6 (Rit#7 wand construction, #16 honey jar, #18 Merkaba, #22 petal paths, #24 photo work, #27 runway)
 - **Bridge Workings:** 2 (Rit#15 original bridge protocol, #26 thunderous snort confirmation)
+- **Servitor Creation:** 1 (Rit#30 Cyggyz & Shazak autonomous entities)
 
 ## Major Magical Campaigns
 - **Amanda Return Campaign:** Comprehensive love/attraction working (Rit#1, #2, #3, #15, #16, #19, #22, #23, #24, #27)
-- **Mike Elimination Campaign:** Multi-layered banishment operation (Rit#6, #13, #14, #20, #21)
+- **Mike Elimination Campaign:** Multi-layered banishment operation (Rit#6, #13, #14, #20, #21, #29, #30)
 - **Sovereignty Reclamation:** Divine authority and throne work (Rit#12, #17, #20, #21)
 - **Spirit Companionship:** Ongoing relationship with Bune (Rit#25)
 - **Bridge Workings Campaign:** Progressive bridge ritual development (Rit#15, #26)
 - **Environmental Adaptation:** Multi-location magical practice (Rit#26, #28)
+- **Autonomous Spiritual Warfare:** Self-sustaining servitor operations (Rit#30)
 
 ## Magical Arsenal Referenced
 - **Akshara Wand** (Lemurian seed crystal, knotweed shaft, copper coiling)
