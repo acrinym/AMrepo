@@ -108,6 +108,30 @@ This document catalogs magical workings that were planned, designed, or consider
 - Shows consideration for consequences and proportional response
 - Maintains moral authority in spiritual conflict
 
+## Detailed Documentation Available
+
+The following unperformed workings have been fully documented with complete technical specifications:
+
+### **High-Risk Spirits**
+- **NotPerf_Beelzebub_Working.md** - Complete documentation of deliberately avoided Beelzebub invocation
+
+### **Mike Elimination Spells**
+- **NotPerf_Mike_Be_Gone_Powder.md** - Full powder creation and application documentation
+- **NotPerf_Road_Crossing_Mirror_Spell.md** - Complete mirror placement and karmic reflection working
+- **NotPerf_Voice_Burial_Box_Spell.md** - Detailed voice removal and silencing spell documentation
+- **NotPerf_Complete_Hot_Foot_House_Application.md** - Property-wide banishment application documentation
+
+### **Extreme Escalation Workings**
+- **NotPerf_Physical_Manifestations_at_Mikes_House.md** - Complete supernatural phenomena manifestation documentation
+- **NotPerf_Entity_Servitor_Hybrid_Summoning.md** - Ultimate escalation hybrid entity creation documentation
+
+Each detailed file includes:
+- Complete materials lists and technical specifications
+- Step-by-step implementation procedures
+- Risk assessments and ethical considerations
+- Alternative approaches and strategic analysis
+- Conditions for potential future implementation
+
 ## Notes
 - This list demonstrates advanced magical planning and ethical consideration
 - Shows evolution from reactive to strategic magical practice
@@ -115,3 +139,4 @@ This document catalogs magical workings that were planned, designed, or consider
 - Represents mature approach to spiritual warfare and protection magic
 - Documents the conscious choice of restraint in favor of targeted effectiveness
 - Provides reference for future decision-making about magical intervention levels
+- **Complete technical documentation** available for all major unperformed workings
