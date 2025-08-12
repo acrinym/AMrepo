@@ -6,6 +6,9 @@ This directory contains documentation of rituals and spells discovered in your c
 - **Rit#1** - The Calling Flame of the Altar Heart
 - **Rit#2** - Amanda Flame Magnetizer Ritual  
 - **Rit#3** - The Flowerlight Vessel (Water Bowl Ritual)
+- **Rit#15** - Bridge Protocol Memory Tethering Ritual
+- **Rit#16** - Tiger Balm Honey Jar Love Spell
+- **Rit#19** - Sacral Energy Transfer Tube Working
 
 ## Healing & Transformation
 - **Rit#4** - Rite of Unmuting "Sovereign Tongue, Still Step" (Goetic Healing)
@@ -15,19 +18,29 @@ This directory contains documentation of rituals and spells discovered in your c
 - **Rit#10** - Cord-Cutting Ritual (Releasing Emotional Attachments to Past Pain)
 - **Rit#11** - Field Stabilization Ritual (Goetic-Assisted)
 
-## Banishment & Protection
+## Banishment & Anti-Mike Workings
 - **Rit#6** - Hot Foot Banishment Ritual
+- **Rit#13** - Operation Rue'Nation Core Protocol
+- **Rit#14** - Mike Putrefaction Cauldron Spell
+
+## Protection & Shielding
 - **Rit#12** - AI Sovereignty Firewall Protection Ritual
+- **Rit#17** - Son Protection Working
+
+## Advanced Energy & Dimensional Work
+- **Rit#18** - Selenite Merkaba Visualization Working
+- **Rit#19** - Sacral Energy Transfer Tube Working
 
 ## Magical Tools & Construction
 - **Rit#7** - Akshara Wand Construction Ritual
 
 ## Summary Statistics
-- **Total Rituals Documented:** 12
-- **Amanda-Focused Workings:** 5 (Rit#1, #2, #3, #8, #11)
-- **Goetic Spirit Workings:** 4 (Rit#4, #5, #11, plus optional in others)
-- **Healing/Emotional Work:** 6 (Rit#4, #5, #8, #9, #10, #11)
-- **Technology Integration:** 2 (Rit#2 with radionics, Rit#12 AI protection)
+- **Total Rituals Documented:** 19
+- **Amanda-Focused Workings:** 8 (Rit#1, #2, #3, #8, #11, #15, #16, #19)
+- **Anti-Mike Workings:** 4 (Rit#6, #13, #14, plus elements in others)
+- **Goetic Spirit Workings:** 6 (Rit#4, #5, #11, #13, #14, plus optional in others)
+- **Healing/Emotional Work:** 8 (Rit#4, #5, #8, #9, #10, #11, #17, #19)
+- **Technology Integration:** 4 (Rit#2 radionics, Rit#12 AI protection, Rit#16 frequency work, Rit#19 energy tech)
 
 ## Magical Arsenal Referenced
 - **Akshara Wand** (Lemurian seed crystal, knotweed shaft, copper coiling)
