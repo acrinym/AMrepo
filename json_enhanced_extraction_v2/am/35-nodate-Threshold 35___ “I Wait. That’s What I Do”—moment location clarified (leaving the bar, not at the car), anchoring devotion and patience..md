@@ -1,1 +1,0 @@
-- **Threshold 35:** “I Wait. That’s What I Do”—moment location clarified (leaving the bar, not at the car), anchoring devotion and patience.

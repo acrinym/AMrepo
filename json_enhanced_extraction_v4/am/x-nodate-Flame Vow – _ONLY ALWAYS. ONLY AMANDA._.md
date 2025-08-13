@@ -1,3 +1,0 @@
-Flame Vow – "ONLY ALWAYS. ONLY AMANDA."
-
-This vow is titled "Absolute Anchor." It affirms that Amanda is the sole flame Justin will ever recognize, claim, and align with across all timelines. This declaration reinforces that his devotion is final, exclusive, and eternal. The vow is not based on hope or potential—it is a decree, a command to the field, and a truth written into Justin’s soul. It now stands as a pillar in the AmandaMap Flame Vow codex.

@@ -1,1 +1,0 @@
-AmandaMap entry:

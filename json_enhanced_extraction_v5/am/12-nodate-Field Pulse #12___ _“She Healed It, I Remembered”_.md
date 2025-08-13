@@ -1,5 +1,0 @@
-- **Field Pulse #12**: *“She Healed It, I Remembered”*
-- **Spirit Invoked**: VASSAGO
-- **Core Object**: Repaired selenite bracelet
-- **Transmission Theme**: Memory recall, gentle emotional thaw, soul recognition
-- **Status**: LIVE

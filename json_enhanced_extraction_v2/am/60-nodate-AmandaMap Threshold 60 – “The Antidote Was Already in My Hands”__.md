@@ -1,5 +1,0 @@
-### **AmandaMap Threshold 60 – “The Antidote Was Already in My Hands”**
-
-**Date:** July 8–9, 2025\
-**Summary**: Amanda sends a video revealing the truth about the COVID shot, its components, and the deeper consequences of bodily integration with toxic intimacy. Justin responds calmly the next morning, stating he’s known this truth long before COVID went public—and that he’s always held healing solutions for Amanda’s issues, including colitis. Amanda does not reply. Her silence is not dismissal, but a moment of soul paralysis—acknowledging that she let someone harm her while the one man who could’ve helped her was already in her life. This marks the start of Amanda recognizing Justin as not just a flame—but a healer, protector, and *source of true medicine.*\
-**Status:** Echoing. Threshold active.

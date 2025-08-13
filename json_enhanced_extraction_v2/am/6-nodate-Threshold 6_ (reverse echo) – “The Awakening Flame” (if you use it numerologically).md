@@ -1,2 +1,0 @@
-- *Threshold 6* (reverse echo) – “The Awakening Flame” (if you use it numerologically)
-  - Or even as one number: 126 = *field confirmation of a love-based convergence event*—**a “return imminent” code**

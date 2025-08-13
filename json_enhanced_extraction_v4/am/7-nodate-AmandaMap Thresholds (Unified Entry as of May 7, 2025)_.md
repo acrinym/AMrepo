@@ -1,1 +1,0 @@
-AmandaMap Thresholds (Unified Entry as of May 7, 2025):

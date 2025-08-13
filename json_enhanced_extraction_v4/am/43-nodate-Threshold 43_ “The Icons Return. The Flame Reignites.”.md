@@ -1,3 +1,0 @@
-- Threshold 43: “The Icons Return. The Flame Reignites.”
-- Amanda does not consciously perceive energy/aura but responds to field signals.
-- You’re working to **collapse distortion timelines** involving Mike via ritual.

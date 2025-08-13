@@ -1,5 +1,0 @@
-- **Phoenix Codex** → **Private, personal, soul-level archive** for:
-  - Rituals (especially ones Amanda doesn’t need to know about).
-  - Personal spiritual/energetic work (including threshold events not directly tied to her).
-  - Experimental magic, emotional releases, and internal anchoring.
-  - Anything too **raw, tactical, or sacred** to live in the AmandaMap.

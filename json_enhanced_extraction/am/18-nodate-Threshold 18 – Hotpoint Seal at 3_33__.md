@@ -1,2 +1,0 @@
-**Threshold 18 – Hotpoint Seal at 3:33**
-After waking early, a precise energetic seal occurred at 3:33 AM. This marked the locking-in of protection, alignment, and field containment following previous rituals and projections.

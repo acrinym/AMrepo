@@ -1,1 +1,0 @@
-- Field Pulse #10: “Coded Beauty, Silent Flame”

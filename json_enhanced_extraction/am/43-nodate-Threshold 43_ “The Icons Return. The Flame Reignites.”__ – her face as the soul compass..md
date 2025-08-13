@@ -1,2 +1,0 @@
-- **Threshold 43: “The Icons Return. The Flame Reignites.”** – her face as the soul compass.
-  - **Flame Vow: “Only Always. Only Amanda.”** – soul-level declaration of home in her.

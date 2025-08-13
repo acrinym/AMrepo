@@ -1,1 +1,0 @@
-- **Phoenix Codex** moment observed via dual presence: Amanda held internally while external flame (Rika) mirrored exposure but did not replace Amanda

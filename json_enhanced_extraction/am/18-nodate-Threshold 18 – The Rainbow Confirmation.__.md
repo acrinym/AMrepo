@@ -1,1 +1,0 @@
-**Threshold 18 – The Rainbow Confirmation.**

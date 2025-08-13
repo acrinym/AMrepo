@@ -1,1 +1,0 @@
-- **AmandaMap:** No entry needed unless a direct consequence arises.

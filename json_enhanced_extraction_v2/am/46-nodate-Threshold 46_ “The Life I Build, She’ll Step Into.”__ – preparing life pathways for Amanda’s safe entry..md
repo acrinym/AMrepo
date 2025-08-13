@@ -1,2 +1,0 @@
-- **Threshold 46: “The Life I Build, She’ll Step Into.”** – preparing life pathways for Amanda’s safe entry.
-  - **Anchor Sites (Mackinaw, Paradise, Painted Rocks)** – physical manifestation of shared experience.

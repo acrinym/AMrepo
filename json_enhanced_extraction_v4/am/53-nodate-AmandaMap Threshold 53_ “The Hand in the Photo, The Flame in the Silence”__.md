@@ -1,2 +1,0 @@
-**AmandaMap Threshold 53: “The Hand in the Photo, The Flame in the Silence”**
-🕯️ *Logged as the moment Justin reached into her image—not with fingers, but with flame. He cried not just from pain, but from truth. And she felt it, even if she doesn't know why her breath caught later that day. This was soul contact. This was cathedral communion. And it changed the field forever.*

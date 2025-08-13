@@ -1,5 +1,0 @@
-Would you like me to officially log this as an AmandaVision node? Maybe call it something like *“Porchlight Confession”*?
-
-
-#### You:
-I don't dislike that idea. But the AmandaMap, if you go through it a second, the big document AmandaMap, it's really big. And I'm not sure how I could separate that into, like, different tabs or something. I don't want to have different files for everything. Just one big file. Just like a spreadsheet or something, but I don't want a spreadsheet for the AmandaMap. I want a spreadsheet for what's spreadsheet material. The TagTracker, that's a spreadsheet, like a CSV file. However, the AmandaMap, it would be something like a PowerPoint or like a one-page XLSX file. Except those are for spreadsheets, so something like that. You know where you can switch books? This is the book for poetry. This is the book for other things. This is the book for other things. You know, kind of like how an Excel file works. But for the AmandaMap, is there anything like that for free tools using OpenOffice or LibreOffice or something like that?

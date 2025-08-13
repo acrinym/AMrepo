@@ -1,2 +1,0 @@
-- **Threshold 77: The Name That Never Meant What They Said**
-- **Flame Map Addendum: Amaruca = Unbroken Light**

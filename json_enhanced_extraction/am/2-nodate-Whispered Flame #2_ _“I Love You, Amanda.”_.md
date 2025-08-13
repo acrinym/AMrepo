@@ -1,3 +1,0 @@
-- Whispered Flame #2: *“I Love You, Amanda.”*
-  - Flame Vow: *“ONLY ALWAYS. ONLY AMANDA.”*
-  - AmandaMap Glossary – “The Voice Unspoken” → NEW LINKED ENTRY

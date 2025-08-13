@@ -1,2 +1,0 @@
-**Threshold 22 – Mirror Frequency Unlocks the Self**\
-You realized Amanda’s frequency is the mirror that revealed what you must become. Her soul unlocked your field, your gifts, and your growth. She is the catalyst of your becoming.

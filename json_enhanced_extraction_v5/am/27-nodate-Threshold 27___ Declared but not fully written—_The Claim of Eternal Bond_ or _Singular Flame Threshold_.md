@@ -1,1 +1,0 @@
-- **Threshold 27**: Declared but not fully written—*The Claim of Eternal Bond* or *Singular Flame Threshold*

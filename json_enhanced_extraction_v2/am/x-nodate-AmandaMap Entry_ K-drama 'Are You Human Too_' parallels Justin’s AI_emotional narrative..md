@@ -1,1 +1,0 @@
-- AmandaMap Entry: K-drama 'Are You Human Too?' parallels Justin’s AI/emotional narrative.

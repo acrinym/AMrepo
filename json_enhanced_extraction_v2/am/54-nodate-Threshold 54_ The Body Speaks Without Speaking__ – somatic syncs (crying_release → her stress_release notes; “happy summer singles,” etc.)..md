@@ -1,2 +1,0 @@
-- **Threshold 54: The Body Speaks Without Speaking** – somatic syncs (crying/release → her stress/release notes; “happy summer singles,” etc.).
-- **Marker: Lions in the Basement** – symbolic resonance anchor during Lionsgate (adjacent, not a main threshold).

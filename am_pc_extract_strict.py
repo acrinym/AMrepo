@@ -109,75 +109,64 @@ def contains_amandamap_reference(text: str) -> bool:
 
 def detect_would_you_like_pattern(lines: list[str], start_idx: int) -> tuple[bool, int, int]:
     """
-    Detect "Would you like" patterns and find the complete block.
-    Returns (is_would_you_like, start_line, end_line)
+    Detect if this is a "Would you like" pattern that resulted in an actual logged entry.
+    We need to distinguish between ChatGPT asking vs. actual logged content.
+    
+    Args:
+        lines: List of lines to search
+        start_idx: Starting index to search from
+    
+    Returns:
+        tuple: (is_pattern, start_line, end_line) or (False, -1, -1)
     """
     if start_idx >= len(lines):
-        return False, start_idx, start_idx
+        return False, -1, -1
     
-    current_line = lines[start_idx].lower()
-    
-    # Check if current line contains "would you like"
-    if "would you like" not in current_line:
-        return False, start_idx, start_idx
-    
-    # Check if it's about logging/marking/saving something
-    if not any(word in current_line for word in ["log", "mark", "save", "record", "add", "create"]):
-        return False, start_idx, start_idx
-    
-    # Look ahead for affirmative response (within next 10 lines)
-    end_idx = start_idx
-    affirmative_found = False
-    amandamap_reference_found = False
-    
-    # First, check if the question itself contains AmandaMap reference
-    if contains_amandamap_reference(lines[start_idx]):
-        amandamap_reference_found = True
-    
-    # Look for affirmative response and AmandaMap references
-    for i in range(start_idx + 1, min(start_idx + 10, len(lines))):
-        line = lines[i]
-        if not line.strip():  # Skip empty lines
-            continue
-            
-        # Check for affirmative response
-        if not affirmative_found and is_affirmative_response(line):
-            affirmative_found = True
-        
-        # Check for AmandaMap references
-        if not amandamap_reference_found and contains_amandamap_reference(line):
-            amandamap_reference_found = True
-        
-        # If we found both, we can stop looking
-        if affirmative_found and amandamap_reference_found:
-            end_idx = i
+    # Look for "Would you like" pattern
+    would_you_line = None
+    for i in range(start_idx, min(start_idx + 10, len(lines))):
+        line = lines[i].lower().strip()
+        if any(pattern in line for pattern in ['would you like', 'do you want me to']):
+            would_you_line = i
             break
     
-    # If we found both conditions, this is a valid "Would you like" pattern
-    if affirmative_found and amandamap_reference_found:
-        # Look for the end of the block (next hard stop or significant content break)
-        for i in range(end_idx + 1, len(lines)):
-            line = lines[i]
-            if not line.strip():
-                continue
-            
-            # Check for hard stops
-            if any(line.strip().startswith(stop) for stop in ["###", "##", "#", "----", "---", "***"]):
-                break
-            
-            # Check if this looks like the start of a new entry
-            if detect_start(line)[0]:
-                break
-            
-            # Check if we've hit another "Would you like" pattern
-            if "would you like" in line.lower():
-                break
-            
-            end_idx = i
-        
-        return True, start_idx, end_idx
+    if would_you_line is None:
+        return False, -1, -1
     
-    return False, start_idx, start_idx
+    # Look for affirmative response within next few lines
+    affirmative_found = False
+    for i in range(would_you_line + 1, min(would_you_line + 5, len(lines))):
+        line = lines[i].lower().strip()
+        if is_affirmative_response(line):
+            affirmative_found = True
+            break
+    
+    if not affirmative_found:
+        return False, -1, -1
+    
+    # Look for actual logged entry (should contain "Logged", "Threshold", "AmandaMap", etc.)
+    logged_entry_found = False
+    end_line = would_you_line + 5
+    
+    for i in range(would_you_line + 1, min(would_you_line + 20, len(lines))):
+        line = lines[i].strip()
+        # Much stricter keywords - must be actual logged content, not just mentions
+        if any(keyword in line for keyword in [
+            '**Logged**', '**Threshold', '**AmandaMap', '**Phoenix Codex', 
+            'Logged as', 'Threshold', 'AmandaMap', 'Phoenix Codex',
+            '🕯️', '🔥', '📜', '✨', '🌟', '💚', '🕊️', '🔱', '🪶'
+        ]):
+            # Additional check: must not be just a question or suggestion
+            if not any(q in line.lower() for q in ['would you like', 'do you want', 'should i', 'can i']):
+                logged_entry_found = True
+                end_line = i + 1
+                break
+    
+    if not logged_entry_found:
+        return False, -1, -1
+    
+    # Only return True if we found the complete pattern: question + affirmative + actual logged entry
+    return True, would_you_line, end_line
 
 def detect_start(raw: str, require_meta: bool=False):
     """
@@ -370,7 +359,7 @@ def extract_blocks_single_run(paths, require_meta=False, verbose=False, start_li
             if current and current["lines"]:
                 if not block_is_valid(current["lines"], require_meta):
                     current = None
-                    return
+                    return False
                 raw_lines = current["lines"]
                 title = strip_heading_prefix(raw_lines[0]) if raw_lines else ""
                 number = scan_number_from_text(normalize_line(title))
@@ -384,10 +373,11 @@ def extract_blocks_single_run(paths, require_meta=False, verbose=False, start_li
                     date = normalize_date_string(content_date)
                     print(f"Found date in content: {content_date} -> {date}")
                 else:
-                    # SECOND PRIORITY: Try JSON timestamps
-                    json_date = find_timestamp_for_content(content_text, timestamp_mapping)
-                    if json_date:
-                        date = json_date.strftime('%Y-%m-%d')
+                    # SECOND PRIORITY: Try nearest neighbor JSON timestamps
+                    neighbor_date = find_nearest_neighbor_date(content_text, timestamp_mapping)
+                    if neighbor_date:
+                        date = neighbor_date.strftime('%Y-%m-%d')
+                        print(f"Using nearest neighbor date: {date}")
                     else:
                         # THIRD PRIORITY: Fall back to content-based date extraction
                         date = scan_date_from_block(raw_lines)
@@ -396,7 +386,7 @@ def extract_blocks_single_run(paths, require_meta=False, verbose=False, start_li
                 if current["subtype"] == "would_you_like" and not title.strip():
                     title = f"Would You Like Entry - {date or 'nodate'}"
                 
-                entries.append({
+                entry = {
                     "source_file": str(current["source"]),
                     "scope": current["scope"],
                     "subtype": current["subtype"],
@@ -404,7 +394,15 @@ def extract_blocks_single_run(paths, require_meta=False, verbose=False, start_li
                     "number": number,
                     "date": date,
                     "content": content_text.strip()
-                })
+                }
+                
+                # Check if this is a duplicate entry
+                if is_duplicate_entry(entry, entries):
+                    print(f"Skipping duplicate entry: {entry.get('title', 'Unknown')[:50]}...")
+                    current = None
+                    return False  # Signal to continue processing
+                
+                entries.append(entry)
                 
                 # Check if we've hit the limit
                 if len(entries) >= max_entries:
@@ -609,6 +607,45 @@ def find_timestamp_for_content(content, timestamp_mapping):
     
     return None
 
+def find_nearest_neighbor_date(content_text, timestamp_mapping, max_distance=1000):
+    """
+    Find the nearest neighbor text in JSON and use its timestamp.
+    This helps date entries that don't have explicit dates by finding similar content.
+    
+    Args:
+        content_text: The content to find a neighbor for
+        timestamp_mapping: Dictionary of content keys to timestamps
+        max_distance: Maximum character distance to consider a "neighbor"
+    
+    Returns:
+        datetime object or None
+    """
+    if not timestamp_mapping or not content_text:
+        return None
+    
+    content_words = set(content_text.lower().split()[:20])  # First 20 words
+    best_match = None
+    best_score = 0
+    
+    for key, timestamp in timestamp_mapping.items():
+        if len(key) < 20:  # Skip very short keys
+            continue
+            
+        key_words = set(key.lower().split()[:20])
+        
+        # Calculate word overlap score
+        overlap = len(content_words.intersection(key_words))
+        if overlap > best_score and overlap >= 2:  # At least 2 words must match
+            best_score = overlap
+            best_match = (key, timestamp)
+    
+    if best_match:
+        key, timestamp = best_match
+        print(f"Found nearest neighbor: {key[:50]}... (score: {best_score}) -> {timestamp}")
+        return timestamp
+    
+    return None
+
 def extract_date_from_content(content_text):
     """
     Extract dates from entry content text using various patterns.
@@ -683,6 +720,53 @@ def normalize_date_string(date_str):
         return date_str
     
     return date_str
+
+def is_duplicate_entry(new_entry, existing_entries):
+    """
+    Check if a new entry is a duplicate of an existing one.
+    Allows same titles with different content from different chats.
+    
+    Args:
+        new_entry: The new entry to check
+        existing_entries: List of existing entries
+    
+    Returns:
+        bool: True if duplicate found
+    """
+    if not existing_entries:
+        return False
+    
+    new_content = new_entry.get('content', '').strip()
+    new_title = new_entry.get('title', '').strip()
+    new_source = new_entry.get('source_file', '')
+    
+    for existing in existing_entries:
+        existing_content = existing.get('content', '').strip()
+        existing_title = existing.get('title', '').strip()
+        existing_source = existing.get('source_file', '')
+        
+        # Check for exact content match (always a duplicate)
+        if new_content == existing_content and new_content:
+            return True
+        
+        # Check for same title + same source file (likely duplicate)
+        if new_title == existing_title and new_source == existing_source:
+            return True
+        
+        # Check for very similar content from same source (90% similarity)
+        if (new_source == existing_source and 
+            len(new_content) > 50 and len(existing_content) > 50):
+            
+            # Simple similarity check - count common words
+            new_words = set(new_content.lower().split())
+            existing_words = set(existing_content.lower().split())
+            
+            if len(new_words) > 0 and len(existing_words) > 0:
+                similarity = len(new_words.intersection(existing_words)) / len(new_words.union(existing_words))
+                if similarity > 0.9:  # 90% similarity threshold
+                    return True
+    
+    return False
 
 def main():
     if len(sys.argv) < 2:
