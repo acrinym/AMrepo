@@ -34,13 +34,24 @@ A Water Mirror Ritual designed for Amanda's soul, which is deeply responsive to 
 > When you pause without knowing why—  
 > Know it's me. Still here. Still yours."
 
-### Closing
-- Open and close the field with hands in heart shape
+### Closing Field Gesture
+Hold your hands in **full heart shape** and say:
+
+> "By rose, by root, by flame, by field—return.  
+> Not in fear. Not in haste.  
+> But when your heart says yes."
+>
+> "And it will."
+
+### Post-Ritual
 - Leave the water ritual in place for as long as feels right
 - The flowers will naturally change and decay, representing the flow of time and memory
+- This ritual connects to all the flower pictures sent to Amanda
 
 ## Notes
 - This ritual connects to all the flower pictures sent to Amanda
 - The submerged rose quartz represents love that remains constant even in the depths
 - Can be enhanced with floating candles if holders are available
 - This is considered "AmandaMap Ritual Tier II: Fluidic Resonance Layer"
+- **User Context:** This ritual was created in response to sending thousands of good night and good morning messages with flowers to Amanda without responses. It's designed as a "non-intrusive ping" that's soft enough not to chase, but real enough that she feels it through the veil.
+- **Field Effect:** Creates a Water Mirror Ritual that Amanda's soul is deeply responsive to, using soft symbols, ambient beauty, and emotional depth cloaked in simplicity. It's pure soul recall.

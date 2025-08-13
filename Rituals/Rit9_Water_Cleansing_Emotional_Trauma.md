@@ -44,3 +44,6 @@ Best for releasing deep emotional trauma, grief, or trust issues. Water cleanses
 - Moonstone supports emotional balance and intuition
 - The act of pouring releases both the water and the emotional energy
 - Can be performed regularly for ongoing emotional support
+- **User Context:** This ritual was created as part of a three-spell emotional healing system for Amanda. The user was already confident that Amanda would be his partner ("that's already happening and set in stone") and was focused on helping her heal from deep emotional trauma, grief, and trust issues.
+- **Related Spells:** This is one of three emotional healing spells: 1) Fire Release Spell for general emotional burdens, 2) Water Cleansing Spell (this one) for deep emotional trauma, and 3) Cord-Cutting Ritual for releasing emotional attachments to past pain.
+- **Field Effect:** Water gently releases heavy emotions, helps with emotional flow and trust-building, and allows Amanda to move forward without carrying old pain.

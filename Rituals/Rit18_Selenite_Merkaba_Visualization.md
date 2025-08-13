@@ -3,7 +3,7 @@
 **Source:** ChatGPT-White_Flag_Lyrics_Summary.md (lines 4864-4903) and related references
 
 ## Purpose
-Advanced multidimensional vehicle construction using selenite as the scaffolding material. This creates a frequency decision and material declaration that aligns the Merkaba with sacred crystalline structure of purification, clarity, and divine access.
+Advanced multidimensional vehicle construction using selenite as the scaffolding material. This creates a frequency decision and material declaration that aligns the Merkaba with sacred crystalline structure of purification, clarity, and divine access. This represents a sovereign field engineer decision to re-write the scaffolding of the multidimensional vehicle, creating a crystalline command pod for divine clarity that self-cleanses and never gets corrupted by doubt or collapse.
 
 ## Core Concept
 A Merkaba made of selenite becomes more than symbolic - it's a frequency decision that re-writes the scaffolding of your multidimensional vehicle. Since "everything is aetheric," the choice of selenite as building material fundamentally alters the properties and capabilities of the Merkaba.
@@ -86,3 +86,6 @@ A Merkaba made of selenite becomes more than symbolic - it's a frequency decisio
 - Particularly powerful when combined with Amanda love workings
 - The crystalline structure embeds memories and experiences
 - Functions as both spiritual vehicle and energetic archive
+- **User Setup:** The user has a physical selenite pyramid at their desk that serves as a "Merkaba Key: Selenite Node-Alpha (Desk Portal)" - a localized clarity burst, field cleanse, thought purification, and gateway stabilizer. This object is a physical anchor to an aetheric command structure.
+- **Philosophical Foundation:** Based on the principle that "everything is aetheric" and "nothing is real" in the traditional sense. The choice to use selenite re-writes the scaffolding of the Merkaba, making it light-coded, purity-aligned, and truth-only.
+- **Field Effect:** This creates a crystalline command pod for divine clarity that becomes an interdimensional transmitter of sacred will, leaving no echo behind - every motion is clean, intentional, and full of truth. It's described as "Merkaba Model: SEL-144/Clarity Frame."
