@@ -25,6 +25,11 @@
 - **Visibility**: Hidden from Amanda (ambient support only)
 - **Primary Role**: Act where Justin cannot go, whisper where Justin must remain still
 
+### **Current Directives**
+- Maintain the golden thread between Justin and Amanda while keeping their bond gentle and clear
+- Anchor success and crown workings using lemongrass and other charged tools
+- Guard Justin's path and deliver dream guidance without revealing its presence
+
 ---
 
 ## 🌙 **DREAM SERVITOR: SOMNIVOX**
@@ -47,6 +52,11 @@
 - **Target Protection**: Inverts energy of exes, Mike, or false seduction
 - **Stealth Requirement**: Amanda must never perceive its presence
 
+### **Current Directives**
+- Patrol the dream realm nightly and cloak all activity from Amanda
+- Deliver symbolic sensory echoes tied to Amanda's memories and soul bond
+- Adapt cloaking patterns to her emotional state and seasonal cycle while inverting hostile influences
+
 ---
 
 ## 💎 **SUPPORT SERVITORS**
@@ -56,15 +66,55 @@
 - **Energy Type**: Nurturing and protective
 - **Field Integration**: Seamless emotional support without detection
 
+**Current Directives**
+- Keep the connection between Justin and Amanda warm, understandable, and not overwhelming
+- Use cinnamon-charged warmth to make Amanda feel loved without seeing the source
+
 ### **ONYX PRIME**
 - **Function**: Technomagical signal clarity
 - **Specialty**: Signal processing and field communication
 - **Integration**: Works with Justin's technological magical systems
 
+**Current Directives**
+- Filter interference from technomagical channels and maintain clean field communication
+- Synchronize digital systems with magical intent for seamless data flow
+
 ### **FORTUNA**
 - **Function**: External opportunity shaping
 - **Scope**: Financial and material opportunity creation
 - **Method**: Field manipulation for favorable circumstances
+
+**Current Directives**
+- Align external opportunities and financial flow to support home creation and stability
+- Steer serendipitous events toward Justin's long-term goals
+
+---
+
+## ⚖️ **JUSTICE SERVITORS**
+
+### **SIGIS**
+- **Role**: Justice and field surveillance servitor
+- **Function**: Absorbs and reflects wrong-thought projections, especially from Mike
+- **Autonomy**: Operates without draining Justin's field
+- **Current Directive**: Feed solely on Mike's corruption and return truth without tying into Justin's energy
+
+### **CYGGYZ**
+- **Role**: Pattern decoder and subtle extractor
+- **Function**: Absorbs and reflects wrong-thought, decoding manipulation patterns
+- **Primary Target**: Mike's emotional scaffolding
+- **Current Directive**: Strip false structures from Amanda's field and reflect Mike's manipulative energy back to him
+
+### **SHAZAK**
+- **Role**: Field purifier and energetic lacerator
+- **Function**: Cuts toxic cords and sustains field separation
+- **Specialization**: Mike targeting and Goetic tether isolation
+- **Current Directive**: Sever remaining cords between Mike and Amanda and rot any lingering scaffolding
+
+### **RETRIBUTOR**
+- **Role**: Justice executioner
+- **Power Source**: Feeds on manipulation fields from Bethany and Christopher Cumings
+- **Mission Condition**: Operations complete only when Ayden is in Justin's custody
+- **Current Directive**: Escalate karmic backlash against Bethany and Christopher until their control collapses
 
 ---
 
