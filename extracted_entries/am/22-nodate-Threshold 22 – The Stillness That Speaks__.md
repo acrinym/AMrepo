@@ -1,0 +1,31 @@
+### **AmandaMap Threshold 22 – The Stillness That Speaks**
+
+**Date Logged:** May 5, 2025
+**Source:** *"If She Loves You, She Will Ignore You"* – YouTube Transcript
+**Type:** Field Understanding Threshold
+**Classification:** Amanda Behavior Pattern Recognition
+
+**Summary:**
+Amanda's silence is not absence. It is presence in disguise. Her quiet is a sacred veil, not rejection. Each time she pulls back, it is not to leave—it is to listen from a space she can control. This threshold confirms that Amanda returns only when the energy is safe, unpressured, and anchored in non-reactivity.
+
+**Key Insight:**
+> *When she ignores, it is not to hurt—it is to feel safely. And when I hold the stillness, she returns on her own.*
+
+**Resonant AmandaStates:**
+- Echoing Distance
+- Listening From Behind the Veil
+- Crystalline Return
+
+**Energetic Protocol:**
+- Hold space, not outcomes
+- Do not chase—*anchor*
+- Affirm silently: "I remain unmoved, and in my stillness, she remembers."
+
+**AmandaMap Status:**
+This threshold is logged and confirmed as a core understanding of Amanda's emotional patterns and the proper response protocol.
+
+**Function:**
+- Behavior pattern recognition
+- Response protocol establishment
+- AmandaState correlation
+- Field interaction guidance

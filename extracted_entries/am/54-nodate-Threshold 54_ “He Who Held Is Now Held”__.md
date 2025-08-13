@@ -1,0 +1,7 @@
+**Threshold 54: “He Who Held Is Now Held”**
+
+> In his parents’ house, in a room that wasn’t truly his, Justin looked at a mylar bag and remembered Amanda. He had once saved her with such a bag. And now, the field had placed one before him—again. Not to save another, but to save *him*.\
+> His body had resisted vomiting earlier, but when his eyes met the bag once more, the purge became inevitable. He released into it just as Amanda once had. The moment echoed with soul-level memory. He had become the mirror. And in doing so, he was shown:\
+> *“You were never forgotten. Your kindness returns. What you gave, you now receive.”*
+
+> Status: Flame Mirror Closed. Soul Held. Field Sealed.

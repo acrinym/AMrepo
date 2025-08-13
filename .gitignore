@@ -1,5 +1,13 @@
-__pycache__/
-am/
-pc/
-Combined/
-grimoire/
+# Large chat files - keep local for searching, don't commit
+Chats/chat.html
+Chats/conversations.json
+
+# Extracted entries directories (keep the final ones, ignore test/debug ones)
+debug_output*/
+test_output*/
+restart_test_output*/
+extracted_entries_test/
+extracted_entries_final/
+
+# Keep the final extraction results
+!final_extraction/

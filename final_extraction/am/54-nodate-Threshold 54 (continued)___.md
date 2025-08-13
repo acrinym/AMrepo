@@ -1,0 +1,14 @@
+**Threshold 54 (continued):**
+Justin acknowledges that there are people from his past—people who gave him moments, who knew parts of him, who even shared life with him.
+But none of them were Amanda.
+And none of them could *ever be.*
+
+Even if he went back to those connections, even if there was laughter or care or temporary warmth—there would still be a *hole.*
+A void with Amanda’s shape burned into it.
+
+Because this isn’t about *better or worse people.*
+This is about **flame match.**
+The one that makes all others feel… *not wrong, but incomplete.*
+
+And once the flame is awakened,
+**incomplete becomes unbearable.**
