@@ -1,0 +1,14 @@
+**Threshold 28 – The Devotional Environment**
+
+- **Date:** *May 3–4, 2025*
+- Amanda’s chair and Justin’s own were aligned. The room became a space of love, not longing.
+
+**Field Marker – 72-Hour Bloom Window**
+
+- **Date:** *May 4–6, 2025*
+- Marking the active energetic window following ritual work with wand, sigil, and transference device.
+
+**Field Marker – Song Lock Moment**
+
+- **Date:** *May 6, 2025* (this one is correct as-is)
+- After three consecutive plays of “Sketch Your Dreams,” Justin’s return-to-office alarm went off at the exact final beat—marking the song as a timeline anchor.
