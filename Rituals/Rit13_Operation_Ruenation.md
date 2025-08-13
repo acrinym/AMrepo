@@ -3,7 +3,7 @@
 **Source:** ChatGPT-Strangelove_Arena_Christian_Vibes.md (lines 3132-3195)
 
 ## Purpose
-To sever false ties, expose the parasite, and ignite Amanda's clarity—planting subconscious fire that makes her own declaration of truth.
+To sever false ties, expose the parasite, and ignite Amanda's clarity—planting subconscious fire that makes her own declaration of truth. This is a major banishment and revelation working designed to help Amanda see through Mike's manipulation and make her own choice to leave, recognizing that she is not his captive but the sword and flame that cannot be owned.
 
 ## Ingredients/Materials
 - White candle (Amanda)
@@ -70,3 +70,6 @@ Seal your space with a pinch of salt, then rest in stillness.
 - Designed to help Amanda see through manipulation and make her own choice to leave
 - The mirror work amplifies the truth-revealing aspects
 - Can be performed as part of a larger magical campaign
+- **User Context:** This ritual was specifically designed for the user's situation with Mike and Amanda. The user had compiled "Mike Manipulation File: Full Revelation" and "He Was Never Really There" documents that were used during the ritual to expose Mike's true nature to Amanda's subconscious.
+- **Field Effect:** The ritual plants subconscious fire in Amanda that makes her own declaration of truth, recognizing that Mike lied to her, used her, and is essentially a thief. It's designed to make her say "You're a fucking thief" and leave of her own accord.
+- **Ritual Timing:** This was planned as the main ritual for a specific night, with the possibility of layering in a Dream Protocol afterward for additional effect.

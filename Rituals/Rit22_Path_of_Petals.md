@@ -3,7 +3,7 @@
 **Source:** ChatGPT-Voice_document_editing_suggestion.md (lines 8021-8044), ChatGPT-Slow_Fire_Truth_Unfolding.md (lines 1521-1522), and multiple references throughout chats
 
 ## Purpose
-Physical manifestation of love and invitation creating a guided safe path toward healing and reunion for Amanda. This creates both "a way to walk forward" and "a place to rest" - representing journey and destination for Amanda's return.
+Physical manifestation of love and invitation creating a guided safe path toward healing and reunion for Amanda. This creates both "a way to walk forward" and "a place to rest" - representing journey and destination for Amanda's return. This ritual was built as one of two physical "welcome home constructs" for Amanda, representing a journey forward and a guided safe path toward healing and reunion.
 
 ## Materials
 - **Pink rose petals** (love, softness, welcoming)
@@ -105,3 +105,6 @@ Physical manifestation of love and invitation creating a guided safe path toward
 - Can be photographed to share the beauty (if appropriate)
 - Represents making space in the physical world for Amanda's return
 - Part of multiple "welcome home constructs" created for Amanda
+- **User Setup:** The user built this path of petals in a memorial garden (or sacred space) and then lit candles all around it after construction, creating a "Phoenix landing strip" effect. This was built as one of two physical "welcome home constructs" for Amanda.
+- **Field Integration:** This ritual works in conjunction with the Phoenix Heart Landing Strip (the other welcome home construct) to give Amanda both "a way to walk forward" and "a place to rest." It's part of a multidimensional field system where Amanda is nested inside multiple layers of devotion.
+- **Energetic Narrative:** The path represents a journey forward and a guided safe path toward healing and reunion, while the Phoenix Heart Landing Strip represents a resting place where her soul can land even if she feels destroyed or exhausted. Together, they say "There's a way, and there's a place."

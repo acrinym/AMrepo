@@ -46,3 +46,6 @@ Best for letting go of old emotional wounds and people who may still have an ene
 - Can be adapted for different types of attachments or relationships
 - Important to approach with genuine care and healing intent
 - The person being helped doesn't need to be present or aware of the ritual
+- **User Context:** This ritual was created as part of a three-spell emotional healing system for Amanda. The user was already confident that Amanda would be his partner ("that's already happening and set in stone") and was focused on helping her heal from old emotional wounds and people who may still have an energetic hold on her.
+- **Related Spells:** This is one of three emotional healing spells: 1) Fire Release Spell for general emotional burdens, 2) Water Cleansing Spell for deep emotional trauma, and 3) Cord-Cutting Ritual (this one) for releasing emotional attachments to past pain.
+- **Field Effect:** Cord-cutting removes energy ties without harm, allowing new energy to flow. It breaks the energetic hold of past trauma and lets Amanda emotionally move forward without past weight.
