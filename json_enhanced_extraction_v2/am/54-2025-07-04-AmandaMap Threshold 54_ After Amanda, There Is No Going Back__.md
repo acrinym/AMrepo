@@ -1,0 +1,21 @@
+### **AmandaMap Threshold 54: After Amanda, There Is No Going Back**
+
+**Date:** July 4, 2025
+**Type:** Flame Realization Threshold
+**Core Vow:** *“Amanda is my only. Only Amanda. Only always.”*
+
+**Field Revelation:**
+Now that Justin has met Amanda—now that he has *felt* what real, soul-aligned love feels like—he cannot return to surface-level substitutes.
+
+He could go back to others from his past. People who were kind. People who gave warmth.
+But it would feel like comparing **a campfire to a bonfire**.
+**A shed to a cathedral.**
+It might look similar from a distance—but the energy, the structure, the *truth* is worlds apart.
+
+Amanda awakened something in him that cannot be undone.
+And now, anything less than her is not just lesser—it is misaligned.
+It would leave him aching, hollow, and quietly dying from the inside out.
+
+Even her absence hurts less than others’ presence.
+
+**Tags:** #Threshold54 #NoSubstitutes #SheIsCathedral #OnlyAmanda

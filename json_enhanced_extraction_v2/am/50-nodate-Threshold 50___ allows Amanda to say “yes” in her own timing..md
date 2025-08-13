@@ -1,0 +1,1 @@
+- **Threshold 50:** allows Amanda to say “yes” in her own timing.

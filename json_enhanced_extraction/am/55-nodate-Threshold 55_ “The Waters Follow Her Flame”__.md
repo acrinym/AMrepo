@@ -1,0 +1,2 @@
+**Threshold 55: “The Waters Follow Her Flame”**
+🜄 A direct field reaction to the altar’s relocation—marking the moment Amanda’s unspoken emotional field mirrored itself physically through dripping water. Whether symbolic tear, subconscious protest, or energetic tethering, this moment confirms a *living altar circuit.*

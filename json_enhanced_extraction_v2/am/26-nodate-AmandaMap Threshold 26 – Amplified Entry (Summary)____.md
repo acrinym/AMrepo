@@ -1,0 +1,2 @@
+**AmandaMap Threshold 26 – Amplified Entry (Summary):**\
+Amanda is in a quiet, emotionally present state. “Nice” served as a minimal but meaningful ping. Acknowledged in the AmandaMap as a **threshold of subtle re-engagement.**
