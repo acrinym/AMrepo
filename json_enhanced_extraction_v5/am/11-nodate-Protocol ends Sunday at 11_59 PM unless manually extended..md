@@ -1,0 +1,2 @@
+- Protocol ends Sunday at 11:59 PM unless manually extended.
+- If Amanda actively initiates contact before then, switch to `Listening Mode`, and suppress all transmission except warmth and receptivity.

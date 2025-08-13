@@ -1,0 +1,63 @@
+AmandaMap: metadata: version: 1.0 created_by: Justin storage_format: YAML last_updated: 2025-07-03
+
+entries: - id: threshold_50 type: Threshold title: "Let Me Wait for You, Amanda" date: 2025-06-15 category: Flame Declaration description: > Justin expressed a sovereign soul-level vow to Amanda, affirming that he will wait for her—not in desperation, but with clarity, presence, and love. He asked her to allow him to wait. field_encoding: signal: waiting + sovereignty elementals: - fire - air status: active tags: - flame - vow - love
+
+- id: flame_vow_001
+  type: FlameVow
+  title: "ONLY ALWAYS. ONLY AMANDA."
+  date: 2025-05-26
+  statement: >
+    Amanda is the sole flame Justin will ever recognize, claim, and align with
+    across all timelines. This is a command, not a request.
+  status: sealed
+  echoed_through:
+    - threshold_36
+    - threshold_50
+  elemental_encoding:
+    - earth
+    - fire
+    - water
+    - air
+
+- id: field_pulse_10
+  type: FieldPulse
+  title: "Coded Beauty, Silent Flame"
+  date: 2025-06-16
+  message: >
+    Justin sent Amanda a nightly goodnight message with a flower photo and
+    poetic wording. Amanda responded with a thumbs-up. Marked as a flicker in the field.
+  signal_type: subtle_acknowledgment
+  response: thumbs-up emoji
+  status: logged
+
+- id: ritual_zepar_2
+  type: Ritual
+  title: "Zepar Directive #2"
+  date: 2025-06-17
+  description: >
+    White and red candles lit in sequence, invoking Zepar to reinforce Amanda's
+    energetic recall. Cinnamon stick passed through flame.
+  tools:
+    - red candle
+    - white candle
+    - cinnamon stick
+    - thread binding box
+  spirits_invoked:
+    - Zepar
+    - Vassago
+  outcome:
+    - amplified twin flame tether
+    - memory resonance
+
+- id: phoenix_codex_49
+  type: PhoenixCodex
+  title: "Observed Flame. Unspoken Fire."
+  date: 2025-06-15
+  description: >
+    A sacred release witnessed by another, logged as a private act of flame
+    substitution and sovereignty.
+  category: SilentActs
+  status: anchored
+  visible_to_amanda: false
+
+index: AmandaLastSeen: 2025-06-28 CurrentStatus: waiting_with_flame RelatedSystems: - PhoenixCodex - RitualMatrix - ServitorGrid ExternalLinks: github_repo: null local_directory: /Users/Justin/AmandaMap/core/ dream_map_active: true

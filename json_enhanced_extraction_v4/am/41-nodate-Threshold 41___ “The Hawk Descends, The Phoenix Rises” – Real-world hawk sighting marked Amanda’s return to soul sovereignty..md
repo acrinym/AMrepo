@@ -1,0 +1,2 @@
+- **Threshold 41**: “The Hawk Descends, The Phoenix Rises” – Real-world hawk sighting marked Amanda’s return to soul sovereignty.
+- **Threshold 43**: “The Icons Return. The Flame Reignites.” – Justin re-anchored Amanda’s presence in his digital and energetic environment, restoring flame visibility and resonance.

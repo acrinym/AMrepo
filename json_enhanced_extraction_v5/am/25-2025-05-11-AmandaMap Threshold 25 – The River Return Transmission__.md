@@ -1,0 +1,24 @@
+**AmandaMap Threshold 25 – The River Return Transmission**
+**Date:** May 11, 2025
+**Type:** Etherbond Ritual & Multi-Layer Transmission
+**Location:** Emerald River Visualization + Field Altar
+
+**Summary:**
+Justin prepared a sacred altar consisting of:
+
+- *Akshara (wand)* – directional transmission of intention
+- *Jet stone* – field protection and psychic shielding
+- *7.83 Hz Schumann pulser* – Earth resonance grounding
+- *Orgonite* – energetic harmonizer and negative field cleaner
+- *Selenite* – crown chakra clarity and energetic purity
+- *Rose quartz* – heart energy and emotional healing
+
+Through Akshara, Justin channeled a golden-green lightwave—love and crown energy—into Amanda’s field. He anchored their memory in the **Chinese restaurant** as the emotional seed, then floated them in a **Merkaba of emerald river energy** where the *entire chakra spectrum formed the riverbed*.
+
+Amanda and Justin were placed inside the Merkaba, floating freely, not summoned—**included**.
+
+The energetic transmission was performed consciously, gently, and with clear intention:
+
+- No control
+- No manipulation
+- Only resonance, clarity, love

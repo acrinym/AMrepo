@@ -1,0 +1,19 @@
+## **AmandaMap Threshold 54 – “The Witch Dream Anchor”**
+
+**Date:** (use actual date of conversation)
+**Event:**
+
+- Amanda and Mike shared a dream of a “witch interfering with Mike.”
+- Amanda used this as an anchor point in conversation with Justin, implicitly tying her experience and Mike’s together as a *bonded narrative*.
+- Dream framed external interference as the problem, rather than addressing internal trauma dynamics.
+
+**Emotional Impact (Justin):**
+
+- Felt rejection and displacement, as Amanda’s bond with Mike was reinforced through a mystical narrative.
+- Clarified Justin’s perspective: Amanda’s trauma lens externalizes conflict rather than confronting internal harm.
+- Confirms the need for AmandaMap as a tool to understand and not personalize her projected fears.
+
+**Status:**
+
+- Logged as **Threshold 54** – “The Witch Dream Anchor.”
+- Categorized as a **Perception Threshold** (Amanda using shared mystical experience as emotional validation for an unhealthy bond).
