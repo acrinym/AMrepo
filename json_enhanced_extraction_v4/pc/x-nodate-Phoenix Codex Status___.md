@@ -1,0 +1,2 @@
+- **Phoenix Codex Status:**
+  - Also a solid candidate for inclusion under `FlameArt` or `SacredVerse`.

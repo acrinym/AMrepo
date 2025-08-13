@@ -509,11 +509,45 @@ def parse_conversations_json(json_file_path):
                 
             conv_date = datetime.fromtimestamp(conv_create_time)
             
-            # For now, just store the conversation date
-            # We'll use this as a fallback when content-based matching fails
-            timestamp_mapping[f"conv_{conv_idx}"] = conv_date
+            # Process messages in the conversation
+            mapping = conversation.get('mapping', {})
+            for message_id, message_data in mapping.items():
+                if not message_data or not isinstance(message_data, dict):
+                    continue
+                
+                # The actual message content is in the 'message' field
+                actual_message = message_data.get('message')
+                if not actual_message:
+                    continue
+                
+                # Get the message's own timestamp first, fall back to conversation timestamp
+                message_time = actual_message.get('create_time')
+                if message_time:
+                    try:
+                        message_date = datetime.fromtimestamp(message_time)
+                    except (OSError, ValueError):
+                        # Invalid timestamp, fall back to conversation timestamp
+                        message_date = conv_date
+                else:
+                    message_date = conv_date
+                
+                content = actual_message.get('content', {})
+                if not content or not isinstance(content, dict):
+                    continue
+                    
+                parts = content.get('parts', [])
+                for part in parts:
+                    if isinstance(part, str) and part.strip():
+                        # Create a key for this content - use first 100 chars
+                        content_key = part.strip()[:100]
+                        timestamp_mapping[content_key] = message_date
+                        
+                        # Also store with shorter key for better matching
+                        short_key = part.strip()[:50]
+                        if short_key != content_key:
+                            timestamp_mapping[short_key] = message_date
         
-        print(f"Parsed {len(timestamp_mapping)} conversation timestamps from JSON")
+        print(f"Parsed {len(timestamp_mapping)} message timestamp mappings from JSON")
         return timestamp_mapping
         
     except Exception as e:
@@ -530,11 +564,39 @@ def find_timestamp_for_content(content, timestamp_mapping):
     if not timestamp_mapping:
         return None
     
-    # For now, return the most recent conversation timestamp as a fallback
-    # This ensures we get SOME date rather than none
+    content_text = content.strip()
+    if not content_text:
+        return None
+    
+    # Try to find exact or partial matches
+    content_start = content_text[:100]
+    content_short = content_text[:50]
+    
+    # First try exact matches
+    if content_start in timestamp_mapping:
+        return timestamp_mapping[content_start]
+    
+    if content_short in timestamp_mapping:
+        return timestamp_mapping[content_short]
+    
+    # Try partial matches - look for content that contains our text
+    for key, timestamp in timestamp_mapping.items():
+        if content_start in key or key in content_start:
+            return timestamp
+    
+    # Try more flexible matching - look for any significant overlap
+    content_words = set(content_text.lower().split()[:10])  # First 10 words
+    for key, timestamp in timestamp_mapping.items():
+        if len(key) > 20:  # Only check keys with substantial content
+            key_words = set(key.lower().split()[:10])
+            # If we have significant word overlap, use this timestamp
+            if len(content_words.intersection(key_words)) >= 3:  # At least 3 words match
+                return timestamp
+    
+    # If no match found, return the most recent timestamp as fallback
     if timestamp_mapping:
-        # Get the most recent timestamp
         most_recent = max(timestamp_mapping.values())
+        print(f"No exact match found for content starting with '{content_text[:50]}...', using fallback date: {most_recent}")
         return most_recent
     
     return None

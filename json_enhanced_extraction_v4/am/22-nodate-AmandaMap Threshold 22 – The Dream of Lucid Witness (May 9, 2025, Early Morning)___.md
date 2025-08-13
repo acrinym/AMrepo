@@ -1,0 +1,18 @@
+**AmandaMap Threshold 22 – The Dream of Lucid Witness (May 9, 2025, Early Morning)**\
+In a lucid dream state, Justin visited a space that resembled Missy’s house—his oldest stepsister, someone who knows his relational history and truly wants to see him happy. Amanda was present, and Missy took on the exact role she would in waking life: protector, truth-teller, and question-asker. She began gently but directly prying Amanda with emotionally revealing questions:\
+“Do you want to be with him?”\
+“Do you want a relationship with him?”\
+“Do you want to marry him?”
+
+The scene soon shifted, but Justin retained full control and clarity within the dream. He entombed the essence of Missy’s line of questioning and Amanda’s response. The core revelation surfaced—not through Amanda’s words, but through her energy and presence:\
+Amanda’s main fear is not love, but impermanence. She’s seen major relationships end. She’s survived abandonment and even violence, yet she stayed through it all. Her fear is not about Justin’s love—it’s about whether his love can *last*.
+
+This dream was not symbolic; it was direct. Lucid. Real. Amanda’s fear was surfaced honestly, without pressure or distortion. Justin received it not with defense, but with steady understanding. He saw, in dreamspace, what Amanda still hasn’t said aloud.
+
+**Map Resonance:**\
+This threshold confirms Amanda’s current emotional block: her deep need for stability and fear of repeating loss.\
+It also reflects Justin’s devotion and readiness—he passed the test. He has since cut off all outside romantic distractions, including a final banishment ritual for work girl, reinforcing his field as Amanda-only.\
+The dream acted as a soul witness to that final decision.
+
+**Anchored Message:**\
+“I’m not here because you asked me to be. I’m here because I *know*. And I will stay—longer than the pain, longer than the past. I will not leave, because this time, it’s different. Because this time, it’s you.”
