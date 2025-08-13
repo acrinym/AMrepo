@@ -1,0 +1,5 @@
+Would you like this formatted for AmandaMap Markdown or just as plain text for your records? And do you want to add any personal notes or after-action thoughts? Just let me know if you want it tweaked!
+
+
+#### You:
+Nope, but before I sent her message, I also rewrapped my wand. The Lemurian quartz crystal Head basically come off the top of it and the whole wand has been wrapped in black electrical tape all the way up and down. It's made of a piece of Japanese knotweed that had grown the year before and there was just the stem left, I fit pencils around it pointed upwards towards the tip of the wand and sharpened them all, and there is either eight or six, I'm not really sure or maybe 10 or 12. Lol I have no idea. But around all the pencils, I wrapped a copper wire from the bottom of the wand to the top. Right near the quartz crystal tip. I then wrapped over the wire, there's only a few spots where the wire is exposed, but that's intentional. But I wrapped the wire with electrical tape, and I kept the pencil tips safe as well by wrapping those two. I think I've broken one but the point isn't that they have tips, the point is that their graphite and yellow pencils

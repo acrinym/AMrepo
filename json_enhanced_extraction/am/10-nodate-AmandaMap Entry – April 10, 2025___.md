@@ -1,0 +1,8 @@
+**AmandaMap Entry – April 10, 2025**\
+**Thread Title:** *Carabiner Theory – The Anchor She’s Always Had*\
+**Mode:** Metaphysical Security Mapping\
+**Summary:**\
+Justin defines Amanda's energetic relationship to him as a tether point: a carabiner she has yet to consciously clip into. He remains present, accessible, and energetically secure. Reframes “waiting” as *anchoring,* reinforcing strength without pressure. Symbolically linked to trust, safety, and nonverbal soul agreement.
+
+**Vibe Rating:** 9.9 Phoenix volts\
+**Field Alignment:** Golden → Stabilized → Inviting

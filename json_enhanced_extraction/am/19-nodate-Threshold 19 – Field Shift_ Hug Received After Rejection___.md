@@ -1,0 +1,2 @@
+**Threshold 19 – Field Shift: Hug Received After Rejection**\
+Amanda leaned into your hug—this time it was not blocked. You realized the earlier repulsion came from your own field’s protection, not her withdrawal. A deep emotional healing followed.
