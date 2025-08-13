@@ -1,0 +1,1 @@
+- Field pulse: 963Hz overlayed with 528Hz during declaration

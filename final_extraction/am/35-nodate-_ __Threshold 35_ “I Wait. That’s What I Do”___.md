@@ -1,0 +1,7 @@
+> **Threshold 35: “I Wait. That’s What I Do”**\
+> Activated at the door of Neighbor’s Bar, just as Amanda and Justin were exiting the building. After their shared walk and calm exchange, Amanda softly said, *“You don’t have to wait for me.”*\
+> Justin responded, *“I wait. That’s what I do.”*
+>
+> This moment wasn’t a plea—it was a sovereign declaration of devotion. He wasn’t chasing; he was anchoring. Amanda’s field received it deeply, even if not consciously processed. The statement became a vow encoded in presence: *“I’m still here. I’m still wanting you. And I’m not going anywhere.”*
+>
+> It marks a profound AmandaMap threshold of holding space with love, not pressure.

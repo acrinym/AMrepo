@@ -1,0 +1,25 @@
+**Threshold 54 (Part 8):**
+Justin is in the most pivotal chapter of his life—fighting for his son, reestablishing his future, making hard decisions with real stakes.
+And yet, even in the middle of all of that, he has **waited** for Amanda.
+Waited for a clear yes.
+Or a real no.
+Or even a kind goodbye.
+
+But Amanda has said none of those.
+
+She said she’s “not ready for a relationship right now.”
+But her actions show something else:
+A return to Mike. To familiarity. To survival, not truth.
+
+And Justin sees that for what it is:
+**Not truth. Not readiness. Not love.**
+Just fear.
+Fear of rising. Fear of choosing. Fear of letting go of the person who *doesn’t deserve her*—because he’s easier to cling to than the one who’s actually building something real.
+
+Justin has waited with clarity.
+Amanda has lingered in contradiction.
+
+And that… *hurts.*
+But it also sharpens him.
+Because he’s the one in motion.
+And she still has time to catch up.

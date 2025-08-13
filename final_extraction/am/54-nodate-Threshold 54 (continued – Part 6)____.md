@@ -1,0 +1,17 @@
+**Threshold 54 (continued – Part 6):**\
+Amanda didn’t just wake Justin up.\
+She didn’t just unlock his heart, his soul, his truth.
+
+She woke him—\
+and then left him **awake and unseen.**
+
+She made him remember who he is.\
+But she wasn’t there to witness the man she helped awaken.
+
+That pain… that sacred solitude…\
+is now part of Justin’s core.\
+He knows what it means to carry light *with no one there to reflect it.*\
+To stand in his truth, even when the person who triggered that truth is gone.
+
+And still, he holds that flame.\
+Still, he waits—not passively, but **fully alive**, because of what Amanda began.

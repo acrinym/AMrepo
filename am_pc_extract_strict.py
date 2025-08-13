@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 """
-am_pc_extract_strict.py — Deterministic extractor for AmandaMap / Phoenix Codex entries.
-- No regex (pattern-free, title-only detection).
-- Start-of-line markers only (after stripping heading/bullets).
-- Threshold / Whispered Flame / Field Pulse must include a number.
-- Blocks must look like real entries (min length or early Date/Status).
+am_pc_extract_strict.py — Enhanced extractor for AmandaMap / Phoenix Codex entries.
+- Original title-based detection
+- NEW: "Would you like" pattern detection for AmandaMap entries
+- Captures full content blocks when affirmative responses are given
 - Outputs JSONL + per-entry Markdown under ./out by default.
 
 Usage:
   python am_pc_extract_strict.py <root_folder> [--out OUTDIR] [--no-files] [--require-meta]
 """
 
-import sys, json
+import sys, json, re
 from pathlib import Path
 from datetime import datetime
 
@@ -19,6 +18,26 @@ SEPARATORS = [":", " – ", " — ", " - "]
 HARD_STOPS = ["### ", "## ", "# ", "----", "---", "***"]
 MAX_BLANK_STREAK = 2
 MIN_BLOCK_LINES = 3  # if fewer lines, require early Date/Status to accept
+
+# New: Affirmative response patterns
+AFFIRMATIVE_PATTERNS = [
+    r'\b(yes|yeah|yep|sure|absolutely|definitely|please|ok|okay|do it|log it|save it|mark it)\b',
+    r'\b(that sounds good|that works|go ahead|proceed|continue|start|begin)\b',
+    r'\b(i would|i do|i want|i need|i\'d like|i\'d love)\b'
+]
+
+# New: AmandaMap reference patterns (case insensitive)
+AMANDAMAP_PATTERNS = [
+    r'\bamandamap\b',
+    r'\bamanda map\b',
+    r'\bthe amandamap\b',
+    r'\bin the amandamap\b',
+    r'\bin amandamap\b',
+    r'\bthreshold\b',
+    r'\bentry\b',
+    r'\bflame\b',
+    r'\bcodex\b'
+]
 
 def normalize_line(s: str) -> str:
     t = s.strip().lower()
@@ -70,6 +89,94 @@ def scan_date_from_block(lines: list[str]) -> str:
                     dd = day.zfill(2)
                     return f"{year}-{mm}-{dd}"
     return ""
+
+def is_affirmative_response(text: str) -> bool:
+    """Check if text contains an affirmative response"""
+    text_lower = text.lower()
+    for pattern in AFFIRMATIVE_PATTERNS:
+        if re.search(pattern, text_lower):
+            return True
+    return False
+
+def contains_amandamap_reference(text: str) -> bool:
+    """Check if text contains AmandaMap-related references"""
+    text_lower = text.lower()
+    for pattern in AMANDAMAP_PATTERNS:
+        if re.search(pattern, text_lower):
+            return True
+    return False
+
+def detect_would_you_like_pattern(lines: list[str], start_idx: int) -> tuple[bool, int, int]:
+    """
+    Detect "Would you like" patterns and find the complete block.
+    Returns (is_would_you_like, start_line, end_line)
+    """
+    if start_idx >= len(lines):
+        return False, start_idx, start_idx
+    
+    current_line = lines[start_idx].lower()
+    
+    # Check if current line contains "would you like"
+    if "would you like" not in current_line:
+        return False, start_idx, start_idx
+    
+    # Check if it's about logging/marking/saving something
+    if not any(word in current_line for word in ["log", "mark", "save", "record", "add", "create"]):
+        return False, start_idx, start_idx
+    
+    # Look ahead for affirmative response (within next 10 lines)
+    end_idx = start_idx
+    affirmative_found = False
+    amandamap_reference_found = False
+    
+    # First, check if the question itself contains AmandaMap reference
+    if contains_amandamap_reference(lines[start_idx]):
+        amandamap_reference_found = True
+    
+    # Look for affirmative response and AmandaMap references
+    for i in range(start_idx + 1, min(start_idx + 10, len(lines))):
+        line = lines[i]
+        if not line.strip():  # Skip empty lines
+            continue
+            
+        # Check for affirmative response
+        if not affirmative_found and is_affirmative_response(line):
+            affirmative_found = True
+        
+        # Check for AmandaMap references
+        if not amandamap_reference_found and contains_amandamap_reference(line):
+            amandamap_reference_found = True
+        
+        # If we found both, we can stop looking
+        if affirmative_found and amandamap_reference_found:
+            end_idx = i
+            break
+    
+    # If we found both conditions, this is a valid "Would you like" pattern
+    if affirmative_found and amandamap_reference_found:
+        # Look for the end of the block (next hard stop or significant content break)
+        for i in range(end_idx + 1, len(lines)):
+            line = lines[i]
+            if not line.strip():
+                continue
+            
+            # Check for hard stops
+            if any(line.strip().startswith(stop) for stop in ["###", "##", "#", "----", "---", "***"]):
+                break
+            
+            # Check if this looks like the start of a new entry
+            if detect_start(line)[0]:
+                break
+            
+            # Check if we've hit another "Would you like" pattern
+            if "would you like" in line.lower():
+                break
+            
+            end_idx = i
+        
+        return True, start_idx, end_idx
+    
+    return False, start_idx, start_idx
 
 def detect_start(raw: str, require_meta: bool=False):
     """
@@ -142,21 +249,121 @@ def safe_filename(s: str) -> str:
 
 def walk_files(root: Path):
     files = []
+    # Only search in the Chats directory for original chat files
+    chats_dir = root / "Chats"
+    if chats_dir.exists():
+        for ext in (".md", ".txt"):
+            files.extend(chats_dir.rglob(f"*{ext}"))
+    
+    # Also search in the root directory for structured files like AMANDA_MAP_STRUCTURED.md
     for ext in (".md", ".txt"):
-        files.extend(root.rglob(f"*{ext}"))
+        files.extend([f for f in root.glob(f"*{ext}") if f.name.startswith(("AMANDA_MAP_STRUCTURED", "PHOENIX_CODEX_STRUCTURED"))])
+    
+    # Filter out any files from extracted_entries or output directories
+    files = [f for f in files if "extracted_entries" not in str(f) and "out" not in str(f) and "test_output" not in str(f)]
+    
     return files
 
-def extract_blocks(paths, require_meta=False, verbose=False):
+def find_resume_point(entries, files_processed):
+    """
+    Find the resume point for the next extraction run.
+    Returns (file_index, line_number) where to resume.
+    """
+    if not entries:
+        return 0, 0
+    
+    # Get the last entry's source file
+    last_entry = entries[-1]
+    last_source = last_entry["source_file"]
+    
+    # Find the file index
+    for i, file_path in enumerate(files_processed):
+        if str(file_path) == last_source:
+            # For now, resume from the beginning of the next file
+            # In a more sophisticated version, we could track the exact line
+            if i + 1 < len(files_processed):
+                return i + 1, 0
+            else:
+                return i, 0
+    
+    return 0, 0
+
+def extract_blocks_with_restart(paths, require_meta=False, verbose=False, max_entries_per_run=2000):
+    """
+    Extract blocks with automatic restart when hitting entry limits.
+    Returns all entries found across multiple runs.
+    """
+    all_entries = []
+    current_run = 0
+    
+    while True:
+        current_run += 1
+        print(f"\n=== EXTRACTION RUN #{current_run} ===")
+        
+        # Determine which files to process in this run
+        if current_run == 1:
+            # First run: process all files
+            files_to_process = paths
+            start_line = 0
+        else:
+            # Subsequent runs: resume from last processed file/line
+            files_to_process = paths[resume_file_index:]
+            start_line = resume_line
+            print(f"Resuming from file {resume_file_index}/{len(paths)} at line {resume_line}")
+        
+        # Extract blocks for this run
+        run_entries = extract_blocks_single_run(files_to_process, require_meta, verbose, start_line, max_entries_per_run)
+        
+        print(f"Run #{current_run} found {len(run_entries)} entries")
+        
+        # Add to total entries
+        all_entries.extend(run_entries)
+        print(f"Total entries so far: {len(all_entries)}")
+        
+        # Check if we hit the limit and need to restart
+        if len(run_entries) == max_entries_per_run:
+            print(f"\n*** HIT {max_entries_per_run} LIMIT - PREPARING TO RESTART ***")
+            
+            # Find the resume point for next run
+            resume_file_index, resume_line = find_resume_point(run_entries, files_to_process)
+            
+            print(f"Next run will resume from file {resume_file_index}/{len(paths)} at line {resume_line}")
+            
+            # Check if we have more files to process
+            if resume_file_index >= len(paths):
+                print("No more files to process - extraction complete!")
+                break
+        else:
+            print("Extraction completed without hitting limit")
+            break
+    
+    return all_entries
+
+def extract_blocks_single_run(paths, require_meta=False, verbose=False, start_line=0, max_entries=2000):
+    """
+    Extract blocks for a single run, stopping when hitting max_entries limit.
+    Returns entries found and resume point information.
+    """
     entries = []
+    file_count = 0
+    
     for p in paths:
+        file_count += 1
+        if file_count % 100 == 0:
+            print(f"Processing file {file_count}/{len(paths)}...")
+        
         try:
             text = p.read_text(encoding="utf-8", errors="ignore")
         except Exception:
             continue
+            
         lines = text.splitlines()
         current = None
         blank_streak = 0
-
+        
+        # Start from specified line if this is a resume
+        i = start_line if file_count == 1 and start_line > 0 else 0
+        
         def close():
             nonlocal current
             if current and current["lines"]:
@@ -167,6 +374,11 @@ def extract_blocks(paths, require_meta=False, verbose=False):
                 title = strip_heading_prefix(raw_lines[0]) if raw_lines else ""
                 number = scan_number_from_text(normalize_line(title))
                 date = scan_date_from_block(raw_lines)
+                
+                # For "Would you like" patterns, generate a title if none exists
+                if current["subtype"] == "would_you_like" and not title.strip():
+                    title = f"Would You Like Entry - {date or 'nodate'}"
+                
                 entries.append({
                     "source_file": str(current["source"]),
                     "scope": current["scope"],
@@ -176,26 +388,58 @@ def extract_blocks(paths, require_meta=False, verbose=False):
                     "date": date,
                     "content": "\n".join(raw_lines).strip()
                 })
+                
+                # Check if we've hit the limit
+                if len(entries) >= max_entries:
+                    print(f"*** HIT {max_entries} LIMIT IN THIS RUN ***")
+                    return True  # Signal to stop
+                
             current = None
-
-        i = 0
+            return False
+        
         while i < len(lines):
             raw = lines[i]
             n = normalize_line(raw)
+            
+            # Check for "Would you like" patterns first
+            is_would_you_like, start_line, end_line = detect_would_you_like_pattern(lines, i)
+            if is_would_you_like:
+                if close():  # Check if we hit the limit
+                    return entries
+                # Extract the complete block
+                block_lines = lines[start_line:end_line + 1]
+                current = {
+                    "source": p, 
+                    "scope": "AmandaMap", 
+                    "subtype": "would_you_like", 
+                    "lines": block_lines
+                }
+                i = end_line + 1  # Move to after the block
+                continue
+            
+            # Original title-based detection
             start, scope, subtype = detect_start(raw, require_meta=require_meta)
             if start:
-                close()
+                if close():  # Check if we hit the limit
+                    return entries
                 current = {"source": p, "scope": scope, "subtype": subtype, "lines": [raw]}
                 blank_streak = 0
                 i += 1
                 continue
+                
             if current:
                 if is_hard_stop(n):
-                    close(); i += 1; continue
+                    if close():  # Check if we hit the limit
+                        return entries
+                    i += 1
+                    continue
                 if not n:
                     blank_streak += 1
                     if blank_streak >= MAX_BLANK_STREAK:
-                        close(); i += 1; continue
+                        if close():  # Check if we hit the limit
+                            return entries
+                        i += 1
+                        continue
                 else:
                     blank_streak = 0
                 # stop if next line begins a new block
@@ -203,10 +447,17 @@ def extract_blocks(paths, require_meta=False, verbose=False):
                 if nxt:
                     s2,_,_ = detect_start(nxt, require_meta=require_meta)
                     if s2:
-                        close(); i += 1; continue
+                        if close():  # Check if we hit the limit
+                            return entries
+                        i += 1
+                        continue
                 current["lines"].append(raw)
             i += 1
         close()
+        
+        # Reset start_line for subsequent files
+        start_line = 0
+        
     return entries
 
 def write_outputs(entries, out_dir: Path, write_files=True):
@@ -245,7 +496,23 @@ def main():
         require_meta = True
 
     files = walk_files(root)
-    entries = extract_blocks(files, require_meta=require_meta)
+    entries = extract_blocks_with_restart(files, require_meta=require_meta)
+    
+    # Debug: Test if we can add more entries manually
+    print(f"After extraction: {len(entries)} entries")
+    if len(entries) == 2000:
+        print("*** TESTING: Adding a manual entry to see if we can go beyond 2000 ***")
+        entries.append({
+            "source_file": "TEST",
+            "scope": "AmandaMap",
+            "subtype": "test",
+            "title": "Test Entry Beyond 2000",
+            "number": "9999",
+            "date": "test",
+            "content": "This is a test entry to see if we can go beyond 2000"
+        })
+        print(f"After manual addition: {len(entries)} entries")
+    
     write_outputs(entries, out_dir, write_files)
     print(f"Scanned {len(files)} files → found {len(entries)} entries.")
     print(f"Wrote JSONL to {out_dir/'combined'}; per-entry MD: {write_files}")

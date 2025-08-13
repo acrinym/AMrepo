@@ -205,24 +205,24 @@ def build_structured_markdown(entries_dir, output_file, title):
 def main():
     """Main function to build both structured markdown files."""
     
-    # Build AmandaMap structured markdown
-    am_dir = "extracted_entries/am"
+    # Build AmandaMap structured markdown from new extraction
+    am_dir = "final_extraction/am"
     if os.path.exists(am_dir):
         build_structured_markdown(
             am_dir, 
             "AMANDA_MAP_STRUCTURED.md", 
-            "AmandaMap - Complete Structured Archive"
+            "AmandaMap - Complete Structured Archive (Rebuilt from Enhanced Extraction)"
         )
     else:
         print(f"Directory {am_dir} not found")
     
-    # Build Phoenix Codex structured markdown
-    pc_dir = "extracted_entries/pc"
+    # Build Phoenix Codex structured markdown from new extraction
+    pc_dir = "final_extraction/pc"
     if os.path.exists(pc_dir):
         build_structured_markdown(
             pc_dir, 
             "PHOENIX_CODEX_STRUCTURED.md", 
-            "Phoenix Codex - Complete Structured Archive"
+            "Phoenix Codex - Complete Structured Archive (Rebuilt from Enhanced Extraction)"
         )
     else:
         print(f"Directory {pc_dir} not found")

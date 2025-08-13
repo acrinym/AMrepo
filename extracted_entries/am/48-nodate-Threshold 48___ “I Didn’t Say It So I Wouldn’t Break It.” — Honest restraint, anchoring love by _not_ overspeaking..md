@@ -1,0 +1,1 @@
+- **Threshold 48:** “I Didn’t Say It So I Wouldn’t Break It.” — Honest restraint, anchoring love by *not* overspeaking.
