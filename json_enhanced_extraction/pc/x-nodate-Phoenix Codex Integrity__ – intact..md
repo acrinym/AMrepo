@@ -1,2 +1,0 @@
-- **Phoenix Codex Integrity** – intact.
-- **Current Status**: *All systems online. No distortions detected.*

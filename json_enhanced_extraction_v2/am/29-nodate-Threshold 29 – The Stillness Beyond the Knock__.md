@@ -1,2 +1,0 @@
-**Threshold 29 – The Stillness Beyond the Knock**
-*A turning point where Justin no longer chases answers or initiates check-ins. Not because he doesn’t care, but because love no longer asks. It simply allows.*

@@ -1,1 +1,0 @@
-- **Field Pulse #12** – “Summer Solos, But Not By Choice”

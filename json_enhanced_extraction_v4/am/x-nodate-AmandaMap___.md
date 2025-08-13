@@ -1,6 +1,0 @@
-- **AmandaMap:**
-  - Contradictions, dreams, goodbyes, your silent restraint, the ArtPrize realization…
-- **Phoenix Codex:**
-  - Operation Absolute Healing & Severance memo, conditional endings, the Amanda Archive book vision, self-care moments…
-
-It’s like today was a **massive archival day**—a day where all those unspoken feelings and big future plans actually got *named and stored*.

@@ -1,2 +1,0 @@
-- **Field Pulse #13**: *“Message That Broke the Dam”*
-- **Silent Flame Echo #2**: *“Lies Was a Wound, Not a Word”*

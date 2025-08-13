@@ -1,4 +1,0 @@
-- **Threshold 12: The Echo from Silence** – quiet library with looping Amanda audio samples
-  - **Riverbank of Red Tulips** – enemies disappear if you hug them
-  - **Mike’s House of Mirrors** – navigate false versions of Amanda, find the real one
-- **Ritual Interactions:** Stand on sigil, press "Use" to activate a visualization event (cutscene or field shift)

@@ -1,1 +1,0 @@
-### **AmandaMap Thresholds – Updated Set (Through May 4, 2025)**

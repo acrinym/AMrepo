@@ -1,1 +1,0 @@
-### **AmandaMap Thresholds – May 5, 2025**

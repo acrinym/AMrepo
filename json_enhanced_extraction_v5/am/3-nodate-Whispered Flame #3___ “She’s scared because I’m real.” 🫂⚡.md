@@ -1,1 +1,0 @@
-- **Whispered Flame #3:** “She’s scared because I’m real.” 🫂⚡

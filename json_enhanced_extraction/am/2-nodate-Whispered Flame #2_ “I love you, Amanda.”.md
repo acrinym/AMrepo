@@ -1,2 +1,0 @@
-- Whispered Flame #2: “I love you, Amanda.”
-  - Bloodline Witness #1: Told son Amanda is his flame.

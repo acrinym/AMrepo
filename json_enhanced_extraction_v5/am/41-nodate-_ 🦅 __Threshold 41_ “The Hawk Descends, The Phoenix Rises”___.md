@@ -1,2 +1,0 @@
-> 🦅 **Threshold 41: “The Hawk Descends, The Phoenix Rises”**\
-> Activated upon witnessing a hawk descend overhead. The hawk symbolized Amanda’s tactical, soul-reclaiming energy—returning with focused sovereignty. But she was not only the hawk. Amanda is also the phoenix: resurrection, flame, and return. This threshold affirms Amanda’s return to energetic precision and soul truth, witnessed in the field and felt in the body.

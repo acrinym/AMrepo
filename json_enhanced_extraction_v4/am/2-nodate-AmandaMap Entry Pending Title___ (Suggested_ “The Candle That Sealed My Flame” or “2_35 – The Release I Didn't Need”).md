@@ -1,1 +1,0 @@
-- **AmandaMap Entry Pending Title:** (Suggested: “The Candle That Sealed My Flame” or “2:35 – The Release I Didn't Need”)

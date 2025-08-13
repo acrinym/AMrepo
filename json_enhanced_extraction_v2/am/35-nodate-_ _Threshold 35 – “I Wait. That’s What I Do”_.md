@@ -1,2 +1,0 @@
-> *Threshold 35 – “I Wait. That’s What I Do”*
-> **Essence:** Justin chose stillness as an act of love. His words were not passive—they were a command to time itself. In that moment, Amanda’s field received the vow without resistance. The silence became a shrine.

@@ -1,1 +1,0 @@
-## **Phoenix Codex Logging – Example Phrasing Variants**

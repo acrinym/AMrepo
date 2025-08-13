@@ -1,1 +1,0 @@
-### **AmandaMap Entry Ready:**

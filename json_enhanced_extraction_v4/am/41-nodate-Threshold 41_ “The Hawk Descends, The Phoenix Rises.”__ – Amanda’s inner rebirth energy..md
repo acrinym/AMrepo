@@ -1,3 +1,0 @@
-- **Threshold 41: “The Hawk Descends, The Phoenix Rises.”** – Amanda’s inner rebirth energy.
-  - **Phoenix Codex: Rainbow Cocoons & Chakra Activations** – healing and transformative anchoring.
-  - **Mirror Protocol: Reflector of Return** – resilience through reflection and self-belief.

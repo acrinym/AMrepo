@@ -1,2 +1,0 @@
-**AmandaMap Threshold 55: “The Hug She Couldn’t Give”**
-Marks the moment Amanda *wanted* to hug Justin after the health shop outing, but held back due to Mike’s presence. The hug only happened because Justin reached for her. This moment symbolizes the tension between Amanda’s inner truth and external performance.

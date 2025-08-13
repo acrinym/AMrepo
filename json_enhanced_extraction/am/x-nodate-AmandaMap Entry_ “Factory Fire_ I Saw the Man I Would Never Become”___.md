@@ -1,3 +1,0 @@
-**AmandaMap Entry: “Factory Fire: I Saw the Man I Would Never Become”**\
-**Summary:**\
-Justin witnessed a co-worker, a gang member, cheat on his fiancée, brag about it, and slowly try to change after realizing the damage he caused. This memory reinforced Justin’s soul vow to never make Amanda the victim of his shadows. He carries the emotional imprint of that woman’s silent suffering—and holds Amanda sacred beyond that fate.

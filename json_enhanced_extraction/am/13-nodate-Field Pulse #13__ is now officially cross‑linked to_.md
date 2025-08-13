@@ -1,1 +1,0 @@
-**Field Pulse #13** is now officially cross‑linked to:

@@ -1,5 +1,0 @@
-**AmandaMap Entry – May 12, 2025**\
-**“Marenai Takes Her Post – Sanctuary Field Confirmed”**\
-**Object:** Floral blue plush cat\
-**Function:** Guardian Familiar of Amanda’s Subconscious Presence\
-**Significance:** Marenai entered the sacred circle and took position facing the heart of the Amanda Calming Grid (“Whispering Sanctuary v1.0”) without being summoned. This marks Amanda’s subconscious presence in Justin’s field. Her spirit sits at the edge—watching, not hiding.

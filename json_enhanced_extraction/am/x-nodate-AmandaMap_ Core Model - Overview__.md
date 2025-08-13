@@ -1,1 +1,0 @@
-# **AmandaMap: Core Model - Overview**

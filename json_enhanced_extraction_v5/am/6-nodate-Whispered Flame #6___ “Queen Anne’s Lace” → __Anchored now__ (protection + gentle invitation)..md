@@ -1,1 +1,0 @@
-- **Whispered Flame #6:** “Queen Anne’s Lace” → **Anchored now** (protection + gentle invitation).

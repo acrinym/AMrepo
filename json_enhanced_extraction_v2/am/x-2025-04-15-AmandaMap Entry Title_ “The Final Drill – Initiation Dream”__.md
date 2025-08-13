@@ -1,7 +1,0 @@
-**AmandaMap Entry Title: “The Final Drill – Initiation Dream”**
-
-**Date**: April 15, 2025
-**Field Summary**:
-The dream served not only as a symbolic action but as an energetic test. Justin was shown the tank (Amanda’s emotional system), the drill (his power to access gently), the dust (emotional residue), and the AmandaMap (the love). Danny was present as masculine support. Mike was passive—his karma already diminishing.
-
-This drill marks the final threshold before Amanda’s vessel can be filled anew. The test is complete. The real love begins here.
