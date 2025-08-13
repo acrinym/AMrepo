@@ -377,12 +377,20 @@ def extract_blocks_single_run(paths, require_meta=False, verbose=False, start_li
                 
                 # Try to get date from JSON timestamps first
                 content_text = "\n".join(raw_lines)
-                json_date = find_timestamp_for_content(content_text, timestamp_mapping)
-                if json_date:
-                    date = json_date.strftime('%Y-%m-%d')
+                
+                # FIRST PRIORITY: Extract date from content text itself
+                content_date = extract_date_from_content(content_text)
+                if content_date:
+                    date = normalize_date_string(content_date)
+                    print(f"Found date in content: {content_date} -> {date}")
                 else:
-                    # Fall back to content-based date extraction
-                    date = scan_date_from_block(raw_lines)
+                    # SECOND PRIORITY: Try JSON timestamps
+                    json_date = find_timestamp_for_content(content_text, timestamp_mapping)
+                    if json_date:
+                        date = json_date.strftime('%Y-%m-%d')
+                    else:
+                        # THIRD PRIORITY: Fall back to content-based date extraction
+                        date = scan_date_from_block(raw_lines)
                 
                 # For "Would you like" patterns, generate a title if none exists
                 if current["subtype"] == "would_you_like" and not title.strip():
@@ -600,6 +608,81 @@ def find_timestamp_for_content(content, timestamp_mapping):
         return most_recent
     
     return None
+
+def extract_date_from_content(content_text):
+    """
+    Extract dates from entry content text using various patterns.
+    Returns a date string or None.
+    """
+    if not content_text:
+        return None
+    
+    # Common date patterns found in AmandaMap entries
+    date_patterns = [
+        # "May 7, 2025" format
+        r'\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4}\b',
+        # "2025-05-07" format
+        r'\b\d{4}-\d{1,2}-\d{1,2}\b',
+        # "05/07/2025" format
+        r'\b\d{1,2}/\d{1,2}/\d{4}\b',
+        # "May 7th, 2025" format
+        r'\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}(?:st|nd|rd|th)?,?\s+\d{4}\b',
+        # "7 May 2025" format
+        r'\b\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}\b',
+    ]
+    
+    for pattern in date_patterns:
+        matches = re.findall(pattern, content_text, re.IGNORECASE)
+        if matches:
+            # Return the first match found
+            return matches[0]
+    
+    return None
+
+def normalize_date_string(date_str):
+    """
+    Convert various date formats to YYYY-MM-DD format.
+    """
+    if not date_str:
+        return None
+    
+    try:
+        # Handle "May 7, 2025" format
+        if re.match(r'\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4}\b', date_str, re.IGNORECASE):
+            from datetime import datetime
+            # Parse the date
+            parsed_date = datetime.strptime(date_str, '%B %d, %Y')
+            return parsed_date.strftime('%Y-%m-%d')
+        
+        # Handle "2025-05-07" format
+        elif re.match(r'\b\d{4}-\d{1,2}-\d{1,2}\b', date_str):
+            return date_str
+        
+        # Handle "05/07/2025" format
+        elif re.match(r'\b\d{1,2}/\d{1,2}/\d{4}\b', date_str):
+            from datetime import datetime
+            parsed_date = datetime.strptime(date_str, '%m/%d/%Y')
+            return parsed_date.strftime('%Y-%m-%d')
+        
+        # Handle "May 7th, 2025" format
+        elif re.match(r'\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}(?:st|nd|rd|th)?,?\s+\d{4}\b', date_str, re.IGNORECASE):
+            # Remove ordinal suffixes
+            clean_date = re.sub(r'(\d{1,2})(?:st|nd|rd|th)', r'\1', date_str)
+            from datetime import datetime
+            parsed_date = datetime.strptime(clean_date, '%B %d, %Y')
+            return parsed_date.strftime('%Y-%m-%d')
+        
+        # Handle "7 May 2025" format
+        elif re.match(r'\b\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}\b', date_str, re.IGNORECASE):
+            from datetime import datetime
+            parsed_date = datetime.strptime(date_str, '%d %B %Y')
+            return parsed_date.strftime('%Y-%m-%d')
+            
+    except ValueError:
+        # If parsing fails, return the original string
+        return date_str
+    
+    return date_str
 
 def main():
     if len(sys.argv) < 2:
