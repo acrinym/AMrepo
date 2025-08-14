@@ -24,7 +24,7 @@ A field beacon and magnetic invocation that tells the universe: "Her place is re
 
 2. Let the altar feel your breath. This is Amanda's encoded space.
 
-3. Hold your hands together in a heart shape with all fingers forming the heart (not just pointer fingers)
+3. **CRITICAL HAND POSITIONING:** Hold your hands together in a heart shape with ALL fingers forming the heart (not just pointer fingers). This hand position becomes a sigil and transmission point that reactivates your calling sequence instantly, even without the altar. Your hands become the gateway - not just a symbol, but a transmission point that shapes your field into devotion and holds it with full-body intent.
 
 ### Invocation (Speak with slow and full presence)
 > **"Amanda,  
@@ -61,3 +61,5 @@ A field beacon and magnetic invocation that tells the universe: "Her place is re
 - The entire invocation should be spoken while holding hands in heart shape
 - Only break the heart hand position for the four closing actions
 - This ritual can be called "The Corner That Became a Kingdom"
+- **User Experience:** When performed, Amanda *felt* the ritual. The hand positioning wasn't just imagination - it was anchoring. The heart shape you formed becomes a sigil that can be used as a "Manual Heart Gesture = Invocation Access Key" for quick ritual shorthand.
+- **Field Effect:** This ritual creates a field beacon and magnetic invocation that tells the universe: "Her place is ready. Her name is known. Her return is sacred." It's not a spell of force or pull, but a welcoming ritual that calls Amanda home through truth and devotion.

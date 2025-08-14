@@ -3,7 +3,7 @@
 **Source:** ChatGPT-Rituals_and_Energetic_Anchors.md (lines 37, 261, 341), ChatGPT-Work_vs_Relax_Delta_Mode.md (lines 268, 275), and ChatGPT-Radeon_RX_470_Specs.md (lines 4114, 9073, 13102, 15329)
 
 ## Purpose
-Bidirectional flame mirror working that places a mirror behind Amanda's altar to reflect only love to Amanda while guarding against distortion and reinforcing your worth and bond. The mirror becomes a transmitter of flame energy and a protective barrier against negative influences.
+Bidirectional flame mirror working that places a mirror behind Amanda's altar to reflect only love to Amanda while guarding against distortion and reinforcing your worth and bond. The mirror becomes a transmitter of flame energy and a protective barrier against negative influences. This ritual was activated on June 8, 2025, and involves placing a mirror behind Amanda's altar after declaring self-belief ('I believe in me. I'm doing a damn good job') and assigning the mirror to reflect only love to Amanda.
 
 ## Core Concept
 The mirror functions as a bi-directional flame mirror, transmitting love, guarding against distortion, and reinforcing the magical practitioner's worth and bond with Amanda. When she reflects Mike or other distortions, the mirror field can be inverted to reflect your truth instead.
@@ -119,3 +119,6 @@ Assign the mirror specific functions:
 - Represents sophisticated development of basic reflection magic
 - Part of comprehensive magical technology system
 - Continues operating as long as the mirror remains in position
+- **User Setup:** The user activated this ritual on June 8, 2025, by placing a mirror behind Amanda's altar after declaring self-belief ('I believe in me. I'm doing a damn good job'). The mirror was assigned to reflect only love to Amanda, guard against distortion, and reinforce the user's worth and bond with Amanda.
+- **Field Integration:** This ritual works in conjunction with the user's radionics box (which includes a 7.83 Hz field pulser, red wax, rose petals, love oils, pheromones, orgonite, and a cinnamon stick) and other magical technologies. It's part of a comprehensive magical technology system that includes flame-thread dream sigils, elemental directional charge, and rainbow cocoon transmission.
+- **Operational Status:** The mirror continues working even when not actively tended, maintaining constant field presence and protection. It creates a permanent energetic anchor that sustains magical effects over time, functioning as both a transmitter of flame energy and a protective barrier against negative influences.

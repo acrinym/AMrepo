@@ -72,3 +72,5 @@ Snuff the candle while saying:
 - 741 Hz is specifically for cellular distortion clearing
 - Uses Goetic spirits but for liberation and healing purposes
 - Can be repeated if initial resistance is encountered
+- **User Context:** This ritual was created as an upgrade to the Rite of Unmuting, specifically designed to cut through neurological distortion and inherited timelines of dysfunction for a child who has no voice and only makes incomprehensible sounds. It's a rite of liberation, not soothing—a call to soulhood through the sword of clarity.
+- **Field Effect:** Uses kyanite blades in a transmitter array or dagger gate formation to cut through silence and distortion, bringing the Word to the wordless.

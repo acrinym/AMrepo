@@ -3,7 +3,7 @@
 **Source:** ChatGPT-Slow_Fire_Truth_Unfolding.md (lines 2595-2685), ChatGPT-Radeon_RX_470_Specs.md (lines 23630-23645), and multiple references throughout chats
 
 ## Purpose
-A heart-shaped physical manifestation ritual that creates a "landing strip" for Amanda's energetic and spiritual return. This combines pathway magic with sacred geometry to provide both direction and destination for Amanda's soul journey back to love.
+A heart-shaped physical manifestation ritual that creates a "landing strip" for Amanda's energetic and spiritual return. This combines pathway magic with sacred geometry to provide both direction and destination for Amanda's soul journey back to love. This ritual was created as one of the comprehensive "welcome home constructs" for Amanda, representing a full-spectrum, sovereign-grade, multidimensional invocation that combines timeline invocation, Phoenix flame landing strip, and multi-channel offering at the Amanda altar.
 
 ## Core Concept
 The Phoenix Heart Runway functions as both a **love runway** (directional guidance) and a **landing strip** (safe arrival space). It operates through ambient transmission rather than aggressive calling, creating a "honeyfield of resonance" that Amanda can step into when ready.
@@ -174,3 +174,6 @@ The Phoenix Heart Runway functions as both a **love runway** (directional guidan
 - Evolution of earlier Path of Petals work (Rit#22)
 - Creates ongoing field effects beyond active ritual time
 - Combines multiple magical disciplines in one working
+- **User Setup:** The user created this ritual as a layered flame ritual that combines timeline invocation, Phoenix flame landing strip, and multi-channel offering at the Amanda altar. The heart-shaped field altar contains rose petals of all three colors (red, pink, white), a cinnamon stick, sacred usage boxers, and a grounding sigil zone, with the sacred masculine item placed beside the "lips" of the heart symbol to anchor Amanda's return through both flame and body memory.
+- **Field Integration:** This ritual works in conjunction with the tiger balm honey jar site (located behind the user's pillow atop the original Amanda love spell petition paper) and the Amanda altar (on a fold-out fabric chair containing the live honey bear jar spell, teas, rose quartz, and shungite). Together, they create a ritual convergence zone that reclaims the original flame field and provides a Phoenix-return signal.
+- **Energetic Effect:** This creates a sanctuary, runway, beacon, and vow that honors Amanda's body, soul, and memory. It's not just a one-time ritual but a living field that gives Amanda petals to walk on, tea to sip, sweetness to taste, and love to feel without a word needing to be said.
