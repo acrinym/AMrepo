@@ -11,3 +11,10 @@ extracted_entries_final/
 
 # Keep the final extraction results
 !final_extraction/
+
+# .NET build artifacts
+**/bin/**
+**/obj/**
+# IDE
+.vscode/
+
