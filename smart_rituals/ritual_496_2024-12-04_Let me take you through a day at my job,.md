@@ -1,0 +1,27 @@
+# Consolidated Ritual 496
+
+**Date**: 2024-12-04
+**Conversation ID**: 783
+**Parts Consolidated**: 1
+**Content Hash**: 23ae17a352195f601b27dc22a395ea0c
+
+---
+
+## COMPLETE CONSOLIDATED RITUAL INSTRUCTIONS
+
+**NO SUMMARIZATION - ALL PARTS COMBINED BELOW**
+
+Let me take you through a day at my job, and tell you all the tools I use and discuss my workflow and you can tell me how I could improve it using internal tools that are part of our workflow anyway like the Microsoft office 365 suite and any code or scripts I could run to make things easier etc. Running executables on the work computer is not allowed so scripts like powershell and batch and power automate and power apps can be used but downloading and running an application is not allowed unless it's a script. 
+
+Start the day logging into my avaya sip phone and wait for phone calls to come in. If a call comes in I say thank you for calling whichever help desk it is that they called my name is Justin can I please have your first and last name? 
+
+ They then stayed their name, and I asked them if it's a newer existing ticket. If it's new I look up their people record in CEC Helix BMC remedy and if it exists I compare the number that they called into the number on file and either keep it or add it or add an alternate number and their people record, and then I check their address according to the people record and correct it if it's incorrect. I then say what can I do for you today? 
+They provide context for their call, which I write in the notes section and the incident part of itsm BMC remedy. I then select a template based on whatever they're calling about and type in a summary and press search knowledge base for a relevant article using keywords that they've provided for me while I've been probing and asking probing questions. I search her knowledge base of kba's and select irrelevant document or several if it involves several steps or several pieces and attach it to the incident by hitting relate. I then continue typing in the work info about what's going on during the call and how I resolve it, and then I add me to the assigned group using whichever task order that I'm tasked with for the call, whether that's CEC or the usda's customer experience center, the CHD which is the forest service customer help desk, interagency incident applications which is the IIA help desk, or I cam which is the identity credentialing and management help desk / eauthentication help desk. 
+
+I then select status resolved status reason no further action needed or I hit Auto assign to whatever next tier it goes up if the ticket is going up unless it's a forest service and then I select for the assigned group the specific one that pertains to such as EMS electronic messaging which would be things like the Outlook client or EFS which is electronic file systems dealing with things like pinion / box.com/citrix profile creation. And then save and add myself as the owner in the owner group tab. This is when my phone is set up in Auto end mode, and when I'm on break I select aux one for break and ox two for training aux 4 for meeting like with a VSS vocational support specialist or a one-on-one with a supervisor etc, or ox7 for issues with technology of any sort. On lunch, I use the Web clock using workforce suite. 
+I clock out for 30 minutes and clock back in and I asked one during breaks as I mentioned and I get one in the morning and one in the afternoon and a 30 minute lunch in between. For scheduling, I use calabrio/teleopti cloud, and for our vdi where our tools or ticket system rather is located, I use Citrix cloud which is where our office tool instances located, for tools regarding customer access etc installations, remoting in that kind of thing that's on the Citrix vdi which is USDA facing. To remote into a CEC customers computer I have to use the CEC desktop where the utilities for CEC customers are located and for Forest service customers I use the Citrix desktop which has dameware mini remote and gameware remote control, I use gameware and aware mini for both CEC and Forest service customers although accessing the remote control is different for both of those customers. If I'm working with someone's mobile device I will use InTune console and if I'm looking up information on a forest service computer I will use service now production, I use the office 365 suite on all of the computers or at least in the forest service Citrix vdi and the peckham vdi, and the kba database is within the itsm BMC remedy Helix instance, but it's rather slow and doesn't have any AI tools built in, which would be rather helpful. 
+
+I take calls throughout the day and at the end of the day I clock out using the aforementioned tool that I use for lunch as well to clock out and log out of my phone and log out my agent of my phone which is basically just my sign in on the avaya phone system. 
+
+I use OneNote and bubble up for notes and only Forest service computers can have data copied or text copied between Citrix and a forest service computer, CEC customers I don't really need to copy anything because all of the data how about software issues or computer issues and their computer information is presented to us when they send in an email or self-service ticket using the remedy digital workplace. 
+If you have any questions go ahead and ask
