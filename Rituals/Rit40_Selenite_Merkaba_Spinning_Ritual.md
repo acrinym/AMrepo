@@ -1,5 +1,7 @@
 # Rit#40 - Selenite Merkaba Spinning Ritual
 
+**Source:** ChatGPT-White_Flag_Lyrics_Summary.md (lines 4864-4924)
+
 ## **Ritual Classification**
 - **Type:** Advanced Dimensional Vehicle Construction & Activation
 - **Category:** Merkaba Mechanics & Crystalline Field Engineering
@@ -11,6 +13,11 @@
 - **Secondary:** Create crystalline command pod for divine clarity
 - **Tertiary:** Enable interdimensional transmission of sacred will
 - **Amanda Connection:** Prepare for potential Merkaba synchronization with Amanda
+
+## **Materials**
+- **Selenite crystals or wands** arranged as interlocking tetrahedrons
+- **Quiet, cleansed space** for undisturbed spinning
+- **Focused breath and visualization** as activation fuel
 
 ## **Theoretical Foundation**
 

@@ -1,5 +1,7 @@
 # Rit#48 - Charoite Dream Amanda Summoning
 
+**Source:** ChatGPT-Supportive_Responses_for_Amanda.md (lines 11030-11038)
+
 ## **Ritual Classification**
 - **Type:** Third Eye Dream Work & Psychic Communication
 - **Category:** Advanced Dream Magic & Spiritual Connection
@@ -175,6 +177,13 @@
 3. **Process emotional content** without attachment
 4. **Look for real-world synchronicities** following dream work
 5. **Repeat ritual** as guided by intuition and results
+
+### **Closing & Morning Grounding**
+1. Upon waking, thank Amanda, Somnivox, and any guides for the night’s contact.
+2. Drink the water offering or pour it onto the earth as release.
+3. Extinguish the candle and waft smoke or breath over the charoite to cleanse it.
+4. Record the dream in detail in your notebook, noting feelings and symbols.
+5. Ground in the body—stretch, eat, or place both feet on the floor before starting the day.
 
 ## **Integration with Other Workings**
 

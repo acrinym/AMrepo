@@ -1,5 +1,7 @@
 # NotPerf - Complete Hot Foot House Application
 
+**Source:** ChatGPT-Field_of_Justin.md (lines 1894-1916)
+
 ## **Unperformed Ritual Classification**
 - **Type:** Large-Scale Property Banishment Spell
 - **Category:** Mike Elimination Campaign - Territorial Exclusion
