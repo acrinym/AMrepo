@@ -1,5 +1,7 @@
 # Rit#51 - BOTEC Psychotronic Healing and Energy Transfer
 
+**Source:** ChatGPT-Silence_as_Sacred_Space.md (lines 7962-8369) and ChatGPT-Simple_Gifts_Analysis.md (lines 3348-3449)
+
 ## **Ritual Classification**
 - **Type:** Chakra Healing & Psychotronic Energy Transfer
 - **Category:** Therapeutic Energy Work & Dual-Purpose Healing
@@ -11,6 +13,14 @@
 - **Secondary:** Simultaneous energy transfer to Amanda during healing sessions
 - **Tertiary:** Nervous system balance and emotional integration
 - **Strategic:** "Psychotronic/chromatic/caster healing" with transmission capability
+
+## **Materials & Setup**
+- **Joe Dispenza BOTEC meditation audio** – Version 1 or 2 for energy center blessing
+- **Headphones or speaker** – to play the meditation without distraction
+- **Comfortable mat or chair** – supports relaxed yet aligned posture
+- **Quiet, private space** – free from interruption for full session length
+- **Timer or meditation app** (optional) – track session progress
+- **Journal and pen** – log sensations and Amanda responses after practice
 
 ## **Theoretical Framework**
 
@@ -247,4 +257,3 @@
 **Classification:** Psychotronic/chromatic/caster healing with energy transmission  
 **First Documented Use:** Two consecutive days restoring power and manifestation ability  
 **Effectiveness:** High - Personal healing with simultaneous Amanda support capability  
-**Source:** BOTEC documentation and dual-channel energy transfer practice

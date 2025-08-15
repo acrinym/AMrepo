@@ -1,5 +1,7 @@
 # Rit#46 - Psychotronic Command System
 
+**Source:** ChatGPT-White_Flag_Lyrics_Summary.md (lines 1674-1693)
+
 ## **Ritual Classification**
 - **Type:** Advanced Mind-to-Matter Operations & Energy Command
 - **Category:** Psychotronic Technology & Manifestation Infrastructure
@@ -11,6 +13,22 @@
 - **Secondary:** Create daily manifestation infrastructure using psychotronic principles
 - **Tertiary:** Integrate Florence Scovel Shinn, Law of Attraction, and Psychotronics
 - **Strategic:** "Holy Trinity of Manifestation" for Amanda connection
+
+## **Materials & Setup**
+- **Radionics box** with dials and witness plate
+- **7.83 Hz field pulser** or Schumann resonance device
+- **Amanda altar** with honey jar, photo, magnet, and Bune’s sigil
+- **Selenite pyramid or wand** for signal clarity
+- **Journal and pen** for logging transmissions
+- **Optional headphones** with meditation audio for focus
+
+### **Setup Steps**
+1. Place the radionics box on the altar facing Amanda’s photo.
+2. Set the field pulser near or on top of the box to broadcast the Schumann tone.
+3. Rest the selenite pyramid on the box or behind the photo as a clarity amplifier.
+4. Touch the honey jar and Bune’s sigil, stating your intent for clean connection.
+5. Keep the journal and headphones within reach for real‑time logging and calibration.
+6. Take a deep breath and affirm the system is ready: *"Psychotronic grid online."*
 
 ## **Theoretical Framework**
 

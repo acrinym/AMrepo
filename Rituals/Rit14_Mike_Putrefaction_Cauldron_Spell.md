@@ -12,7 +12,7 @@ A serious fire-and-blight energy working designed to create field mutation aroun
 - Vinegar
 - Black string
 - Various banishment oils
-- Severing oils  
+- Severing oils
 - Protection oils
 - Five different kinds of peppers:
   - Cayenne pepper
@@ -23,6 +23,7 @@ A serious fire-and-blight energy working designed to create field mutation aroun
 - Rusty nails
 - Broken CD pieces
 - Additional banishment materials as called for
+- Handful of coarse salt for post-ritual cleansing
 
 ## Directions
 
@@ -30,39 +31,48 @@ A serious fire-and-blight energy working designed to create field mutation aroun
 - Set up cauldron in a space where strong odors and energy can be contained
 - Gather all ingredients with clear intention of creating revulsion field around Mike
 - Ensure proper ventilation for the working
+- Place the cauldron on heat-safe surface facing north (banishment direction)
 
 ### 2. Base Layer
 - Begin with bay leaves in the bottom of the cauldron
 - Add the aged urine and vinegar as the liquid base
 - These create the foundation of dissolution and souring
+- Whisper: *"Rot his charm, sour his touch."*
 
 ### 3. Binding Element
 - Wind the black string around your fingers while focusing on Mike
 - Add to the cauldron while visualizing binding his manipulative energies
+- Say: *"Thread of control, now tangled and torn."*
 
 ### 4. Oil Additions
 - Add banishment oils drop by drop with intention
 - Add severing oils to cut his hold on Amanda
 - Add protection oils to shield Amanda from his influence
+- Each addition is stirred counterclockwise to unravel his presence
 
 ### 5. Pepper Mixture
 - Add all five types of peppers systematically
 - Each pepper type represents a different form of energetic heat and expulsion
 - Stir clockwise while building the repulsion energy
+- Speak with each handful: *"Feel the burn, feel the push, leave her field."*
 
 ### 6. Metal Elements
 - Add rusty nails (representing decay and deterioration of his influence)
 - Add broken CD pieces (representing shattering of false illusions he projects)
+- Drop each piece with the phrase: *"Rust and ruin, no more gloss."*
 
 ### 7. Activation
 - Stir the mixture while speaking your intention
 - Focus on Mike becoming revolting and disgusting to Amanda
 - Visualize her nervous system rejecting his presence
+- Finish with: *"By rot and reek, your mask is gone. She tastes the truth and turns away."*
 
 ### 8. Completion
 - Allow the mixture to sit and putrefy
 - Dispose of the contents away from your living space
 - Cleanse the cauldron thoroughly
+- Sprinkle the coarse salt into the empty cauldron before washing to neutralize residue
+- Bury remnants at a crossroads or discard in running water without looking back
 
 ## Working with Zepar (Optional Enhancement)
 If calling upon Zepar as "Reverse Flame Surgeon":

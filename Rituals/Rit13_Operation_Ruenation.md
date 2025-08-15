@@ -6,26 +6,33 @@
 To sever false ties, expose the parasite, and ignite Amanda's clarity—planting subconscious fire that makes her own declaration of truth. This is a major banishment and revelation working designed to help Amanda see through Mike's manipulation and make her own choice to leave, recognizing that she is not his captive but the sword and flame that cannot be owned.
 
 ## Ingredients/Materials
-- White candle (Amanda)
-- Black candle (Mike)
-- Amanda's photo or sigil
-- Mirror (or window)
-- Rue seeds or agrimony + mugwort
-- Red thread
-- Forked stick or wand
-- Printed "Mike Manipulation File: Full Revelation"
-- Printed "He Was Never Really There"
-- Optional Goetic seals for Vassago, Marbas, Foras, Sitri, Seere
+- **One white candle** (Amanda) and **one black candle** (Mike)
+- **Amanda's photo or sigil** placed on stiff card stock
+- **Mirror or east‑facing window** for reflection work
+- **Pinch of rue seeds** mixed with equal parts agrimony and mugwort (truth herbs)
+- **12-inch length of red thread**
+- **Forked stick or wand** (y-shaped branch works best)
+- **Printed dossier:** *Mike Manipulation File: Full Revelation*
+- **Printed dossier:** *He Was Never Really There*
+- **Optional:** Goetic seals for Vassago, Marbas, Foras, Sitri, Seere
 
 ## Directions
 
 ### 1. Circle Casting & Setup
-- Light white candle on Amanda's side, black candle on Mike's
-- Place photo before the mirror; scatter herbs; bind red thread around white candle
+1. Cast a simple salt circle around the working space
+2. Set the **mirror** facing you on the north side of the altar
+3. Place **Amanda's photo** upright in front of the mirror
+4. **Scatter the rue/agrimony/mugwort mix** in a line between the photo and the black candle
+5. Bind the **red thread** three times clockwise around the base of the white candle
+6. Light the **white candle** to the left (Amanda's side) and the **black candle** to the right (Mike's side)
 
 ### 2. Goetic Invocation
-> "I call upon Vassago, Marbas, Foras, Sitri, Seere—  
-> bear these truths into Amanda's subconscious."
+Call each spirit in order, touching their seals if used:
+> "**Vassago**, seer of hidden things, reveal every lie.
+> **Marbas**, healer of distortion, clear her mind and body.
+> **Foras**, judge of truth, expose the thief.
+> **Sitri**, liberator of hearts, unbind her desire from deception.
+> **Seere**, swift rider, carry this revelation into her timeline."
 
 ### 3. Truth Implantation
 Speak each phrase distinctly:
@@ -39,9 +46,10 @@ Speak each phrase distinctly:
 - Emphasize lines that resonate most strongly
 
 ### 5. Thread Severing
-- Cut the red thread with your forked stick
-- Drop it onto the Rue (or herbs)
-- Say: > "Her voice returns. Her truth returns. The thief is named."
+1. Lift the **forked stick** and slice the red thread cleanly in one motion
+2. Let the severed thread fall directly onto the herb line
+3. Press the forked stick into the herbs and declare:
+   > "Her voice returns. Her truth returns. The thief is named."
 
 ### 6. Mirror Command
 > "Let her reflection reveal the mask. Let her eyes unmake him."
@@ -49,6 +57,11 @@ Speak each phrase distinctly:
 ### 7. Black Candle Extinguishing
 Extinguish the black candle:
 > "The mask is broken. The shadow dissolves."
+
+### 8. Disposal
+1. Gather the cooled black candle wax, severed thread, and herb mix
+2. Wrap them in the printed dossiers and burn or bury them at a crossroads
+3. Keep Amanda's photo and the white candle on your altar until her truth manifests
 
 ## Closure
 > "Amanda is not his captive. She is the sword. She is the flame.  

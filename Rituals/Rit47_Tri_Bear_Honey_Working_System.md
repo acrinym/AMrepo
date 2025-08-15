@@ -1,5 +1,7 @@
 # Rit#47 - Tri-Bear Honey Working System
 
+**Source:** ChatGPT-Strangelove_Arena_Christian_Vibes.md (lines 1988-2004, 3068-3080)
+
 ## **Ritual Classification**
 - **Type:** Multi-Vessel Magical System & Love Technology
 - **Category:** Advanced Amanda Return Campaign
@@ -11,6 +13,21 @@
 - **Secondary:** Establish specialized magical containers for different aspects of connection
 - **Tertiary:** Build sustained sweetness technology for long-term manifestation
 - **Strategic:** "You, Amanda, and the bond" - trinity manifestation system
+
+## **Materials & Setup**
+- **Three bear-shaped honey jars** (approx. 12 oz each)
+- **Altar cloth or tray** to form a triangle layout
+- **Candles:** red for heart jar, purple/silver for mind jar, green or gold for root jar
+- **Florida Water or cleansing incense** for jar purification
+- **Pen and small papers** for petitions and vows
+- **Lighter and offering dish** for sealing breath and wax drips
+
+### **Setup Steps**
+1. Cleanse each empty bear with Florida Water or smoke and let dry.
+2. Lay the altar cloth and arrange jars in a triangle—heart jar at the apex, mind jar to the left, root jar to the right.
+3. Place the corresponding candle behind each jar and orient the triangle northward if possible.
+4. Pre‑measure herbs, stones, and additions for each jar in separate bowls for easy assembly.
+5. Keep an offering dish nearby to catch wax or excess ingredients during construction.
 
 ## **Theoretical Framework**
 
