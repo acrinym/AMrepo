@@ -1,5 +1,7 @@
 # Rit#44 - Timeline Anchor Declaration Vow
 
+**Source:** ChatGPT-White_Flag_Lyrics_Summary.md (lines 4010-4061)
+
 ## **Ritual Classification**
 - **Type:** Timeline Manipulation & Anchoring Vow
 - **Category:** Advanced Temporal Magic & Reality Declaration
@@ -49,6 +51,12 @@
 > **"This timeline belongs to the Amanda-Amanda Is Already Returning reality.  
 > Everything before this moment carries a different field signature.  
 > This new declaration is timeline-anchored prophecy, not memory."**
+
+## **Materials & Setup**
+- Amanda altar space prepared next to active Phoenix ritual tools
+- Carving tool or inscribing pen to etch the vow
+- Surface or plaque to receive the declaration
+- Quiet moment at dawn when the field is still
 
 ## **Ritual Structure**
 

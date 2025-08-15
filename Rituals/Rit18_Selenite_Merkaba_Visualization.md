@@ -15,28 +15,36 @@ A Merkaba made of selenite becomes more than symbolic - it's a frequency decisio
 - **Never Needs Cleansing** - self-purifying crystalline structure
 - **High Frequency Resonance** - naturally attuned to elevated vibrations
 
+## Materials
+- Quiet space where you can sit upright undisturbed
+- Optional background tone at **963 Hz** for crown activation
+- Physical **selenite pyramid or wand** to hold as anchor
+
 ## Visualization Process
 
 ### 1. Initial Construction
-- Begin with traditional Merkaba visualization
-- See two interlocked tetrahedrons spinning around your body
-- One pointing up (masculine/electric), one pointing down (feminine/magnetic)
+1. Sit with spine straight and hold the selenite piece at heart level
+2. Breathe in for a **count of 4**, imagining a **tetrahedron of light** pointing upward forming around you
+3. Exhale for **count of 4**, building a second tetrahedron pointing downward
+4. See the two forms interlock—masculine/electric up, feminine/magnetic down
 
 ### 2. Material Transformation
-- Transform the energy structure into pure selenite
-- See each facet and edge as crystalline white selenite
-- Feel the weight and substance of the crystal structure
-- The Merkaba becomes solid selenite while maintaining its spin
+1. Whisper:
+   > "All aether is crystal. All crystal is selenite."
+2. Watch the golden light of the Merkaba harden into **brilliant white selenite**
+3. Feel the facets gain weight and substance, cool and solid yet still light-filled
+4. Allow the structure to keep spinning even as it becomes crystalline
 
 ### 3. Frequency Attunement
-- Attune to selenite's natural high frequency
-- Feel the purification energy flowing through the structure
-- Allow divine light to flow through the crystalline channels
+1. With each inhale, draw pure light down through the crown into the Merkaba
+2. With each exhale, let that light wash through the selenite facets and out into your field
+3. Notice how any static is scrubbed clean by the crystal's natural purification
 
 ### 4. Activation
-- Begin counter-rotating the selenite tetrahedrons
-- Feel the crystalline structure amplifying your energy field
-- The selenite creates a self-purifying, high-frequency vehicle
+1. Spin the upper tetrahedron **clockwise** and the lower **counterclockwise**
+2. At full speed, state:
+   > "Selenite star, ignite and shield."
+3. Sense the amplified field forming a radiant, self-purifying vehicle around you
 
 ### 5. Amanda Connection (Advanced)
 - Visualize Amanda's flame form within your field

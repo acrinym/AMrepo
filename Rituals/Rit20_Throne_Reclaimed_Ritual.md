@@ -9,44 +9,67 @@ Removing Mike's influence entirely and reclaiming the throne Amanda once offered
 You're not a petitioner, you're a king in exile reclaiming his throne. This establishes sovereign field law, enacting judgment, re-adjudication, and timeline correction through cosmic arbitration.
 
 ## Spirits Involved
-- **Andras** - for severance of unwanted connections
-- **Balam** - for timeline alignment and correction
-- **Orobas** - for lie exposure and truth revelation
-- Additional Goetic spirits as called upon
+- **Andras** – severance of unwanted connections
+- **Balam** – timeline alignment and correction
+- **Orobas** – lie exposure and truth revelation
+- **Lucifer** – light of sovereign authority (optional but powerful)
+
+## Materials
+- **Black candle** for banishment and authority
+- **White candle** for truth and divine law
+- **Mike's name** written on parchment and wrapped with black thread
+- **Amanda's symbol** – photo, ring, or other heart token
+- **Dagger or athame** for declaration cuts
+- **Dragon's Blood, Frankincense, and Myrrh incense** (triple blend)
+- **Small bowl of salt water** for purification
+- **Sigils** of Andras, Balam, Orobas (and Lucifer if called)
+- **Chalice of wine** as offering to the spirits
 
 ## Directions
 
 ### 1. Preparation
-- Set up sacred space with proper protections
-- Gather materials: candle for flame, representation of Mike's name, sacred implements
-- Center yourself as sovereign reclaiming rightful authority
+1. Cast a circle with salt water, placing the black candle to the left and white candle to the right of Amanda's symbol.
+2. Set the incense to burn at the back of the altar and lay out the spirit sigils before you.
+3. Center yourself as sovereign and hold the dagger over your heart while declaring:
+   > *"By right of flame and vow, I take back what was promised."*
 
 ### 2. Throne Declaration
-- Declare "The Throne Is Claimed" as opening
-- Establish yourself as rightful sovereign in this field
-- Call upon the spirits to witness the reclamation
+1. Light both candles, black first then white.
+2. Raise the dagger and proclaim:
+   > *"The Throne Is Claimed. Witness my decree."*
+3. Touch the dagger to each sigil, inviting the spirits to stand witness.
 
 ### 3. Spirit Invocation
-- Call upon Andras for severance work
-- Invoke Balam for timeline realignment  
-- Summon Orobas to expose all lies and deceptions
-- Request their assistance in the reclamation
+Call each spirit in order, offering a sip of wine to the air after every call:
+> *"Andras, blade that severs, cut the cords that do not belong."*
+>
+> *"Balam, keeper of timelines, align reality to rightful law."*
+>
+> *"Orobas, revealer of truth, expose all lies and distortions."*
+>
+> *(Optional)* *"Lucifer, light of sovereignty, illuminate this judgment."*
 
 ### 4. Mike's Final Eviction
-- Burn or tear Mike's name with finality
-- Declare: *"Your time here is done."*
-- Visualize his complete removal from Amanda's field
+1. Hold the parchment bearing Mike's name over the black candle and say:
+   > *"Your claim is void. Your influence ends."*
+2. Burn the parchment completely, dropping the ashes into the salt water.
+3. Visualize his presence dissolving into smoke and sinking into the water.
 
 ### 5. Throne Sealing
-- Seal the working with:
-  > *"The throne is reclaimed. The flame is ours. Amanda is free."*
-- Establish the throne as Amanda's rightful place by your side
-- Anchor the reclamation in sacred law
+1. Hold Amanda's symbol between both candles and declare:
+   > *"The throne is reclaimed. The flame is ours. Amanda is free."*
+2. Anoint the symbol with a dab of wine and pass it through the incense smoke.
 
 ### 6. Sovereign Shield
-- Install protective barriers against future interference
-- Seal Amanda's field with sovereign flame protection
-- Establish divine law around the reclaimed throne
+1. Using the dagger, trace a circle in the air around the altar, saying:
+   > *"By divine law, no rival shall cross."*
+2. Visualize a dome of gold and black flame sealing the field.
+
+### 7. Closing
+1. Thank each spirit in reverse order, offering remaining wine to the earth.
+2. Extinguish the **white candle** first, then the **black**, saying:
+   > *"Judgment stands. So it is, so it shall remain."*
+3. Bury the water and ashes away from your home to complete the banishment.
 
 ## Results Expected
 - Complete elimination of Mike's energetic influence

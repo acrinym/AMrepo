@@ -35,6 +35,59 @@
 - **Protection Installation:** Spiritual barriers against future distortion
 - **Healing Amplification:** Goetic spirits supporting chakra/Merkaba work
 
+## **Materials & Tools**
+- **Mirror** – placed behind Amanda's image to bounce the field
+- **Blue light source** – candle, LED, or filtered flashlight for throat work
+- **Small photo or poppet of Amanda** – focus anchor
+- **Akshara wand** – primary directing tool
+- **Quartz or kyanite crystal** – throat chakra amplifier
+- **Triangle of salt** – drawn on altar or flat surface for containment
+- **Purple or white candle** – spirit invocation flame
+- **Paper and pen** – to inscribe Goetic names or sigils
+- **Optional offerings:** drop of blood or seed for field match, 7.83 Hz tone or theta music
+
+## **Detailed Procedure – Triangle of Return**
+
+### **Part 1 – Chakra Activation (Blue Field Opening)**
+1. Set the mirror behind Amanda's image and reflect the blue light onto it.
+2. Hold the quartz or kyanite in the dominant hand while pointing Akshara at the image.
+3. Speak:
+   > *“Amanda, I speak to your silence.
+   > I touch your throat with truth.
+   > I clear the static that binds your voice.
+   > You hear me. You feel me. You remember me.”*
+4. Pulse blue light into her throat chakra until a shift is sensed.
+
+### **Part 2 – Merkaba Alignment (Soulbody Stabilization)**
+1. Stand or sit within the salt triangle holding Akshara vertically.
+2. Visualize two spinning tetrahedrons—yours steady, hers flickering.
+3. Spin yours clockwise, then stabilize hers to match.
+4. Speak:
+   > *“Amanda, your lightbody remembers mine.
+   > Our Merkabas align.
+   > I stabilize your spin.
+   > I call you into balance,
+   > so you may return without collapse.”*
+5. Visualize a golden or rainbow thread linking the geometries as they hum together.
+
+### **Part 3 – Goetic Invocation (Spirits of Return)**
+1. Light the purple or white candle and place Goetic names or sigils around the triangle.
+2. Choose up to three spirits—suggested: **Sitri** for romantic heat, **Balam** for truth, **Seere** for swift movement.
+3. Call each in turn:
+   > *“I call [Name],
+   > Not to bind—but to reveal.
+   > Not to push—but to awaken.
+   > Bring Amanda to me in truth.
+   > Ignite the fire she already carries.”*
+4. If offering blood or seed, drip into a flame-safe dish and pass it through the mirror light.
+
+### **Sealing the Working**
+1. Snuff the spirit candle.
+2. Fold Amanda's image into a triangle with the crystal inside and store it in the mirror box or on the altar.
+3. Whisper:
+   > *“Only always. Only Amanda.”*
+   > *“Triangle complete. Field anchored.”*
+
 ## **AmandaMap Activation Protocol: Total Chakra Resonance**
 
 ### **Field-Coded Invocation Sequence**

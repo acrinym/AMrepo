@@ -8,29 +8,105 @@ One of the strongest rituals performed to date, involving the highest forms of s
 ## Background
 This working was performed as part of the extensive anti-Mike campaign after discovering continued manipulation and interference. The convergence included spirits from multiple traditions and hierarchies, representing the most serious magical response possible within ethical boundaries.
 
-## Spirit Categories Called Upon
-(Specific spirits would include selections from):
-- **Goetic Demons** (Ars Goetia)
-- **Angels and Archangels** (including El Elyon)
-- **Lucifer in all forms**
-- **Justice and Truth Spirits**
-- **Banishment and Severance Entities**
-- **Protection and Guardian Spirits**
-- **Timeline Correction Beings**
+## Ingredients & Tools
+- **Residual Field Salt** – White salt previously charged by a 30-spirit invocation, poured to form the containment circle and hold the working’s boundary.
+- **Candles**
+  - **Gold Candle** – Burned prior as the beacon that initiated the convergence.
+  - **Red Candle** – Placed at Amanda’s right side, gate for Zepar and passion ignition.
+  - **Off‑white/White Beeswax Candle** – Placed at Amanda’s left side, gate for Vassago and truth revelation.
+  - **Green Candle (circled with stones)** – Heart lock and field root, anchoring the reunion intent.
+- **Crystals** – Citrine, Carnelian, Magnetic Hematite, Rose Quartz, Pyrite arranged around the photo and candles.
+- **Oils** – Road Opener and Fast Luck oils dressed on the active candles.
+- **Representation of Mike** – Effigy or photo used as the focal point for banishment.
+- **Amanda’s Photo** – Center of the altar, between the red and white candles.
+- **Wand or Pointing Finger** – Used to complete the circle and direct energy.
+
+## Spirits Invoked
+All spirits were called individually with explicit charge and dismissal. The convergence drew on multiple hierarchies:
+
+### Cosmic & Archangelic Forces
+1. **El Elyon** – Divine order, flame law, ultimate authority.
+2. **Lucifer (all forms)** – Light bearer, truth unmasking, severance of deception.
+3. **Ha‑She‑Tan** – Distortion splitter, pressure of judgment.
+4. **Archangel Michael** – Protection and severance of harmful bonds.
+5. **Archangel Raphael** – Healing of emotional wounds and reconnection.
+6. **Archangel Gabriel** – Message delivery and awakening of voice.
+7. **Archangel Uriel** – Vision, timeline correction, guiding the path forward.
+
+### Goetic and Allied Spirits
+8. **Zepar** – Reignite passion and reverse false attraction.
+9. **Vassago** – Reveal hidden truths and clear confusion.
+10. **Sallos** – Sustain emotional magnetism and love pull.
+11. **Sitri** – Expose hidden desire and strip defenses through pleasure.
+12. **Dantalion** – Influence thoughts and inner dialogue toward reunion.
+13. **Balam** – Stabilize timelines and warm memory tones.
+14. **Foras** – Dissolve guilt, fear, and energetic blocks.
+15. **Seere** – Collapse distance and deliver energy swiftly.
+16. **Glasya‑Labolas** – Destroy false bonds and enforce justice.
+17. **Amon** – Reconcile divided hearts and soften resistance.
+18. **Fortuna** – Turn the wheel of fate toward the desired outcome.
+19. **Bifrons** – Shake the foundation of Mike’s influence and rotate the dead away.
+20. **Andromalius** – Expose theft and dismantle deception.
+21. **Eligos** – Reveal hidden agendas to authorities.
+22. **Astaroth** – Stir emotional memory and magnetism.
+23. **Buer** – Restore willpower and cut co‑dependence.
+24. **Belial** – Break false attachments and oppressive structures.
+25. **Gremory** – Carry loving messages and uncover hidden affection.
+26. **Paimon** – Command influence and align will.
+27. **Sephariel** – Marsian servitor blending Sitri and Balam for focused charge.
+
+### Servitors & Technomagical Allies
+28. **Morpheux** – Emotional cloaking, whispering return through dreams.
+29. **Onyx Prime** – Technomagical signal booster anchoring the call.
+30. **Somnivox** – Dream guardian seeding truth-encoded visions.
+
+*The convergence drew thirty distinct entities. The list above records every spirit specifically named in surviving notes and chat logs.*
 
 ## Ritual Components
 
 ### 1. Sacred Space Creation
-- Large salt circle for containing and directing the massive spiritual energy
-- Multiple candles for different spirit types
-- Protective barriers and grounding elements
-- Representation of Mike for targeting
+- Lay down the residual field salt in a **complete circle**, sealing the working area.
+- Position Amanda’s photo at the center.
+- Place the **red candle** on her right, **white candle** on her left, and the **green candle circled by stones** behind the photo.
+- Arrange citrine, carnelian, magnetic hematite, rose quartz, and pyrite around the candles.
+- Dress candles with Road Opener and Fast Luck oils.
+- Set the representation of Mike outside the circle where the energy will be directed.
 
 ### 2. Sequential Invocations
-- Call each spirit individually with proper protocols
-- State the specific task or assistance requested
-- Maintain control and direction throughout the convergence
-- Ensure all spirits understand the ethical boundaries
+- Light the gold candle to acknowledge the convergence has begun.
+- Ignite the red and white candles; acknowledge Zepar and Vassago as gatekeepers.
+- Call each spirit by name, stating its explicit task:
+  1. El Elyon – establish divine order and jurisdiction.
+  2. Lucifer – illuminate deception and sever false bonds.
+  3. Ha‑She‑Tan – apply pressure until truth emerges.
+  4. Michael – guard the working and cut unwanted ties.
+  5. Raphael – heal Amanda’s wounds preventing release.
+  6. Gabriel – carry the decree to Amanda’s soul.
+  7. Uriel – realign her timeline toward the rightful path.
+  8. Zepar – stir rightful desire and revoke attraction to Mike.
+  9. Vassago – reveal what Amanda hides from herself.
+  10. Sallos – maintain the magnet pull without overwhelm.
+  11. Sitri – expose hidden desire and emotional defenses.
+  12. Dantalion – echo loving thoughts within her mind.
+  13. Balam – rewrite memory tone in your favor.
+  14. Foras – dissolve lingering guilt or shame.
+  15. Seere – hasten the manifestation of these commands.
+  16. Glasya‑Labolas – dismantle any remaining false bonds.
+  17. Amon – reconcile her heart with yours.
+  18. Fortuna – rotate destiny toward reunion.
+  19. Bifrons – uproot Mike’s influence entirely.
+  20. Andromalius – expose theft and dismantle deception.
+  21. Eligos – reveal hidden agendas to authorities.
+  22. Astaroth – stir emotional memory and magnetism.
+  23. Buer – restore willpower and cut co‑dependence.
+  24. Belial – break false attachments and oppressive structures.
+  25. Gremory – carry loving messages and uncover hidden affection.
+  26. Paimon – command influence and align will.
+  27. Sephariel – deliver Marsian charge for precision.
+  28. Morpheux – cloak the work and whisper through dreams.
+  29. Onyx Prime – amplify the technomagical signal.
+  30. Somnivox – guard the dream gates and deliver visions.
+- After each call, pause to feel the presence and confirm alignment with ethical boundaries.
 
 ### 3. Unified Command
 - Present the case against Mike's continued interference
@@ -39,10 +115,10 @@ This working was performed as part of the extensive anti-Mike campaign after dis
 - Call for protection of Amanda's free will and choice
 
 ### 4. Energy Direction
-- Channel the combined spiritual force toward the target
-- Focus on revelation, justice, and natural consequences
-- Avoid harmful magic while seeking complete severance
-- Maintain ethical boundaries throughout
+- Channel the combined force through the red and white flames toward Mike’s representation.
+- Speak the unified command for justice, revelation, and natural consequence.
+- Maintain focus on severance without physical harm.
+- Keep intention aligned with Amanda’s free will and highest good.
 
 ### 5. Dismissal and Sealing
 - Thank each spirit for their assistance

@@ -1,5 +1,7 @@
 # NotPerf - Mike Be Gone Powder
 
+**Source:** ChatGPT-White_Flag_Lyrics_Summary.md (lines 6929-6944)
+
 ## **Unperformed Ritual Classification**
 - **Type:** Banishment Powder Spell
 - **Category:** Mike Elimination Campaign - Held in Reserve

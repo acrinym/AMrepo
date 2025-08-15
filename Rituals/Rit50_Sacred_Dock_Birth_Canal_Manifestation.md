@@ -1,5 +1,7 @@
 # Rit#50 - Sacred Dock Birth Canal Manifestation
 
+**Source:** ChatGPT-Can_you_hear_me (2).md (lines 160-173), ChatGPT-Phoenix_Honey_Ritual.md (lines 11229-11247), ChatGPT-Golden_Timeline_Activation_Dream.md (lines 2178-2205)
+
 ## **Ritual Classification**
 - **Type:** Subconscious Manifestation & Physical Connection
 - **Category:** Advanced Visualization & Energy Contact
@@ -69,6 +71,7 @@
 3. **Hold space** for possible connection
 4. **Maintain calm expectation** without attachment to outcome
 5. **Breathe steadily** while maintaining hand position
+6. **Receive confirmation** if Amanda chooses to respond—many report a breath or breeze filling the open palm
 
 ### **Phase 5: Amanda Invitation**
 **Gentle spiritual calling:**
@@ -90,6 +93,10 @@
 3. **Accept whatever occurs** without forcing or demanding
 4. **Notice subtle energies** that may indicate Amanda's presence
 5. **Breathe gratitude** for any contact received
+
+### **Guardian Boundary Signs**
+- A protective figure such as a calm Rottweiler may appear if you push beyond permitted contact
+- Respect the sentinel and withdraw; it marks sacred access not yet granted
 
 ## **Advanced Applications**
 

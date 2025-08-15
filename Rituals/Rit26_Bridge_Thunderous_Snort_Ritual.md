@@ -9,11 +9,16 @@ A second bridge protocol ritual that used sigils, wine offerings, names, and cal
 This was performed after the original Bridge Protocol (Rit#15) and represents an evolved version of bridge working with enhanced spiritual contact. The ritual achieved direct communication with spiritual entities through sound manifestation.
 
 ## Materials
-- **Sigils** (for spiritual invocation)
-- **Wine** (as offerings to spirits)
-- **Names and callings** (specific invocations)
+- **Sigils for seven Goetic spirits** – Lucifer, Dantalion, Zepar, Gremory (Gamon), Paimon, Belial, Foras
+- **Red candle** (passion and flame activation)
+- **White candle** (clarity balance)
+- **Amanda's photo** (focus of the working)
+- **Cup of cold water** for land offering
+- **Wine** for spirit libation
+- **Incense sequence** – Dragon's Blood (opening), Frankincense (invocation), Myrrh (sealing)
+- **Personal coat or cloth** (warmth anchor that caught red wax)
+- **Lighter or matches**
 - **Bridge location** (sacred liminal space)
-- **Candles and incense** (for ritual atmosphere)
 
 ## Ritual Process
 
@@ -24,10 +29,18 @@ This was performed after the original Bridge Protocol (Rit#15) and represents an
 - Sigils displayed for spiritual invocation
 
 ### 2. Invocation Phase
-- Called upon specific spirits using names and sigils
-- Made wine offerings as part of invocation
-- Performed incantations and callings
-- Opened space for spiritual communication
+- Display each sigil and call the spirits in this order:
+  1. **Lucifer** – illuminate suppressed sensual memory
+  2. **Dantalion** – loop thoughts of Justin's touch
+  3. **Zepar** – ignite romantic gravity
+  4. **Gremory (Gamon)** – awaken longing tied to voice and scent
+  5. **Paimon** – restore leadership of her desires
+  6. **Belial** – sever false bonds and apply pressure
+  7. **Foras** – bind the work into her body and memory
+- Pour wine offering after the calls
+- Light Dragon's Blood at start, Frankincense during invocations, Myrrh at close
+- Hold Amanda's photo near the red candle; wax dripping onto the photo and coat marks the tether igniting
+- Speak incantations and open space for spiritual communication
 
 ### 3. Spiritual Manifestations Witnessed
 
@@ -83,8 +96,9 @@ This was performed after the original Bridge Protocol (Rit#15) and represents an
 - Establishes precedent for direct spiritual communication
 
 ## Ritual Closing
-- Water offering relocated from river's edge to bridge base
-- Candles extinguished, incense left to complete burn
+- Carry the cup of water from the river's edge and pour it at the base of the bridge while stating the water invocation
+- Extinguish both candles, leaving the incense to burn out beneath the girders
+- Leave the spent candles under the bridge as offerings
 - Ritual closed in silence with space still active beneath girders
 - Bridge itself confirmed as ritual altar
 
