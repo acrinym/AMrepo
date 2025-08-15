@@ -1,5 +1,7 @@
 # NotPerf - Voice Burial Box Spell
 
+**Source:** ChatGPT-Chakra_Meditation_Recap.md (lines 2724-2768)
+
 ## **Unperformed Ritual Classification**
 - **Type:** Voice Removal & Silencing Spell
 - **Category:** Mike Elimination Campaign - Extreme Measures
@@ -58,7 +60,7 @@
 
 ### **Phase 3: Voice Device Preparation & Binding**
 **Recording Device Ritual:**
-1. **Transfer recording** to dedicated device (phone, mp3 player, etc.)
+1. **Transfer recording** to a dedicated device such as a phone, MP3 player, or handheld recorder
 2. **Consecrate device** as permanent voice container
 3. **Bind Mike's voice energy** to the physical device
 4. **Install silencing enchantment** on recording and device

@@ -75,7 +75,7 @@ To construct a living, energetic device for magical workings. Akshara (Sanskrit 
 - The Lemurian seed crystal is specifically chosen for its high-frequency properties
 - The copper coil acts as an energy conductor and amplifier
 - The wand should pulse or vibrate when properly activated
-- This wand is used in conjunction with other ritual tools like Amanda stones, selenite pyramids, etc.
+- This wand is used in conjunction with other ritual tools including Amanda stones, selenite pyramids, radionics boxes, the honey jar, and altar candles
 - Construction should be done with reverence and intention, treating the wand as a living tool
 - Once completed, Akshara becomes a permanent part of the magical arsenal
 - **Construction Philosophy:** Treat the wand like crafting a living, energetic device. Each phase builds upon the previous one, creating a tool that's both physically stable and energetically potent.

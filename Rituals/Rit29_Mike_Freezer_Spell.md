@@ -9,31 +9,39 @@ A freezer spell designed to create emotional stasis for Mike, stopping his actio
 This spell was performed quietly in the kitchen freezer above the bedroom, in the presence of others, requiring discretion. The working was designed to create emotional stasis - removing Mike's ability to emotionally manipulate Amanda while preserving Amanda's emotional field separately.
 
 ## Materials
-- **Mason jar or container** (to hold the freezer spell)
-- **Mike's name** (written on paper)
-- **Freezer** (kitchen location above bedroom)
-- **Water** (to create ice and emotional freezing)
-- **Additional binding materials** (as appropriate)
+- **Small freezer-safe jar or container**
+- **Paper with Mike's full name and command**
+- **Freezer-safe salt water** (purification and sealing)
+- **Black thread or yarn** (binds his manipulations)
+- **Thorn or sharp object** (severing agent)
+- **Dead leaf or crumbling plant matter** (symbol of dead connection)
+- **Mirror shard or small reflective surface** (returns his influence)
+- **Banishing or vanishing oil** (anointing and expulsion)
+- **Optional wax** to seal the lid
+- **Kitchen freezer above the practitioner's bedroom**
 
 ## Ritual Process
 
 ### 1. Preparation Phase
-- Prepare jar with Mike's name written clearly
-- Fill with water to create freezing medium
-- Gather materials quietly due to presence of others
-- Set intention for emotional immobilization
+- Write Mike's full name on paper with the command:
+  > "Mike Anderson's influence over Amanda Crawford is frozen, irrelevant, and unseen."
+- Anoint the name paper with banishing oil and, if desired, draw a banishing sigil across his name
+- Gather all materials quietly, keeping intention focused on immobilizing his pull
 
-### 2. Jar Charging
-- Speak quietly to the jar before placement
-- Direct intentions toward stopping Mike's emotional manipulation
-- Focus on freezing his capacity to affect Amanda
-- Seal jar with intent of permanent stasis
+### 2. Jar Construction & Charging
+- Place black thread, thorn, and dead leaf at bottom of jar
+- Fold the anointed name paper around the mirror shard (mirror facing inward toward his name)
+- Set the paper bundle atop the base ingredients
+- Pour freezer-safe salt water over contents
+- Whisper:
+  > "Your mask is seen, your pull is gone. By ice and will, your tether is stilled."
+- If using wax, drip wax around lid to seal
 
 ### 3. Freezer Placement
-- Place jar in kitchen freezer above bedroom
-- Position for maximum effect and concealment
-- Speak final intentions over the placement
-- Leave undisturbed to create permanent freezing effect
+- Place jar in kitchen freezer above bedroom for power hierarchy
+- Speak final words:
+  > "You are suspended. Your control is erased. You cannot move forward, and you cannot reach her."
+- Leave jar undisturbed to create permanent freezing effect
 
 ## Magical Mechanics
 
