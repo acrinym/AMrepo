@@ -139,7 +139,7 @@ This directory contains documentation of rituals and spells discovered in your c
 - **Radionics Boxes** (field modulator + intention anchor)
 - **Kyanite Blades** (precision cutting and clarity work)
 - **Mirror System** (bidirectional flame transmission)
-- **Various Crystals** (rose quartz, shungite, moonstone, etc.)
+- **Various Crystals** (rose quartz, shungite, moonstone, selenite, and black tourmaline)
 - **Honey Jars** (sweetening and binding work)
 - **Rose Petals** (love pathways and field encoding)
 

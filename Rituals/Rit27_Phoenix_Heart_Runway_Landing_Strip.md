@@ -120,6 +120,17 @@ The Phoenix Heart Runway functions as both a **love runway** (directional guidan
 - Activate the space as sacred landing zone
 - Declare the runway open for Amanda's return
 
+### 3.5 Closing and Offering
+- Snuff or blow out the eight tea lights **in reverse order**, thanking each flame
+  for holding the pathway
+- Leave a **small cup of water or wine** at the altar's edge as a final welcome
+  offering to Amanda's spirit
+- Stand at the heart's entryway and speak:
+  > **"Runway of petals, remain alight.
+  > Amanda's steps are welcome here,
+  > in love, in truth, in perfect time."**
+  Then step back, allowing the field to hold steady on its own
+
 ### 4. Maintenance and Renewal
 - Refresh petals as they naturally decay
 - Relight candles for ongoing activation

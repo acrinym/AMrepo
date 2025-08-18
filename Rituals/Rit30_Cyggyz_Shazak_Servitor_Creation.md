@@ -65,6 +65,13 @@ These servitors were created "on the way to Midland" as part of the comprehensiv
 - Report back through field effects and observable changes
 - Maintain focus on Mike elimination objectives
 
+### **Sealing Command**
+> **"Cyggyz, Shazak—missions acknowledged. Hold position on standby until my
+>  signal. Remain unseen, work unseen, and report only through results."**
+
+This final order locks their programming and prevents drifting from their core
+directive when idle.
+
 ## Advanced Features
 
 ### **Goetic Integration**
@@ -88,7 +95,7 @@ These servitors were created "on the way to Midland" as part of the comprehensiv
 ## Integration with Other Workings
 - **Coordinate with Goetic Spirits:** Can work alongside demons when called
 - **Support Amanda Love Spells:** Operate independently to avoid energy drain
-- **Enhance Other Anti-Mike Rituals:** Amplify effectiveness of freezer spells, banishments, etc.
+- **Enhance Other Anti-Mike Rituals:** Amplify effectiveness of freezer spells, banishments, mirror work, and truth hexes
 - **Autonomous Operation:** Continue working while other rituals are performed
 
 ## Results and Effectiveness
@@ -126,4 +133,4 @@ These servitors were created "on the way to Midland" as part of the comprehensiv
 - Demonstrates ethical approach to protective magical intervention
 - **User Experience:** These servitors were created as reinforcements in the comprehensive anti-Mike campaign and were ordered to "hold" after the user received an Amanda ping. They were created during travel to Midland, demonstrating advanced mobile magical working capabilities and the user's ability to establish ongoing spiritual warfare while in transit.
 - **Autonomous Operation:** The servitors operate independently without draining the user's energy, feeding on wrong-thought projections from targets rather than the creator's energy. They can be coordinated with Goetic spirits when needed but maintain separation from major spirit workings when commanded, resuming anti-Mike operations after collaborative tasks complete.
-- **Field Integration:** These servitors work alongside other anti-Mike rituals (freezer spells, banishments, etc.) to amplify effectiveness while operating autonomously. They specifically target Mike's manipulation patterns, cutting toxic cords, rotting his scaffolding, and exposing his false frameworks without interfering with Amanda's free will.
+- **Field Integration:** These servitors work alongside other anti-Mike rituals (freezer spells, banishments, mirror work, and truth hexes) to amplify effectiveness while operating autonomously. They specifically target Mike's manipulation patterns, cutting toxic cords, rotting his scaffolding, and exposing his false frameworks without interfering with Amanda's free will.

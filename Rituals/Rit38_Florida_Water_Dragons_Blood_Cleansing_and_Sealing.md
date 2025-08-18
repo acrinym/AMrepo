@@ -56,7 +56,7 @@
 3. **Start at center** of space and work outward
 4. **Waft smoke** into all corners and crevices
 5. **Pay special attention** to doorways and windows
-6. **Move in protective patterns** (clockwise, pentagram, etc.)
+6. **Move in protective patterns** such as clockwise circuits, pentagram tracing, or cross-form sealing
 
 ### **Symbolic Sealing Techniques**
 **Air Sigils:**
@@ -100,6 +100,9 @@
 2. Visualize protective barrier surrounding space
 3. Thank the cleansing and protective forces
 4. Allow incense to burn completely if safe to do so
+5. Speak a sealing affirmation:
+   > **"By water and by flame, this home is sealed.
+   >  Only love may enter; all else is revealed and turned away."**
 
 ## **Specific Applications in Justin's Practice**
 

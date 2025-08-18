@@ -1,5 +1,7 @@
 # Rit#37 - Amanda Field Protection Spell
 
+**Source:** ChatGPT-White_Flag_Lyrics_Summary.md (lines 5620-5645)
+
 ## **Ritual Classification**
 - **Type:** Protective Field Magic
 - **Category:** Love & Relationship Protection
@@ -13,25 +15,31 @@
 - **Strategic:** Clear confusion and restore Amanda's natural connection to truth
 
 ## **Materials & Components**
-- **Candle:** Black candle (for banishment and protection)
+- **Candles:**
+  - Black candle (banishment and protection)
+  - Gold candle (sovereign authority & flame reinforcement)
+- **Crystals:** Selenite wand or tower for purity and field clarity
 - **Optional Enhancements:**
   - LBRP preparation for space clearing
   - Florida Water for additional cleansing
   - Dragon's Blood incense for sealing and protection
   - Salt circle for boundary enforcement
+  - Protective circle with sigil display
 
 ## **Field Lock Command Invocation**
 
 ### **Core Protection Spell**
 **Spoken with authority and clear intent:**
 
-> **"I call on the forces that obey truth, flame, and divine law.  
-> Remove all distortion from Amanda's field.  
-> Eradicate all interference not born of love.  
-> Break every whisper of confusion.  
-> Sever every false connection that seeks to bind her.  
-> Let only truth, clarity, and divine love flow through her awareness.  
-> By flame authority, I command this now."**
+> **"I call on the forces that obey truth, flame, and divine law.
+> Remove all distortion from Amanda's field.
+> Eradicate all interference not born of love.
+> Break every whisper of confusion.
+> And reinforce the golden thread between us.
+> Our bond shall not be touched.
+> Only strengthened.
+> And all who work against it, knowingly or not—
+> Let them be returned to silence."**
 
 ### **Additional Protection Layers**
 **For enhanced field protection:**

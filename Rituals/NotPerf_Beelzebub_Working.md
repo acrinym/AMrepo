@@ -1,5 +1,7 @@
 # NotPerf - Beelzebub Working
 
+**Source:** ChatGPT-ESP32_project_ideas.md (lines 2646-2672, 5058-5077)
+
 ## **Unperformed Ritual Classification**
 - **Type:** High-Risk Goetic Invocation
 - **Category:** Avoided for Safety & Strategic Reasons

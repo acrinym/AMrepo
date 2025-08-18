@@ -6,19 +6,20 @@
 A Water Mirror Ritual designed for Amanda's soul, which is deeply responsive to soft symbols, ambient beauty, and emotional depth cloaked in simplicity. AmandaMap Entry: Devotional Field Anchor + Memory Bloom Spell.
 
 ## Ingredients/Materials
-- A bowl of water (preferably glass or ceramic—clear if possible)
-- Rose quartz (to submerge—this is the heart crystal, soaked in remembrance)
-- One or more dandelions (or any locally found flower—this links to the flower pings you've sent her)
-- A small tea light candle (optional—if you can't float it, place beside the bowl)
-- Your hands in heart shape to open and close the field
+- **Clear glass or white ceramic bowl** – 6"–8" across to mimic a still pond
+- **Spring or moon-charged water** – enough to fill the bowl to ¾ capacity
+- **Rose quartz heart or tumbled stone** – submerged as the love anchor
+- **Three fresh dandelions** (or any locally found flowers that mirror past messages)
+- **Small tea light candle** – white or pink; float in the bowl if possible or place directly beside
+- **Hands in full heart shape** – primary sigil to open and seal the field
 
 ## Directions
 
 ### Setup
-1. **Fill the bowl with water** – this is Amanda's emotional field: deep, reflective, intuitive
-2. **Place rose quartz in the center** – this is your love: grounded, submerged, unwavering  
-3. **Float flowers on top** – every flower is a memory, a message she didn't reply to but felt
-4. *(Optional)* **Float or place the tea light candle beside the bowl** – your presence: warm, visible, held steady through the dark
+1. Face **north** and fill the bowl ¾ full with spring or moon water – this mirrors Amanda's emotional field: deep, reflective, intuitive
+2. Gently place the **rose quartz** at the center so it settles fully beneath the surface – this is your love: grounded, submerged, unwavering
+3. Float **three dandelions** on top – every flower is a memory, a message she didn't reply to but felt; let them form a triangle around the stone
+4. *(Optional)* Light the **tea light** and float it carefully; if it won’t float, set it just outside the bowl on the east side to shine into the water
 
 ### Invocation (aloud or whispered)
 > "Amanda,  
@@ -44,9 +45,10 @@ Hold your hands in **full heart shape** and say:
 > "And it will."
 
 ### Post-Ritual
-- Leave the water ritual in place for as long as feels right
-- The flowers will naturally change and decay, representing the flow of time and memory
-- This ritual connects to all the flower pictures sent to Amanda
+- Leave the bowl undisturbed for at least one full day
+- When the petals begin to wilt, carry the bowl outside
+- **Pour the water at the base of a healthy tree** and bury the spent flowers beside it, returning the memory to earth
+- Rinse the bowl and rose quartz in clean water before storing for future use
 
 ## Notes
 - This ritual connects to all the flower pictures sent to Amanda

@@ -18,3 +18,5 @@ extracted_entries_final/
 # IDE
 .vscode/
 
+PhoenixVisualizer/libs_etc/WAMPSDK.zip
+PhoenixVisualizer/Phoenix_visualizer_project_dump.txt

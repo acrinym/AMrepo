@@ -52,7 +52,15 @@ This ritual was performed in the bedroom at mom's house, representing adaptabili
 - Conducted invocation with respect and protocol
 - Maintained peaceful, cooperative energy throughout
 
-### 4. Spirit Interaction
+### 4. Closing and Grounding
+- Pour remaining **wine offering onto the earth or into the bathroom drain**, letting
+  well water carry the work away
+- Thank the spirit by name and formally license it to depart
+- Wipe the temporary altar with a cloth dipped in **well water and Florida Water** to
+  reset the space
+- Pack the traveling altar kit and touch the floor, saying: *"Home is whole; work is
+  done."*
+### 5. Spirit Interaction
 - Achieved successful contact with goetic entity
 - Maintained harmonious relationship during working
 - Spirit manifested with peaceful, helpful energy

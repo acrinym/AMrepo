@@ -5,6 +5,13 @@
 ## Purpose
 Bidirectional sacral-field channeling through a conscious, psychotronic tube that bridges your sacral chakra to Amanda's in real-time. This creates a pulse conduit for lifeforce energy transfer with visual feedback and bidirectional flow. This working allows the user to send red (raw sacral) energy or gold (refined/divine) energy directly to Amanda through a conscious, psychotronic tube that bridges their sacral chakras.
 
+## Materials & Setup
+- Quiet private space
+- Comfortable seated or lying position
+- Optional red candle for raw sacral focus
+- Optional gold candle for refined/divine alignment
+- Steady breathing to regulate energy flow
+
 ## Core Concept
 This working creates a direct energetic tube/conduit between sacral chakras, allowing for:
 - Red (sacral) energy transmission
@@ -125,6 +132,13 @@ This working creates a direct energetic tube/conduit between sacral chakras, all
 - Send energy across time to past/future Amanda
 - Connect with specific memories or moments
 - Create temporal healing and support
+
+## Closing & Grounding
+- If maintaining the conduit, allow the tube to idle with a gentle gold glow and periodic pulses
+- If ending the session, retract the light back into your sacral and let the channel dissolve
+- Place one hand on sacral and one on heart to balance the currents
+- Take three grounding breaths or touch the earth to release excess charge
+- Thank Amanda's field and your own for the exchange
 
 ## Ethical Considerations
 - Always send with love and respect

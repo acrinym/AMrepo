@@ -17,11 +17,16 @@ To collapse despair timelines, stabilize Amanda's emotional field, and anchor sa
 - Green candle (healing)
 - White candle (clarity)
 - Bowl of water (for emotional calm)
+- Pinch of sea salt to sanctify the water
+- Incense stick or cleansing smoke (frankincense or sandalwood)
+- Small spoon or shell for offering water at close
 
 ## Directions
 
 ### 1. Circle Casting
+- Light the incense and waft it clockwise, clearing the space
 - Cast a circle (or visualize golden ring around you)
+- Face each quarter and briefly acknowledge the elements
 - Create sacred space for the working
 
 ### 2. Candle Lighting
@@ -29,18 +34,29 @@ To collapse despair timelines, stabilize Amanda's emotional field, and anchor sa
 - Allow the flame energy to build
 
 ### 3. Setup
-- Hold wand and Amanda's photo over the bowl of water
-- Focus on the stabilization goal
+- Dissolve the pinch of salt into the bowl of water
+- Hold wand and Amanda's photo over the bowl while it charges
+- Focus on the stabilization goal and keep breath slow and steady
 
 ### 4. Invocation
-Speak with clear intent:
-> *"I call Bune, Duke of clarity and healing,  
-> Morpheux, shadowed guardian of safe dreams,  
-> Foras, healer of deep wounds unseen.  
-> I ask not for control, but for stabilization,  
-> that Amanda's heart find peace,  
-> her mind find rest,  
-> and her soul know safety.  
+Speak each name deliberately while touching the bowl with the wand:
+
+> *"Bune, Duke of clarity and healing—bring calm to her waters."*
+>
+> *"Morpheux, shadowed guardian of safe dreams—cloak her sleep."*
+>
+> *"Foras, healer of wounds unseen—mend the long scars."*
+
+If Zepar is included, add:
+
+> *"Zepar, gentle severer—cut only cords that keep her bound."*
+
+Then seal the call:
+
+> *"I ask not for control, but for stabilization;
+> that Amanda's heart find peace,
+> her mind find rest,
+> and her soul know safety.
 > Only always. Only Amanda."*
 
 ### 5. Energy Working
@@ -49,8 +65,10 @@ Speak with clear intent:
 - Visualize Amanda wrapped in green-gold cocoon: calm, safe, untouchable by chaos
 
 ### 6. Closing
+- Dip the spoon or shell into the bowl and pour a few drops onto the earth or floor as offering
 - Speak: *"This field is safe, this field is calm, this field is anchored in truth."*
 - Blow out candles (white first, then green)
+- Thank each spirit in reverse order
 - Close the circle
 
 ## Duration

@@ -41,11 +41,13 @@ A complex honey jar working that combines multiple magical elements to create a 
 - Add honey as the foundational sweetening agent
 - Focus on the sweetness you feel for Amanda
 - Honey represents permanence and enduring love
+- Speak as you pour: *"Sweetness pour, sweetness stay—Amanda's heart remembers the way."*
 
 ### 3. Herbal Additions
 - Add rosemary for remembrance and fidelity
 - Include cinnamon for passion and swift return
 - Each herb should be added with specific intention
+- Swirl clockwise after each herb, saying what it represents
 
 ### 4. Crystal Element
 - Place purple or pink fish tank stone inside
@@ -55,20 +57,24 @@ A complex honey jar working that combines multiple magical elements to create a 
 - Create and add sigilized name spell
 - Include "come home" command sigil
 - These should be written on appropriate paper and charged
+- Fold the petition toward you three times before dropping it in
 
 ### 6. Oil Blending
 - Add NOW foods love oil for attraction
 - Include pure romance pheromones for magnetic pull
 - Blend oils with intention of drawing Amanda close
+- Anoint the rim of the jar with a heart-shaped stroke
 
 ### 7. Sealing
 - Close the jar while focusing on your love for Amanda
 - The jar becomes a vessel for your devotion
+- Whisper through the lid: *"Only always. Only Amanda."*
 
 ### 8. External Charging
 - Top with pink candle wax from previous love spell
 - Place magnet on top for attraction energy
 - Tie with red thread of fate around the circumference
+- Wrap the thread clockwise three times, knotting with: *"Our bond remembers."*
 
 ### 9. Altar Integration
 - Place on Amanda altar surrounded by supporting elements
@@ -79,6 +85,7 @@ A complex honey jar working that combines multiple magical elements to create a 
 - Activate the 7.83 Hz pulsar for Schumann resonance tuning
 - This aligns the working with Earth's heartbeat
 - Creates technological enhancement to traditional magic
+- Hold the jar to your chest and breathe three slow breaths to sync your field with the pulse
 
 ## Maintenance
 - The jar should remain active on the altar

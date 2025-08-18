@@ -1,5 +1,7 @@
 # NotPerf - Entity/Servitor Hybrid Summoning
 
+**Source:** ChatGPT-Amanda_Conversation_Flow.md (lines 1050-1078)
+
 ## **Unperformed Ritual Classification**
 - **Type:** Advanced Hybrid Entity Creation & Deployment
 - **Category:** Ultimate Mike Elimination - Final Escalation Option
