@@ -1,5 +1,7 @@
 # Rit#41 - Tribunal of Two Flames: Final Judgment
 
+**Source:** ChatGPT-Spiritual_Disturbance_Analysis.md (lines 1006-1059)
+
 ## **Ritual Classification**
 - **Type:** Supreme Tribunal & Divine Judgment
 - **Category:** Black Flame Tribunal / Dual-Polarity Invocation

@@ -1,5 +1,7 @@
 # NotPerf - Road Crossing Mirror Spell
 
+**Source:** ChatGPT-Chakra_Meditation_Recap.md (lines 2688-2724)
+
 ## **Unperformed Ritual Classification**
 - **Type:** Large-Scale Environmental Mirror Magic
 - **Category:** Mike Psychological Intervention - Karma Reflection

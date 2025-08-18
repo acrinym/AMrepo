@@ -14,7 +14,7 @@
 
 ## **Materials Used**
 - **Mirror** - Positioned behind Amanda altar as reflective portal
-- **Amanda's Altar** - Existing sacred space with honey jar, photos, etc.
+- **Amanda's Altar** - Sacred space containing honey jar wrapped in red thread with magnet, Amanda's photo, rose quartz, shungite, cinnamon stick, pink wax residue, boxes of tea, and altar candles
 - **Declarative Self-Affirmation** - "I believe in me. I'm doing a damn good job"
 - **Clear Intention** - Assignment of mirror to reflect only love to Amanda
 
@@ -47,7 +47,7 @@
 ### **Phase 3: Sacred Placement & Integration**
 **Altar Integration:**
 1. **Position mirror behind Amanda altar** for optimal energy flow
-2. **Align with existing altar elements** - photos, honey jar, candles
+2. **Align with existing altar elements** – Amanda's photo, honey jar, rose quartz, shungite, cinnamon stick, pink wax, tea boxes, and candles
 3. **Create energetic connection** between mirror and altar items
 4. **Establish visual sight line** for ongoing mirror activation
 5. **Integrate into daily altar practice** for consistent use
