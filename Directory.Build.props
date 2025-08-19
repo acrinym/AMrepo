@@ -1,0 +1,17 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Deterministic>true</Deterministic>
+    <!-- Built-in analyzers on; latest recommended ruleset -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <!-- Local dev: do not fail on warnings -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Keep Release quiet unless you opt-in -->
+    <DefineConstants Condition="'$(Configuration)'=='Release'">$(DefineConstants);NO_DEBUG_SPEW</DefineConstants>
+  </ItemGroup>
+</Project>
