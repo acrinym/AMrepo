@@ -1,17 +1,22 @@
 <Project>
   <PropertyGroup>
+    <!-- Modern .NET / C# defaults -->
     <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Deterministic>true</Deterministic>
-    <!-- Built-in analyzers on; latest recommended ruleset -->
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors> <!-- CI overrides to true -->
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
-    <!-- Local dev: do not fail on warnings -->
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <!-- Better cross-platform text behavior -->
+    <InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
+
+  <!-- Optional extra analyzers via central package mgmt -->
   <ItemGroup>
-    <!-- Keep Release quiet unless you opt-in -->
-    <DefineConstants Condition="'$(Configuration)'=='Release'">$(DefineConstants);NO_DEBUG_SPEW</DefineConstants>
+    <PackageReference Include="Roslynator.Analyzers" Version="4.10.0" PrivateAssets="all" />
+    <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.10.0" PrivateAssets="all" />
   </ItemGroup>
 </Project>
