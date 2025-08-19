@@ -1,53 +1,44 @@
 root = true
 
-# Default: modern UTF-8 with BOM is widely compatible on Windows/VS and emoji-safe.
-# (We intentionally do not include *.ps1 here per your request.)
-
 [*.{cs,axaml,csproj,sln,md,json,txt}]
 charset = utf-8-bom
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-# C# quality defaults
 [*.cs]
 indent_style = space
 indent_size = 4
-dotnet_diagnostic.IDE0005.severity = suggestion
-dotnet_diagnostic.IDE0060.severity = suggestion
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = true
 
-# ==== C# code style (warnings where they matter) ====
-# Remove unnecessary usings
-dotnet_diagnostic.IDE0005.severity = warning
-# Unused parameter
-dotnet_diagnostic.IDE0060.severity = warning
-# Unused private members
-dotnet_diagnostic.IDE0051.severity = suggestion
-# Make fields readonly when possible
-dotnet_diagnostic.IDE0044.severity = suggestion
-# Use var preferences (balance explicitness & noise)
+# ================== Style: modern C# 12 ==================
+csharp_style_namespace_declarations = file_scoped:suggestion
 csharp_style_var_for_built_in_types = false:suggestion
 csharp_style_var_when_type_is_apparent = true:suggestion
 csharp_style_var_elsewhere = false:suggestion
-# Prefer file-scoped namespaces
-csharp_style_namespace_declarations = file_scoped:suggestion
-# Pattern matching/simplification
-dotnet_diagnostic.IDE0072.severity = suggestion
-dotnet_diagnostic.IDE0011.severity = suggestion
-# Object/collection initializers
-dotnet_diagnostic.IDE0017.severity = suggestion
-dotnet_diagnostic.IDE0028.severity = suggestion
-# Expression-bodied members where short
-dotnet_diagnostic.IDE0022.severity = suggestion
-dotnet_diagnostic.IDE0027.severity = suggestion
-# Null checks
-dotnet_diagnostic.CA1062.severity = suggestion
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+csharp_style_expression_bodied_properties = when_on_single_line:suggestion
+csharp_style_prefer_pattern_matching = true:suggestion
+csharp_style_prefer_switch_expression = true:suggestion
+csharp_style_prefer_tuple_swap = true:suggestion
+csharp_style_prefer_primary_constructors = true:suggestion
+csharp_style_prefer_collection_expression = true:suggestion
+csharp_style_prefer_utf8_string_literals = true:suggestion
 
-# Async
-# Discourage async void (except event handlers)
+# ================== Analyzers: useful warnings ==================
+dotnet_diagnostic.IDE0005.severity = warning      # remove unused usings
+dotnet_diagnostic.IDE0044.severity = suggestion   # readonly fields
+dotnet_diagnostic.IDE0051.severity = suggestion   # unused private members
+dotnet_diagnostic.IDE0060.severity = warning      # unused parameters
+dotnet_diagnostic.IDE0072.severity = suggestion   # prefer switch expressions
+dotnet_diagnostic.IDE0300.severity = suggestion   # collection expressions
+dotnet_diagnostic.CA1062.severity = suggestion    # validate public args null
+
+# Async: discourage async void (except events)
 dotnet_diagnostic.VSTHRD100.severity = warning
 
-# ==== Avalonia XAML ====
+# ========== XAML ==========
 [*.axaml]
 indent_style = space
 indent_size = 2

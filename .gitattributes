@@ -1,24 +1,22 @@
-# Normalize line endings and enforce UTF-8 for text.
-# (UTF-8 safely carries emojis across platforms/editors.)
+# Normalize line endings and keep UTF-8 (emoji-safe)
 * text=auto eol=lf
 
-# Treat these as UTF-8 text explicitly
+# Treat these as text (UTF-8)
 *.cs     text diff=csharp
 *.axaml  text
 *.csproj text
 *.sln    text
-*.md     text
-*.json   text
-*.txt    text
-
-# (Optional) explicit working tree encoding for doc formats where mojibake occurred
 *.md     text working-tree-encoding=UTF-8
+*.json   text
 *.txt    text working-tree-encoding=UTF-8
 
 # Binary
 *.png binary
 *.jpg binary
+*.webp binary
+*.gif binary
 *.zip binary
 *.dll binary
 *.wav binary
 *.mp3 binary
+*.ico binary

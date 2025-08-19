@@ -1,7 +1,8 @@
 <Project>
-  <!-- In CI (e.g., GitHub Actions sets CI=true), warnings become errors -->
+  <!-- In CI, fail on warnings -->
   <PropertyGroup Condition="'$(CI)'=='true'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>$(WarningsNotAsErrors)</WarningsNotAsErrors>
+    <!-- Add IDs to downgrade/noise-manage if needed:
+         <WarningsNotAsErrors>IDE0051;IDE0060</WarningsNotAsErrors> -->
   </PropertyGroup>
 </Project>

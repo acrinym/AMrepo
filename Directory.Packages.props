@@ -1,0 +1,7 @@
+<Project>
+  <!-- Central package versions (optional, extend as needed) -->
+  <ItemGroup>
+    <PackageVersion Include="Roslynator.Analyzers" Version="4.10.0" />
+    <PackageVersion Include="Roslynator.Formatting.Analyzers" Version="4.10.0" />
+  </ItemGroup>
+</Project>
