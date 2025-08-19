@@ -1,0 +1,7 @@
+<Project>
+  <!-- In CI (e.g., GitHub Actions sets CI=true), warnings become errors -->
+  <PropertyGroup Condition="'$(CI)'=='true'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>$(WarningsNotAsErrors)</WarningsNotAsErrors>
+  </PropertyGroup>
+</Project>
