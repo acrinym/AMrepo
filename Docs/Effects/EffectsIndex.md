@@ -10,7 +10,7 @@
 
 | Status | Count | Description |
 |--------|-------|-------------|
-| ✅ **LOCKED** | 18 | Superscope (✅ C# Complete), Dynamic Movement (✅ C# Complete), Blur/Convolution (✅ C# Complete), Color Fade (✅ C# Complete), Mirror (✅ C# Complete), Starfield (✅ C# Complete), Bump Mapping (✅ C# Complete), Oscilloscope Ring (✅ C# Complete), Beat Detection (✅ C# Complete), Spectrum Visualization (✅ C# Complete), Oscilloscope Star (✅ C# Complete), Beat Spinning (✅ C# Complete), Time Domain Scope (✅ C# Complete), Blit Operations (✅ C# Complete), Channel Shift (✅ C# Complete), Water Effects (✅ C# Complete), Particle Systems (✅ C# Complete), Transitions (✅ C# Complete) |
+| ✅ **LOCKED** | 19 | Superscope (✅ C# Complete), Dynamic Movement (✅ C# Complete), Blur/Convolution (✅ C# Complete), Color Fade (✅ C# Complete), Mirror (✅ C# Complete), Starfield (✅ C# Complete), Bump Mapping (✅ C# Complete), Oscilloscope Ring (✅ C# Complete), Beat Detection (✅ C# Complete), Spectrum Visualization (✅ C# Complete), Oscilloscope Star (✅ C# Complete), Beat Spinning (✅ C# Complete), Time Domain Scope (✅ C# Complete), Blit Operations (✅ C# Complete), Channel Shift (✅ C# Complete), Water Effects (✅ C# Complete), Particle Systems (✅ C# Complete), Transitions (✅ C# Complete), Picture Effects (✅ C# Complete) |
 | 🔄 **IN PROGRESS** | 0 | Currently being analyzed |
 | ⏳ **PENDING** | 37+ | Awaiting analysis and documentation |
 | 🚫 **EXCLUDED** | 0 | Win32/GDI/DDraw specific code |
@@ -67,7 +67,7 @@
 - ⏳ **r_linemode.cpp** - Line drawing modes
 - ⏳ **r_multidelay.cpp** - Multi-delay effects
 - ✅ **r_parts.cpp** - Particle Systems (✅ C# Complete)
-- 🔄 **r_picture.cpp** - Picture/image effects (NEXT)
+- ✅ **r_picture.cpp** - Picture/image effects (✅ C# Complete)
 - ⏳ **r_rotblit.cpp** - Rotated blitting
 - ⏳ **r_rotstar.cpp** - Rotating star patterns
 - ⏳ **r_scat.cpp** - Scatter effects
@@ -242,5 +242,5 @@ Each effect document follows the established template:
 
 ---
 
-**Status:** 📋 **16 EFFECTS COMPLETED - PHASE 1C COMPLETED - PHASE 1D IN PROGRESS: SPECIAL EFFECTS**  
-**Next:** Particle Systems analysis (`r_parts.cpp`)
+**Status:** 📋 **19 EFFECTS COMPLETED - PHASE 1D COMPLETED - PHASE 1E READY: UTILITY EFFECTS**  
+**Next:** Rotated Blitting analysis (`r_rotblit.cpp`)
