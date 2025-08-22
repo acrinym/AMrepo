@@ -10,7 +10,7 @@
 
 | Status | Count | Description |
 |--------|-------|-------------|
-| ✅ **LOCKED** | 14 | Superscope (✅ C# Complete), Dynamic Movement (✅ C# Complete), Blur/Convolution (✅ C# Complete), Color Fade (✅ C# Complete), Mirror (✅ C# Complete), Starfield (✅ C# Complete), Bump Mapping (✅ C# Complete), Oscilloscope Ring (✅ C# Complete), Beat Detection (✅ C# Complete), Spectrum Visualization (✅ C# Complete), Oscilloscope Star (✅ C# Complete), Beat Spinning (✅ C# Complete), Time Domain Scope (✅ C# Complete), Blit Operations (✅ C# Complete) |
+| ✅ **LOCKED** | 16 | Superscope (✅ C# Complete), Dynamic Movement (✅ C# Complete), Blur/Convolution (✅ C# Complete), Color Fade (✅ C# Complete), Mirror (✅ C# Complete), Starfield (✅ C# Complete), Bump Mapping (✅ C# Complete), Oscilloscope Ring (✅ C# Complete), Beat Detection (✅ C# Complete), Spectrum Visualization (✅ C# Complete), Oscilloscope Star (✅ C# Complete), Beat Spinning (✅ C# Complete), Time Domain Scope (✅ C# Complete), Blit Operations (✅ C# Complete), Channel Shift (✅ C# Complete), Water Effects (✅ C# Complete) |
 | 🔄 **IN PROGRESS** | 0 | Currently being analyzed |
 | ⏳ **PENDING** | 37+ | Awaiting analysis and documentation |
 | 🚫 **EXCLUDED** | 0 | Win32/GDI/DDraw specific code |
@@ -125,7 +125,9 @@
 
 ### **Phase 1D: Special Effects (IN PROGRESS)**
 14. ✅ **Blit Operations** - Image copying and manipulation (COMPLETED)
-15. ⏳ **Channel Shift** - Color channel manipulation (NEXT)
+15. ✅ **Channel Shift** - Color channel manipulation (COMPLETED)
+16. ✅ **Water Effects** - Ripple simulation (COMPLETED)
+17. ⏳ **Particle Systems** - Dynamic particles (NEXT)
 
 ### **Phase 1D: Special Effects**
 11. ⏳ **Water Effects** - Ripple simulation
@@ -164,9 +166,9 @@
 
 ### **Phase 1D: Special Effects (CURRENT)**
 1. ✅ **Blit Operations** - `r_blit.cpp` analysis (COMPLETED)
-2. 🔄 **Channel Shift** - `r_chanshift.cpp` analysis (NEXT)
-3. ⏳ **Water Effects** - `r_water.cpp` analysis
-4. ⏳ **Particle Systems** - `r_parts.cpp` analysis
+2. ✅ **Channel Shift** - `r_chanshift.cpp` analysis (COMPLETED)
+3. ✅ **Water Effects** - `r_water.cpp` analysis (COMPLETED)
+4. 🔄 **Particle Systems** - `r_parts.cpp` analysis (NEXT)
 5. ⏳ **Transitions** - `r_trans.cpp` analysis
 
 ---
@@ -195,7 +197,7 @@ Each effect document follows the established template:
 
 ## 🚀 **Progress Summary**
 
-### **Completed Effects (13/50+)**
+### **Completed Effects (16/50+)**
 1. ✅ **Superscope** - Core scripting engine with 4 script sections
 2. ✅ **Dynamic Movement** - Multi-threaded transformations with SMP support
 3. ✅ **Blur/Convolution** - MMX-optimized 5x5 convolution kernel
@@ -209,6 +211,9 @@ Each effect document follows the established template:
 11. ✅ **Oscilloscope Star** - 5-pointed star oscilloscope with audio reactivity
 12. ✅ **Beat Spinning** - Dual-channel spinning arms with audio reactivity
 13. ✅ **Time Domain Scope** - Vertical oscilloscope with horizontal scrolling
+14. ✅ **Blit Operations** - Image copying and manipulation with batch processing
+15. ✅ **Channel Shift** - Six RGB channel permutation modes with beat reactivity
+16. ✅ **Water Effects** - Physics-based water simulation with MMX optimization
 
 ### **Documentation Quality**
 - **Comprehensive Coverage**: Full source code analysis
@@ -235,5 +240,5 @@ Each effect document follows the established template:
 
 ---
 
-**Status:** 📋 **14 EFFECTS COMPLETED - PHASE 1C COMPLETED - PHASE 1D IN PROGRESS: SPECIAL EFFECTS**  
-**Next:** Channel Shift effect analysis (`r_chanshift.cpp`)
+**Status:** 📋 **16 EFFECTS COMPLETED - PHASE 1C COMPLETED - PHASE 1D IN PROGRESS: SPECIAL EFFECTS**  
+**Next:** Particle Systems analysis (`r_parts.cpp`)
