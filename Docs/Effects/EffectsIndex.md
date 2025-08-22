@@ -10,7 +10,7 @@
 
 | Status | Count | Description |
 |--------|-------|-------------|
-| ✅ **LOCKED** | 17 | Superscope (✅ C# Complete), Dynamic Movement (✅ C# Complete), Blur/Convolution (✅ C# Complete), Color Fade (✅ C# Complete), Mirror (✅ C# Complete), Starfield (✅ C# Complete), Bump Mapping (✅ C# Complete), Oscilloscope Ring (✅ C# Complete), Beat Detection (✅ C# Complete), Spectrum Visualization (✅ C# Complete), Oscilloscope Star (✅ C# Complete), Beat Spinning (✅ C# Complete), Time Domain Scope (✅ C# Complete), Blit Operations (✅ C# Complete), Channel Shift (✅ C# Complete), Water Effects (✅ C# Complete), Particle Systems (✅ C# Complete) |
+| ✅ **LOCKED** | 18 | Superscope (✅ C# Complete), Dynamic Movement (✅ C# Complete), Blur/Convolution (✅ C# Complete), Color Fade (✅ C# Complete), Mirror (✅ C# Complete), Starfield (✅ C# Complete), Bump Mapping (✅ C# Complete), Oscilloscope Ring (✅ C# Complete), Beat Detection (✅ C# Complete), Spectrum Visualization (✅ C# Complete), Oscilloscope Star (✅ C# Complete), Beat Spinning (✅ C# Complete), Time Domain Scope (✅ C# Complete), Blit Operations (✅ C# Complete), Channel Shift (✅ C# Complete), Water Effects (✅ C# Complete), Particle Systems (✅ C# Complete), Transitions (✅ C# Complete) |
 | 🔄 **IN PROGRESS** | 0 | Currently being analyzed |
 | ⏳ **PENDING** | 37+ | Awaiting analysis and documentation |
 | 🚫 **EXCLUDED** | 0 | Win32/GDI/DDraw specific code |
@@ -67,7 +67,7 @@
 - ⏳ **r_linemode.cpp** - Line drawing modes
 - ⏳ **r_multidelay.cpp** - Multi-delay effects
 - ✅ **r_parts.cpp** - Particle Systems (✅ C# Complete)
-- ⏳ **r_picture.cpp** - Picture/image effects
+- 🔄 **r_picture.cpp** - Picture/image effects (NEXT)
 - ⏳ **r_rotblit.cpp** - Rotated blitting
 - ⏳ **r_rotstar.cpp** - Rotating star patterns
 - ⏳ **r_scat.cpp** - Scatter effects
@@ -169,7 +169,7 @@
 2. ✅ **Channel Shift** - `r_chanshift.cpp` analysis (COMPLETED)
 3. ✅ **Water Effects** - `r_water.cpp` analysis (COMPLETED)
 4. ✅ **Particle Systems** - `r_parts.cpp` analysis (COMPLETED)
-5. 🔄 **Transitions** - `r_trans.cpp` analysis (NEXT)
+5. ✅ **Transitions** - `r_trans.cpp` analysis (COMPLETED)
 
 ---
 
@@ -197,7 +197,7 @@ Each effect document follows the established template:
 
 ## 🚀 **Progress Summary**
 
-### **Completed Effects (17/50+)**
+### **Completed Effects (18/50+)**
 1. ✅ **Superscope** - Core scripting engine with 4 script sections
 2. ✅ **Dynamic Movement** - Multi-threaded transformations with SMP support
 3. ✅ **Blur/Convolution** - MMX-optimized 5x5 convolution kernel
@@ -215,6 +215,7 @@ Each effect document follows the established template:
 15. ✅ **Channel Shift** - Six RGB channel permutation modes with beat reactivity
 16. ✅ **Water Effects** - Physics-based water simulation with MMX optimization
 17. ✅ **Particle Systems** - Physics-based particle simulation with spring-damper dynamics
+18. ✅ **Transitions** - 24 built-in transition types with custom scripting and subpixel precision
 
 ### **Documentation Quality**
 - **Comprehensive Coverage**: Full source code analysis
