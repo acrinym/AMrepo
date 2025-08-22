@@ -123,8 +123,9 @@
 12. ✅ **Beat Spinning** - Beat-reactive spinning (COMPLETED)
 13. ✅ **Time Domain Scope** - Time-domain oscilloscope (COMPLETED)
 
-### **Phase 1D: Special Effects (NEXT)**
-14. ⏳ **Blit Operations** - Image copying and manipulation (NEXT)
+### **Phase 1D: Special Effects (IN PROGRESS)**
+14. ✅ **Blit Operations** - Image copying and manipulation (COMPLETED)
+15. ⏳ **Channel Shift** - Color channel manipulation (NEXT)
 
 ### **Phase 1D: Special Effects**
 11. ⏳ **Water Effects** - Ripple simulation
@@ -162,11 +163,11 @@
 4. ✅ **Time Domain Scope** - `r_timescope.cpp` analysis (COMPLETED)
 
 ### **Phase 1D: Special Effects (CURRENT)**
-1. 🔄 **Blit Operations** - `r_blit.cpp` analysis (NEXT)
-2. ⏳ **Water Effects** - `r_water.cpp` analysis
-3. ⏳ **Particle Systems** - `r_parts.cpp` analysis
-4. ⏳ **Transitions** - `r_trans.cpp` analysis
-5. ⏳ **Text Rendering** - `r_text.cpp` analysis
+1. ✅ **Blit Operations** - `r_blit.cpp` analysis (COMPLETED)
+2. 🔄 **Channel Shift** - `r_chanshift.cpp` analysis (NEXT)
+3. ⏳ **Water Effects** - `r_water.cpp` analysis
+4. ⏳ **Particle Systems** - `r_parts.cpp` analysis
+5. ⏳ **Transitions** - `r_trans.cpp` analysis
 
 ---
 
@@ -234,5 +235,5 @@ Each effect document follows the established template:
 
 ---
 
-**Status:** 📋 **13 EFFECTS COMPLETED - PHASE 1C COMPLETED - MOVING TO PHASE 1D: SPECIAL EFFECTS**  
-**Next:** Blit Operations effect analysis (`r_blit.cpp`)
+**Status:** 📋 **14 EFFECTS COMPLETED - PHASE 1C COMPLETED - PHASE 1D IN PROGRESS: SPECIAL EFFECTS**  
+**Next:** Channel Shift effect analysis (`r_chanshift.cpp`)
