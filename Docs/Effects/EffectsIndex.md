@@ -10,7 +10,7 @@
 
 | Status | Count | Description |
 |--------|-------|-------------|
-| ✅ **LOCKED** | 22 | Superscope (✅ C# Complete), Dynamic Movement (✅ C# Complete), Blur/Convolution (✅ C# Complete), Color Fade (✅ C# Complete), Mirror (✅ C# Complete), Starfield (✅ C# Complete), Bump Mapping (✅ C# Complete), Oscilloscope Ring (✅ C# Complete), Beat Detection (✅ C# Complete), Spectrum Visualization (✅ C# Complete), Oscilloscope Star (✅ C# Complete), Beat Spinning (✅ C# Complete), Time Domain Scope (✅ C# Complete), Blit Operations (✅ C# Complete), Channel Shift (✅ C# Complete), Water Effects (✅ C# Complete), Particle Systems (✅ C# Complete), Transitions (✅ C# Complete), Picture Effects (✅ C# Complete), Rotated Blitting (✅ C# Complete), Rotating Star Patterns (✅ C# Complete), Scatter Effects (✅ C# Complete) |
+| ✅ **LOCKED** | 34 | Superscope (✅ C# Complete), Dynamic Movement (✅ C# Complete), Blur/Convolution (✅ C# Complete), Color Fade (✅ C# Complete), Mirror (✅ C# Complete), Starfield (✅ C# Complete), Bump Mapping (✅ C# Complete), Oscilloscope Ring (✅ C# Complete), Beat Detection (✅ C# Complete), Spectrum Visualization (✅ C# Complete), Oscilloscope Star (✅ C# Complete), Beat Spinning (✅ C# Complete), Time Domain Scope (✅ C# Complete), Blit Operations (✅ C# Complete), Channel Shift (✅ C# Complete), Water Effects (✅ C# Complete), Particle Systems (✅ C# Complete), Transitions (✅ C# Complete), Picture Effects (✅ C# Complete), Rotated Blitting (✅ C# Complete), Rotating Star Patterns (✅ C# Complete), Scatter Effects (✅ C# Complete), Effect Stacking (✅ C# Complete), Transitions (✅ C# Complete), Advanced Transitions (✅ C# Complete), Video Delay Effects (✅ C# Complete), Water Bump Mapping (✅ C# Complete), AVI Video Playback (✅ C# Complete), Dot Font Rendering (✅ C# Complete), Dot Grid Patterns (✅ C# Complete), Dot Plane Effects (✅ C# Complete), Interference Patterns (✅ C# Complete), Interleaving Effects (✅ C# Complete), Line Drawing Modes (✅ C# Complete) |
 | 🔄 **IN PROGRESS** | 0 | Currently being analyzed |
 | ⏳ **PENDING** | 37+ | Awaiting analysis and documentation |
 | 🚫 **EXCLUDED** | 0 | Win32/GDI/DDraw specific code |
@@ -58,24 +58,24 @@
 - ✅ **r_svp.cpp** - Spectrum visualization
 
 ### **Special Effects**
-- ⏳ **r_avi.cpp** - AVI video playback
-- ⏳ **r_dotfnt.cpp** - Dot font rendering
-- ⏳ **r_dotgrid.cpp** - Dot grid patterns
-- ⏳ **r_dotpln.cpp** - Dot plane effects
-- ⏳ **r_interf.cpp** - Interference patterns
-- ⏳ **r_interleave.cpp** - Interleaving effects
-- ⏳ **r_linemode.cpp** - Line drawing modes
+- ✅ **r_avi.cpp** - AVI video playback (✅ C# Complete)
+- ✅ **r_dotfnt.cpp** - Dot font rendering (✅ C# Complete)
+- ✅ **r_dotgrid.cpp** - Dot grid patterns (✅ C# Complete)
+- ✅ **r_dotpln.cpp** - Dot plane effects (✅ C# Complete)
+- ✅ **r_interf.cpp** - Interference patterns (✅ C# Complete)
+- ✅ **r_interleave.cpp** - Interleaving effects (✅ C# Complete)
+- ✅ **r_linemode.cpp** - Line drawing modes (✅ C# Complete)
 - ⏳ **r_multidelay.cpp** - Multi-delay effects
 - ✅ **r_parts.cpp** - Particle Systems (✅ C# Complete)
 - ✅ **r_picture.cpp** - Picture/image effects (✅ C# Complete)
 - ✅ **r_rotblit.cpp** - Rotated blitting (✅ C# Complete)
 - ✅ **r_rotstar.cpp** - Rotating star patterns (✅ C# Complete)
 - ✅ **r_scat.cpp** - Scatter effects (✅ C# Complete)
-- ⏳ **r_stack.cpp** - Effect stacking
-- ⏳ **r_trans.cpp** - Transitions
-- ⏳ **r_transition.cpp** - Advanced transitions
-- ⏳ **r_videodelay.cpp** - Video delay effects
-- ⏳ **r_waterbump.cpp** - Water bump mapping
+- ✅ **r_stack.cpp** - Effect stacking (✅ C# Complete)
+- ✅ **r_trans.cpp** - Transitions (✅ C# Complete)
+- ✅ **r_transition.cpp** - Advanced transitions (✅ C# Complete)
+- ✅ **r_videodelay.cpp** - Video delay effects (✅ C# Complete)
+- ✅ **r_waterbump.cpp** - Water bump mapping (✅ C# Complete)
 
 ---
 
@@ -243,4 +243,4 @@ Each effect document follows the established template:
 ---
 
 **Status:** 📋 **22 EFFECTS COMPLETED - PHASE 1E IN PROGRESS: UTILITY EFFECTS**  
-**Next:** Effect Stacking analysis (`r_stack.cpp`)
+**Next:** Multi-Delay Effects analysis (`r_multidelay.cpp`)
