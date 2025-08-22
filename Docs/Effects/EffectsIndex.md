@@ -10,7 +10,7 @@
 
 | Status | Count | Description |
 |--------|-------|-------------|
-| ✅ **LOCKED** | 21 | Superscope (✅ C# Complete), Dynamic Movement (✅ C# Complete), Blur/Convolution (✅ C# Complete), Color Fade (✅ C# Complete), Mirror (✅ C# Complete), Starfield (✅ C# Complete), Bump Mapping (✅ C# Complete), Oscilloscope Ring (✅ C# Complete), Beat Detection (✅ C# Complete), Spectrum Visualization (✅ C# Complete), Oscilloscope Star (✅ C# Complete), Beat Spinning (✅ C# Complete), Time Domain Scope (✅ C# Complete), Blit Operations (✅ C# Complete), Channel Shift (✅ C# Complete), Water Effects (✅ C# Complete), Particle Systems (✅ C# Complete), Transitions (✅ C# Complete), Picture Effects (✅ C# Complete), Rotated Blitting (✅ C# Complete), Rotating Star Patterns (✅ C# Complete) |
+| ✅ **LOCKED** | 22 | Superscope (✅ C# Complete), Dynamic Movement (✅ C# Complete), Blur/Convolution (✅ C# Complete), Color Fade (✅ C# Complete), Mirror (✅ C# Complete), Starfield (✅ C# Complete), Bump Mapping (✅ C# Complete), Oscilloscope Ring (✅ C# Complete), Beat Detection (✅ C# Complete), Spectrum Visualization (✅ C# Complete), Oscilloscope Star (✅ C# Complete), Beat Spinning (✅ C# Complete), Time Domain Scope (✅ C# Complete), Blit Operations (✅ C# Complete), Channel Shift (✅ C# Complete), Water Effects (✅ C# Complete), Particle Systems (✅ C# Complete), Transitions (✅ C# Complete), Picture Effects (✅ C# Complete), Rotated Blitting (✅ C# Complete), Rotating Star Patterns (✅ C# Complete), Scatter Effects (✅ C# Complete) |
 | 🔄 **IN PROGRESS** | 0 | Currently being analyzed |
 | ⏳ **PENDING** | 37+ | Awaiting analysis and documentation |
 | 🚫 **EXCLUDED** | 0 | Win32/GDI/DDraw specific code |
@@ -70,7 +70,7 @@
 - ✅ **r_picture.cpp** - Picture/image effects (✅ C# Complete)
 - ✅ **r_rotblit.cpp** - Rotated blitting (✅ C# Complete)
 - ✅ **r_rotstar.cpp** - Rotating star patterns (✅ C# Complete)
-- ⏳ **r_scat.cpp** - Scatter effects
+- ✅ **r_scat.cpp** - Scatter effects (✅ C# Complete)
 - ⏳ **r_stack.cpp** - Effect stacking
 - ⏳ **r_trans.cpp** - Transitions
 - ⏳ **r_transition.cpp** - Advanced transitions
@@ -242,5 +242,5 @@ Each effect document follows the established template:
 
 ---
 
-**Status:** 📋 **21 EFFECTS COMPLETED - PHASE 1E IN PROGRESS: UTILITY EFFECTS**  
-**Next:** Scatter Effects analysis (`r_scat.cpp`)
+**Status:** 📋 **22 EFFECTS COMPLETED - PHASE 1E IN PROGRESS: UTILITY EFFECTS**  
+**Next:** Effect Stacking analysis (`r_stack.cpp`)
