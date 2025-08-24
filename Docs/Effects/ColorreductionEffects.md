@@ -1,569 +1,518 @@
-# Colorreduction Effects
+# Color Reduction Effects
 
-## Overview
+The Color Reduction effect reduces the number of color levels in an image, creating a posterized or quantized appearance. It works by masking color values to specific bit depths, effectively reducing the color palette and creating distinct color bands.
 
-The Colorreduction effect creates sophisticated color palette reduction effects by limiting the number of available color levels for each RGB channel. It provides configurable color depth reduction from 8-bit (256 levels) down to 1-bit (2 levels), creating retro-style visual effects and reducing color complexity. The effect uses bitwise operations for efficient color processing and supports real-time level adjustment.
+## Effect Overview
 
-## C++ Source Analysis
-
-**Source File**: `r_colorreduction.cpp`
-
-**Key Features**:
-- **Configurable Color Levels**: 1-8 levels per RGB channel
-- **Bitwise Processing**: Efficient color depth reduction using bit operations
-- **Real-time Adjustment**: Dynamic level changes during runtime
-- **Assembly Optimization**: MMX-optimized pixel processing
-- **Memory Efficiency**: Direct framebuffer manipulation
-- **Simple Configuration**: Single parameter control for all channels
-
-**Core Parameters**:
-- `levels`: Number of color levels (1-8, where 8 = 256 levels, 1 = 2 levels)
-- `config`: Configuration structure containing level settings
+The Color Reduction effect works by:
+1. Calculating a bit mask based on the specified number of levels
+2. Applying the mask to each color channel (red, green, blue)
+3. Reducing the effective color depth from 8 bits per channel to a lower value
+4. Creating distinct color bands and posterized effects
 
 ## C# Implementation
 
 ```csharp
 using System;
 using System.Drawing;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+using PhoenixVisualizer.Core.Effects.Models;
+using PhoenixVisualizer.Core.Models;
 
-namespace PhoenixVisualizer.Effects
+namespace PhoenixVisualizer.Core.Effects.Nodes.AvsEffects
 {
-    /// <summary>
-    /// Colorreduction Effects Node - Creates sophisticated color palette reduction effects
-    /// </summary>
-    public class ColorreductionEffectsNode : AvsModuleNode
+    public class ColorReductionEffectsNode : BaseEffectNode
     {
         #region Properties
-
+        
         /// <summary>
-        /// Enable/disable the colorreduction effect
+        /// Whether the effect is enabled
         /// </summary>
         public bool Enabled { get; set; } = true;
-
+        
         /// <summary>
-        /// Number of color levels (1-8, where 8 = 256 levels, 1 = 2 levels)
+        /// Number of color levels (1-8, where 8 = no reduction, 1 = maximum reduction)
         /// </summary>
         public int ColorLevels { get; set; } = 7;
-
+        
         /// <summary>
-        /// Enable beat-reactive level changes
+        /// Effect intensity multiplier
         /// </summary>
-        public bool BeatReactive { get; set; } = false;
-
+        public float Intensity { get; set; } = 1.0f;
+        
         /// <summary>
-        /// Beat-reactive color levels
+        /// Whether to apply the effect on every frame or only on beats
         /// </summary>
-        public int BeatColorLevels { get; set; } = 3;
-
+        public bool BeatResponseOnly { get; set; } = false;
+        
         /// <summary>
-        /// Enable smooth transitions between levels
+        /// Minimum color value threshold for reduction
         /// </summary>
-        public bool SmoothTransitions { get; set; } = false;
-
+        public int MinThreshold { get; set; } = 0;
+        
         /// <summary>
-        /// Transition speed (frames per level change)
+        /// Maximum color value threshold for reduction
         /// </summary>
-        public int TransitionSpeed { get; set; } = 5;
-
+        public int MaxThreshold { get; set; } = 255;
+        
         #endregion
-
-        #region Constants
-
-        // Color level constants
-        private const int MinColorLevels = 1;
-        private const int MaxColorLevels = 8;
-        private const int DefaultColorLevels = 7;
-
-        // Beat-reactive constants
-        private const int MinBeatColorLevels = 1;
-        private const int MaxBeatColorLevels = 8;
-        private const int DefaultBeatColorLevels = 3;
-
-        // Transition constants
-        private const int MinTransitionSpeed = 1;
-        private const int MaxTransitionSpeed = 30;
-        private const int DefaultTransitionSpeed = 5;
-
-        // Color depth constants
-        private const int MaxColorDepth = 8;
-        private const int MaxColorValue = 0xFF;
-        private const int MaxColorValue32 = 0xFFFFFFFF;
-
+        
+        #region Private Fields
+        
+        /// <summary>
+        /// Pre-calculated bit mask for color reduction
+        /// </summary>
+        private int _bitMask;
+        
+        /// <summary>
+        /// Number of actual colors after reduction
+        /// </summary>
+        private int _actualColors;
+        
+        /// <summary>
+        /// Whether the bit mask needs recalculation
+        /// </summary>
+        private bool _maskDirty = true;
+        
         #endregion
-
-        #region Internal State
-
-        private int lastWidth, lastHeight;
-        private int currentColorLevels;
-        private int targetColorLevels;
-        private int transitionFrames;
-        private readonly object renderLock = new object();
-        private readonly Dictionary<int, int> colorMaskCache;
-
-        #endregion
-
+        
         #region Constructor
-
-        public ColorreductionEffectsNode()
+        
+        public ColorReductionEffectsNode()
         {
-            colorMaskCache = new Dictionary<int, int>();
-            ResetState();
+            ColorLevels = 7;
+            UpdateBitMask();
         }
-
+        
         #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Process the image with colorreduction effects
-        /// </summary>
-        public override ImageBuffer ProcessFrame(ImageBuffer input, AudioFeatures audioFeatures)
+        
+        #region Processing Methods
+        
+        public override void ProcessFrame(ImageBuffer imageBuffer, AudioFeatures audioFeatures)
         {
-            if (!Enabled || input == null)
-                return input;
-
-            lock (renderLock)
+            if (!Enabled || imageBuffer == null) return;
+            
+            // Skip processing if beat response only and no beat detected
+            if (BeatResponseOnly && !audioFeatures.IsBeat) return;
+            
+            // Update bit mask if needed
+            if (_maskDirty)
             {
-                // Update dimensions if changed
-                if (lastWidth != input.Width || lastHeight != input.Height)
-                {
-                    lastWidth = input.Width;
-                    lastHeight = input.Height;
-                    ResetState();
-                }
-
-                // Update color levels
-                UpdateColorLevels(audioFeatures);
-
-                // Create output buffer
-                var output = new ImageBuffer(input.Width, input.Height);
-                Array.Copy(input.Pixels, output.Pixels, input.Pixels.Length);
-
-                // Apply colorreduction effects
-                ApplyColorreductionEffects(output);
-
-                return output;
+                UpdateBitMask();
             }
+            
+            ApplyColorReduction(imageBuffer);
         }
-
+        
         /// <summary>
-        /// Reset internal state
+        /// Update the bit mask based on current color levels
         /// </summary>
-        public override void Reset()
+        private void UpdateBitMask()
         {
-            lock (renderLock)
+            if (ColorLevels < 1 || ColorLevels > 8)
             {
-                ResetState();
+                ColorLevels = Math.Max(1, Math.Min(8, ColorLevels));
             }
+            
+            // Calculate bit mask: 8 - ColorLevels gives us how many bits to mask
+            int bitsToMask = 8 - ColorLevels;
+            _bitMask = 0xFF;
+            
+            // Shift and mask to create the appropriate bit pattern
+            for (int i = 0; i < bitsToMask; i++)
+            {
+                _bitMask = (_bitMask << 1) & 0xFF;
+            }
+            
+            // Calculate actual number of colors after reduction
+            _actualColors = 1 << ColorLevels;
+            
+            _maskDirty = false;
         }
-
-        #endregion
-
-        #region Private Methods
-
+        
         /// <summary>
-        /// Reset internal state variables
+        /// Apply color reduction to the image buffer
         /// </summary>
-        private void ResetState()
+        private void ApplyColorReduction(ImageBuffer imageBuffer)
         {
-            currentColorLevels = ColorLevels;
-            targetColorLevels = ColorLevels;
-            transitionFrames = 0;
-        }
-
-        /// <summary>
-        /// Update color levels based on beat and transitions
-        /// </summary>
-        private void UpdateColorLevels(AudioFeatures audioFeatures)
-        {
-            // Determine target color levels
-            if (BeatReactive && audioFeatures.IsBeat)
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+            
+            // Create a 32-bit mask for all channels
+            int fullMask = _bitMask | (_bitMask << 8) | (_bitMask << 16);
+            
+            for (int y = 0; y < height; y++)
             {
-                targetColorLevels = BeatColorLevels;
-            }
-            else
-            {
-                targetColorLevels = ColorLevels;
-            }
-
-            // Handle smooth transitions
-            if (SmoothTransitions && currentColorLevels != targetColorLevels)
-            {
-                if (transitionFrames <= 0)
-                {
-                    // Start new transition
-                    transitionFrames = TransitionSpeed;
-                }
-
-                if (transitionFrames > 0)
-                {
-                    // Calculate transition step
-                    int levelDiff = targetColorLevels - currentColorLevels;
-                    int step = Math.Sign(levelDiff);
-                    
-                    if (Math.Abs(levelDiff) <= 1)
-                    {
-                        // Final step
-                        currentColorLevels = targetColorLevels;
-                        transitionFrames = 0;
-                    }
-                    else
-                    {
-                        // Intermediate step
-                        currentColorLevels += step;
-                        transitionFrames--;
-                    }
-                }
-            }
-            else
-            {
-                // Direct assignment without transitions
-                currentColorLevels = targetColorLevels;
-            }
-        }
-
-        /// <summary>
-        /// Apply colorreduction effects to the image
-        /// </summary>
-        private void ApplyColorreductionEffects(ImageBuffer output)
-        {
-            int width = output.Width;
-            int height = output.Height;
-
-            // Calculate color mask for current levels
-            int colorMask = CalculateColorMask(currentColorLevels);
-
-            // Process pixels in parallel for better performance
-            Parallel.For(0, height, y =>
-            {
-                int rowOffset = y * width;
                 for (int x = 0; x < width; x++)
                 {
-                    int pixelIndex = rowOffset + x;
-                    
-                    // Apply color mask to reduce color depth
-                    output.Pixels[pixelIndex] = ApplyColorMask(output.Pixels[pixelIndex], colorMask);
+                    Color pixel = imageBuffer.GetPixel(x, y);
+                    Color reducedPixel = ReducePixelColor(pixel, fullMask);
+                    imageBuffer.SetPixel(x, y, reducedPixel);
                 }
-            });
-        }
-
-        /// <summary>
-        /// Calculate color mask for specified number of levels
-        /// </summary>
-        private int CalculateColorMask(int levels)
-        {
-            // Check cache first
-            if (colorMaskCache.TryGetValue(levels, out int cachedMask))
-            {
-                return cachedMask;
             }
-
-            // Calculate mask using the same algorithm as C++
-            int shiftAmount = MaxColorDepth - levels;
-            int mask = MaxColorValue;
-            
-            // Apply bit shifting to create mask
-            while (shiftAmount > 0)
-            {
-                mask = (mask << 1) & MaxColorValue;
-                shiftAmount--;
-            }
-
-            // Create 32-bit mask for all channels
-            int fullMask = mask | (mask << 8) | (mask << 16);
-
-            // Cache the result
-            colorMaskCache[levels] = fullMask;
-            
-            return fullMask;
         }
-
+        
         /// <summary>
-        /// Apply color mask to a pixel
+        /// Reduce the color of a single pixel using the bit mask
         /// </summary>
-        private int ApplyColorMask(int pixel, int mask)
+        private Color ReducePixelColor(Color pixel, int fullMask)
         {
-            // Apply bitwise AND operation to reduce color depth
-            return pixel & mask;
-        }
-
-        /// <summary>
-        /// Get the actual number of colors available with current levels
-        /// </summary>
-        public int GetAvailableColors()
-        {
-            int levels = currentColorLevels;
-            int colors = 1;
+            // Apply the bit mask to each color channel
+            int r = pixel.R & _bitMask;
+            int g = pixel.G & _bitMask;
+            int b = pixel.B & _bitMask;
             
-            // Calculate 2^levels for each channel
-            for (int i = 0; i < levels; i++)
+            // Apply intensity scaling
+            if (Intensity != 1.0f)
             {
-                colors *= 2;
+                r = (int)(r * Intensity);
+                g = (int)(g * Intensity);
+                b = (int)(b * Intensity);
             }
             
-            return colors;
+            // Apply threshold limits
+            r = Math.Max(MinThreshold, Math.Min(MaxThreshold, r));
+            g = Math.Max(MinThreshold, Math.Min(MaxThreshold, g));
+            b = Math.Max(MinThreshold, Math.Min(MaxThreshold, b));
+            
+            return Color.FromArgb(pixel.A, r, g, b);
         }
-
-        /// <summary>
-        /// Get color depth in bits for current levels
-        /// </summary>
-        public int GetColorDepth()
-        {
-            return currentColorLevels;
-        }
-
+        
         #endregion
-
-        #region Configuration
-
-        /// <summary>
-        /// Validate and clamp property values
-        /// </summary>
-        public override void ValidateProperties()
+        
+        #region Configuration Validation
+        
+        public override bool ValidateConfiguration()
         {
-            ColorLevels = Math.Clamp(ColorLevels, MinColorLevels, MaxColorLevels);
-            BeatColorLevels = Math.Clamp(BeatColorLevels, MinBeatColorLevels, MaxBeatColorLevels);
-            TransitionSpeed = Math.Clamp(TransitionSpeed, MinTransitionSpeed, MaxTransitionSpeed);
+            if (ColorLevels < 1 || ColorLevels > 8) return false;
+            if (MinThreshold < 0 || MinThreshold > 255) return false;
+            if (MaxThreshold < 0 || MaxThreshold > 255) return false;
+            if (MinThreshold > MaxThreshold) return false;
+            if (Intensity < 0.0f || Intensity > 10.0f) return false;
+            
+            return true;
         }
-
-        /// <summary>
-        /// Get a summary of current settings
-        /// </summary>
-        public override string GetSettingsSummary()
-        {
-            string enabledText = Enabled ? "Enabled" : "Disabled";
-            string levelsText = $"Levels: {currentColorLevels} ({GetAvailableColors()} colors)";
-            string beatText = BeatReactive ? "Beat-Reactive" : "Static";
-            string smoothText = SmoothTransitions ? "Smooth" : "Instant";
-            string transitionText = SmoothTransitions ? $"Speed: {TransitionSpeed}" : "";
-
-            return $"Colorreduction: {enabledText}, {levelsText}, {beatText}, {smoothText} {transitionText}".Trim();
-        }
-
+        
         #endregion
-
-        #region Advanced Features
-
+        
+        #region Utility Methods
+        
         /// <summary>
-        /// Get color palette information for current levels
+        /// Get the current number of actual colors after reduction
         /// </summary>
-        public ColorPaletteInfo GetColorPaletteInfo()
+        public int GetActualColorCount()
         {
-            int levels = currentColorLevels;
-            int colorsPerChannel = GetAvailableColors();
-            int totalColors = colorsPerChannel * colorsPerChannel * colorsPerChannel;
-
-            return new ColorPaletteInfo
+            if (_maskDirty)
             {
-                Levels = levels,
-                ColorsPerChannel = colorsPerChannel,
-                TotalColors = totalColors,
-                ColorDepth = levels,
-                MaxValue = (1 << levels) - 1
-            };
+                UpdateBitMask();
+            }
+            return _actualColors;
         }
-
+        
         /// <summary>
-        /// Create a custom color palette based on current levels
+        /// Get the current bit mask value
         /// </summary>
-        public Color[] CreateColorPalette()
+        public int GetBitMask()
         {
-            int levels = currentColorLevels;
-            int colorsPerChannel = GetAvailableColors();
-            int step = MaxColorValue / (colorsPerChannel - 1);
-
-            var palette = new List<Color>();
-
-            for (int r = 0; r < colorsPerChannel; r++)
+            if (_maskDirty)
             {
-                for (int g = 0; g < colorsPerChannel; g++)
+                UpdateBitMask();
+            }
+            return _bitMask;
+        }
+        
+        /// <summary>
+        /// Set color levels and mark mask as dirty for recalculation
+        /// </summary>
+        public void SetColorLevels(int levels)
+        {
+            ColorLevels = levels;
+            _maskDirty = true;
+        }
+        
+        /// <summary>
+        /// Create a maximum reduction effect (1 color level)
+        /// </summary>
+        public void SetMaximumReduction()
+        {
+            ColorLevels = 1;
+            _maskDirty = true;
+        }
+        
+        /// <summary>
+        /// Create a moderate reduction effect (4 color levels)
+        /// </summary>
+        public void SetModerateReduction()
+        {
+            ColorLevels = 4;
+            _maskDirty = true;
+        }
+        
+        /// <summary>
+        /// Create a minimal reduction effect (6 color levels)
+        /// </summary>
+        public void SetMinimalReduction()
+        {
+            ColorLevels = 6;
+            _maskDirty = true;
+        }
+        
+        /// <summary>
+        /// Disable color reduction (8 color levels)
+        /// </summary>
+        public void DisableReduction()
+        {
+            ColorLevels = 8;
+            _maskDirty = true;
+        }
+        
+        /// <summary>
+        /// Create a high contrast effect with threshold limits
+        /// </summary>
+        public void SetHighContrastMode()
+        {
+            MinThreshold = 0;
+            MaxThreshold = 255;
+            Intensity = 1.5f;
+        }
+        
+        /// <summary>
+        /// Create a subtle posterization effect
+        /// </summary>
+        public void SetPosterizationMode()
+        {
+            ColorLevels = 5;
+            MinThreshold = 32;
+            MaxThreshold = 223;
+            Intensity = 1.0f;
+        }
+        
+        /// <summary>
+        /// Create a vintage film look
+        /// </summary>
+        public void SetVintageMode()
+        {
+            ColorLevels = 3;
+            MinThreshold = 16;
+            MaxThreshold = 239;
+            Intensity = 0.8f;
+        }
+        
+        #endregion
+        
+        #region Advanced Methods
+        
+        /// <summary>
+        /// Apply adaptive color reduction based on image content
+        /// </summary>
+        public void ApplyAdaptiveReduction(ImageBuffer imageBuffer)
+        {
+            if (imageBuffer == null) return;
+            
+            // Analyze image to determine optimal color levels
+            int optimalLevels = AnalyzeImageForOptimalLevels(imageBuffer);
+            ColorLevels = optimalLevels;
+            _maskDirty = true;
+            
+            // Apply the reduction
+            ProcessFrame(imageBuffer, null);
+        }
+        
+        /// <summary>
+        /// Analyze image to find optimal color reduction levels
+        /// </summary>
+        private int AnalyzeImageForOptimalLevels(ImageBuffer imageBuffer)
+        {
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+            
+            // Count unique colors
+            HashSet<Color> uniqueColors = new HashSet<Color>();
+            
+            for (int y = 0; y < height; y += 4) // Sample every 4th pixel for performance
+            {
+                for (int x = 0; x < width; x += 4)
                 {
-                    for (int b = 0; b < colorsPerChannel; b++)
+                    uniqueColors.Add(imageBuffer.GetPixel(x, y));
+                }
+            }
+            
+            int uniqueColorCount = uniqueColors.Count;
+            
+            // Determine optimal levels based on unique color count
+            if (uniqueColorCount < 16) return 4;
+            if (uniqueColorCount < 64) return 6;
+            if (uniqueColorCount < 256) return 7;
+            
+            return 8; // No reduction needed
+        }
+        
+        /// <summary>
+        /// Create a custom color palette based on reduced levels
+        /// </summary>
+        public Color[] GenerateCustomPalette()
+        {
+            if (_maskDirty)
+            {
+                UpdateBitMask();
+            }
+            
+            Color[] palette = new Color[_actualColors];
+            int step = 256 / _actualColors;
+            
+            for (int i = 0; i < _actualColors; i++)
+            {
+                int value = i * step;
+                // Apply the bit mask to ensure consistency
+                value = value & _bitMask;
+                palette[i] = Color.FromArgb(255, value, value, value);
+            }
+            
+            return palette;
+        }
+        
+        /// <summary>
+        /// Apply color reduction with dithering for smoother transitions
+        /// </summary>
+        public void ApplyDitheredReduction(ImageBuffer imageBuffer)
+        {
+            if (imageBuffer == null) return;
+            
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+            
+            // Floyd-Steinberg dithering matrix
+            float[,] ditherMatrix = {
+                { 0, 0, 7.0f/16.0f },
+                { 3.0f/16.0f, 5.0f/16.0f, 1.0f/16.0f }
+            };
+            
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Color pixel = imageBuffer.GetPixel(x, y);
+                    Color reducedPixel = ReducePixelColor(pixel, 0);
+                    
+                    // Calculate quantization error
+                    int errorR = pixel.R - reducedPixel.R;
+                    int errorG = pixel.G - reducedPixel.G;
+                    int errorB = pixel.B - reducedPixel.B;
+                    
+                    // Distribute error to neighboring pixels
+                    DistributeDitherError(imageBuffer, x, y, width, height, errorR, errorG, errorB, ditherMatrix);
+                    
+                    imageBuffer.SetPixel(x, y, reducedPixel);
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Distribute dithering error to neighboring pixels
+        /// </summary>
+        private void DistributeDitherError(ImageBuffer imageBuffer, int x, int y, int width, int height, 
+            int errorR, int errorG, int errorB, float[,] ditherMatrix)
+        {
+            for (int dy = 0; dy < 2; dy++)
+            {
+                for (int dx = -1; dx < 2; dx++)
+                {
+                    int nx = x + dx;
+                    int ny = y + dy;
+                    
+                    if (nx >= 0 && nx < width && ny < height)
                     {
-                        int red = Math.Clamp(r * step, 0, MaxColorValue);
-                        int green = Math.Clamp(g * step, 0, MaxColorValue);
-                        int blue = Math.Clamp(b * step, 0, MaxColorValue);
-
-                        // Apply color mask to ensure consistency
-                        int mask = CalculateColorMask(levels);
-                        red = (red & (mask & 0xFF));
-                        green = (green & ((mask >> 8) & 0xFF));
-                        blue = (blue & ((mask >> 16) & 0xFF));
-
-                        palette.Add(Color.FromArgb(red, green, blue));
+                        float factor = ditherMatrix[dy, dx + 1];
+                        if (factor > 0)
+                        {
+                            Color neighbor = imageBuffer.GetPixel(nx, ny);
+                            int newR = (int)(neighbor.R + errorR * factor);
+                            int newG = (int)(neighbor.G + errorG * factor);
+                            int newB = (int)(neighbor.B + errorB * factor);
+                            
+                            newR = Math.Max(0, Math.Min(255, newR));
+                            newG = Math.Max(0, Math.Min(255, newG));
+                            newB = Math.Max(0, Math.Min(255, newB));
+                            
+                            imageBuffer.SetPixel(nx, ny, Color.FromArgb(neighbor.A, newR, newG, newB));
+                        }
                     }
                 }
             }
-
-            return palette.ToArray();
         }
-
+        
         #endregion
     }
-
-    /// <summary>
-    /// Color palette information structure
-    /// </summary>
-    public struct ColorPaletteInfo
-    {
-        public int Levels { get; set; }
-        public int ColorsPerChannel { get; set; }
-        public int TotalColors { get; set; }
-        public int ColorDepth { get; set; }
-        public int MaxValue { get; set; }
-    }
 }
 ```
 
-## Key Features
+## Effect Properties
 
-### Color Level Control
-- **Configurable Levels**: 1-8 levels per RGB channel
-- **Dynamic Adjustment**: Real-time level changes
-- **Beat Integration**: Beat-reactive level switching
-- **Smooth Transitions**: Gradual level changes over time
+### Core Properties
+- **Enabled**: Toggle the effect on/off
+- **ColorLevels**: Number of color levels (1-8) where lower values create more dramatic reduction
+- **Intensity**: Overall effect strength multiplier
+- **BeatResponseOnly**: Apply effect only when beats are detected
 
-### Color Depth Reduction
-- **Bitwise Processing**: Efficient color depth reduction
-- **Channel Consistency**: Uniform reduction across RGB channels
-- **Memory Optimization**: Direct pixel manipulation
-- **Cache System**: Pre-calculated color masks
+### Threshold Properties
+- **MinThreshold**: Minimum color value after reduction (0-255)
+- **MaxThreshold**: Maximum color value after reduction (0-255)
 
-### Performance Features
-- **Parallel Processing**: Multi-threaded pixel processing
-- **Optimized Algorithms**: Efficient bitwise operations
-- **Memory Management**: Minimal allocation during rendering
-- **Scalable Performance**: Automatic thread distribution
+### Internal Properties
+- **BitMask**: Pre-calculated bit mask for efficient color reduction
+- **ActualColors**: Number of distinct colors after reduction
 
-### Advanced Capabilities
-- **Color Palette Generation**: Dynamic palette creation
-- **Palette Information**: Detailed color statistics
-- **Custom Masks**: Configurable color reduction patterns
-- **Real-time Analysis**: Live color depth monitoring
+## Color Level System
 
-## Usage Examples
+The effect uses a sophisticated bit-masking system:
 
+- **Level 8**: No reduction (256 colors per channel)
+- **Level 7**: 128 colors per channel (1 bit masked)
+- **Level 6**: 64 colors per channel (2 bits masked)
+- **Level 5**: 32 colors per channel (3 bits masked)
+- **Level 4**: 16 colors per channel (4 bits masked)
+- **Level 3**: 8 colors per channel (5 bits masked)
+- **Level 2**: 4 colors per channel (6 bits masked)
+- **Level 1**: 2 colors per channel (7 bits masked)
+
+## Bit Masking Algorithm
+
+The effect calculates a bit mask using the formula:
 ```csharp
-// Create a retro-style colorreduction effect
-var colorreductionNode = new ColorreductionEffectsNode
+int bitsToMask = 8 - ColorLevels;
+int bitMask = 0xFF;
+for (int i = 0; i < bitsToMask; i++)
 {
-    ColorLevels = 4,           // 16 colors per channel
-    BeatReactive = true,
-    BeatColorLevels = 2,       // 4 colors per channel on beat
-    SmoothTransitions = true,
-    TransitionSpeed = 10
-};
-
-// Apply to image
-var reducedImage = colorreductionNode.ProcessFrame(inputImage, audioFeatures);
-
-// Get palette information
-var paletteInfo = colorreductionNode.GetColorPaletteInfo();
-Console.WriteLine($"Available colors: {paletteInfo.TotalColors}");
-
-// Create custom color palette
-var palette = colorreductionNode.CreateColorPalette();
-```
-
-## Technical Details
-
-### Color Mask Calculation
-The effect calculates color masks using bitwise operations:
-
-```csharp
-private int CalculateColorMask(int levels)
-{
-    int shiftAmount = MaxColorDepth - levels;
-    int mask = MaxColorValue;
-    
-    // Apply bit shifting to create mask
-    while (shiftAmount > 0)
-    {
-        mask = (mask << 1) & MaxColorValue;
-        shiftAmount--;
-    }
-    
-    // Create 32-bit mask for all channels
-    return mask | (mask << 8) | (mask << 16);
+    bitMask = (bitMask << 1) & 0xFF;
 }
 ```
 
-### Color Reduction Algorithm
-Efficient pixel processing using bitwise AND operations:
+This creates a mask that preserves the most significant bits while zeroing out the least significant bits, effectively reducing color precision.
 
-```csharp
-private int ApplyColorMask(int pixel, int mask)
-{
-    // Apply bitwise AND operation to reduce color depth
-    return pixel & mask;
-}
-```
+## Performance Optimizations
 
-### Smooth Transitions
-Gradual level changes for smooth visual effects:
+- **Pre-calculated Masks**: Bit masks are computed once and reused
+- **Efficient Pixel Processing**: Processes pixels using optimized bitwise operations
+- **Lazy Evaluation**: Masks are only recalculated when configuration changes
+- **Sampling for Analysis**: Adaptive reduction uses pixel sampling for performance
 
-```csharp
-if (transitionFrames > 0)
-{
-    int levelDiff = targetColorLevels - currentColorLevels;
-    int step = Math.Sign(levelDiff);
-    
-    if (Math.Abs(levelDiff) <= 1)
-    {
-        currentColorLevels = targetColorLevels;
-        transitionFrames = 0;
-    }
-    else
-    {
-        currentColorLevels += step;
-        transitionFrames--;
-    }
-}
-```
+## Use Cases
 
-### Color Palette Generation
-Dynamic palette creation based on current levels:
+- **Posterization**: Create artistic poster-like effects with distinct color bands
+- **Color Quantization**: Reduce color complexity for retro or vintage looks
+- **Performance Optimization**: Reduce color depth for faster processing
+- **Artistic Effects**: Create stylized, limited-palette visuals
+- **Memory Reduction**: Reduce memory usage in embedded or mobile applications
 
-```csharp
-public Color[] CreateColorPalette()
-{
-    int colorsPerChannel = GetAvailableColors();
-    int step = MaxColorValue / (colorsPerChannel - 1);
-    
-    // Generate all possible color combinations
-    for (int r = 0; r < colorsPerChannel; r++)
-    {
-        for (int g = 0; g < colorsPerChannel; g++)
-        {
-            for (int b = 0; b < colorsPerChannel; b++)
-            {
-                // Create color with proper masking
-                int red = (r * step) & (mask & 0xFF);
-                int green = (g * step) & ((mask >> 8) & 0xFF);
-                int blue = (b * step) & ((mask >> 16) & 0xFF);
-                
-                palette.Add(Color.FromArgb(red, green, blue));
-            }
-        }
-    }
-}
-```
+## Advanced Features
 
-### Performance Optimization
-Parallel processing for optimal performance:
+### Adaptive Reduction
+The effect can automatically analyze image content to determine optimal color levels, ensuring the best balance between visual quality and color reduction.
 
-```csharp
-Parallel.For(0, height, y =>
-{
-    int rowOffset = y * width;
-    for (int x = 0; x < width; x++)
-    {
-        int pixelIndex = rowOffset + x;
-        output.Pixels[pixelIndex] = ApplyColorMask(output.Pixels[pixelIndex], colorMask);
-    }
-});
-```
+### Dithering Support
+Optional Floyd-Steinberg dithering creates smoother transitions between color bands, reducing the harshness of color reduction.
 
-This implementation provides a complete, production-ready colorreduction system that faithfully reproduces the original C++ functionality while leveraging C# features for improved maintainability and performance.
+### Custom Palettes
+Generate custom color palettes based on the reduced color levels, useful for creating consistent visual themes.
+
+### Preset Modes
+Pre-configured settings for common effects like vintage film, high contrast, and subtle posterization.

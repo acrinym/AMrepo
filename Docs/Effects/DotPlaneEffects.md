@@ -1,660 +1,807 @@
-# Dot Plane Effects (Render / Dot Plane)
+# Dot Plane Effects
 
-## Overview
+The Dot Plane effect creates a 3D plane of colored dots that rotates and responds to audio input. It generates a dynamic surface that can be tilted, rotated, and animated based on music, creating a sophisticated 3D visualization effect.
 
-The **Dot Plane Effects** system is a sophisticated 3D plane-based dot rendering engine that creates dynamic, rotating plane visualizations with advanced color interpolation and audio reactivity. It implements a complex 3D transformation pipeline with matrix operations, plane-based dot management, and intelligent color blending. This effect creates mesmerizing 3D plane visualizations with dots that respond to audio data and rotate in 3D space with realistic perspective projection.
+## Effect Overview
 
-## Source Analysis
-
-### Core Architecture (`r_dotpln.cpp`)
-
-The effect is implemented as a C++ class `C_DotPlaneClass` that inherits from `C_RBASE`. It provides a comprehensive 3D plane-based dot rendering system with matrix transformations, plane management, color interpolation tables, and advanced audio-reactive behavior for creating dynamic 3D plane visualizations.
-
-### Key Components
-
-#### 3D Transformation System
-Advanced 3D matrix operations:
-- **Matrix Rotation**: Dual-axis rotation with configurable speeds
-- **Matrix Translation**: 3D positioning and depth management
-- **Matrix Multiplication**: Complex transformation composition
-- **Perspective Projection**: Realistic 3D to 2D projection with depth scaling
-
-#### Plane Management Engine
-Sophisticated plane-based dot system:
-- **Plane Arrays**: 64x64 plane arrays for amplitude, velocity, and color data
-- **Plane Physics**: Velocity-based plane movement and decay simulation
-- **Audio Integration**: Real-time audio data integration into plane generation
-- **Performance Optimization**: Efficient plane management and rendering
-
-#### Color Interpolation System
-Advanced color blending algorithms:
-- **Color Tables**: 64-step interpolation between 5 base colors
-- **Smooth Transitions**: Gradual color changes across plane lifecycles
-- **Audio Reactivity**: Dynamic color intensity based on audio data
-- **Beat Enhancement**: Color amplification during beat events
-
-#### Audio Integration Engine
-Real-time audio processing:
-- **Spectrum Analysis**: Direct processing of audio spectrum data
-- **Beat Detection**: Beat-reactive plane generation and enhancement
-- **Audio Scaling**: Intelligent audio data scaling and normalization
-- **Dynamic Response**: Real-time adjustment of plane behavior
-
-### Parameters
-
-| Parameter | Type | Range | Default | Description |
-|-----------|------|-------|---------|-------------|
-| `rotvel` | int | -50 to 51 | 16 | Rotation velocity (negative = reverse) |
-| `angle` | int | -90 to 91 | -20 | Rotation angle in degrees |
-| `r` | float | 0.0 to 11.25 | 0.5 | Base rotation radius |
-| `colors[5]` | Color[] | RGB values | Predefined | 5 base colors for interpolation |
-
-### Color Interpolation
-
-| Color Index | Default RGB | Description |
-|-------------|-------------|-------------|
-| **Color 0** | (24, 107, 28) | Dark green base |
-| **Color 1** | (35, 10, 255) | Blue transition |
-| **Color 2** | (116, 29, 42) | Red-brown transition |
-| **Color 3** | (217, 54, 144) | Pink transition |
-| **Color 4** | (255, 136, 107) | Light orange peak |
-
-### Plane Configuration
-
-| Parameter | Value | Description |
-|-----------|-------|-------------|
-| **Plane Width** | 64 | Number of dots per plane row |
-| **Plane Height** | 64 | Number of plane rows |
-| **Plane Depth** | 350.0f | 3D depth range for perspective |
-| **Plane Scale** | 64.0f | Height scaling factor |
+The Dot Plane effect works by:
+1. Creating a 64x64 grid of dots in 3D space
+2. Applying 3D transformations including rotation and perspective projection
+3. Using audio input to control dot heights and colors
+4. Implementing physics-based movement with velocity and damping
+5. Rendering the plane with depth-based perspective and blending
 
 ## C# Implementation
 
 ```csharp
-public class DotPlaneEffectsNode : AvsModuleNode
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Numerics;
+using PhoenixVisualizer.Core.Effects.Models;
+using PhoenixVisualizer.Core.Models;
+
+namespace PhoenixVisualizer.Core.Effects.Nodes.AvsEffects
 {
-    public int RotationVelocity { get; set; } = 16;
-    public int RotationAngle { get; set; } = -20;
-    public float BaseRadius { get; set; } = 0.5f;
-    public Color[] BaseColors { get; set; } = new Color[5];
-    
-    // Internal state
-    private float[,] amplitudeTable;
-    private float[,] velocityTable;
-    private int[,] colorTable;
-    private int[] colorInterpolationTable;
-    private float currentRotation;
-    private int lastWidth, lastHeight;
-    private readonly object renderLock = new object();
-    
-    // Performance optimization
-    private const int PlaneWidth = 64;
-    private const int PlaneHeight = 64;
-    private const int ColorTableSize = 64;
-    private const int ColorInterpolationSteps = 16;
-    private const int MaxRotationVelocity = 51;
-    private const int MinRotationVelocity = -50;
-    private const int MaxRotationAngle = 91;
-    private const int MinRotationAngle = -90;
-    private const float MaxBaseRadius = 11.25f;
-    private const float MinBaseRadius = 0.0f;
-    private const float PlaneDepth = 350.0f;
-    private const float PlaneScale = 64.0f;
-    
-    public DotPlaneEffectsNode()
+    public class DotPlaneEffectsNode : BaseEffectNode
     {
-        // Initialize default colors (BGR format from original)
-        BaseColors[0] = Color.FromRgb(28, 107, 24);   // Dark green
-        BaseColors[1] = Color.FromRgb(255, 10, 35);   // Blue
-        BaseColors[2] = Color.FromRgb(42, 29, 116);   // Red-brown
-        BaseColors[3] = Color.FromRgb(144, 54, 217);  // Pink
-        BaseColors[4] = Color.FromRgb(107, 136, 255); // Light orange
+        #region Constants
         
-        amplitudeTable = new float[PlaneHeight, PlaneWidth];
-        velocityTable = new float[PlaneHeight, PlaneWidth];
-        colorTable = new int[PlaneHeight, PlaneWidth];
-        colorInterpolationTable = new int[ColorTableSize];
-        currentRotation = 0.0f;
-        lastWidth = lastHeight = 0;
+        /// <summary>
+        /// Width and height of the dot plane grid
+        /// </summary>
+        private const int NUM_WIDTH = 64;
         
-        InitializeColorTable();
-        InitializePlaneTables();
-    }
-    
-    public override void Process(FrameContext ctx, ImageBuffer input, ImageBuffer output)
-    {
-        if (ctx.Width <= 0 || ctx.Height <= 0) return;
+        #endregion
         
-        lock (renderLock)
+        #region Properties
+        
+        /// <summary>
+        /// Whether the effect is enabled
+        /// </summary>
+        public bool Enabled { get; set; } = true;
+        
+        /// <summary>
+        /// Rotation velocity of the plane (degrees per frame)
+        /// </summary>
+        public float RotationVelocity { get; set; } = 16.0f;
+        
+        /// <summary>
+        /// Angle of the plane tilt (-90 to 90 degrees)
+        /// </summary>
+        public float Angle { get; set; } = -20.0f;
+        
+        /// <summary>
+        /// Base radius of the plane
+        /// </summary>
+        public float BaseRadius { get; set; } = 1.0f;
+        
+        /// <summary>
+        /// Effect intensity multiplier
+        /// </summary>
+        public float Intensity { get; set; } = 1.0f;
+        
+        /// <summary>
+        /// Whether to respond to beat detection
+        /// </summary>
+        public bool BeatResponse { get; set; } = true;
+        
+        /// <summary>
+        /// Audio sensitivity for dot height control
+        /// </summary>
+        public float AudioSensitivity { get; set; } = 1.0f;
+        
+        /// <summary>
+        /// Physics damping factor for dot movement
+        /// </summary>
+        public float DampingFactor { get; set; } = 0.15f;
+        
+        /// <summary>
+        /// Velocity update rate for smooth movement
+        /// </summary>
+        public float VelocityUpdateRate { get; set; } = 90.0f;
+        
+        /// <summary>
+        /// Plane height offset in 3D space
+        /// </summary>
+        public float HeightOffset { get; set; } = -20.0f;
+        
+        /// <summary>
+        /// Plane depth in 3D space
+        /// </summary>
+        public float Depth { get; set; } = 400.0f;
+        
+        /// <summary>
+        /// Plane width in 3D space
+        /// </summary>
+        public float PlaneWidth { get; set; } = 350.0f;
+        
+        #endregion
+        
+        #region Private Fields
+        
+        /// <summary>
+        /// Current rotation angle in degrees
+        /// </summary>
+        private float _currentRotation = 0.0f;
+        
+        /// <summary>
+        /// 3D transformation matrix
+        /// </summary>
+        private Matrix4x4 _transformationMatrix;
+        
+        /// <summary>
+        /// Array of dot heights for each grid position
+        /// </summary>
+        private float[,] _heightTable;
+        
+        /// <summary>
+        /// Array of dot velocities for each grid position
+        /// </summary>
+        private float[,] _velocityTable;
+        
+        /// <summary>
+        /// Array of dot colors for each grid position
+        /// </summary>
+        private int[,] _colorTable;
+        
+        /// <summary>
+        /// Pre-calculated color interpolation table
+        /// </summary>
+        private int[] _colorInterpolationTable;
+        
+        /// <summary>
+        /// Current width and height
+        /// </summary>
+        private int _currentWidth, _currentHeight;
+        
+        /// <summary>
+        /// Whether the effect has been initialized
+        /// </summary>
+        private bool _isInitialized = false;
+        
+        /// <summary>
+        /// Frame counter for timing
+        /// </summary>
+        private int _frameCounter = 0;
+        
+        #endregion
+        
+        #region Constructor
+        
+        public DotPlaneEffectsNode()
         {
-            // Update buffers if dimensions changed
-            UpdateBuffers(ctx);
+            _heightTable = new float[NUM_WIDTH, NUM_WIDTH];
+            _velocityTable = new float[NUM_WIDTH, NUM_WIDTH];
+            _colorTable = new int[NUM_WIDTH, NUM_WIDTH];
+            _colorInterpolationTable = new int[64];
             
-            // Create transformation matrices
-            float[,] rotationMatrix = CreateRotationMatrix(2, currentRotation);
-            float[,] angleMatrix = CreateRotationMatrix(1, RotationAngle);
-            float[,] translationMatrix = CreateTranslationMatrix(0.0f, -20.0f, 400.0f);
+            // Set default colors (BGR format like original)
+            SetDefaultColors();
             
-            // Combine matrices
-            float[,] combinedMatrix = MatrixMultiply(rotationMatrix, angleMatrix);
-            combinedMatrix = MatrixMultiply(combinedMatrix, translationMatrix);
+            // Initialize tables
+            InitializeTables();
+        }
+        
+        #endregion
+        
+        #region Initialization Methods
+        
+        /// <summary>
+        /// Set default colors for the plane
+        /// </summary>
+        private void SetDefaultColors()
+        {
+            // Default colors in BGR format (reverse of RGB)
+            DefaultColors = new Color[]
+            {
+                Color.FromArgb(28, 107, 24),   // Green
+                Color.FromArgb(255, 10, 35),    // Blue
+                Color.FromArgb(42, 29, 116),    // Red
+                Color.FromArgb(144, 54, 217),   // Purple
+                Color.FromArgb(107, 136, 255)   // Orange
+            };
+        }
+        
+        /// <summary>
+        /// Initialize the color interpolation table
+        /// </summary>
+        private void InitializeColorTable()
+        {
+            for (int t = 0; t < 4; t++)
+            {
+                Color currentColor = DefaultColors[t];
+                Color nextColor = DefaultColors[t + 1];
+                
+                // Calculate color deltas for interpolation
+                int deltaR = (nextColor.R - currentColor.R) / 16;
+                int deltaG = (nextColor.G - currentColor.G) / 16;
+                int deltaB = (nextColor.B - currentColor.B) / 16;
+                
+                for (int x = 0; x < 16; x++)
+                {
+                    int r = Math.Max(0, Math.Min(255, currentColor.R + (deltaR * x)));
+                    int g = Math.Max(0, Math.Min(255, currentColor.G + (deltaG * x)));
+                    int b = Math.Max(0, Math.Min(255, currentColor.B + (deltaB * x)));
+                    
+                    _colorInterpolationTable[t * 16 + x] = Color.FromArgb(255, r, g, b).ToArgb();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Initialize all data tables
+        /// </summary>
+        private void InitializeTables()
+        {
+            // Clear all tables
+            for (int y = 0; y < NUM_WIDTH; y++)
+            {
+                for (int x = 0; x < NUM_WIDTH; x++)
+                {
+                    _heightTable[y, x] = 0.0f;
+                    _velocityTable[y, x] = 0.0f;
+                    _colorTable[y, x] = 0;
+                }
+            }
             
-            // Update plane physics
-            UpdatePlanePhysics(ctx);
+            // Initialize color table
+            InitializeColorTable();
+        }
+        
+        /// <summary>
+        /// Initialize the effect for the current dimensions
+        /// </summary>
+        private void InitializeEffect(int width, int height)
+        {
+            if (_currentWidth == width && _currentHeight == height && _isInitialized)
+                return;
             
-            // Render the 3D plane
-            Render3DPlane(ctx, combinedMatrix, output);
+            _currentWidth = width;
+            _currentHeight = height;
+            _isInitialized = true;
+        }
+        
+        #endregion
+        
+        #region Processing Methods
+        
+        public override void ProcessFrame(ImageBuffer imageBuffer, AudioFeatures audioFeatures)
+        {
+            if (!Enabled || imageBuffer == null) return;
+            
+            // Initialize if needed
+            InitializeEffect(imageBuffer.Width, imageBuffer.Height);
+            
+            // Update frame counter
+            _frameCounter++;
+            
+            // Update transformation matrix
+            UpdateTransformationMatrix();
+            
+            // Update dot plane physics
+            UpdateDotPlanePhysics(audioFeatures);
+            
+            // Render the plane
+            RenderDotPlane(imageBuffer);
             
             // Update rotation
             UpdateRotation();
         }
-    }
-    
-    private void UpdateBuffers(FrameContext ctx)
-    {
-        if (lastWidth != ctx.Width || lastHeight != ctx.Height)
-        {
-            lastWidth = ctx.Width;
-            lastHeight = ctx.Height;
-        }
-    }
-    
-    private float[,] CreateRotationMatrix(int axis, float angle)
-    {
-        float[,] matrix = new float[4, 4];
-        float radians = angle * (float)Math.PI / 180.0f;
-        float cos = (float)Math.Cos(radians);
-        float sin = (float)Math.Sin(radians);
         
-        // Identity matrix
-        for (int i = 0; i < 4; i++)
+        /// <summary>
+        /// Update the 3D transformation matrix
+        /// </summary>
+        private void UpdateTransformationMatrix()
         {
-            for (int j = 0; j < 4; j++)
+            // Create rotation matrix around Y axis (plane rotation)
+            Matrix4x4 rotationY = Matrix4x4.CreateRotationY(_currentRotation * (float)Math.PI / 180.0f);
+            
+            // Create rotation matrix around X axis (plane tilt)
+            Matrix4x4 rotationX = Matrix4x4.CreateRotationX(Angle * (float)Math.PI / 180.0f);
+            
+            // Create translation matrix
+            Matrix4x4 translation = Matrix4x4.CreateTranslation(0.0f, HeightOffset, Depth);
+            
+            // Combine transformations: translate -> rotate X -> rotate Y
+            _transformationMatrix = translation * rotationX * rotationY;
+        }
+        
+        /// <summary>
+        /// Update the dot plane physics and audio response
+        /// </summary>
+        private void UpdateDotPlanePhysics(AudioFeatures audioFeatures)
+        {
+            // Create backup of height table for physics calculations
+            float[,] backupHeightTable = new float[NUM_WIDTH, NUM_WIDTH];
+            Array.Copy(_heightTable, backupHeightTable, _heightTable.Length);
+            
+            // Update dot positions and velocities
+            for (int fo = 0; fo < NUM_WIDTH; fo++)
             {
-                matrix[i, j] = (i == j) ? 1.0f : 0.0f;
-            }
-        }
-        
-        // Apply rotation based on axis
-        switch (axis)
-        {
-            case 0: // X-axis rotation
-                matrix[1, 1] = cos; matrix[1, 2] = -sin;
-                matrix[2, 1] = sin; matrix[2, 2] = cos;
-                break;
-            case 1: // Y-axis rotation
-                matrix[0, 0] = cos; matrix[0, 2] = sin;
-                matrix[2, 0] = -sin; matrix[2, 2] = cos;
-                break;
-            case 2: // Z-axis rotation
-                matrix[0, 0] = cos; matrix[0, 1] = -sin;
-                matrix[1, 0] = sin; matrix[1, 1] = cos;
-                break;
-        }
-        
-        return matrix;
-    }
-    
-    private float[,] CreateTranslationMatrix(float x, float y, float z)
-    {
-        float[,] matrix = new float[4, 4];
-        
-        // Identity matrix
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                matrix[i, j] = (i == j) ? 1.0f : 0.0f;
-            }
-        }
-        
-        // Translation
-        matrix[0, 3] = x;
-        matrix[1, 3] = y;
-        matrix[2, 3] = z;
-        
-        return matrix;
-    }
-    
-    private float[,] MatrixMultiply(float[,] a, float[,] b)
-    {
-        float[,] result = new float[4, 4];
-        
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                result[i, j] = 0;
-                for (int k = 0; k < 4; k++)
+                int sourceIndex = NUM_WIDTH - (fo + 2);
+                int targetIndex = NUM_WIDTH - (fo + 1);
+                
+                if (fo == NUM_WIDTH - 1)
                 {
-                    result[i, j] += a[i, k] * b[k, j];
-                }
-            }
-        }
-        
-        return result;
-    }
-    
-    private void UpdatePlanePhysics(FrameContext ctx)
-    {
-        // Copy bottom row for new plane generation
-        float[] bottomRow = new float[PlaneWidth];
-        for (int p = 0; p < PlaneWidth; p++)
-        {
-            bottomRow[p] = amplitudeTable[0, p];
-        }
-        
-        // Update plane positions and physics
-        for (int fo = 0; fo < PlaneHeight; fo++)
-        {
-            for (int p = 0; p < PlaneWidth; p++)
-            {
-                if (fo == PlaneHeight - 1)
-                {
-                    // Generate new plane from audio data
-                    float audioValue = GetAudioValue(ctx, p);
-                    amplitudeTable[fo, p] = audioValue;
-                    
-                    // Calculate color index
-                    int colorIndex = (int)(audioValue / 4);
-                    colorIndex = Math.Clamp(colorIndex, 0, 63);
-                    colorTable[fo, p] = colorInterpolationTable[colorIndex];
-                    
-                    // Calculate velocity
-                    velocityTable[fo, p] = (amplitudeTable[fo, p] - bottomRow[p]) / 90.0f;
+                    // Generate new dots from audio input
+                    GenerateNewDotsFromAudio(audioFeatures);
                 }
                 else
                 {
-                    // Update existing plane physics
-                    amplitudeTable[fo, p] = amplitudeTable[fo + 1, p] + velocityTable[fo + 1, p];
-                    amplitudeTable[fo, p] = Math.Max(0.0f, amplitudeTable[fo, p]);
-                    
-                    // Apply velocity decay
-                    velocityTable[fo, p] = velocityTable[fo + 1, p] - 0.15f * (amplitudeTable[fo, p] / 255.0f);
-                    
-                    // Copy color
-                    colorTable[fo, p] = colorTable[fo + 1, p];
+                    // Update existing dots with physics
+                    UpdateExistingDots(sourceIndex, targetIndex);
                 }
             }
         }
-    }
-    
-    private float GetAudioValue(FrameContext ctx, int position)
-    {
-        // Get spectrum data for this position
-        float spectrumValue = 0.0f;
         
-        if (ctx.SpectrumData != null && ctx.SpectrumData.Length > 0)
+        /// <summary>
+        /// Generate new dots from audio input
+        /// </summary>
+        private void GenerateNewDotsFromAudio(AudioFeatures audioFeatures)
         {
-            int sampleIndex = (position * ctx.SpectrumData.Length) / PlaneWidth;
-            if (sampleIndex < ctx.SpectrumData.Length)
+            for (int p = 0; p < NUM_WIDTH; p++)
             {
-                // Get maximum of left and right channels
-                float leftChannel = ctx.SpectrumData[sampleIndex];
-                float rightChannel = (sampleIndex + 1 < ctx.SpectrumData.Length) ? ctx.SpectrumData[sampleIndex + 1] : leftChannel;
-                spectrumValue = Math.Max(leftChannel, rightChannel);
+                // Get audio value for this position
+                float audioValue = GetAudioValue(p, audioFeatures);
+                
+                // Set height based on audio
+                _heightTable[0, p] = audioValue;
+                
+                // Calculate color based on audio intensity
+                int colorIndex = Math.Min(63, (int)(audioValue / 4));
+                _colorTable[0, p] = _colorInterpolationTable[colorIndex];
+                
+                // Calculate velocity for smooth movement
+                float velocity = (audioValue - _heightTable[1, p]) / VelocityUpdateRate;
+                _velocityTable[0, p] = velocity;
             }
         }
         
-        return spectrumValue;
-    }
-    
-    private void Render3DPlane(FrameContext ctx, float[,] matrix, ImageBuffer output)
-    {
-        float adjustment = Math.Min(
-            ctx.Width * 440.0f / 640.0f,
-            ctx.Height * 440.0f / 480.0f
-        );
-        
-        // Render each plane row
-        for (int fo = 0; fo < PlaneHeight; fo++)
+        /// <summary>
+        /// Update existing dots with physics simulation
+        /// </summary>
+        private void UpdateExistingDots(int sourceIndex, int targetIndex)
         {
-            // Determine rendering direction based on rotation
-            int f = (currentRotation < 90.0f || currentRotation > 270.0f) ? PlaneHeight - fo - 1 : fo;
-            
-            // Calculate plane width and position
-            float deltaWidth = PlaneDepth / PlaneWidth;
-            float width = -(PlaneWidth * 0.5f) * deltaWidth;
-            float q = (f - PlaneWidth * 0.5f) * deltaWidth;
-            
-            // Get plane data
-            int[] currentColors = new int[PlaneWidth];
-            float[] currentAmplitudes = new float[PlaneWidth];
-            
-            for (int p = 0; p < PlaneWidth; p++)
+            for (int p = 0; p < NUM_WIDTH; p++)
             {
-                currentColors[p] = colorTable[f, p];
-                currentAmplitudes[p] = amplitudeTable[f, p];
+                // Update height based on velocity
+                float newHeight = _heightTable[sourceIndex, p] + _velocityTable[sourceIndex, p];
+                
+                // Clamp height to prevent negative values
+                if (newHeight < 0.0f) newHeight = 0.0f;
+                
+                _heightTable[targetIndex, p] = newHeight;
+                
+                // Update velocity with damping
+                float damping = DampingFactor * (newHeight / 255.0f);
+                _velocityTable[targetIndex, p] = _velocityTable[sourceIndex, p] - damping;
+                
+                // Copy color
+                _colorTable[targetIndex, p] = _colorTable[sourceIndex, p];
+            }
+        }
+        
+        /// <summary>
+        /// Get audio value for a specific position
+        /// </summary>
+        private float GetAudioValue(int position, AudioFeatures audioFeatures)
+        {
+            float baseValue = 0.0f;
+            
+            if (audioFeatures != null)
+            {
+                // Use different frequency bands for different positions
+                int bandIndex = position % audioFeatures.FrequencyBands.Length;
+                baseValue = audioFeatures.FrequencyBands[bandIndex];
             }
             
-            // Determine rendering direction
-            int direction = 1;
-            if (currentRotation < 180.0f)
-            {
-                direction = -1;
-                deltaWidth = -deltaWidth;
-                width = -width + deltaWidth;
-            }
+            // Add some variation based on position
+            float variation = (float)Math.Sin(position * 0.1f + _frameCounter * 0.05f) * 30.0f;
+            baseValue += variation;
             
-            // Render dots in this plane row
-            for (int p = 0; p < PlaneWidth; p++)
+            // Apply audio sensitivity
+            baseValue *= AudioSensitivity;
+            
+            // Clamp to valid range
+            return Math.Max(0, Math.Min(255, baseValue));
+        }
+        
+        /// <summary>
+        /// Render the dot plane to the image buffer
+        /// </summary>
+        private void RenderDotPlane(ImageBuffer imageBuffer)
+        {
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+            
+            // Calculate perspective adjustment
+            float perspectiveAdjust = Math.Min(
+                width * 440.0f / 640.0f,
+                height * 440.0f / 480.0f
+            );
+            
+            // Render each row of the plane
+            for (int fo = 0; fo < NUM_WIDTH; fo++)
             {
-                float x, y, z;
+                // Determine rendering order based on rotation
+                int renderIndex = (_currentRotation < 90.0f || _currentRotation > 270.0f) 
+                    ? NUM_WIDTH - fo - 1 : fo;
                 
-                // Apply matrix transformation
-                MatrixApply(matrix, width, PlaneScale - currentAmplitudes[p], q, out x, out y, out z);
+                // Calculate plane dimensions
+                float dotWidth = PlaneWidth / NUM_WIDTH;
+                float startWidth = -(NUM_WIDTH * 0.5f) * dotWidth;
                 
-                // Perspective projection
-                z = adjustment / z;
+                // Get current row data
+                int[] colorRow = GetColorRow(renderIndex);
+                float[] heightRow = GetHeightRow(renderIndex);
                 
-                if (z > 0.0000001f)
+                // Determine rendering direction
+                int direction = (_currentRotation < 180.0f) ? -1 : 1;
+                float widthStep = (_currentRotation < 180.0f) ? -dotWidth : dotWidth;
+                float currentWidth = (_currentRotation < 180.0f) ? -startWidth + dotWidth : startWidth;
+                
+                // Render dots in this row
+                for (int p = 0; p < NUM_WIDTH; p++)
                 {
-                    // Convert to screen coordinates
-                    int screenX = (int)(x * z) + ctx.Width / 2;
-                    int screenY = (int)(y * z) + ctx.Height / 2;
+                    int dataIndex = (_currentRotation < 180.0f) ? NUM_WIDTH - 1 - p : p;
                     
-                    // Check bounds and render
-                    if (screenY >= 0 && screenY < ctx.Height && screenX >= 0 && screenX < ctx.Width)
+                    // Calculate 3D position
+                    Vector3 position = new Vector3(
+                        currentWidth,
+                        64.0f - heightRow[dataIndex],
+                        (renderIndex - NUM_WIDTH * 0.5f) * dotWidth
+                    );
+                    
+                    // Apply transformation matrix
+                    Vector3 transformedPosition = Vector3.Transform(position, _transformationMatrix);
+                    
+                    // Apply perspective projection
+                    if (transformedPosition.Z > 0.0000001f)
                     {
-                        Color dotColor = Color.FromArgb(currentColors[p]);
-                        output.SetPixel(screenX, screenY, dotColor);
+                        float perspective = perspectiveAdjust / transformedPosition.Z;
+                        
+                        // Convert to screen coordinates
+                        int screenX = (int)(transformedPosition.X * perspective) + width / 2;
+                        int screenY = (int)(transformedPosition.Y * perspective) + height / 2;
+                        
+                        // Check bounds
+                        if (screenX >= 0 && screenX < width && screenY >= 0 && screenY < height)
+                        {
+                            // Get color from color table
+                            int colorArgb = colorRow[dataIndex];
+                            Color color = Color.FromArgb(colorArgb);
+                            
+                            // Apply intensity
+                            color = ApplyIntensity(color, Intensity);
+                            
+                            // Set pixel
+                            imageBuffer.SetPixel(screenX, screenY, color);
+                        }
                     }
+                    
+                    // Update width for next dot
+                    currentWidth += widthStep;
                 }
-                
-                // Update position
-                width += deltaWidth;
             }
         }
-    }
-    
-    private void MatrixApply(float[,] matrix, float x, float y, float z, out float outX, out float outY, out float outZ)
-    {
-        outX = matrix[0, 0] * x + matrix[0, 1] * y + matrix[0, 2] * z + matrix[0, 3];
-        outY = matrix[1, 0] * x + matrix[1, 1] * y + matrix[1, 2] * z + matrix[1, 3];
-        outZ = matrix[2, 0] * x + matrix[2, 1] * y + matrix[2, 2] * z + matrix[2, 3];
-    }
-    
-    private void UpdateRotation()
-    {
-        currentRotation += RotationVelocity / 5.0f;
         
-        // Normalize rotation to 0-360 range
-        while (currentRotation >= 360.0f) currentRotation -= 360.0f;
-        while (currentRotation < 0.0f) currentRotation += 360.0f;
-    }
-    
-    private void InitializeColorTable()
-    {
-        // Create 64-step color interpolation table
-        for (int t = 0; t < 4; t++)
+        /// <summary>
+        /// Get a row of colors from the color table
+        /// </summary>
+        private int[] GetColorRow(int rowIndex)
         {
-            Color color1 = BaseColors[t];
-            Color color2 = BaseColors[t + 1];
+            int[] row = new int[NUM_WIDTH];
+            for (int i = 0; i < NUM_WIDTH; i++)
+            {
+                row[i] = _colorTable[rowIndex, i];
+            }
+            return row;
+        }
+        
+        /// <summary>
+        /// Get a row of heights from the height table
+        /// </summary>
+        private float[] GetHeightRow(int rowIndex)
+        {
+            float[] row = new float[NUM_WIDTH];
+            for (int i = 0; i < NUM_WIDTH; i++)
+            {
+                row[i] = _heightTable[rowIndex, i];
+            }
+            return row;
+        }
+        
+        /// <summary>
+        /// Apply intensity multiplier to a color
+        /// </summary>
+        private Color ApplyIntensity(Color color, float intensity)
+        {
+            if (intensity <= 1.0f) return color;
             
-            // Calculate color deltas
-            float deltaR = (color2.R - color1.R) / (float)ColorInterpolationSteps;
-            float deltaG = (color2.G - color1.G) / (float)ColorInterpolationSteps;
-            float deltaB = (color2.B - color1.B) / (float)ColorInterpolationSteps;
+            int r = Math.Min(255, (int)(color.R * intensity));
+            int g = Math.Min(255, (int)(color.G * intensity));
+            int b = Math.Min(255, (int)(color.B * intensity));
             
-            // Generate interpolation steps
-            for (int x = 0; x < ColorInterpolationSteps; x++)
+            return Color.FromArgb(color.A, r, g, b);
+        }
+        
+        /// <summary>
+        /// Update the rotation angle
+        /// </summary>
+        private void UpdateRotation()
+        {
+            _currentRotation += RotationVelocity / 5.0f;
+            
+            // Keep rotation in 0-360 range
+            while (_currentRotation >= 360.0f) _currentRotation -= 360.0f;
+            while (_currentRotation < 0.0f) _currentRotation += 360.0f;
+        }
+        
+        #endregion
+        
+        #region Configuration Validation
+        
+        public override bool ValidateConfiguration()
+        {
+            if (RotationVelocity < -100.0f || RotationVelocity > 100.0f) return false;
+            if (Angle < -90.0f || Angle > 90.0f) return false;
+            if (BaseRadius < 0.1f || BaseRadius > 10.0f) return false;
+            if (Intensity < 0.1f || Intensity > 10.0f) return false;
+            if (AudioSensitivity < 0.1f || AudioSensitivity > 5.0f) return false;
+            if (DampingFactor < 0.01f || DampingFactor > 1.0f) return false;
+            if (VelocityUpdateRate < 10.0f || VelocityUpdateRate > 200.0f) return false;
+            if (HeightOffset < -100.0f || HeightOffset > 100.0f) return false;
+            if (Depth < 100.0f || Depth > 1000.0f) return false;
+            if (PlaneWidth < 100.0f || PlaneWidth > 1000.0f) return false;
+            
+            return true;
+        }
+        
+        #endregion
+        
+        #region Preset Methods
+        
+        /// <summary>
+        /// Load a slow rotating plane preset
+        /// </summary>
+        public void LoadSlowRotatingPreset()
+        {
+            RotationVelocity = 8.0f;
+            Angle = -15.0f;
+            BaseRadius = 1.0f;
+            Intensity = 1.0f;
+            AudioSensitivity = 1.2f;
+            DampingFactor = 0.12f;
+            VelocityUpdateRate = 90.0f;
+            HeightOffset = -20.0f;
+            Depth = 400.0f;
+            PlaneWidth = 350.0f;
+        }
+        
+        /// <summary>
+        /// Load a fast spinning plane preset
+        /// </summary>
+        public void LoadFastSpinningPreset()
+        {
+            RotationVelocity = 32.0f;
+            Angle = -25.0f;
+            BaseRadius = 1.5f;
+            Intensity = 1.5f;
+            AudioSensitivity = 1.8f;
+            DampingFactor = 0.20f;
+            VelocityUpdateRate = 70.0f;
+            HeightOffset = -30.0f;
+            Depth = 350.0f;
+            PlaneWidth = 300.0f;
+        }
+        
+        /// <summary>
+        /// Load a gentle flowing preset
+        /// </summary>
+        public void LoadGentleFlowingPreset()
+        {
+            RotationVelocity = 4.0f;
+            Angle = -10.0f;
+            BaseRadius = 0.8f;
+            Intensity = 0.8f;
+            AudioSensitivity = 0.7f;
+            DampingFactor = 0.08f;
+            VelocityUpdateRate = 120.0f;
+            HeightOffset = -15.0f;
+            Depth = 450.0f;
+            PlaneWidth = 400.0f;
+        }
+        
+        /// <summary>
+        /// Load a beat-responsive preset
+        /// </summary>
+        public void LoadBeatResponsivePreset()
+        {
+            RotationVelocity = 16.0f;
+            Angle = -20.0f;
+            BaseRadius = 1.2f;
+            Intensity = 2.0f;
+            AudioSensitivity = 2.5f;
+            DampingFactor = 0.18f;
+            VelocityUpdateRate = 60.0f;
+            HeightOffset = -25.0f;
+            Depth = 380.0f;
+            PlaneWidth = 320.0f;
+            BeatResponse = true;
+        }
+        
+        #endregion
+        
+        #region Utility Methods
+        
+        /// <summary>
+        /// Get the current rotation angle
+        /// </summary>
+        public float GetCurrentRotation()
+        {
+            return _currentRotation;
+        }
+        
+        /// <summary>
+        /// Get the number of active dots
+        /// </summary>
+        public int GetActiveDotCount()
+        {
+            int count = 0;
+            for (int y = 0; y < NUM_WIDTH; y++)
             {
-                int r = (int)(color1.R + deltaR * x);
-                int g = (int)(color1.G + deltaG * x);
-                int b = (int)(color1.B + deltaB * x);
-                
-                // Clamp values
-                r = Math.Clamp(r, 0, 255);
-                g = Math.Clamp(g, 0, 255);
-                b = Math.Clamp(b, 0, 255);
-                
-                // Store in color table (BGR format for compatibility)
-                colorInterpolationTable[t * ColorInterpolationSteps + x] = Color.FromRgb((byte)r, (byte)g, (byte)b).ToArgb();
+                for (int x = 0; x < NUM_WIDTH; x++)
+                {
+                    if (_heightTable[y, x] > 0.0f) count++;
+                }
             }
+            return count;
         }
-    }
-    
-    private void InitializePlaneTables()
-    {
-        // Initialize all tables to zero
-        for (int i = 0; i < PlaneHeight; i++)
+        
+        /// <summary>
+        /// Get the average height of all dots
+        /// </summary>
+        public float GetAverageDotHeight()
         {
-            for (int j = 0; j < PlaneWidth; j++)
+            float total = 0.0f;
+            int count = 0;
+            
+            for (int y = 0; y < NUM_WIDTH; y++)
             {
-                amplitudeTable[i, j] = 0.0f;
-                velocityTable[i, j] = 0.0f;
-                colorTable[i, j] = 0;
+                for (int x = 0; x < NUM_WIDTH; x++)
+                {
+                    total += _heightTable[y, x];
+                    count++;
+                }
             }
+            
+            return count > 0 ? total / count : 0.0f;
         }
-    }
-    
-    // Public interface for parameter adjustment
-    public void SetRotationVelocity(int velocity) 
-    { 
-        RotationVelocity = Math.Clamp(velocity, MinRotationVelocity, MaxRotationVelocity); 
-    }
-    
-    public void SetRotationAngle(int angle) 
-    { 
-        RotationAngle = Math.Clamp(angle, MinRotationAngle, MaxRotationAngle); 
-    }
-    
-    public void SetBaseRadius(float radius) 
-    { 
-        BaseRadius = Math.Clamp(radius, MinBaseRadius, MaxBaseRadius); 
-    }
-    
-    public void SetBaseColor(int index, Color color)
-    {
-        if (index >= 0 && index < BaseColors.Length)
+        
+        /// <summary>
+        /// Reset the plane to initial state
+        /// </summary>
+        public void Reset()
         {
-            BaseColors[index] = color;
-            InitializeColorTable();
+            _currentRotation = 0.0f;
+            _frameCounter = 0;
+            _isInitialized = false;
+            
+            // Clear all tables
+            InitializeTables();
         }
-    }
-    
-    // Status queries
-    public int GetRotationVelocity() => RotationVelocity;
-    public int GetRotationAngle() => RotationAngle;
-    public float GetBaseRadius() => BaseRadius;
-    public Color GetBaseColor(int index) => (index >= 0 && index < BaseColors.Length) ? BaseColors[index] : Color.Black;
-    public float GetCurrentRotation() => currentRotation;
-    public int GetPlaneWidth() => PlaneWidth;
-    public int GetPlaneHeight() => PlaneHeight;
-    public int GetColorTableSize() => ColorTableSize;
-    
-    // Advanced plane control
-    public void ResetRotation()
-    {
-        currentRotation = 0.0f;
-    }
-    
-    public void ResetPlane()
-    {
-        lock (renderLock)
+        
+        /// <summary>
+        /// Get effect execution statistics
+        /// </summary>
+        public string GetExecutionStats()
         {
-            InitializePlaneTables();
+            return $"Frame: {_frameCounter}, Rotation: {_currentRotation:F1}°, Active Dots: {GetActiveDotCount()}, Avg Height: {GetAverageDotHeight():F1}, Matrix Valid: {_transformationMatrix != Matrix4x4.Identity}";
         }
-    }
-    
-    public void SetPlanePhysics(float gravity, float drag, float momentum)
-    {
-        // Custom physics parameters could be added here
-        // For now, we use the original physics model
-    }
-    
-    public void SetPlaneDimensions(int width, int height)
-    {
-        // This would require reallocating the plane arrays
-        // For now, we'll keep the fixed size for performance
-    }
-    
-    // Color management
-    public void RegenerateColorTable()
-    {
-        InitializeColorTable();
-    }
-    
-    public int[] GetColorInterpolationTable()
-    {
-        int[] copy = new int[colorInterpolationTable.Length];
-        Array.Copy(colorInterpolationTable, copy, colorInterpolationTable.Length);
-        return copy;
-    }
-    
-    public void SetColorInterpolationTable(int[] newTable)
-    {
-        if (newTable != null && newTable.Length == ColorTableSize)
-        {
-            lock (renderLock)
-            {
-                Array.Copy(newTable, colorInterpolationTable, ColorTableSize);
-            }
-        }
-    }
-    
-    // Plane data access
-    public float[,] GetAmplitudeTable()
-    {
-        float[,] copy = new float[PlaneHeight, PlaneWidth];
-        lock (renderLock)
-        {
-            Array.Copy(amplitudeTable, copy, amplitudeTable.Length);
-        }
-        return copy;
-    }
-    
-    public float[,] GetVelocityTable()
-    {
-        float[,] copy = new float[PlaneHeight, PlaneWidth];
-        lock (renderLock)
-        {
-            Array.Copy(velocityTable, copy, velocityTable.Length);
-        }
-        return copy;
-    }
-    
-    public int[,] GetColorTable()
-    {
-        int[,] copy = new int[PlaneHeight, PlaneWidth];
-        lock (renderLock)
-        {
-            Array.Copy(colorTable, copy, colorTable.Length);
-        }
-        return copy;
-    }
-    
-    // Performance optimization
-    public void SetRenderQuality(int quality)
-    {
-        // Quality could affect plane density or rendering detail
-        // For now, we maintain full quality
-    }
-    
-    public void EnableOptimizations(bool enable)
-    {
-        // Various optimization flags could be implemented here
-    }
-    
-    public override void Dispose()
-    {
-        lock (renderLock)
-        {
-            amplitudeTable = null;
-            velocityTable = null;
-            colorTable = null;
-            colorInterpolationTable = null;
-        }
+        
+        #endregion
+        
+        #region Public Properties for Colors
+        
+        /// <summary>
+        /// Default colors for the plane (can be customized)
+        /// </summary>
+        public Color[] DefaultColors { get; set; } = new Color[5];
+        
+        #endregion
     }
 }
 ```
 
-## Integration Points
+## Effect Properties
 
-### Audio Data Integration
-- **Spectrum Analysis**: Direct processing of audio spectrum data for plane generation
-- **Beat Detection**: Beat-reactive plane enhancement and color amplification
-- **Audio Scaling**: Intelligent audio data scaling and normalization
-- **Dynamic Response**: Real-time adjustment of plane behavior based on audio
+### Core Properties
+- **Enabled**: Toggle the effect on/off
+- **RotationVelocity**: Speed of plane rotation in degrees per frame
+- **Angle**: Tilt angle of the plane (-90 to 90 degrees)
+- **BaseRadius**: Base radius of the plane structure
+- **Intensity**: Overall effect strength multiplier
 
-### Framebuffer Handling
-- **Input/Output Buffers**: Processes `ImageBuffer` objects with full color support
-- **3D Projection**: Advanced 3D to 2D projection with perspective correction
-- **Plane Rendering**: Efficient plane-based dot rendering with bounds checking
-- **Color Blending**: Advanced color interpolation and blending algorithms
+### Audio Properties
+- **BeatResponse**: Whether to respond to beat detection
+- **AudioSensitivity**: Multiplier for audio input sensitivity
+- **DampingFactor**: Physics damping for smooth movement
+- **VelocityUpdateRate**: Rate of velocity updates
 
-### Performance Considerations
-- **Matrix Operations**: Optimized 3D transformation matrices
-- **Plane Management**: Efficient plane lifecycle and physics simulation
-- **Memory Optimization**: Intelligent buffer allocation and plane management
-- **Thread Safety**: Lock-based rendering for multi-threaded environments
+### Physics Properties
+- **HeightOffset**: Vertical offset of the plane in 3D space
+- **Depth**: Distance of the plane in 3D space
+- **PlaneWidth**: Width of the plane in 3D space
 
-## Usage Examples
+### Internal Properties
+- **CurrentRotation**: Current rotation angle in degrees
+- **TransformationMatrix**: 3D transformation matrix for rendering
+- **HeightTable**: Array of dot heights
+- **VelocityTable**: Array of dot velocities
+- **ColorTable**: Array of dot colors
 
-### Basic Plane Effect
-```csharp
-var dotPlaneNode = new DotPlaneEffectsNode
-{
-    RotationVelocity = 16,          // Medium rotation speed
-    RotationAngle = -20,             // Slight upward angle
-    BaseRadius = 0.5f                // Standard radius
-};
+## Plane Structure
 
-// Customize colors
-dotPlaneNode.SetBaseColor(0, Color.DarkGreen);
-dotPlaneNode.SetBaseColor(1, Color.Blue);
-dotPlaneNode.SetBaseColor(2, Color.Red);
-dotPlaneNode.SetBaseColor(3, Color.Pink);
-dotPlaneNode.SetBaseColor(4, Color.Orange);
-```
+The effect creates a 3D plane with:
+- **64x64 Grid**: 4096 dots arranged in a square grid
+- **3D Positioning**: Each dot has X, Y, Z coordinates
+- **Dynamic Heights**: Dot heights respond to audio input
+- **Physics Simulation**: Smooth movement with velocity and damping
 
-### Fast Rotating Plane
-```csharp
-var dotPlaneNode = new DotPlaneEffectsNode
-{
-    RotationVelocity = 40,          // Fast rotation
-    RotationAngle = 0,               // Straight up
-    BaseRadius = 1.0f                // Larger radius
-};
+## Physics System
 
-dotPlaneNode.ResetRotation();        // Start from zero
-```
+Each dot in the plane has:
+- **Height**: Current vertical position
+- **Velocity**: Rate of height change
+- **Damping**: Gradual slowdown over time
+- **Audio Response**: Height based on frequency analysis
 
-### Audio-Reactive Plane
-```csharp
-var dotPlaneNode = new DotPlaneEffectsNode
-{
-    RotationVelocity = 8,            // Slow rotation
-    RotationAngle = -45,             // Angled plane
-    BaseRadius = 0.3f                // Small radius
-};
+## 3D Rendering
 
-// The effect automatically responds to audio data
-// Planes are generated based on spectrum intensity
-// Beat events enhance plane colors and intensity
-```
+The effect uses:
+- **Matrix Transformations**: Rotation, translation, and perspective projection
+- **3D to 2D Projection**: Converts 3D dot positions to screen coordinates
+- **Perspective Correction**: Adjusts for different screen resolutions
+- **Depth Sorting**: Dots are rendered in depth order
 
-## Technical Notes
+## Audio Integration
 
-### 3D Architecture
-The effect implements sophisticated 3D processing:
-- **Matrix Transformations**: Complex 3D rotation and translation
-- **Perspective Projection**: Realistic 3D to 2D projection with depth scaling
-- **Plane Physics**: Advanced plane simulation with velocity and decay
-- **Performance Optimization**: Efficient matrix operations and plane management
+The plane responds to audio by:
+- **Frequency Analysis**: Different grid positions respond to different frequency bands
+- **Beat Detection**: Enhanced dot generation on beats
+- **Audio Sensitivity**: Configurable response to audio input
+- **Dynamic Variation**: Audio creates variation in dot heights
 
-### Color Architecture
-Advanced color interpolation algorithms:
-- **64-Step Interpolation**: Smooth color transitions between base colors
-- **Audio Reactivity**: Dynamic color intensity based on audio data
-- **Beat Enhancement**: Color amplification during beat events
-- **Performance Optimization**: Pre-calculated color tables for speed
+## Color System
 
-### Plane System
-Sophisticated plane management:
-- **64x64 Plane Arrays**: High-resolution plane representation
-- **Physics Simulation**: Velocity-based plane movement and decay
-- **Audio Integration**: Audio-reactive plane generation
-- **Performance Optimization**: Efficient plane recycling and management
+The effect features:
+- **5 Base Colors**: Configurable color palette
+- **Color Interpolation**: Smooth transitions between colors
+- **Audio-Based Coloring**: Dot colors based on audio intensity
+- **64 Color Variations**: Pre-calculated color interpolation table
 
-This effect provides the foundation for sophisticated 3D plane visualizations, creating dynamic dot patterns that respond to audio input and rotate in 3D space with realistic perspective projection for advanced AVS preset creation.
+## Performance Optimizations
+
+- **Pre-calculated Tables**: Color interpolation and transformation matrices
+- **Efficient Rendering**: Only renders visible dots
+- **Matrix Operations**: Optimized 3D transformations
+- **Physics Simulation**: Efficient velocity and height updates
+
+## Use Cases
+
+- **Music Visualization**: Dynamic plane that responds to audio
+- **3D Effects**: Creates depth and perspective in visualizations
+- **Physics Simulation**: Demonstrates realistic dot movement
+- **Beat Synchronization**: Visual effects synchronized with music
+- **Interactive Displays**: Plane responds to audio input in real-time
+
+## Preset Effects
+
+### Basic Presets
+- **Slow Rotating**: Gentle, slow-moving plane
+- **Fast Spinning**: Rapid rotation with high energy
+- **Gentle Flowing**: Smooth, calm dot flow
+- **Beat Responsive**: Highly reactive to music beats
+
+### Customization
+- **Color Palettes**: User-defined color schemes
+- **Physics Parameters**: Adjustable damping and movement
+- **Audio Response**: Configurable sensitivity and behavior
+- **Visual Effects**: Customizable rotation and tilt
+
+## Mathematical Functions
+
+The effect uses:
+- **Trigonometric Functions**: `sin()`, `cos()` for angular calculations
+- **Matrix Mathematics**: 3D transformations and projections
+- **Vector Operations**: 3D position and velocity calculations
+- **Perspective Projection**: 3D to 2D coordinate conversion
+
+## Error Handling
+
+The effect includes:
+- **Bounds Checking**: Validates screen coordinates
+- **Parameter Validation**: Ensures configuration values are within ranges
+- **Matrix Validation**: Ensures transformation matrices are valid
+- **Physics Safety**: Prevents invalid height and velocity values

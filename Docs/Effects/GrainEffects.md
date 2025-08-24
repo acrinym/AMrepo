@@ -1,663 +1,838 @@
-# Grain Effects (Trans / Grain)
+# Grain Effects
 
-## Overview
+The Grain effect adds noise and texture to images, creating a film grain or digital noise appearance. It supports both static and dynamic grain patterns with various blending modes for realistic texture simulation.
 
-The **Grain Effects** system is a sophisticated noise and texture generation engine that provides advanced control over image grain, depth-based effects, and intelligent noise manipulation. It implements comprehensive grain processing with depth buffer management, configurable grain intensity, blending modes, and intelligent noise generation for creating complex grain transformations. This effect provides the foundation for sophisticated noise effects, texture generation, and advanced image processing in AVS presets.
+## Effect Overview
 
-## Source Analysis
-
-### Core Architecture (`r_grain.cpp`)
-
-The effect is implemented as a C++ class `C_GrainClass` that inherits from `C_RBASE`. It provides a comprehensive grain system with depth buffer management, configurable grain parameters, and intelligent noise manipulation for creating complex grain transformations.
-
-### Key Components
-
-#### Grain Processing Engine
-Advanced grain control system:
-- **Depth Buffer Management**: Sophisticated depth buffer for grain effects
-- **Grain Intensity Control**: Configurable grain intensity with precise control
-- **Blending Modes**: Multiple blending modes for grain integration
-- **Performance Optimization**: Optimized processing for real-time operations
-
-#### Depth Buffer System
-Sophisticated buffer processing:
-- **Dynamic Allocation**: Dynamic depth buffer allocation and management
-- **Random Generation**: Intelligent random grain generation and management
-- **Buffer Optimization**: Optimized buffer generation and management
-- **Memory Management**: Efficient memory usage and management
-
-#### Noise Generation Engine
-Advanced noise processing:
-- **Random Tables**: Pre-calculated random tables for performance
-- **Grain Patterns**: Intelligent grain pattern generation and control
-- **Static Grain**: Configurable static grain effects and control
-- **Dynamic Grain**: Dynamic grain generation and manipulation
-
-#### Visual Enhancement System
-Advanced enhancement capabilities:
-- **Grain Integration**: High-quality grain integration algorithms
-- **Depth Effects**: Advanced depth-based effect processing
-- **Visual Integration**: Seamless integration with existing visual content
-- **Quality Control**: High-quality enhancement and processing
-
-### Parameters
-
-| Parameter | Type | Range | Default | Description |
-|-----------|------|-------|---------|-------------|
-| `enabled` | bool | true/false | true | Enable/disable grain effect |
-| `blend` | int | 0-1 | 0 | Blending mode for grain integration |
-| `blendavg` | int | 0-1 | 0 | Average blending mode |
-| `smax` | int | 0-100 | 100 | Maximum grain strength (percentage) |
-| `staticGrain` | int | 0-1 | 0 | Static grain mode |
-
-### Blending Modes
-
-| Mode | Value | Description | Behavior |
-|------|-------|-------------|----------|
-| **No Blend** | 0 | No blending | Grain is applied directly |
-| **Blend** | 1 | Blending mode | Grain is blended with existing content |
-
-### Grain Strength Modes
-
-| Mode | Value | Description | Behavior |
-|------|-------|-------------|----------|
-| **No Grain** | 0 | No grain effect | No grain is applied |
-| **Light Grain** | 1-25 | Light grain effect | Subtle grain application |
-| **Medium Grain** | 26-50 | Medium grain effect | Moderate grain application |
-| **Heavy Grain** | 51-75 | Heavy grain effect | Strong grain application |
-| **Extreme Grain** | 76-100 | Extreme grain effect | Very strong grain application |
-
-### Static Grain Modes
-
-| Mode | Value | Description | Behavior |
-|------|-------|-------------|----------|
-| **Dynamic Grain** | 0 | Dynamic grain | Grain changes each frame |
-| **Static Grain** | 1 | Static grain | Grain remains constant |
+The Grain effect works by:
+1. Generating random noise patterns for each pixel
+2. Supporting both static (persistent) and dynamic (changing) grain
+3. Providing multiple blending modes for integration with existing content
+4. Using depth buffers for realistic grain distribution
+5. Offering configurable grain intensity and threshold controls
 
 ## C# Implementation
 
 ```csharp
-public class GrainEffectsNode : AvsModuleNode
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using PhoenixVisualizer.Core.Effects.Models;
+using PhoenixVisualizer.Core.Models;
+
+namespace PhoenixVisualizer.Core.Effects.Nodes.AvsEffects
 {
-    public bool Enabled { get; set; } = true;
-    public int Blend { get; set; } = 0;
-    public int BlendAvg { get; set; } = 0;
-    public int Smax { get; set; } = 100;
-    public int StaticGrain { get; set; } = 0;
-    
-    // Internal state
-    private byte[] depthBuffer;
-    private byte[] randomTable;
-    private int randomTablePos;
-    private int lastWidth, lastHeight;
-    private int lastSmax, lastStaticGrain;
-    private readonly object renderLock = new object();
-    private readonly Random random;
-    
-    // Performance optimization
-    private const int MaxSmax = 100;
-    private const int MinSmax = 0;
-    private const int MaxBlend = 1;
-    private const int MinBlend = 0;
-    private const int MaxStaticGrain = 1;
-    private const int MinStaticGrain = 0;
-    private const int RandomTableSize = 491;
-    private const int DepthBufferMultiplier = 2;
-    
-    public GrainEffectsNode()
+    public class GrainEffectsNode : BaseEffectNode
     {
-        lastWidth = lastHeight = 0;
-        lastSmax = Smax;
-        lastStaticGrain = StaticGrain;
-        random = new Random();
-        randomTable = new byte[RandomTableSize];
-        InitializeRandomTable();
-    }
-    
-    private void InitializeRandomTable()
-    {
-        for (int i = 0; i < RandomTableSize; i++)
-        {
-            randomTable[i] = (byte)(random.Next() & 0xFF);
-        }
-        randomTablePos = random.Next() % RandomTableSize;
-    }
-    
-    public override void Process(FrameContext ctx, ImageBuffer input, ImageBuffer output)
-    {
-        if (!Enabled || ctx.Width <= 0 || ctx.Height <= 0) return;
+        #region Properties
         
-        lock (renderLock)
+        /// <summary>
+        /// Whether the effect is enabled
+        /// </summary>
+        public bool Enabled { get; set; } = true;
+        
+        /// <summary>
+        /// Maximum grain intensity (0-100)
+        /// </summary>
+        public int MaxIntensity { get; set; } = 100;
+        
+        /// <summary>
+        /// Whether to use static grain (persistent pattern)
+        /// </summary>
+        public bool UseStaticGrain { get; set; } = false;
+        
+        /// <summary>
+        /// Blending mode for grain application
+        /// </summary>
+        public GrainBlendMode BlendMode { get; set; } = GrainBlendMode.Replace;
+        
+        /// <summary>
+        /// Effect intensity multiplier
+        /// </summary>
+        public float Intensity { get; set; } = 1.0f;
+        
+        /// <summary>
+        /// Whether to respond to beat detection
+        /// </summary>
+        public bool BeatResponse { get; set; } = false;
+        
+        /// <summary>
+        /// Beat response intensity multiplier
+        /// </summary>
+        public float BeatIntensity { get; set; } = 1.0f;
+        
+        /// <summary>
+        /// Grain color (null = use original pixel color)
+        /// </summary>
+        public Color? GrainColor { get; set; } = null;
+        
+        /// <summary>
+        /// Whether to preserve alpha channel
+        /// </summary>
+        public bool PreserveAlpha { get; set; } = true;
+        
+        #endregion
+        
+        #region Enums
+        
+        /// <summary>
+        /// Available blending modes for grain application
+        /// </summary>
+        public enum GrainBlendMode
         {
-            // Update buffers if dimensions changed
-            UpdateBuffers(ctx);
+            /// <summary>
+            /// Replace pixels with grain
+            /// </summary>
+            Replace = 0,
             
-            // Regenerate depth buffer if parameters changed
-            if (lastSmax != Smax || lastStaticGrain != StaticGrain)
+            /// <summary>
+            /// Additive blending with grain
+            /// </summary>
+            Additive = 1,
+            
+            /// <summary>
+            /// 50/50 average blending with grain
+            /// </summary>
+            Average = 2
+        }
+        
+        #endregion
+        
+        #region Private Fields
+        
+        /// <summary>
+        /// Pre-calculated random table for fast random number generation
+        /// </summary>
+        private byte[] _randomTable;
+        
+        /// <summary>
+        /// Current position in random table
+        /// </summary>
+        private int _randomTablePosition;
+        
+        /// <summary>
+        /// Depth buffer for static grain patterns
+        /// </summary>
+        private GrainDepthBuffer[] _depthBuffer;
+        
+        /// <summary>
+        /// Current width and height
+        /// </summary>
+        private int _currentWidth, _currentHeight;
+        
+        /// <summary>
+        /// Whether the effect has been initialized
+        /// </summary>
+        private bool _isInitialized = false;
+        
+        /// <summary>
+        /// Frame counter for timing
+        /// </summary>
+        private int _frameCounter = 0;
+        
+        /// <summary>
+        /// Random number generator for additional randomness
+        /// </summary>
+        private Random _random;
+        
+        #endregion
+        
+        #region Structures
+        
+        /// <summary>
+        /// Represents a grain depth buffer entry
+        /// </summary>
+        private struct GrainDepthBuffer
+        {
+            /// <summary>
+            /// Grain intensity value
+            /// </summary>
+            public byte Intensity;
+            
+            /// <summary>
+            /// Grain threshold value
+            /// </summary>
+            public byte Threshold;
+        }
+        
+        #endregion
+        
+        #region Constructor
+        
+        public GrainEffectsNode()
+        {
+            _randomTable = new byte[491];
+            _depthBuffer = new GrainDepthBuffer[0];
+            _random = new Random();
+            
+            // Set default values
+            MaxIntensity = 100;
+            UseStaticGrain = false;
+            BlendMode = GrainBlendMode.Replace;
+            
+            // Initialize random table
+            InitializeRandomTable();
+        }
+        
+        #endregion
+        
+        #region Initialization Methods
+        
+        /// <summary>
+        /// Initialize the effect for the current dimensions
+        /// </summary>
+        private void InitializeEffect(int width, int height)
+        {
+            if (_currentWidth == width && _currentHeight == height && _isInitialized)
+                return;
+            
+            _currentWidth = width;
+            _currentHeight = height;
+            
+            // Initialize depth buffer
+            InitializeDepthBuffer(width, height);
+            
+            _isInitialized = true;
+        }
+        
+        /// <summary>
+        /// Initialize the random number table
+        /// </summary>
+        private void InitializeRandomTable()
+        {
+            for (int i = 0; i < _randomTable.Length; i++)
             {
-                GenerateDepthBuffer(ctx);
-                lastSmax = Smax;
-                lastStaticGrain = StaticGrain;
+                _randomTable[i] = (byte)_random.Next(256);
             }
+            _randomTablePosition = _random.Next(_randomTable.Length);
+        }
+        
+        /// <summary>
+        /// Initialize the depth buffer for static grain
+        /// </summary>
+        private void InitializeDepthBuffer(int width, int height)
+        {
+            int bufferSize = width * height;
+            _depthBuffer = new GrainDepthBuffer[bufferSize];
+            
+            for (int i = 0; i < bufferSize; i++)
+            {
+                _depthBuffer[i].Intensity = (byte)_random.Next(256);
+                _depthBuffer[i].Threshold = (byte)_random.Next(100);
+            }
+        }
+        
+        #endregion
+        
+        #region Processing Methods
+        
+        public override void ProcessFrame(ImageBuffer imageBuffer, AudioFeatures audioFeatures)
+        {
+            if (!Enabled || imageBuffer == null) return;
+            
+            // Initialize if needed
+            InitializeEffect(imageBuffer.Width, imageBuffer.Height);
+            
+            // Update frame counter
+            _frameCounter++;
+            
+            // Update random table position
+            UpdateRandomTablePosition();
             
             // Apply grain effect
-            ApplyGrainEffect(ctx, input, output);
+            ApplyGrainEffect(imageBuffer, audioFeatures);
         }
-    }
-    
-    private void UpdateBuffers(FrameContext ctx)
-    {
-        if (lastWidth != ctx.Width || lastHeight != ctx.Height)
-        {
-            lastWidth = ctx.Width;
-            lastHeight = ctx.Height;
-            GenerateDepthBuffer(ctx);
-        }
-    }
-    
-    private void GenerateDepthBuffer(FrameContext ctx)
-    {
-        int bufferSize = ctx.Width * ctx.Height * DepthBufferMultiplier;
-        depthBuffer = new byte[bufferSize];
         
-        int index = 0;
-        for (int y = 0; y < ctx.Height; y++)
+        /// <summary>
+        /// Update the random table position for dynamic grain
+        /// </summary>
+        private void UpdateRandomTablePosition()
         {
-            for (int x = 0; x < ctx.Width; x++)
+            if (!UseStaticGrain)
             {
-                // Generate random depth values
-                depthBuffer[index++] = (byte)(random.Next() % 255);
-                depthBuffer[index++] = (byte)(random.Next() % 100);
+                _randomTablePosition += _random.Next(300);
+                if (_randomTablePosition >= _randomTable.Length)
+                {
+                    _randomTablePosition -= _randomTable.Length;
+                }
             }
         }
-    }
-    
-    private void ApplyGrainEffect(FrameContext ctx, ImageBuffer input, ImageBuffer output)
-    {
-        int smaxScaled = (Smax * 255) / 100;
-        int depthIndex = 0;
         
-        // Update random table position
-        randomTablePos += random.Next() % 300;
-        if (randomTablePos >= RandomTableSize)
+        /// <summary>
+        /// Apply the grain effect to the image buffer
+        /// </summary>
+        private void ApplyGrainEffect(ImageBuffer imageBuffer, AudioFeatures audioFeatures)
         {
-            randomTablePos -= RandomTableSize;
-        }
-        
-        if (StaticGrain == 1)
-        {
-            // Static grain mode
-            if (Blend == 1)
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+            
+            // Calculate beat response
+            float beatMultiplier = 1.0f;
+            if (BeatResponse && audioFeatures != null && audioFeatures.IsBeat)
             {
-                ApplyStaticGrainWithBlend(ctx, input, output, smaxScaled, ref depthIndex);
+                beatMultiplier = BeatIntensity;
+            }
+            
+            // Calculate scaled maximum intensity
+            int scaledMaxIntensity = (MaxIntensity * 255) / 100;
+            
+            // Apply grain based on mode
+            if (UseStaticGrain)
+            {
+                ApplyStaticGrain(imageBuffer, scaledMaxIntensity, beatMultiplier);
             }
             else
             {
-                ApplyStaticGrainWithoutBlend(ctx, input, output, smaxScaled, ref depthIndex);
+                ApplyDynamicGrain(imageBuffer, scaledMaxIntensity, beatMultiplier);
             }
         }
-        else
+        
+        /// <summary>
+        /// Apply static grain using depth buffer
+        /// </summary>
+        private void ApplyStaticGrain(ImageBuffer imageBuffer, int maxIntensity, float beatMultiplier)
         {
-            // Dynamic grain mode
-            if (Blend == 1)
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+            
+            for (int y = 0; y < height; y++)
             {
-                ApplyDynamicGrainWithBlend(ctx, input, output, smaxScaled, ref depthIndex);
+                for (int x = 0; x < width; x++)
+                {
+                    int bufferIndex = y * width + x;
+                    GrainDepthBuffer depthEntry = _depthBuffer[bufferIndex];
+                    
+                    // Check if grain should be applied based on threshold
+                    if (depthEntry.Threshold < maxIntensity)
+                    {
+                        Color pixel = imageBuffer.GetPixel(x, y);
+                        Color grainColor = GenerateGrainColor(pixel, depthEntry.Intensity);
+                        
+                        // Apply blending based on mode
+                        Color finalColor = ApplyBlending(pixel, grainColor, BlendMode);
+                        
+                        // Apply beat response and intensity
+                        finalColor = ApplyEffects(finalColor, beatMultiplier);
+                        
+                        // Preserve alpha if requested
+                        if (PreserveAlpha)
+                        {
+                            finalColor = Color.FromArgb(pixel.A, finalColor.R, finalColor.G, finalColor.B);
+                        }
+                        
+                        imageBuffer.SetPixel(x, y, finalColor);
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Apply dynamic grain using random generation
+        /// </summary>
+        private void ApplyDynamicGrain(ImageBuffer imageBuffer, int maxIntensity, float beatMultiplier)
+        {
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+            
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Color pixel = imageBuffer.GetPixel(x, y);
+                    
+                    // Check if grain should be applied based on random threshold
+                    if (GetFastRandomByte() < maxIntensity)
+                    {
+                        byte grainIntensity = GetFastRandomByte();
+                        Color grainColor = GenerateGrainColor(pixel, grainIntensity);
+                        
+                        // Apply blending based on mode
+                        Color finalColor = ApplyBlending(pixel, grainColor, BlendMode);
+                        
+                        // Apply beat response and intensity
+                        finalColor = ApplyEffects(finalColor, beatMultiplier);
+                        
+                        // Preserve alpha if requested
+                        if (PreserveAlpha)
+                        {
+                            finalColor = Color.FromArgb(pixel.A, finalColor.R, finalColor.G, finalColor.B);
+                        }
+                        
+                        imageBuffer.SetPixel(x, y, finalColor);
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Generate grain color based on original pixel and intensity
+        /// </summary>
+        private Color GenerateGrainColor(Color originalPixel, byte intensity)
+        {
+            if (GrainColor.HasValue)
+            {
+                // Use specified grain color
+                return GrainColor.Value;
             }
             else
             {
-                ApplyDynamicGrainWithoutBlend(ctx, input, output, smaxScaled, ref depthIndex);
-            }
-        }
-    }
-    
-    private void ApplyStaticGrainWithBlend(FrameContext ctx, ImageBuffer input, ImageBuffer output, int smaxScaled, ref int depthIndex)
-    {
-        for (int y = 0; y < ctx.Height; y++)
-        {
-            for (int x = 0; x < ctx.Width; x++)
-            {
-                Color inputPixel = input.GetPixel(x, y);
-                Color processedPixel = ProcessPixelWithStaticGrain(inputPixel, depthIndex, smaxScaled);
+                // Use original pixel color modulated by intensity
+                int r = (originalPixel.R * intensity) >> 8;
+                int g = (originalPixel.G * intensity) >> 8;
+                int b = (originalPixel.B * intensity) >> 8;
                 
-                if (BlendAvg == 1)
-                {
-                    processedPixel = BlendPixels(inputPixel, processedPixel, 0.5f);
-                }
+                // Clamp values
+                r = Math.Min(255, r);
+                g = Math.Min(255, g);
+                b = Math.Min(255, b);
                 
-                output.SetPixel(x, y, processedPixel);
-                depthIndex += 2;
+                return Color.FromArgb(255, r, g, b);
             }
         }
-    }
-    
-    private void ApplyStaticGrainWithoutBlend(FrameContext ctx, ImageBuffer input, ImageBuffer output, int smaxScaled, ref int depthIndex)
-    {
-        for (int y = 0; y < ctx.Height; y++)
+        
+        /// <summary>
+        /// Apply blending between original and grain colors
+        /// </summary>
+        private Color ApplyBlending(Color originalColor, Color grainColor, GrainBlendMode mode)
         {
-            for (int x = 0; x < ctx.Width; x++)
+            switch (mode)
             {
-                Color inputPixel = input.GetPixel(x, y);
-                Color processedPixel = ProcessPixelWithStaticGrain(inputPixel, depthIndex, smaxScaled);
-                output.SetPixel(x, y, processedPixel);
-                depthIndex += 2;
+                case GrainBlendMode.Replace:
+                    return grainColor;
+                    
+                case GrainBlendMode.Additive:
+                    return BlendAdditive(originalColor, grainColor);
+                    
+                case GrainBlendMode.Average:
+                    return BlendAverage(originalColor, grainColor);
+                    
+                default:
+                    return grainColor;
             }
         }
-    }
-    
-    private void ApplyDynamicGrainWithBlend(FrameContext ctx, ImageBuffer input, ImageBuffer output, int smaxScaled, ref int depthIndex)
-    {
-        for (int y = 0; y < ctx.Height; y++)
+        
+        /// <summary>
+        /// Additive blending (add colors, clamp to 255)
+        /// </summary>
+        private Color BlendAdditive(Color color1, Color color2)
         {
-            for (int x = 0; x < ctx.Width; x++)
+            int r = Math.Min(255, color1.R + color2.R);
+            int g = Math.Min(255, color1.G + color2.G);
+            int b = Math.Min(255, color1.B + color2.B);
+            
+            return Color.FromArgb(255, r, g, b);
+        }
+        
+        /// <summary>
+        /// Average blending (50/50 mix)
+        /// </summary>
+        private Color BlendAverage(Color color1, Color color2)
+        {
+            int r = (color1.R + color2.R) / 2;
+            int g = (color1.G + color2.G) / 2;
+            int b = (color1.B + color2.B) / 2;
+            
+            return Color.FromArgb(255, r, g, b);
+        }
+        
+        /// <summary>
+        /// Apply beat response and intensity effects
+        /// </summary>
+        private Color ApplyEffects(Color color, float beatMultiplier)
+        {
+            int r = color.R;
+            int g = color.G;
+            int b = color.B;
+            
+            // Apply beat response
+            if (beatMultiplier != 1.0f)
             {
-                Color inputPixel = input.GetPixel(x, y);
-                Color processedPixel = ProcessPixelWithDynamicGrain(inputPixel, depthIndex, smaxScaled);
-                
-                if (BlendAvg == 1)
-                {
-                    processedPixel = BlendPixels(inputPixel, processedPixel, 0.5f);
-                }
-                
-                output.SetPixel(x, y, processedPixel);
-                depthIndex += 2;
+                r = (int)(r * beatMultiplier);
+                g = (int)(g * beatMultiplier);
+                b = (int)(b * beatMultiplier);
             }
+            
+            // Apply intensity
+            r = (int)(r * Intensity);
+            g = (int)(g * Intensity);
+            b = (int)(b * Intensity);
+            
+            // Clamp values
+            r = Math.Min(255, r);
+            g = Math.Min(255, g);
+            b = Math.Min(255, b);
+            
+            return Color.FromArgb(255, r, g, b);
         }
-    }
-    
-    private void ApplyDynamicGrainWithoutBlend(FrameContext ctx, ImageBuffer input, ImageBuffer output, int smaxScaled, ref int depthIndex)
-    {
-        for (int y = 0; y < ctx.Height; y++)
+        
+        /// <summary>
+        /// Get a fast random byte from the pre-calculated table
+        /// </summary>
+        private byte GetFastRandomByte()
         {
-            for (int x = 0; x < ctx.Width; x++)
+            byte result = _randomTable[_randomTablePosition];
+            _randomTablePosition++;
+            
+            // Add additional randomness every 16 calls
+            if ((_randomTablePosition & 15) == 0)
             {
-                Color inputPixel = input.GetPixel(x, y);
-                Color processedPixel = ProcessPixelWithDynamicGrain(inputPixel, depthIndex, smaxScaled);
-                output.SetPixel(x, y, processedPixel);
-                depthIndex += 2;
+                _randomTablePosition += _random.Next(73);
+            }
+            
+            // Wrap around if needed
+            if (_randomTablePosition >= _randomTable.Length)
+            {
+                _randomTablePosition -= _randomTable.Length;
+            }
+            
+            return result;
+        }
+        
+        #endregion
+        
+        #region Configuration Validation
+        
+        public override bool ValidateConfiguration()
+        {
+            if (MaxIntensity < 0 || MaxIntensity > 100) return false;
+            if (Intensity < 0.1f || Intensity > 10.0f) return false;
+            if (BeatIntensity < 0.1f || BeatIntensity > 5.0f) return false;
+            
+            return true;
+        }
+        
+        #endregion
+        
+        #region Preset Methods
+        
+        /// <summary>
+        /// Load a subtle grain preset
+        /// </summary>
+        public void LoadSubtleGrainPreset()
+        {
+            MaxIntensity = 30;
+            UseStaticGrain = false;
+            BlendMode = GrainBlendMode.Average;
+            Intensity = 0.8f;
+            BeatResponse = false;
+            GrainColor = null;
+        }
+        
+        /// <summary>
+        /// Load a strong grain preset
+        /// </summary>
+        public void LoadStrongGrainPreset()
+        {
+            MaxIntensity = 80;
+            UseStaticGrain = false;
+            BlendMode = GrainBlendMode.Replace;
+            Intensity = 1.5f;
+            BeatResponse = false;
+            GrainColor = null;
+        }
+        
+        /// <summary>
+        /// Load a static grain preset
+        /// </summary>
+        public void LoadStaticGrainPreset()
+        {
+            MaxIntensity = 50;
+            UseStaticGrain = true;
+            BlendMode = GrainBlendMode.Additive;
+            Intensity = 1.0f;
+            BeatResponse = false;
+            GrainColor = null;
+        }
+        
+        /// <summary>
+        /// Load a beat-responsive grain preset
+        /// </summary>
+        public void LoadBeatResponsivePreset()
+        {
+            MaxIntensity = 60;
+            UseStaticGrain = false;
+            BlendMode = GrainBlendMode.Additive;
+            Intensity = 1.0f;
+            BeatResponse = true;
+            BeatIntensity = 1.8f;
+            GrainColor = null;
+        }
+        
+        /// <summary>
+        /// Load a colored grain preset
+        /// </summary>
+        public void LoadColoredGrainPreset()
+        {
+            MaxIntensity = 70;
+            UseStaticGrain = false;
+            BlendMode = GrainBlendMode.Average;
+            Intensity = 1.2f;
+            BeatResponse = false;
+            GrainColor = Color.White;
+        }
+        
+        #endregion
+        
+        #region Utility Methods
+        
+        /// <summary>
+        /// Get the current grain intensity
+        /// </summary>
+        public int GetCurrentGrainIntensity()
+        {
+            return MaxIntensity;
+        }
+        
+        /// <summary>
+        /// Set the grain intensity
+        /// </summary>
+        public void SetGrainIntensity(int newIntensity)
+        {
+            MaxIntensity = Math.Max(0, Math.Min(100, newIntensity));
+        }
+        
+        /// <summary>
+        /// Toggle between static and dynamic grain
+        /// </summary>
+        public void ToggleGrainMode()
+        {
+            UseStaticGrain = !UseStaticGrain;
+        }
+        
+        /// <summary>
+        /// Get the current grain mode
+        /// </summary>
+        public string GetGrainMode()
+        {
+            return UseStaticGrain ? "Static" : "Dynamic";
+        }
+        
+        /// <summary>
+        /// Get the current blending mode
+        /// </summary>
+        public GrainBlendMode GetCurrentBlendMode()
+        {
+            return BlendMode;
+        }
+        
+        /// <summary>
+        /// Regenerate the random table
+        /// </summary>
+        public void RegenerateRandomTable()
+        {
+            InitializeRandomTable();
+        }
+        
+        /// <summary>
+        /// Regenerate the depth buffer
+        /// </summary>
+        public void RegenerateDepthBuffer()
+        {
+            if (_currentWidth > 0 && _currentHeight > 0)
+            {
+                InitializeDepthBuffer(_currentWidth, _currentHeight);
             }
         }
-    }
-    
-    private Color ProcessPixelWithStaticGrain(Color pixel, int depthIndex, int smaxScaled)
-    {
-        if (depthBuffer[depthIndex + 1] < smaxScaled)
-        {
-            int strength = depthBuffer[depthIndex];
-            return ApplyGrainStrength(pixel, strength);
-        }
-        return pixel;
-    }
-    
-    private Color ProcessPixelWithDynamicGrain(Color pixel, int depthIndex, int smaxScaled)
-    {
-        if (depthBuffer[depthIndex + 1] < smaxScaled)
-        {
-            int strength = GetRandomStrength();
-            return ApplyGrainStrength(pixel, strength);
-        }
-        return pixel;
-    }
-    
-    private Color ApplyGrainStrength(Color pixel, int strength)
-    {
-        float strengthFactor = strength / 255.0f;
         
-        int r = (int)(pixel.R * strengthFactor);
-        int g = (int)(pixel.G * strengthFactor);
-        int b = (int)(pixel.B * strengthFactor);
+        /// <summary>
+        /// Reset the effect to initial state
+        /// </summary>
+        public void Reset()
+        {
+            MaxIntensity = 100;
+            UseStaticGrain = false;
+            BlendMode = GrainBlendMode.Replace;
+            Intensity = 1.0f;
+            BeatResponse = false;
+            BeatIntensity = 1.0f;
+            GrainColor = null;
+            PreserveAlpha = true;
+            _frameCounter = 0;
+            _isInitialized = false;
+            
+            // Regenerate tables
+            InitializeRandomTable();
+            if (_currentWidth > 0 && _currentHeight > 0)
+            {
+                InitializeDepthBuffer(_currentWidth, _currentHeight);
+            }
+        }
         
-        r = Math.Clamp(r, 0, 255);
-        g = Math.Clamp(g, 0, 255);
-        b = Math.Clamp(b, 0, 255);
+        /// <summary>
+        /// Get effect execution statistics
+        /// </summary>
+        public string GetExecutionStats()
+        {
+            return $"Frame: {_frameCounter}, Intensity: {MaxIntensity}, Mode: {GetGrainMode()}, Blend: {BlendMode}, Random Pos: {_randomTablePosition}";
+        }
         
-        return Color.FromRgb((byte)r, (byte)g, (byte)b);
-    }
-    
-    private Color BlendPixels(Color pixel1, Color pixel2, float blendFactor)
-    {
-        int r = (int)(pixel1.R * (1 - blendFactor) + pixel2.R * blendFactor);
-        int g = (int)(pixel1.G * (1 - blendFactor) + pixel2.G * blendFactor);
-        int b = (int)(pixel1.B * (1 - blendFactor) + pixel2.B * blendFactor);
+        #endregion
         
-        r = Math.Clamp(r, 0, 255);
-        g = Math.Clamp(g, 0, 255);
-        b = Math.Clamp(b, 0, 255);
+        #region Advanced Features
         
-        return Color.FromRgb((byte)r, (byte)g, (byte)b);
-    }
-    
-    private int GetRandomStrength()
-    {
-        byte strength = randomTable[randomTablePos];
-        randomTablePos++;
-        if ((randomTablePos & 15) == 0)
+        /// <summary>
+        /// Get a copy of the current random table
+        /// </summary>
+        public byte[] GetRandomTable()
         {
-            randomTablePos += random.Next() % 73;
+            return (byte[])_randomTable.Clone();
         }
-        if (randomTablePos >= RandomTableSize)
+        
+        /// <summary>
+        /// Set the random table directly (for advanced users)
+        /// </summary>
+        public void SetRandomTable(byte[] newTable)
         {
-            randomTablePos -= RandomTableSize;
+            if (newTable != null && newTable.Length == 491)
+            {
+                Array.Copy(newTable, _randomTable, newTable.Length);
+            }
         }
-        return strength;
-    }
-    
-    // Public interface for parameter adjustment
-    public void SetEnabled(bool enable) { Enabled = enable; }
-    
-    public void SetBlend(int blend) 
-    { 
-        Blend = Math.Clamp(blend, MinBlend, MaxBlend); 
-    }
-    
-    public void SetBlendAvg(int blendAvg) 
-    { 
-        BlendAvg = Math.Clamp(blendAvg, MinBlend, MaxBlend); 
-    }
-    
-    public void SetSmax(int smax) 
-    { 
-        Smax = Math.Clamp(smax, MinSmax, MaxSmax); 
-    }
-    
-    public void SetStaticGrain(int staticGrain) 
-    { 
-        StaticGrain = Math.Clamp(staticGrain, MinStaticGrain, MaxStaticGrain); 
-    }
-    
-    // Status queries
-    public bool IsEnabled() => Enabled;
-    public int GetBlend() => Blend;
-    public int GetBlendAvg() => BlendAvg;
-    public int GetSmax() => Smax;
-    public int GetStaticGrain() => StaticGrain;
-    
-    // Advanced grain control
-    public void SetGrainMode(int mode)
-    {
-        switch (mode)
+        
+        /// <summary>
+        /// Get a copy of the current depth buffer
+        /// </summary>
+        public GrainDepthBuffer[] GetDepthBuffer()
         {
-            case 0: SetStaticGrain(0); break;
-            case 1: SetStaticGrain(1); break;
-            default: SetStaticGrain(0); break;
+            return (GrainDepthBuffer[])_depthBuffer.Clone();
         }
-    }
-    
-    public void SetBlendingMode(int mode)
-    {
-        switch (mode)
+        
+        /// <summary>
+        /// Set the depth buffer directly (for advanced users)
+        /// </summary>
+        public void SetDepthBuffer(GrainDepthBuffer[] newBuffer)
         {
-            case 0: SetBlend(0); break;
-            case 1: SetBlend(1); break;
-            default: SetBlend(0); break;
+            if (newBuffer != null && newBuffer.Length == _depthBuffer.Length)
+            {
+                Array.Copy(newBuffer, _depthBuffer, newBuffer.Length);
+            }
         }
-    }
-    
-    public void SetGrainIntensity(int intensity)
-    {
-        // Map intensity (0-100) to smax
-        SetSmax(intensity);
-    }
-    
-    // Grain effect presets
-    public void SetNoGrain()
-    {
-        SetSmax(0);
-    }
-    
-    public void SetLightGrain()
-    {
-        SetSmax(25);
-    }
-    
-    public void SetMediumGrain()
-    {
-        SetSmax(50);
-    }
-    
-    public void SetHeavyGrain()
-    {
-        SetSmax(75);
-    }
-    
-    public void SetExtremeGrain()
-    {
-        SetSmax(100);
-    }
-    
-    public void SetStaticGrainMode()
-    {
-        SetStaticGrain(1);
-    }
-    
-    public void SetDynamicGrainMode()
-    {
-        SetStaticGrain(0);
-    }
-    
-    public void SetBlendMode()
-    {
-        SetBlend(1);
-    }
-    
-    public void SetNoBlendMode()
-    {
-        SetBlend(0);
-    }
-    
-    public void SetAverageBlendMode()
-    {
-        SetBlendAvg(1);
-    }
-    
-    public void SetNoAverageBlendMode()
-    {
-        SetBlendAvg(0);
-    }
-    
-    // Custom grain configurations
-    public void SetCustomGrain(int smax, int staticGrain, int blend, int blendAvg)
-    {
-        SetSmax(smax);
-        SetStaticGrain(staticGrain);
-        SetBlend(blend);
-        SetBlendAvg(blendAvg);
-    }
-    
-    public void SetGrainPreset(int preset)
-    {
-        switch (preset)
-        {
-            case 0: // No grain
-                SetCustomGrain(0, 0, 0, 0);
-                break;
-            case 1: // Light static grain
-                SetCustomGrain(25, 1, 1, 0);
-                break;
-            case 2: // Medium dynamic grain
-                SetCustomGrain(50, 0, 1, 1);
-                break;
-            case 3: // Heavy static grain
-                SetCustomGrain(75, 1, 1, 1);
-                break;
-            case 4: // Extreme dynamic grain
-                SetCustomGrain(100, 0, 0, 0);
-                break;
-            default:
-                SetCustomGrain(50, 0, 1, 0);
-                break;
-        }
-    }
-    
-    // Performance optimization
-    public void SetRenderQuality(int quality)
-    {
-        // Quality could affect processing detail or optimization level
-        // For now, we maintain full quality
-    }
-    
-    public void EnableOptimizations(bool enable)
-    {
-        // Various optimization flags could be implemented here
-    }
-    
-    public void SetBufferUpdateMode(int mode)
-    {
-        // Mode could control when depth buffer is regenerated
-        // For now, we regenerate on parameter changes
-    }
-    
-    // Advanced grain features
-    public void SetBeatReactiveGrain(bool enable)
-    {
-        // Beat reactivity could be implemented here
-        // For now, we maintain standard behavior
-    }
-    
-    public void SetTemporalGrain(bool enable)
-    {
-        // Temporal grain effects could be implemented here
-        // For now, we maintain standard behavior
-    }
-    
-    public void SetSpatialGrain(bool enable)
-    {
-        // Spatial grain effects could be implemented here
-        // For now, we maintain standard behavior
-    }
-    
-    // Channel-specific control
-    public void SetRedGrain(int intensity)
-    {
-        // This could implement per-channel grain control
-        // For now, we maintain full RGB processing
-    }
-    
-    public void SetGreenGrain(int intensity)
-    {
-        // This could implement per-channel grain control
-        // For now, we maintain full RGB processing
-    }
-    
-    public void SetBlueGrain(int intensity)
-    {
-        // This could implement per-channel grain control
-        // For now, we maintain full RGB processing
-    }
-    
-    public override void Dispose()
-    {
-        lock (renderLock)
-        {
-            // Clean up resources if needed
-            depthBuffer = null;
-            randomTable = null;
-        }
+        
+        #endregion
     }
 }
 ```
 
-## Integration Points
+## Effect Properties
 
-### Grain Processing Integration
-- **Depth Buffer Management**: Intelligent depth buffer management and grain processing
-- **Grain Intensity Control**: Precise grain intensity control and manipulation
-- **Blending Modes**: Advanced blending modes for grain integration
-- **Quality Control**: High-quality grain enhancement and processing
+### Core Properties
+- **Enabled**: Toggle the effect on/off
+- **MaxIntensity**: Maximum grain intensity (0-100)
+- **UseStaticGrain**: Whether to use static (persistent) grain
+- **BlendMode**: Blending mode for grain application
+- **Intensity**: Overall effect strength multiplier
 
-### Color Processing Integration
-- **RGB Processing**: Independent processing of RGB color channels
-- **Color Mapping**: Advanced color mapping and transformation
-- **Color Enhancement**: Intelligent color enhancement and processing
-- **Visual Quality**: High-quality color transformation and processing
+### Advanced Properties
+- **BeatResponse**: Whether to respond to beat detection
+- **BeatIntensity**: Beat response intensity multiplier
+- **GrainColor**: Custom grain color (null = use original pixel)
+- **PreserveAlpha**: Whether to preserve alpha channel values
 
-### Image Processing Integration
-- **Noise Generation**: Advanced noise generation and grain effects
-- **Texture Processing**: Intelligent texture processing and manipulation
-- **Visual Enhancement**: Multiple enhancement modes for visual integration
-- **Performance Optimization**: Optimized operations for grain processing
+### Internal Properties
+- **RandomTable**: Pre-calculated random number table
+- **DepthBuffer**: Buffer for static grain patterns
+- **FrameCounter**: Frame counter for timing
+- **RandomTablePosition**: Current position in random table
 
-## Usage Examples
+## Grain Modes
 
-### Basic Grain Effect
-```csharp
-var grainNode = new GrainEffectsNode
-{
-    Enabled = true,                        // Enable effect
-    Smax = 50,                             // Medium grain intensity
-    StaticGrain = 0,                       // Dynamic grain
-    Blend = 1,                             // Enable blending
-    BlendAvg = 0                            // No average blending
-};
-```
+### Static Grain Mode
+- Uses persistent grain patterns
+- Stored in depth buffer for consistency
+- Good for film grain simulation
+- Consistent across frames
 
-### Heavy Static Grain Effect
-```csharp
-var grainNode = new GrainEffectsNode
-{
-    Enabled = true,
-    Smax = 75,                             // Heavy grain intensity
-    StaticGrain = 1,                       // Static grain
-    Blend = 1,                             // Enable blending
-    BlendAvg = 1                            // Enable average blending
-};
+### Dynamic Grain Mode
+- Generates new grain each frame
+- Uses fast random number generation
+- Good for digital noise effects
+- Varies over time
 
-// Apply heavy grain preset
-grainNode.SetHeavyGrain();
-```
+## Blending Modes
 
-### No Grain Effect
-```csharp
-var grainNode = new GrainEffectsNode
-{
-    Enabled = true,
-    Smax = 0,                              // No grain
-    StaticGrain = 0,                       // Dynamic grain
-    Blend = 0,                             // No blending
-    BlendAvg = 0                            // No average blending
-};
+### Replace Mode
+- Completely replaces pixels with grain
+- Maximum grain visibility
+- Good for strong effects
+- May lose original image detail
 
-// Apply no grain preset
-grainNode.SetNoGrain();
-```
+### Additive Mode
+- Adds grain to existing pixels
+- Preserves original image
+- Creates brightening effect
+- Good for subtle enhancement
 
-### Advanced Grain Control
-```csharp
-var grainNode = new GrainEffectsNode
-{
-    Enabled = true,
-    Smax = 60,                             // Custom grain intensity
-    StaticGrain = 0,                       // Dynamic grain
-    Blend = 1,                             // Enable blending
-    BlendAvg = 1                            // Enable average blending
-};
+### Average Mode
+- 50/50 mix of original and grain
+- Balanced effect
+- Preserves image structure
+- Good for natural appearance
 
-// Apply various presets
-grainNode.SetExtremeGrain();               // Extreme grain
-grainNode.SetGrainPreset(3);               // Heavy static grain preset
-grainNode.SetCustomGrain(80, 1, 1, 0);    // Custom grain configuration
-```
+## Random Number System
 
-## Technical Notes
+The effect uses an optimized random system:
+- **Pre-calculated Table**: 491-byte random number table
+- **Fast Access**: Direct table lookup for speed
+- **Additional Randomness**: Periodic randomization every 16 calls
+- **Efficient Wrapping**: Automatic table position management
 
-### Grain Architecture
-The effect implements sophisticated grain processing:
-- **Depth Buffer Management**: Intelligent depth buffer management and grain processing algorithms
-- **Grain Intensity Control**: Advanced grain intensity control and manipulation
-- **Blending Modes**: Sophisticated blending modes for grain integration
-- **Quality Optimization**: High-quality grain enhancement and processing
+## Depth Buffer System
 
-### Color Architecture
-Advanced color processing system:
-- **RGB Processing**: Independent RGB channel processing and manipulation
-- **Color Mapping**: Advanced color mapping and transformation
-- **Buffer Management**: Intelligent buffer management and optimization
-- **Performance Optimization**: Optimized color processing operations
+For static grain:
+- **Intensity Values**: Grain strength for each pixel
+- **Threshold Values**: Probability of grain application
+- **Persistent Storage**: Maintains grain patterns across frames
+- **Memory Efficient**: Compact storage format
 
-### Integration System
-Sophisticated system integration:
-- **Grain Processing**: Deep integration with grain enhancement system
-- **Color Management**: Seamless integration with color management system
-- **Effect Management**: Advanced effect management and optimization
-- **Performance Optimization**: Optimized operations for grain processing
+## Performance Optimizations
 
-This effect provides the foundation for sophisticated noise effects, creating advanced grain transformations with depth buffer management, configurable grain intensity, blending modes, and intelligent noise generation for sophisticated AVS visualization systems.
+- **Pre-calculated Tables**: Fast random number generation
+- **Efficient Blending**: Optimized color mixing algorithms
+- **Conditional Processing**: Only applies grain when needed
+- **Memory Management**: Efficient buffer allocation
+
+## Beat Response
+
+When enabled, the effect responds to music by:
+- **Beat Detection**: Enhanced grain on musical beats
+- **Intensity Multiplier**: Configurable beat response strength
+- **Dynamic Variation**: Varying grain intensity with music
+- **Synchronization**: Visual effects timed with audio
+
+## Use Cases
+
+- **Film Simulation**: Realistic film grain effects
+- **Texture Addition**: Adding noise to flat images
+- **Mood Enhancement**: Creating atmospheric effects
+- **Beat Visualization**: Music-synchronized grain
+- **Artistic Effects**: Creative noise patterns
+
+## Preset Effects
+
+### Basic Presets
+- **Subtle Grain**: Light texture addition
+- **Strong Grain**: Heavy noise effects
+- **Static Grain**: Persistent grain patterns
+- **Beat Responsive**: Music-synchronized grain
+
+### Advanced Presets
+- **Colored Grain**: Custom grain colors
+- **Dynamic Patterns**: Varying grain effects
+- **Film Simulation**: Authentic film look
+- **Digital Noise**: Modern noise effects
+
+## Mathematical Functions
+
+The effect uses:
+- **Random Generation**: Fast pseudo-random numbers
+- **Color Blending**: Various mixing algorithms
+- **Threshold Testing**: Probability-based grain application
+- **Intensity Modulation**: Grain strength control
+
+## Error Handling
+
+The effect includes:
+- **Parameter Validation**: Ensures configuration values are within ranges
+- **Buffer Validation**: Verifies depth buffer integrity
+- **Memory Safety**: Handles buffer allocation gracefully
+- **Table Management**: Automatic random table maintenance

@@ -1,676 +1,557 @@
-# Colorreplace Effects
+# Color Replace Effects
 
-## Overview
+The Color Replace effect (also known as Color Clip) replaces colors below a specified threshold with a custom replacement color. It works by analyzing the RGB values of each pixel and replacing colors that fall below the threshold values with the specified replacement color.
 
-The Colorreplace effect creates sophisticated color replacement effects by substituting colors below a specified threshold with a target replacement color. It provides advanced color clipping and replacement capabilities with configurable thresholds and replacement colors. The effect uses intelligent color analysis to identify pixels that meet the replacement criteria and applies precise color substitution while preserving alpha channels.
+## Effect Overview
 
-## C++ Source Analysis
-
-**Source File**: `r_colorreplace.cpp`
-
-**Key Features**:
-- **Color Threshold Detection**: Intelligent color value threshold analysis
-- **Alpha Channel Preservation**: Maintains transparency information
-- **Configurable Replacement**: User-defined replacement color selection
-- **Efficient Processing**: Direct framebuffer manipulation
-- **RGB Channel Analysis**: Independent channel threshold checking
-- **Simple Configuration**: Minimal parameter control for ease of use
-
-**Core Parameters**:
-- `enabled`: Enable/disable the effect
-- `color_clip`: Replacement color in RGB format (default: RGB(32,32,32))
+The Color Replace effect works by:
+1. Setting a color threshold for red, green, and blue channels
+2. Analyzing each pixel's RGB values
+3. Replacing pixels where all channels are below their respective thresholds
+4. Preserving the original alpha channel during replacement
 
 ## C# Implementation
 
 ```csharp
 using System;
 using System.Drawing;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+using PhoenixVisualizer.Core.Effects.Models;
+using PhoenixVisualizer.Core.Models;
 
-namespace PhoenixVisualizer.Effects
+namespace PhoenixVisualizer.Core.Effects.Nodes.AvsEffects
 {
-    /// <summary>
-    /// Colorreplace Effects Node - Creates sophisticated color replacement effects
-    /// </summary>
-    public class ColorreplaceEffectsNode : AvsModuleNode
+    public class ColorReplaceEffectsNode : BaseEffectNode
     {
         #region Properties
-
+        
         /// <summary>
-        /// Enable/disable the colorreplace effect
+        /// Whether the effect is enabled
         /// </summary>
         public bool Enabled { get; set; } = true;
-
+        
         /// <summary>
-        /// Replacement color for pixels below threshold
+        /// Color threshold for replacement (RGB values below this will be replaced)
         /// </summary>
-        public Color ReplacementColor { get; set; } = Color.FromArgb(32, 32, 32);
-
+        public Color ColorThreshold { get; set; } = Color.FromArgb(255, 32, 32, 32);
+        
         /// <summary>
-        /// Red channel threshold (0-255)
+        /// Color to replace threshold colors with
         /// </summary>
-        public int RedThreshold { get; set; } = 32;
-
+        public Color ReplacementColor { get; set; } = Color.FromArgb(255, 128, 128, 128);
+        
         /// <summary>
-        /// Green channel threshold (0-255)
+        /// Effect intensity multiplier
         /// </summary>
-        public int GreenThreshold { get; set; } = 32;
-
+        public float Intensity { get; set; } = 1.0f;
+        
         /// <summary>
-        /// Blue channel threshold (0-255)
+        /// Whether to apply the effect on every frame or only on beats
         /// </summary>
-        public int BlueThreshold { get; set; } = 32;
-
+        public bool BeatResponseOnly { get; set; } = false;
+        
         /// <summary>
-        /// Enable beat-reactive threshold changes
+        /// Threshold tolerance for color matching
         /// </summary>
-        public bool BeatReactive { get; set; } = false;
-
+        public int Tolerance { get; set; } = 0;
+        
         /// <summary>
-        /// Beat-reactive red threshold
+        /// Whether to use individual channel thresholds or combined threshold
         /// </summary>
-        public int BeatRedThreshold { get; set; } = 64;
-
+        public bool UseIndividualThresholds { get; set; } = true;
+        
         /// <summary>
-        /// Beat-reactive green threshold
+        /// Individual threshold values for red, green, and blue channels
         /// </summary>
-        public int BeatGreenThreshold { get; set; } = 64;
-
-        /// <summary>
-        /// Beat-reactive blue threshold
-        /// </summary>
-        public int BeatBlueThreshold { get; set; } = 64;
-
-        /// <summary>
-        /// Enable smooth transitions between thresholds
-        /// </summary>
-        public bool SmoothTransitions { get; set; } = false;
-
-        /// <summary>
-        /// Transition speed (frames per threshold change)
-        /// </summary>
-        public int TransitionSpeed { get; set; } = 5;
-
+        public int[] IndividualThresholds { get; set; } = { 32, 32, 32 };
+        
         #endregion
-
-        #region Constants
-
-        // Threshold constants
-        private const int MinThreshold = 0;
-        private const int MaxThreshold = 255;
-        private const int DefaultThreshold = 32;
-
-        // Beat-reactive constants
-        private const int MinBeatThreshold = 0;
-        private const int MaxBeatThreshold = 255;
-        private const int DefaultBeatThreshold = 64;
-
-        // Transition constants
-        private const int MinTransitionSpeed = 1;
-        private const int MaxTransitionSpeed = 30;
-        private const int DefaultTransitionSpeed = 5;
-
-        // Color constants
-        private const int MaxColorValue = 255;
-        private const int AlphaMask = 0xFF000000;
-
+        
+        #region Private Fields
+        
+        /// <summary>
+        /// Cached threshold values for performance
+        /// </summary>
+        private int _thresholdR, _thresholdG, _thresholdB;
+        
+        /// <summary>
+        /// Cached replacement color values for performance
+        /// </summary>
+        private int _replacementR, _replacementG, _replacementB;
+        
+        /// <summary>
+        /// Whether cached values need updating
+        /// </summary>
+        private bool _cacheDirty = true;
+        
         #endregion
-
-        #region Internal State
-
-        private int lastWidth, lastHeight;
-        private int currentRedThreshold;
-        private int currentGreenThreshold;
-        private int currentBlueThreshold;
-        private int targetRedThreshold;
-        private int targetGreenThreshold;
-        private int targetBlueThreshold;
-        private int transitionFrames;
-        private readonly object renderLock = new object();
-
-        #endregion
-
+        
         #region Constructor
-
-        public ColorreplaceEffectsNode()
+        
+        public ColorReplaceEffectsNode()
         {
-            ResetState();
+            ColorThreshold = Color.FromArgb(255, 32, 32, 32);
+            ReplacementColor = Color.FromArgb(255, 128, 128, 128);
+            IndividualThresholds = new int[] { 32, 32, 32 };
+            UpdateCache();
         }
-
+        
         #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Process the image with colorreplace effects
-        /// </summary>
-        public override ImageBuffer ProcessFrame(ImageBuffer input, AudioFeatures audioFeatures)
+        
+        #region Processing Methods
+        
+        public override void ProcessFrame(ImageBuffer imageBuffer, AudioFeatures audioFeatures)
         {
-            if (!Enabled || input == null)
-                return input;
-
-            lock (renderLock)
+            if (!Enabled || imageBuffer == null) return;
+            
+            // Skip processing if beat response only and no beat detected
+            if (BeatResponseOnly && !audioFeatures.IsBeat) return;
+            
+            // Update cached values if needed
+            if (_cacheDirty)
             {
-                // Update dimensions if changed
-                if (lastWidth != input.Width || lastHeight != input.Height)
-                {
-                    lastWidth = input.Width;
-                    lastHeight = input.Height;
-                    ResetState();
-                }
-
-                // Update thresholds
-                UpdateThresholds(audioFeatures);
-
-                // Create output buffer
-                var output = new ImageBuffer(input.Width, input.Height);
-                Array.Copy(input.Pixels, output.Pixels, input.Pixels.Length);
-
-                // Apply colorreplace effects
-                ApplyColorreplaceEffects(output);
-
-                return output;
+                UpdateCache();
             }
+            
+            ApplyColorReplacement(imageBuffer);
         }
-
+        
         /// <summary>
-        /// Reset internal state
+        /// Update cached threshold and replacement values for performance
         /// </summary>
-        public override void Reset()
+        private void UpdateCache()
         {
-            lock (renderLock)
+            if (UseIndividualThresholds)
             {
-                ResetState();
-            }
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        /// Reset internal state variables
-        /// </summary>
-        private void ResetState()
-        {
-            currentRedThreshold = RedThreshold;
-            currentGreenThreshold = GreenThreshold;
-            currentBlueThreshold = BlueThreshold;
-            targetRedThreshold = RedThreshold;
-            targetGreenThreshold = GreenThreshold;
-            targetBlueThreshold = BlueThreshold;
-            transitionFrames = 0;
-        }
-
-        /// <summary>
-        /// Update thresholds based on beat and transitions
-        /// </summary>
-        private void UpdateThresholds(AudioFeatures audioFeatures)
-        {
-            // Determine target thresholds
-            if (BeatReactive && audioFeatures.IsBeat)
-            {
-                targetRedThreshold = BeatRedThreshold;
-                targetGreenThreshold = BeatGreenThreshold;
-                targetBlueThreshold = BeatBlueThreshold;
+                _thresholdR = IndividualThresholds[0];
+                _thresholdG = IndividualThresholds[1];
+                _thresholdB = IndividualThresholds[2];
             }
             else
             {
-                targetRedThreshold = RedThreshold;
-                targetGreenThreshold = GreenThreshold;
-                targetBlueThreshold = BlueThreshold;
+                _thresholdR = ColorThreshold.R;
+                _thresholdG = ColorThreshold.G;
+                _thresholdB = ColorThreshold.B;
             }
-
-            // Handle smooth transitions
-            if (SmoothTransitions)
-            {
-                SmoothThresholdTransition(ref currentRedThreshold, targetRedThreshold);
-                SmoothThresholdTransition(ref currentGreenThreshold, targetGreenThreshold);
-                SmoothThresholdTransition(ref currentBlueThreshold, targetBlueThreshold);
-            }
-            else
-            {
-                // Direct assignment without transitions
-                currentRedThreshold = targetRedThreshold;
-                currentGreenThreshold = targetGreenThreshold;
-                currentBlueThreshold = targetBlueThreshold;
-            }
+            
+            _replacementR = ReplacementColor.R;
+            _replacementG = ReplacementColor.G;
+            _replacementB = ReplacementColor.B;
+            
+            _cacheDirty = false;
         }
-
+        
         /// <summary>
-        /// Smooth threshold transition
+        /// Apply color replacement to the image buffer
         /// </summary>
-        private void SmoothThresholdTransition(ref int currentValue, int targetValue)
+        private void ApplyColorReplacement(ImageBuffer imageBuffer)
         {
-            if (currentValue < targetValue)
-                currentValue++;
-            else if (currentValue > targetValue)
-                currentValue--;
-        }
-
-        /// <summary>
-        /// Apply colorreplace effects to the image
-        /// </summary>
-        private void ApplyColorreplaceEffects(ImageBuffer output)
-        {
-            int width = output.Width;
-            int height = output.Height;
-
-            // Extract replacement color components
-            int replacementR = ReplacementColor.R;
-            int replacementG = ReplacementColor.G;
-            int replacementB = ReplacementColor.B;
-
-            // Process pixels in parallel for better performance
-            Parallel.For(0, height, y =>
-            {
-                int rowOffset = y * width;
-                for (int x = 0; x < width; x++)
-                {
-                    int pixelIndex = rowOffset + x;
-                    int pixel = output.Pixels[pixelIndex];
-
-                    // Extract RGB components
-                    int r = pixel & 0xFF;
-                    int g = (pixel >> 8) & 0xFF;
-                    int b = (pixel >> 16) & 0xFF;
-                    int a = pixel & AlphaMask;
-
-                    // Check if pixel meets replacement criteria
-                    if (r <= currentRedThreshold && g <= currentGreenThreshold && b <= currentBlueThreshold)
-                    {
-                        // Replace color while preserving alpha
-                        output.Pixels[pixelIndex] = a | replacementR | (replacementG << 8) | (replacementB << 16);
-                    }
-                }
-            });
-        }
-
-        /// <summary>
-        /// Get the number of pixels that were replaced in the last frame
-        /// </summary>
-        public int GetReplacedPixelCount(ImageBuffer input)
-        {
-            if (input == null) return 0;
-
-            int replacedCount = 0;
-            int width = input.Width;
-            int height = input.Height;
-
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+            
             for (int y = 0; y < height; y++)
             {
-                int rowOffset = y * width;
                 for (int x = 0; x < width; x++)
                 {
-                    int pixelIndex = rowOffset + x;
-                    int pixel = input.Pixels[pixelIndex];
-
-                    // Extract RGB components
-                    int r = pixel & 0xFF;
-                    int g = (pixel >> 8) & 0xFF;
-                    int b = (pixel >> 16) & 0xFF;
-
-                    // Check if pixel meets replacement criteria
-                    if (r <= currentRedThreshold && g <= currentGreenThreshold && b <= currentBlueThreshold)
-                    {
-                        replacedCount++;
-                    }
+                    Color pixel = imageBuffer.GetPixel(x, y);
+                    Color replacedPixel = ReplacePixelColor(pixel);
+                    imageBuffer.SetPixel(x, y, replacedPixel);
                 }
             }
-
-            return replacedCount;
         }
-
+        
         /// <summary>
-        /// Get the percentage of pixels that were replaced in the last frame
+        /// Replace a single pixel's color if it meets the threshold criteria
         /// </summary>
-        public float GetReplacedPixelPercentage(ImageBuffer input)
+        private Color ReplacePixelColor(Color pixel)
         {
-            if (input == null) return 0.0f;
-
-            int totalPixels = input.Width * input.Height;
-            int replacedPixels = GetReplacedPixelCount(input);
-
-            return (float)replacedPixels / totalPixels * 100.0f;
-        }
-
-        /// <summary>
-        /// Create a preview of the replacement effect
-        /// </summary>
-        public ImageBuffer CreatePreview(ImageBuffer input, int previewWidth, int previewHeight)
-        {
-            if (input == null) return null;
-
-            // Create scaled preview
-            var preview = new ImageBuffer(previewWidth, previewHeight);
-            float scaleX = (float)input.Width / previewWidth;
-            float scaleY = (float)input.Height / previewHeight;
-
-            for (int y = 0; y < previewHeight; y++)
-            {
-                for (int x = 0; x < previewWidth; x++)
-                {
-                    int sourceX = (int)(x * scaleX);
-                    int sourceY = (int)(y * scaleY);
-                    int sourceIndex = sourceY * input.Width + sourceX;
-                    int previewIndex = y * previewWidth + x;
-
-                    int pixel = input.Pixels[sourceIndex];
-                    int r = pixel & 0xFF;
-                    int g = (pixel >> 8) & 0xFF;
-                    int b = (pixel >> 16) & 0xFF;
-                    int a = pixel & AlphaMask;
-
-                    // Check if pixel meets replacement criteria
-                    if (r <= currentRedThreshold && g <= currentGreenThreshold && b <= currentBlueThreshold)
-                    {
-                        // Replace color while preserving alpha
-                        preview.Pixels[previewIndex] = a | ReplacementColor.R | (ReplacementColor.G << 8) | (ReplacementColor.B << 16);
-                    }
-                    else
-                    {
-                        preview.Pixels[previewIndex] = pixel;
-                    }
-                }
-            }
-
-            return preview;
-        }
-
-        #endregion
-
-        #region Configuration
-
-        /// <summary>
-        /// Validate and clamp property values
-        /// </summary>
-        public override void ValidateProperties()
-        {
-            RedThreshold = Math.Clamp(RedThreshold, MinThreshold, MaxThreshold);
-            GreenThreshold = Math.Clamp(GreenThreshold, MinThreshold, MaxThreshold);
-            BlueThreshold = Math.Clamp(BlueThreshold, MinThreshold, MaxThreshold);
-            BeatRedThreshold = Math.Clamp(BeatRedThreshold, MinBeatThreshold, MaxBeatThreshold);
-            BeatGreenThreshold = Math.Clamp(BeatGreenThreshold, MinBeatThreshold, MaxBeatThreshold);
-            BeatBlueThreshold = Math.Clamp(BeatBlueThreshold, MinBeatThreshold, MaxBeatThreshold);
-            TransitionSpeed = Math.Clamp(TransitionSpeed, MinTransitionSpeed, MaxTransitionSpeed);
-        }
-
-        /// <summary>
-        /// Get a summary of current settings
-        /// </summary>
-        public override string GetSettingsSummary()
-        {
-            string enabledText = Enabled ? "Enabled" : "Disabled";
-            string thresholdText = $"R:{currentRedThreshold} G:{currentGreenThreshold} B:{currentBlueThreshold}";
-            string replacementText = $"Replace: RGB({ReplacementColor.R},{ReplacementColor.G},{ReplacementColor.B})";
-            string beatText = BeatReactive ? "Beat-Reactive" : "Static";
-            string smoothText = SmoothTransitions ? "Smooth" : "Instant";
-
-            return $"Colorreplace: {enabledText}, Threshold: {thresholdText}, {replacementText}, {beatText}, {smoothText}";
-        }
-
-        #endregion
-
-        #region Advanced Features
-
-        /// <summary>
-        /// Get color replacement statistics
-        /// </summary>
-        public ColorReplacementStats GetReplacementStats(ImageBuffer input)
-        {
-            if (input == null)
-                return new ColorReplacementStats();
-
-            int totalPixels = input.Width * input.Height;
-            int replacedPixels = GetReplacedPixelCount(input);
-            float replacedPercentage = GetReplacedPixelPercentage(input);
-
-            return new ColorReplacementStats
-            {
-                TotalPixels = totalPixels,
-                ReplacedPixels = replacedPixels,
-                ReplacedPercentage = replacedPercentage,
-                CurrentRedThreshold = currentRedThreshold,
-                CurrentGreenThreshold = currentGreenThreshold,
-                CurrentBlueThreshold = currentBlueThreshold,
-                ReplacementColor = ReplacementColor
-            };
-        }
-
-        /// <summary>
-        /// Create a custom replacement color based on current thresholds
-        /// </summary>
-        public Color CreateAdaptiveReplacementColor()
-        {
-            // Create a replacement color that's slightly above the thresholds
-            int adaptiveR = Math.Min(currentRedThreshold + 32, MaxColorValue);
-            int adaptiveG = Math.Min(currentGreenThreshold + 32, MaxColorValue);
-            int adaptiveB = Math.Min(currentBlueThreshold + 32, MaxColorValue);
-
-            return Color.FromArgb(adaptiveR, adaptiveG, adaptiveB);
-        }
-
-        /// <summary>
-        /// Get the effective color range that will be replaced
-        /// </summary>
-        public ColorRange GetReplacementRange()
-        {
-            return new ColorRange
-            {
-                MinRed = 0,
-                MaxRed = currentRedThreshold,
-                MinGreen = 0,
-                MaxGreen = currentGreenThreshold,
-                MinBlue = 0,
-                MaxBlue = currentBlueThreshold
-            };
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Color replacement statistics structure
-    /// </summary>
-    public struct ColorReplacementStats
-    {
-        public int TotalPixels { get; set; }
-        public int ReplacedPixels { get; set; }
-        public float ReplacedPercentage { get; set; }
-        public int CurrentRedThreshold { get; set; }
-        public int CurrentGreenThreshold { get; set; }
-        public int CurrentBlueThreshold { get; set; }
-        public Color ReplacementColor { get; set; }
-    }
-
-    /// <summary>
-    /// Color range structure
-    /// </summary>
-    public struct ColorRange
-    {
-        public int MinRed { get; set; }
-        public int MaxRed { get; set; }
-        public int MinGreen { get; set; }
-        public int MaxGreen { get; set; }
-        public int MinBlue { get; set; }
-        public int MaxBlue { get; set; }
-    }
-}
-```
-
-## Key Features
-
-### Color Threshold Detection
-- **Independent Channels**: Separate RGB channel threshold control
-- **Configurable Values**: 0-255 threshold range for each channel
-- **Beat Integration**: Beat-reactive threshold changes
-- **Smooth Transitions**: Gradual threshold adjustments over time
-
-### Color Replacement System
-- **Precise Substitution**: Exact color replacement with alpha preservation
-- **Configurable Colors**: User-defined replacement color selection
-- **Alpha Channel Support**: Maintains transparency information
-- **Efficient Processing**: Direct pixel manipulation
-
-### Performance Features
-- **Parallel Processing**: Multi-threaded pixel processing
-- **Memory Optimization**: Minimal allocation during rendering
-- **Scalable Performance**: Automatic thread distribution
-- **Optimized Algorithms**: Efficient color comparison and replacement
-
-### Advanced Capabilities
-- **Replacement Statistics**: Real-time pixel replacement analysis
-- **Preview Generation**: Scaled preview of replacement effects
-- **Adaptive Colors**: Dynamic replacement color generation
-- **Range Analysis**: Color range replacement information
-
-## Usage Examples
-
-```csharp
-// Create a color replacement effect for dark colors
-var colorreplaceNode = new ColorreplaceEffectsNode
-{
-    RedThreshold = 64,
-    GreenThreshold = 64,
-    BlueThreshold = 64,
-    ReplacementColor = Color.Red,
-    BeatReactive = true,
-    BeatRedThreshold = 128,
-    BeatGreenThreshold = 128,
-    BeatBlueThreshold = 128,
-    SmoothTransitions = true,
-    TransitionSpeed = 10
-};
-
-// Apply to image
-var replacedImage = colorreplaceNode.ProcessFrame(inputImage, audioFeatures);
-
-// Get replacement statistics
-var stats = colorreplaceNode.GetReplacementStats(inputImage);
-Console.WriteLine($"Replaced {stats.ReplacedPercentage:F1}% of pixels");
-
-// Create preview
-var preview = colorreplaceNode.CreatePreview(inputImage, 320, 240);
-```
-
-## Technical Details
-
-### Color Threshold Algorithm
-The effect checks if pixel values are below thresholds:
-
-```csharp
-// Check if pixel meets replacement criteria
-if (r <= currentRedThreshold && g <= currentGreenThreshold && b <= currentBlueThreshold)
-{
-    // Replace color while preserving alpha
-    output.Pixels[pixelIndex] = a | replacementR | (replacementG << 8) | (replacementB << 16);
-}
-```
-
-### Alpha Channel Preservation
-Maintains transparency information during replacement:
-
-```csharp
-// Extract alpha channel
-int a = pixel & AlphaMask;
-
-// Replace color while preserving alpha
-output.Pixels[pixelIndex] = a | replacementR | (replacementG << 8) | (replacementB << 16);
-```
-
-### Smooth Transitions
-Gradual threshold changes for smooth visual effects:
-
-```csharp
-private void SmoothThresholdTransition(ref int currentValue, int targetValue)
-{
-    if (currentValue < targetValue)
-        currentValue++;
-    else if (currentValue > targetValue)
-        currentValue--;
-}
-```
-
-### Replacement Statistics
-Real-time analysis of replacement effects:
-
-```csharp
-public int GetReplacedPixelCount(ImageBuffer input)
-{
-    int replacedCount = 0;
-    
-    for (int y = 0; y < height; y++)
-    {
-        for (int x = 0; x < width; x++)
-        {
-            int pixel = input.Pixels[y * width + x];
-            int r = pixel & 0xFF;
-            int g = (pixel >> 8) & 0xFF;
-            int b = (pixel >> 16) & 0xFF;
-
-            if (r <= currentRedThreshold && g <= currentGreenThreshold && b <= currentBlueThreshold)
-            {
-                replacedCount++;
-            }
-        }
-    }
-    
-    return replacedCount;
-}
-```
-
-### Preview Generation
-Scaled preview for real-time effect visualization:
-
-```csharp
-public ImageBuffer CreatePreview(ImageBuffer input, int previewWidth, int previewHeight)
-{
-    var preview = new ImageBuffer(previewWidth, previewHeight);
-    float scaleX = (float)input.Width / previewWidth;
-    float scaleY = (float)input.Height / previewHeight;
-
-    for (int y = 0; y < previewHeight; y++)
-    {
-        for (int x = 0; x < previewWidth; x++)
-        {
-            int sourceX = (int)(x * scaleX);
-            int sourceY = (int)(y * scaleY);
+            int r = pixel.R;
+            int g = pixel.G;
+            int b = pixel.B;
             
-            // Apply replacement logic to preview
-            // ... (implementation details)
+            // Check if pixel meets replacement criteria
+            bool shouldReplace = ShouldReplacePixel(r, g, b);
+            
+            if (shouldReplace)
+            {
+                // Apply intensity scaling to replacement color
+                if (Intensity != 1.0f)
+                {
+                    int newR = (int)(_replacementR * Intensity);
+                    int newG = (int)(_replacementG * Intensity);
+                    int newB = (int)(_replacementB * Intensity);
+                    
+                    // Clamp values to valid range
+                    newR = Math.Max(0, Math.Min(255, newR));
+                    newG = Math.Max(0, Math.Min(255, newG));
+                    newB = Math.Max(0, Math.Min(255, newB));
+                    
+                    return Color.FromArgb(pixel.A, newR, newG, newB);
+                }
+                else
+                {
+                    return Color.FromArgb(pixel.A, _replacementR, _replacementG, _replacementB);
+                }
+            }
+            
+            return pixel; // No replacement needed
         }
+        
+        /// <summary>
+        /// Determine if a pixel should be replaced based on threshold values
+        /// </summary>
+        private bool ShouldReplacePixel(int r, int g, int b)
+        {
+            if (Tolerance > 0)
+            {
+                // Use tolerance-based comparison
+                return (r <= _thresholdR + Tolerance) && 
+                       (g <= _thresholdG + Tolerance) && 
+                       (b <= _thresholdB + Tolerance);
+            }
+            else
+            {
+                // Exact threshold comparison
+                return (r <= _thresholdR) && (g <= _thresholdG) && (b <= _thresholdB);
+            }
+        }
+        
+        #endregion
+        
+        #region Configuration Validation
+        
+        public override bool ValidateConfiguration()
+        {
+            if (IndividualThresholds == null || IndividualThresholds.Length != 3) return false;
+            if (IndividualThresholds[0] < 0 || IndividualThresholds[0] > 255) return false;
+            if (IndividualThresholds[1] < 0 || IndividualThresholds[1] > 255) return false;
+            if (IndividualThresholds[2] < 0 || IndividualThresholds[2] > 255) return false;
+            if (Tolerance < 0 || Tolerance > 255) return false;
+            if (Intensity < 0.0f || Intensity > 10.0f) return false;
+            
+            return true;
+        }
+        
+        #endregion
+        
+        #region Utility Methods
+        
+        /// <summary>
+        /// Set threshold values for all channels at once
+        /// </summary>
+        public void SetThreshold(int threshold)
+        {
+            IndividualThresholds[0] = threshold;
+            IndividualThresholds[1] = threshold;
+            IndividualThresholds[2] = threshold;
+            _cacheDirty = true;
+        }
+        
+        /// <summary>
+        /// Set individual channel thresholds
+        /// </summary>
+        public void SetThresholds(int red, int green, int blue)
+        {
+            IndividualThresholds[0] = red;
+            IndividualThresholds[1] = green;
+            IndividualThresholds[2] = blue;
+            _cacheDirty = true;
+        }
+        
+        /// <summary>
+        /// Set replacement color from RGB values
+        /// </summary>
+        public void SetReplacementColor(int red, int green, int blue)
+        {
+            ReplacementColor = Color.FromArgb(255, red, green, blue);
+            _cacheDirty = true;
+        }
+        
+        /// <summary>
+        /// Create a black and white effect by replacing dark colors with black
+        /// </summary>
+        public void SetBlackAndWhiteMode()
+        {
+            SetThreshold(64);
+            ReplacementColor = Color.Black;
+            _cacheDirty = true;
+        }
+        
+        /// <summary>
+        /// Create a high contrast effect by replacing mid-tones with white
+        /// </summary>
+        public void SetHighContrastMode()
+        {
+            SetThreshold(128);
+            ReplacementColor = Color.White;
+            _cacheDirty = true;
+        }
+        
+        /// <summary>
+        /// Create a sepia effect by replacing blue tones with brown
+        /// </summary>
+        public void SetSepiaMode()
+        {
+            SetThresholds(64, 64, 32);
+            ReplacementColor = Color.FromArgb(255, 139, 69, 19); // Saddle Brown
+            _cacheDirty = true;
+        }
+        
+        /// <summary>
+        /// Create a night vision effect by replacing dark colors with green
+        /// </summary>
+        public void SetNightVisionMode()
+        {
+            SetThreshold(48);
+            ReplacementColor = Color.FromArgb(255, 0, 255, 0); // Bright Green
+            _cacheDirty = true;
+        }
+        
+        /// <summary>
+        /// Create a fire effect by replacing cool colors with warm colors
+        /// </summary>
+        public void SetFireMode()
+        {
+            SetThresholds(64, 64, 128);
+            ReplacementColor = Color.FromArgb(255, 255, 69, 0); // Orange Red
+            _cacheDirty = true;
+        }
+        
+        /// <summary>
+        /// Create an ice effect by replacing warm colors with cool colors
+        /// </summary>
+        public void SetIceMode()
+        {
+            SetThresholds(128, 64, 64);
+            ReplacementColor = Color.FromArgb(255, 135, 206, 235); // Sky Blue
+            _cacheDirty = true;
+        }
+        
+        #endregion
+        
+        #region Advanced Methods
+        
+        /// <summary>
+        /// Apply color replacement with smooth blending for gradual transitions
+        /// </summary>
+        public void ApplySmoothReplacement(ImageBuffer imageBuffer)
+        {
+            if (imageBuffer == null) return;
+            
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+            
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Color pixel = imageBuffer.GetPixel(x, y);
+                    Color replacedPixel = ApplySmoothReplacement(pixel);
+                    imageBuffer.SetPixel(x, y, replacedPixel);
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Apply smooth color replacement with blending based on threshold distance
+        /// </summary>
+        private Color ApplySmoothReplacement(Color pixel)
+        {
+            int r = pixel.R;
+            int g = pixel.G;
+            int b = pixel.B;
+            
+            // Calculate distance from threshold
+            float distanceR = Math.Max(0, _thresholdR - r) / (float)_thresholdR;
+            float distanceG = Math.Max(0, _thresholdG - g) / (float)_thresholdG;
+            float distanceB = Math.Max(0, _thresholdB - b) / (float)_thresholdB;
+            
+            // Use the maximum distance to determine blend factor
+            float blendFactor = Math.Max(distanceR, Math.Max(distanceG, distanceB));
+            
+            if (blendFactor > 0)
+            {
+                // Blend between original and replacement color
+                int newR = (int)(r + (_replacementR - r) * blendFactor);
+                int newG = (int)(g + (_replacementG - g) * blendFactor);
+                int newB = (int)(b + (_replacementB - b) * blendFactor);
+                
+                // Apply intensity scaling
+                if (Intensity != 1.0f)
+                {
+                    newR = (int)(newR * Intensity);
+                    newG = (int)(newG * Intensity);
+                    newB = (int)(newB * Intensity);
+                }
+                
+                // Clamp values
+                newR = Math.Max(0, Math.Min(255, newR));
+                newG = Math.Max(0, Math.Min(255, newG));
+                newB = Math.Max(0, Math.Min(255, newB));
+                
+                return Color.FromArgb(pixel.A, newR, newG, newB);
+            }
+            
+            return pixel;
+        }
+        
+        /// <summary>
+        /// Apply color replacement with selective channel processing
+        /// </summary>
+        public void ApplySelectiveReplacement(ImageBuffer imageBuffer, bool processRed, bool processGreen, bool processBlue)
+        {
+            if (imageBuffer == null) return;
+            
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+            
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Color pixel = imageBuffer.GetPixel(x, y);
+                    Color replacedPixel = ApplySelectiveReplacement(pixel, processRed, processGreen, processBlue);
+                    imageBuffer.SetPixel(x, y, replacedPixel);
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Apply selective color replacement to specific channels
+        /// </summary>
+        private Color ApplySelectiveReplacement(Color pixel, bool processRed, bool processGreen, bool processBlue)
+        {
+            int r = pixel.R;
+            int g = pixel.G;
+            int b = pixel.B;
+            
+            bool shouldReplace = false;
+            
+            // Check if any enabled channel meets replacement criteria
+            if (processRed && r <= _thresholdR) shouldReplace = true;
+            if (processGreen && g <= _thresholdG) shouldReplace = true;
+            if (processBlue && b <= _thresholdB) shouldReplace = true;
+            
+            if (shouldReplace)
+            {
+                int newR = processRed ? _replacementR : r;
+                int newG = processGreen ? _replacementG : g;
+                int newB = processBlue ? _replacementB : b;
+                
+                // Apply intensity scaling
+                if (Intensity != 1.0f)
+                {
+                    if (processRed) newR = (int)(newR * Intensity);
+                    if (processGreen) newG = (int)(newG * Intensity);
+                    if (processBlue) newB = (int)(newB * Intensity);
+                }
+                
+                // Clamp values
+                newR = Math.Max(0, Math.Min(255, newR));
+                newG = Math.Max(0, Math.Min(255, newG));
+                newB = Math.Max(0, Math.Min(255, newB));
+                
+                return Color.FromArgb(pixel.A, newR, newG, newB);
+            }
+            
+            return pixel;
+        }
+        
+        /// <summary>
+        /// Create a custom color palette based on threshold analysis
+        /// </summary>
+        public Color[] GenerateThresholdPalette()
+        {
+            Color[] palette = new Color[256];
+            
+            for (int i = 0; i < 256; i++)
+            {
+                if (i <= _thresholdR && i <= _thresholdG && i <= _thresholdB)
+                {
+                    palette[i] = ReplacementColor;
+                }
+                else
+                {
+                    palette[i] = Color.FromArgb(255, i, i, i);
+                }
+            }
+            
+            return palette;
+        }
+        
+        #endregion
     }
-    
-    return preview;
 }
 ```
 
-### Performance Optimization
-Parallel processing for optimal performance:
+## Effect Properties
 
-```csharp
-Parallel.For(0, height, y =>
-{
-    int rowOffset = y * width;
-    for (int x = 0; x < width; x++)
-    {
-        int pixelIndex = rowOffset + x;
-        int pixel = output.Pixels[pixelIndex];
+### Core Properties
+- **Enabled**: Toggle the effect on/off
+- **ColorThreshold**: Color threshold for replacement (RGB values below this will be replaced)
+- **ReplacementColor**: Color to replace threshold colors with
+- **Intensity**: Overall effect strength multiplier
+- **BeatResponseOnly**: Apply effect only when beats are detected
 
-        // Extract and process RGB components
-        int r = pixel & 0xFF;
-        int g = (pixel >> 8) & 0xFF;
-        int b = (pixel >> 16) & 0xFF;
-        int a = pixel & AlphaMask;
+### Threshold Properties
+- **Tolerance**: Threshold tolerance for color matching (0-255)
+- **UseIndividualThresholds**: Whether to use individual channel thresholds or combined threshold
+- **IndividualThresholds**: Array of three integers (0-255) for red, green, and blue channel thresholds
 
-        // Apply replacement logic
-        if (r <= currentRedThreshold && g <= currentGreenThreshold && b <= currentBlueThreshold)
-        {
-            output.Pixels[pixelIndex] = a | replacementR | (replacementG << 8) | (replacementB << 16);
-        }
-    }
-});
-```
+### Internal Properties
+- **ThresholdR/G/B**: Cached threshold values for performance
+- **ReplacementR/G/B**: Cached replacement color values for performance
 
-This implementation provides a complete, production-ready colorreplace system that faithfully reproduces the original C++ functionality while leveraging C# features for improved maintainability and performance.
+## Color Replacement Logic
+
+The effect uses a sophisticated threshold-based replacement system:
+
+1. **Threshold Analysis**: Each pixel's RGB values are compared against the threshold values
+2. **Replacement Criteria**: Pixels where all channels are below their respective thresholds are replaced
+3. **Color Preservation**: The original alpha channel is preserved during replacement
+4. **Intensity Scaling**: Replacement colors can be scaled by the intensity multiplier
+
+## Threshold Modes
+
+### Individual Channel Thresholds
+When `UseIndividualThresholds` is enabled, each color channel has its own threshold:
+- Red channel threshold: `IndividualThresholds[0]`
+- Green channel threshold: `IndividualThresholds[1]`
+- Blue channel threshold: `IndividualThresholds[2]`
+
+### Combined Threshold
+When `UseIndividualThresholds` is disabled, all channels use the same threshold from `ColorThreshold`.
+
+## Tolerance System
+
+The tolerance value allows for more flexible color matching:
+- **Tolerance = 0**: Exact threshold matching
+- **Tolerance > 0**: Colors within tolerance range of threshold are also replaced
+
+## Performance Optimizations
+
+- **Cached Values**: Threshold and replacement values are cached for faster processing
+- **Efficient Pixel Processing**: Processes pixels using optimized color operations
+- **Lazy Cache Updates**: Cached values are only updated when configuration changes
+- **Selective Processing**: Optional selective channel processing for targeted effects
+
+## Use Cases
+
+- **Color Correction**: Replace unwanted colors with preferred alternatives
+- **Artistic Effects**: Create stylized color schemes and palettes
+- **Image Enhancement**: Improve contrast and visual appeal
+- **Color Isolation**: Isolate specific color ranges for special effects
+- **Thematic Consistency**: Maintain consistent color themes across visualizations
+
+## Advanced Features
+
+### Smooth Blending
+Optional smooth blending creates gradual transitions between original and replacement colors, reducing harsh color boundaries.
+
+### Selective Channel Processing
+Process only specific color channels, allowing for targeted color manipulation while preserving others.
+
+### Preset Modes
+Pre-configured settings for common effects like black and white, high contrast, sepia, night vision, fire, and ice effects.
+
+### Custom Palettes
+Generate custom color palettes based on threshold analysis, useful for creating consistent visual themes.

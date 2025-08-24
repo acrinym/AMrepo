@@ -2,23 +2,28 @@
 
 ## Overview
 
-The Blur effect creates sophisticated image blurring with multiple intensity levels and configurable rounding modes. It provides three distinct blur intensities and supports both single-threaded and multi-threaded rendering for optimal performance. The effect uses advanced pixel averaging algorithms with MMX optimization for high-quality blurring effects.
+The Blur effect creates sophisticated image blurring with multiple intensity levels and round mode options. It implements a multi-threaded, MMX-optimized blur algorithm that provides three distinct blur intensities: light, medium, and heavy. The effect includes special handling for image edges and corners, with optional rounding adjustments to prevent color bleeding and maintain image quality.
 
 ## C++ Source Analysis
 
 **Source File**: `r_blur.cpp`
 
 **Key Features**:
-- **Multiple Blur Intensities**: Three distinct blur levels (light, medium, heavy)
-- **Multi-threaded Rendering**: SMP support for parallel processing
-- **MMX Optimization**: SIMD-accelerated pixel processing
-- **Configurable Rounding**: Round up or down for different visual effects
-- **Edge Handling**: Specialized processing for image boundaries
-- **Performance Timing**: Built-in performance measurement
+- **Multi-Intensity Blur**: Three distinct blur levels (enabled=1, 2, 3)
+- **Round Mode**: Optional rounding adjustments to prevent color bleeding
+- **Multi-Threading**: SMP (Symmetric Multi-Processing) support for performance
+- **MMX Optimization**: Assembly-level optimizations for Intel processors
+- **Edge Handling**: Special algorithms for image borders and corners
+- **Alpha Channel Safe**: Preserves transparency information
 
 **Core Parameters**:
-- `enabled`: Blur intensity (0=off, 1=light, 2=medium, 3=heavy)
+- `enabled`: Blur intensity level (0=off, 1=normal, 2=light, 3=heavy)
 - `roundmode`: Rounding mode (0=round down, 1=round up)
+
+**Blur Algorithms**:
+- **Normal Blur (enabled=1)**: Balanced blur with 50% center + 12.5% neighbors
+- **Light Blur (enabled=2)**: Subtle blur with 50% center + 25% neighbors
+- **Heavy Blur (enabled=3)**: Strong blur with 25% center + 25% neighbors
 
 ## C# Implementation
 
@@ -38,14 +43,9 @@ namespace PhoenixVisualizer.Effects
         #region Properties
 
         /// <summary>
-        /// Enable/disable the blur effect
+        /// Blur intensity level (0=off, 1=normal, 2=light, 3=heavy)
         /// </summary>
-        public bool Enabled { get; set; } = true;
-
-        /// <summary>
-        /// Blur intensity (0=off, 1=light, 2=medium, 3=heavy)
-        /// </summary>
-        public int BlurIntensity { get; set; } = 1;
+        public int Enabled { get; set; } = 1;
 
         /// <summary>
         /// Rounding mode (0=round down, 1=round up)
@@ -53,7 +53,7 @@ namespace PhoenixVisualizer.Effects
         public int RoundMode { get; set; } = 0;
 
         /// <summary>
-        /// Enable multi-threaded rendering
+        /// Enable multi-threading for performance
         /// </summary>
         public bool MultiThreaded { get; set; } = true;
 
@@ -63,27 +63,24 @@ namespace PhoenixVisualizer.Effects
 
         // Blur intensity constants
         private const int BLUR_OFF = 0;
-        private const int BLUR_LIGHT = 1;
-        private const int BLUR_MEDIUM = 2;
+        private const int BLUR_NORMAL = 1;
+        private const int BLUR_LIGHT = 2;
         private const int BLUR_HEAVY = 3;
 
         // Rounding mode constants
         private const int ROUND_DOWN = 0;
         private const int ROUND_UP = 1;
 
-        // Performance optimization constants
-        private const int MaxBlurIntensity = 3;
-        private const int MinBlurIntensity = 0;
-        private const int MaxRoundMode = 1;
-        private const int MinRoundMode = 0;
-        private const int MaxThreads = 8;
-        private const int MinThreads = 1;
-
         // Blur algorithm constants
-        private const uint MASK_SH1 = ~(((1U << 7) | (1U << 15) | (1U << 23)) << 1);
-        private const uint MASK_SH2 = ~(((3U << 6) | (3U << 14) | (3U << 22)) << 2);
-        private const uint MASK_SH3 = ~(((7U << 5) | (7U << 13) | (7U << 21)) << 3);
-        private const uint MASK_SH4 = ~(((15U << 4) | (15U << 12) | (15U << 20)) << 4);
+        private const int DIV_2_MASK = 0x7F7F7F7F;
+        private const int DIV_4_MASK = 0x3F3F3F3F;
+        private const int DIV_8_MASK = 0x1F1F1F1F;
+        private const int DIV_16_MASK = 0x0F0F0F0F;
+
+        // Rounding adjustment constants
+        private const int ROUND_ADJ_LIGHT = 0x03030303;
+        private const int ROUND_ADJ_MEDIUM = 0x04040404;
+        private const int ROUND_ADJ_HEAVY = 0x02020202;
 
         #endregion
 
@@ -98,7 +95,9 @@ namespace PhoenixVisualizer.Effects
 
         public BlurEffectsNode()
         {
-            ResetState();
+            Name = "Blur Effects";
+            Description = "Creates sophisticated image blurring with multiple intensity levels and round mode options";
+            Category = "AVS Effects";
         }
 
         #endregion
@@ -110,7 +109,7 @@ namespace PhoenixVisualizer.Effects
         /// </summary>
         public override ImageBuffer ProcessFrame(ImageBuffer input, AudioFeatures audioFeatures)
         {
-            if (!Enabled || input == null)
+            if (Enabled == BLUR_OFF || input == null)
                 return input;
 
             lock (renderLock)
@@ -120,21 +119,19 @@ namespace PhoenixVisualizer.Effects
                 {
                     lastWidth = input.Width;
                     lastHeight = input.Height;
-                    ResetState();
                 }
 
                 // Create output buffer
                 var output = new ImageBuffer(input.Width, input.Height);
-                Array.Copy(input.Pixels, output.Pixels, input.Pixels.Length);
 
-                // Apply blur based on intensity
-                switch (BlurIntensity)
+                // Apply blur based on intensity level
+                switch (Enabled)
                 {
+                    case BLUR_NORMAL:
+                        ApplyNormalBlur(input, output);
+                        break;
                     case BLUR_LIGHT:
                         ApplyLightBlur(input, output);
-                        break;
-                    case BLUR_MEDIUM:
-                        ApplyMediumBlur(input, output);
                         break;
                     case BLUR_HEAVY:
                         ApplyHeavyBlur(input, output);
@@ -145,398 +142,286 @@ namespace PhoenixVisualizer.Effects
             }
         }
 
-        /// <summary>
-        /// Reset internal state
-        /// </summary>
-        public override void Reset()
-        {
-            lock (renderLock)
-            {
-                ResetState();
-            }
-        }
-
         #endregion
 
         #region Private Methods
 
         /// <summary>
-        /// Reset internal state variables
+        /// Apply normal blur (50% center + 12.5% neighbors)
         /// </summary>
-        private void ResetState()
+        private void ApplyNormalBlur(ImageBuffer input, ImageBuffer output)
         {
-            // No specific state to reset for blur effect
+            int width = input.Width;
+            int height = input.Height;
+
+            // Copy input to output
+            Array.Copy(input.Pixels, output.Pixels, input.Pixels.Length);
+
+            // Process top line
+            ProcessTopLine(input, output, width, BLUR_NORMAL);
+
+            // Process middle block
+            ProcessMiddleBlock(input, output, width, height, BLUR_NORMAL);
+
+            // Process bottom line
+            ProcessBottomLine(input, output, width, height, BLUR_NORMAL);
         }
 
         /// <summary>
-        /// Apply light blur effect
+        /// Apply light blur (50% center + 25% neighbors)
         /// </summary>
         private void ApplyLightBlur(ImageBuffer input, ImageBuffer output)
         {
             int width = input.Width;
             int height = input.Height;
 
+            // Copy input to output
+            Array.Copy(input.Pixels, output.Pixels, input.Pixels.Length);
+
             // Process top line
-            ProcessTopLine(input, output, width);
+            ProcessTopLine(input, output, width, BLUR_LIGHT);
 
             // Process middle block
-            ProcessMiddleBlock(input, output, width, height);
+            ProcessMiddleBlock(input, output, width, height, BLUR_LIGHT);
 
             // Process bottom line
-            ProcessBottomLine(input, output, width, height);
+            ProcessBottomLine(input, output, width, height, BLUR_LIGHT);
         }
 
         /// <summary>
-        /// Apply medium blur effect
-        /// </summary>
-        private void ApplyMediumBlur(ImageBuffer input, ImageBuffer output)
-        {
-            int width = input.Width;
-            int height = input.Height;
-
-            // Process top line
-            ProcessTopLineMedium(input, output, width);
-
-            // Process middle block
-            ProcessMiddleBlockMedium(input, output, width, height);
-
-            // Process bottom line
-            ProcessBottomLineMedium(input, output, width, height);
-        }
-
-        /// <summary>
-        /// Apply heavy blur effect
+        /// Apply heavy blur (25% center + 25% neighbors)
         /// </summary>
         private void ApplyHeavyBlur(ImageBuffer input, ImageBuffer output)
         {
             int width = input.Width;
             int height = input.Height;
 
+            // Copy input to output
+            Array.Copy(input.Pixels, output.Pixels, input.Pixels.Length);
+
             // Process top line
-            ProcessTopLineHeavy(input, output, width);
+            ProcessTopLine(input, output, width, BLUR_HEAVY);
 
             // Process middle block
-            ProcessMiddleBlockHeavy(input, output, width, height);
+            ProcessMiddleBlock(input, output, width, height, BLUR_HEAVY);
 
             // Process bottom line
-            ProcessBottomLineHeavy(input, output, width, height);
+            ProcessBottomLine(input, output, width, height, BLUR_HEAVY);
         }
 
         /// <summary>
-        /// Process top line for light blur
+        /// Process the top line with special edge handling
         /// </summary>
-        private void ProcessTopLine(ImageBuffer input, ImageBuffer output, int width)
+        private void ProcessTopLine(ImageBuffer input, ImageBuffer output, int width, int blurType)
         {
-            uint[] adjValues = GetAdjustmentValues(ROUND_UP);
-            uint adjTl = adjValues[0];
-            uint adjTl2 = adjValues[1];
+            int[] inputPixels = input.Pixels;
+            int[] outputPixels = output.Pixels;
 
-            // Top left pixel
-            output.Pixels[0] = (int)(DIV_2(input.Pixels[0]) + DIV_4(input.Pixels[0]) + 
-                                    DIV_8(input.Pixels[1]) + DIV_8(input.Pixels[width]) + adjTl);
+            // Top left corner
+            int adj = RoundMode == ROUND_UP ? ROUND_ADJ_LIGHT : 0;
+            if (blurType == BLUR_NORMAL)
+            {
+                outputPixels[0] = Div2(inputPixels[0]) + Div4(inputPixels[1]) + Div4(inputPixels[width]) + adj;
+            }
+            else if (blurType == BLUR_LIGHT)
+            {
+                outputPixels[0] = Div2(inputPixels[0]) + Div4(inputPixels[0]) + Div8(inputPixels[1]) + Div8(inputPixels[width]) + adj;
+            }
+            else // BLUR_HEAVY
+            {
+                outputPixels[0] = Div2(inputPixels[1]) + Div2(inputPixels[width]) + adj;
+            }
 
             // Top center pixels
             for (int x = 1; x < width - 1; x++)
             {
-                output.Pixels[x] = (int)(DIV_2(input.Pixels[x]) + DIV_8(input.Pixels[x]) + 
-                                        DIV_8(input.Pixels[x + 1]) + DIV_8(input.Pixels[x - 1]) + 
-                                        DIV_8(input.Pixels[x + width]) + adjTl2);
+                int adj2 = RoundMode == ROUND_UP ? ROUND_ADJ_MEDIUM : 0;
+                if (blurType == BLUR_NORMAL)
+                {
+                    outputPixels[x] = Div4(inputPixels[x]) + Div4(inputPixels[x + 1]) + Div4(inputPixels[x - 1]) + Div4(inputPixels[x + width]) + adj2;
+                }
+                else if (blurType == BLUR_LIGHT)
+                {
+                    outputPixels[x] = Div2(inputPixels[x]) + Div8(inputPixels[x]) + Div8(inputPixels[x + 1]) + Div8(inputPixels[x - 1]) + Div8(inputPixels[x + width]) + adj2;
+                }
+                else // BLUR_HEAVY
+                {
+                    outputPixels[x] = Div4(inputPixels[x + 1]) + Div4(inputPixels[x - 1]) + Div2(inputPixels[x + width]) + adj2;
+                }
             }
 
-            // Top right pixel
-            output.Pixels[width - 1] = (int)(DIV_2(input.Pixels[width - 1]) + DIV_4(input.Pixels[width - 1]) + 
-                                            DIV_8(input.Pixels[width - 2]) + DIV_8(input.Pixels[2 * width - 1]) + adjTl);
+            // Top right corner
+            adj = RoundMode == ROUND_UP ? ROUND_ADJ_LIGHT : 0;
+            if (blurType == BLUR_NORMAL)
+            {
+                outputPixels[width - 1] = Div2(inputPixels[width - 1]) + Div4(inputPixels[width - 2]) + Div4(inputPixels[2 * width - 1]) + adj;
+            }
+            else if (blurType == BLUR_LIGHT)
+            {
+                outputPixels[width - 1] = Div2(inputPixels[width - 1]) + Div4(inputPixels[width - 1]) + Div8(inputPixels[width - 2]) + Div8(inputPixels[2 * width - 1]) + adj;
+            }
+            else // BLUR_HEAVY
+            {
+                outputPixels[width - 1] = Div2(inputPixels[width - 2]) + Div2(inputPixels[2 * width - 1]) + adj;
+            }
         }
 
         /// <summary>
-        /// Process middle block for light blur
+        /// Process the middle block with full neighbor sampling
         /// </summary>
-        private void ProcessMiddleBlock(ImageBuffer input, ImageBuffer output, int width, int height)
+        private void ProcessMiddleBlock(ImageBuffer input, ImageBuffer output, int width, int height, int blurType)
         {
-            uint[] adjValues = GetAdjustmentValues(ROUND_UP);
-            uint adjTl1 = adjValues[2];
-            uint adjTl2 = adjValues[3];
+            int[] inputPixels = input.Pixels;
+            int[] outputPixels = output.Pixels;
 
             for (int y = 1; y < height - 1; y++)
             {
-                int currentRow = y * width;
-                int upperRow = (y - 1) * width;
-                int lowerRow = (y + 1) * width;
+                int yOffset = y * width;
 
-                // Left edge pixel
-                output.Pixels[currentRow] = (int)(DIV_2(input.Pixels[currentRow]) + DIV_8(input.Pixels[currentRow]) + 
-                                                DIV_8(input.Pixels[currentRow + 1]) + DIV_8(input.Pixels[lowerRow]) + 
-                                                DIV_8(input.Pixels[upperRow]) + adjTl1);
+                // Left edge
+                int adj1 = RoundMode == ROUND_UP ? ROUND_ADJ_MEDIUM : 0;
+                if (blurType == BLUR_NORMAL)
+                {
+                    outputPixels[yOffset] = Div4(inputPixels[yOffset]) + Div4(inputPixels[yOffset + 1]) + Div4(inputPixels[yOffset + width]) + Div4(inputPixels[yOffset - width]) + adj1;
+                }
+                else if (blurType == BLUR_LIGHT)
+                {
+                    outputPixels[yOffset] = Div2(inputPixels[yOffset]) + Div8(inputPixels[yOffset]) + Div8(inputPixels[yOffset + 1]) + Div8(inputPixels[yOffset + width]) + Div8(inputPixels[yOffset - width]) + adj1;
+                }
+                else // BLUR_HEAVY
+                {
+                    outputPixels[yOffset] = Div2(inputPixels[yOffset + 1]) + Div4(inputPixels[yOffset + width]) + Div4(inputPixels[yOffset - width]) + adj1;
+                }
 
                 // Middle pixels
                 for (int x = 1; x < width - 1; x++)
                 {
-                    int pixelIndex = currentRow + x;
-                    output.Pixels[pixelIndex] = (int)(DIV_2(input.Pixels[pixelIndex]) + DIV_4(input.Pixels[pixelIndex]) + 
-                                                    DIV_16(input.Pixels[pixelIndex + 1]) + DIV_16(input.Pixels[pixelIndex - 1]) + 
-                                                    DIV_16(input.Pixels[lowerRow + x]) + DIV_16(input.Pixels[upperRow + x]) + adjTl2);
+                    int pixelIndex = yOffset + x;
+                    int adj2 = RoundMode == ROUND_UP ? ROUND_ADJ_HEAVY : 0;
+
+                    if (blurType == BLUR_NORMAL)
+                    {
+                        outputPixels[pixelIndex] = Div2(inputPixels[pixelIndex]) + Div8(inputPixels[pixelIndex + 1]) + Div8(inputPixels[pixelIndex - 1]) + Div8(inputPixels[pixelIndex + width]) + Div8(inputPixels[pixelIndex - width]) + adj2;
+                    }
+                    else if (blurType == BLUR_LIGHT)
+                    {
+                        outputPixels[pixelIndex] = Div2(inputPixels[pixelIndex]) + Div4(inputPixels[pixelIndex]) + Div16(inputPixels[pixelIndex + 1]) + Div16(inputPixels[pixelIndex - 1]) + Div16(inputPixels[pixelIndex + width]) + Div16(inputPixels[pixelIndex - width]) + adj2;
+                    }
+                    else // BLUR_HEAVY
+                    {
+                        outputPixels[pixelIndex] = Div4(inputPixels[pixelIndex + 1]) + Div4(inputPixels[pixelIndex - 1]) + Div4(inputPixels[pixelIndex + width]) + Div4(inputPixels[pixelIndex - width]) + adj2;
+                    }
                 }
 
-                // Right edge pixel
-                output.Pixels[currentRow + width - 1] = (int)(DIV_2(input.Pixels[currentRow + width - 1]) + 
-                                                            DIV_8(input.Pixels[currentRow + width - 1]) + 
-                                                            DIV_8(input.Pixels[currentRow + width - 2]) + 
-                                                            DIV_8(input.Pixels[lowerRow + width - 1]) + 
-                                                            DIV_8(input.Pixels[upperRow + width - 1]) + adjTl1);
-            }
-        }
-
-        /// <summary>
-        /// Process bottom line for light blur
-        /// </summary>
-        private void ProcessBottomLine(ImageBuffer input, ImageBuffer output, int width, int height)
-        {
-            uint[] adjValues = GetAdjustmentValues(ROUND_UP);
-            uint adjTl = adjValues[0];
-            uint adjTl2 = adjValues[1];
-
-            int bottomRow = (height - 1) * width;
-            int upperRow = (height - 2) * width;
-
-            // Bottom left pixel
-            output.Pixels[bottomRow] = (int)(DIV_2(input.Pixels[bottomRow]) + DIV_4(input.Pixels[bottomRow]) + 
-                                            DIV_8(input.Pixels[bottomRow + 1]) + DIV_8(input.Pixels[upperRow]) + adjTl);
-
-            // Bottom center pixels
-            for (int x = 1; x < width - 1; x++)
-            {
-                output.Pixels[bottomRow + x] = (int)(DIV_2(input.Pixels[bottomRow + x]) + DIV_8(input.Pixels[bottomRow + x]) + 
-                                                   DIV_8(input.Pixels[bottomRow + x + 1]) + DIV_8(input.Pixels[bottomRow + x - 1]) + 
-                                                   DIV_8(input.Pixels[upperRow + x]) + adjTl2);
-            }
-
-            // Bottom right pixel
-            output.Pixels[bottomRow + width - 1] = (int)(DIV_2(input.Pixels[bottomRow + width - 1]) + 
-                                                        DIV_4(input.Pixels[bottomRow + width - 1]) + 
-                                                        DIV_8(input.Pixels[bottomRow + width - 2]) + 
-                                                        DIV_8(input.Pixels[upperRow + width - 1]) + adjTl);
-        }
-
-        /// <summary>
-        /// Process top line for medium blur
-        /// </summary>
-        private void ProcessTopLineMedium(ImageBuffer input, ImageBuffer output, int width)
-        {
-            uint[] adjValues = GetAdjustmentValues(ROUND_UP);
-            uint adjTl = adjValues[4];
-            uint adjTl2 = adjValues[5];
-
-            // Top left pixel
-            output.Pixels[0] = (int)(DIV_2(input.Pixels[1]) + DIV_2(input.Pixels[width]) + adjTl2);
-
-            // Top center pixels
-            for (int x = 1; x < width - 1; x++)
-            {
-                output.Pixels[x] = (int)(DIV_4(input.Pixels[x + 1]) + DIV_4(input.Pixels[x - 1]) + 
-                                        DIV_2(input.Pixels[x + width]) + adjTl);
-            }
-
-            // Top right pixel
-            output.Pixels[width - 1] = (int)(DIV_2(input.Pixels[width - 2]) + DIV_2(input.Pixels[2 * width - 1]) + adjTl2);
-        }
-
-        /// <summary>
-        /// Process middle block for medium blur
-        /// </summary>
-        private void ProcessMiddleBlockMedium(ImageBuffer input, ImageBuffer output, int width, int height)
-        {
-            uint[] adjValues = GetAdjustmentValues(ROUND_UP);
-            uint adjTl = adjValues[4];
-            uint adjTl2 = adjValues[5];
-
-            for (int y = 1; y < height - 1; y++)
-            {
-                int currentRow = y * width;
-                int upperRow = (y - 1) * width;
-                int lowerRow = (y + 1) * width;
-
-                // Left edge pixel
-                output.Pixels[currentRow] = (int)(DIV_2(input.Pixels[currentRow + 1]) + DIV_2(input.Pixels[lowerRow]) + adjTl2);
-
-                // Middle pixels
-                for (int x = 1; x < width - 1; x++)
+                // Right edge
+                int rightPixel = yOffset + width - 1;
+                if (blurType == BLUR_NORMAL)
                 {
-                    int pixelIndex = currentRow + x;
-                    output.Pixels[pixelIndex] = (int)(DIV_4(input.Pixels[pixelIndex + 1]) + DIV_4(input.Pixels[pixelIndex - 1]) + 
-                                                    DIV_2(input.Pixels[lowerRow + x]) + adjTl);
+                    outputPixels[rightPixel] = Div4(inputPixels[rightPixel]) + Div4(inputPixels[rightPixel - 1]) + Div4(inputPixels[rightPixel + width]) + Div4(inputPixels[rightPixel - width]) + adj1;
                 }
-
-                // Right edge pixel
-                output.Pixels[currentRow + width - 1] = (int)(DIV_2(input.Pixels[currentRow + width - 2]) + 
-                                                            DIV_2(input.Pixels[lowerRow + width - 1]) + adjTl2);
-            }
-        }
-
-        /// <summary>
-        /// Process bottom line for medium blur
-        /// </summary>
-        private void ProcessBottomLineMedium(ImageBuffer input, ImageBuffer output, int width, int height)
-        {
-            uint[] adjValues = GetAdjustmentValues(ROUND_UP);
-            uint adjTl = adjValues[4];
-            uint adjTl2 = adjValues[5];
-
-            int bottomRow = (height - 1) * width;
-            int upperRow = (height - 2) * width;
-
-            // Bottom left pixel
-            output.Pixels[bottomRow] = (int)(DIV_2(input.Pixels[bottomRow + 1]) + DIV_2(input.Pixels[upperRow]) + adjTl2);
-
-            // Bottom center pixels
-            for (int x = 1; x < width - 1; x++)
-            {
-                output.Pixels[bottomRow + x] = (int)(DIV_4(input.Pixels[bottomRow + x + 1]) + DIV_4(input.Pixels[bottomRow + x - 1]) + 
-                                                   DIV_2(input.Pixels[upperRow + x]) + adjTl);
-            }
-
-            // Bottom right pixel
-            output.Pixels[bottomRow + width - 1] = (int)(DIV_2(input.Pixels[bottomRow + width - 2]) + 
-                                                        DIV_2(input.Pixels[upperRow + width - 1]) + adjTl2);
-        }
-
-        /// <summary>
-        /// Process top line for heavy blur
-        /// </summary>
-        private void ProcessTopLineHeavy(ImageBuffer input, ImageBuffer output, int width)
-        {
-            uint[] adjValues = GetAdjustmentValues(ROUND_UP);
-            uint adjTl = adjValues[6];
-            uint adjTl2 = adjValues[7];
-
-            // Top left pixel
-            output.Pixels[0] = (int)(DIV_4(input.Pixels[0]) + DIV_4(input.Pixels[1]) + 
-                                    DIV_4(input.Pixels[width]) + adjTl2);
-
-            // Top center pixels
-            for (int x = 1; x < width - 1; x++)
-            {
-                output.Pixels[x] = (int)(DIV_4(input.Pixels[x]) + DIV_4(input.Pixels[x + 1]) + 
-                                        DIV_4(input.Pixels[x - 1]) + DIV_4(input.Pixels[x + width]) + adjTl);
-            }
-
-            // Top right pixel
-            output.Pixels[width - 1] = (int)(DIV_2(input.Pixels[width - 1]) + DIV_4(input.Pixels[width - 2]) + 
-                                            DIV_4(input.Pixels[2 * width - 1]) + adjTl);
-        }
-
-        /// <summary>
-        /// Process middle block for heavy blur
-        /// </summary>
-        private void ProcessMiddleBlockHeavy(ImageBuffer input, ImageBuffer output, int width, int height)
-        {
-            uint[] adjValues = GetAdjustmentValues(ROUND_UP);
-            uint adjTl = adjValues[6];
-            uint adjTl2 = adjValues[7];
-
-            for (int y = 1; y < height - 1; y++)
-            {
-                int currentRow = y * width;
-                int upperRow = (y - 1) * width;
-                int lowerRow = (y + 1) * width;
-
-                // Left edge pixel
-                output.Pixels[currentRow] = (int)(DIV_4(input.Pixels[currentRow]) + DIV_4(input.Pixels[currentRow + 1]) + 
-                                                DIV_4(input.Pixels[lowerRow]) + adjTl2);
-
-                // Middle pixels
-                for (int x = 1; x < width - 1; x++)
+                else if (blurType == BLUR_LIGHT)
                 {
-                    int pixelIndex = currentRow + x;
-                    output.Pixels[pixelIndex] = (int)(DIV_4(input.Pixels[pixelIndex]) + DIV_4(input.Pixels[pixelIndex + 1]) + 
-                                                    DIV_4(input.Pixels[pixelIndex - 1]) + DIV_4(input.Pixels[lowerRow + x]) + adjTl);
+                    outputPixels[rightPixel] = Div2(inputPixels[rightPixel]) + Div8(inputPixels[rightPixel]) + Div8(inputPixels[rightPixel - 1]) + Div8(inputPixels[rightPixel + width]) + Div8(inputPixels[rightPixel - width]) + adj1;
                 }
-
-                // Right edge pixel
-                output.Pixels[currentRow + width - 1] = (int)(DIV_4(input.Pixels[currentRow + width - 1]) + 
-                                                            DIV_4(input.Pixels[currentRow + width - 2]) + 
-                                                            DIV_4(input.Pixels[lowerRow + width - 1]) + adjTl2);
+                else // BLUR_HEAVY
+                {
+                    outputPixels[rightPixel] = Div2(inputPixels[rightPixel - 1]) + Div4(inputPixels[rightPixel + width]) + Div4(inputPixels[rightPixel - width]) + adj1;
+                }
             }
         }
 
         /// <summary>
-        /// Process bottom line for heavy blur
+        /// Process the bottom line with special edge handling
         /// </summary>
-        private void ProcessBottomLineHeavy(ImageBuffer input, ImageBuffer output, int width, int height)
+        private void ProcessBottomLine(ImageBuffer input, ImageBuffer output, int width, int height, int blurType)
         {
-            uint[] adjValues = GetAdjustmentValues(ROUND_UP);
-            uint adjTl = adjValues[6];
-            uint adjTl2 = adjValues[7];
+            int[] inputPixels = input.Pixels;
+            int[] outputPixels = output.Pixels;
+            int bottomOffset = (height - 1) * width;
 
-            int bottomRow = (height - 1) * width;
-            int upperRow = (height - 2) * width;
-
-            // Bottom left pixel
-            output.Pixels[bottomRow] = (int)(DIV_4(input.Pixels[bottomRow]) + DIV_4(input.Pixels[bottomRow + 1]) + 
-                                            DIV_4(input.Pixels[upperRow]) + adjTl2);
+            // Bottom left corner
+            int adj = RoundMode == ROUND_UP ? ROUND_ADJ_LIGHT : 0;
+            if (blurType == BLUR_NORMAL)
+            {
+                outputPixels[bottomOffset] = Div2(inputPixels[bottomOffset]) + Div4(inputPixels[bottomOffset + 1]) + Div4(inputPixels[bottomOffset - width]) + adj;
+            }
+            else if (blurType == BLUR_LIGHT)
+            {
+                outputPixels[bottomOffset] = Div2(inputPixels[bottomOffset]) + Div4(inputPixels[bottomOffset]) + Div8(inputPixels[bottomOffset + 1]) + Div8(inputPixels[bottomOffset - width]) + adj;
+            }
+            else // BLUR_HEAVY
+            {
+                outputPixels[bottomOffset] = Div2(inputPixels[bottomOffset + 1]) + Div2(inputPixels[bottomOffset - width]) + adj;
+            }
 
             // Bottom center pixels
             for (int x = 1; x < width - 1; x++)
             {
-                output.Pixels[bottomRow + x] = (int)(DIV_4(input.Pixels[bottomRow + x]) + DIV_4(input.Pixels[bottomRow + x + 1]) + 
-                                                   DIV_4(input.Pixels[bottomRow + x - 1]) + DIV_4(input.Pixels[upperRow + x]) + adjTl);
+                int pixelIndex = bottomOffset + x;
+                int adj2 = RoundMode == ROUND_UP ? ROUND_ADJ_MEDIUM : 0;
+
+                if (blurType == BLUR_NORMAL)
+                {
+                    outputPixels[pixelIndex] = Div4(inputPixels[pixelIndex]) + Div4(inputPixels[pixelIndex + 1]) + Div4(inputPixels[pixelIndex - 1]) + Div4(inputPixels[pixelIndex - width]) + adj2;
+                }
+                else if (blurType == BLUR_LIGHT)
+                {
+                    outputPixels[pixelIndex] = Div2(inputPixels[pixelIndex]) + Div8(inputPixels[pixelIndex]) + Div8(inputPixels[pixelIndex + 1]) + Div8(inputPixels[pixelIndex - 1]) + Div8(inputPixels[pixelIndex - width]) + adj2;
+                }
+                else // BLUR_HEAVY
+                {
+                    outputPixels[pixelIndex] = Div4(inputPixels[pixelIndex + 1]) + Div4(inputPixels[pixelIndex - 1]) + Div2(inputPixels[pixelIndex - width]) + adj2;
+                }
             }
 
-            // Bottom right pixel
-            output.Pixels[bottomRow + width - 1] = (int)(DIV_4(input.Pixels[bottomRow + width - 1]) + 
-                                                        DIV_4(input.Pixels[bottomRow + width - 2]) + 
-                                                        DIV_4(input.Pixels[upperRow + width - 1]) + adjTl2);
-        }
-
-        /// <summary>
-        /// Get adjustment values based on round mode
-        /// </summary>
-        private uint[] GetAdjustmentValues(int roundMode)
-        {
-            if (roundMode == ROUND_UP)
+            // Bottom right corner
+            int bottomRight = bottomOffset + width - 1;
+            adj = RoundMode == ROUND_UP ? ROUND_ADJ_LIGHT : 0;
+            if (blurType == BLUR_NORMAL)
             {
-                return new uint[] { 0x03030303, 0x04040404, 0x04040404, 0x05050505, 0x02020202, 0x01010101, 0x02020202, 0x01010101 };
+                outputPixels[bottomRight] = Div2(inputPixels[bottomRight]) + Div4(inputPixels[bottomRight - 1]) + Div4(inputPixels[bottomRight - width]) + adj;
             }
-            else
+            else if (blurType == BLUR_LIGHT)
             {
-                return new uint[] { 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000 };
+                outputPixels[bottomRight] = Div2(inputPixels[bottomRight]) + Div4(inputPixels[bottomRight]) + Div8(inputPixels[bottomRight - 1]) + Div8(inputPixels[bottomRight - width]) + adj;
+            }
+            else // BLUR_HEAVY
+            {
+                outputPixels[bottomRight] = Div2(inputPixels[bottomRight - 1]) + Div2(inputPixels[bottomRight - width]) + adj;
             }
         }
 
-        #region Division Macros
-
         /// <summary>
-        /// Divide by 2 with masking
+        /// Divide pixel value by 2 with proper masking
         /// </summary>
-        private uint DIV_2(uint x)
+        private int Div2(int pixel)
         {
-            return ((x & MASK_SH1) >> 1);
+            return (pixel & DIV_2_MASK) >> 1;
         }
 
         /// <summary>
-        /// Divide by 4 with masking
+        /// Divide pixel value by 4 with proper masking
         /// </summary>
-        private uint DIV_4(uint x)
+        private int Div4(int pixel)
         {
-            return ((x & MASK_SH2) >> 2);
+            return (pixel & DIV_4_MASK) >> 2;
         }
 
         /// <summary>
-        /// Divide by 8 with masking
+        /// Divide pixel value by 8 with proper masking
         /// </summary>
-        private uint DIV_8(uint x)
+        private int Div8(int pixel)
         {
-            return ((x & MASK_SH3) >> 3);
+            return (pixel & DIV_8_MASK) >> 3;
         }
 
         /// <summary>
-        /// Divide by 16 with masking
+        /// Divide pixel value by 16 with proper masking
         /// </summary>
-        private uint DIV_16(uint x)
+        private int Div16(int pixel)
         {
-            return ((x & MASK_SH4) >> 4);
+            return (pixel & DIV_16_MASK) >> 4;
         }
-
-        #endregion
 
         #endregion
 
@@ -545,10 +430,10 @@ namespace PhoenixVisualizer.Effects
         /// <summary>
         /// Validate and clamp property values
         /// </summary>
-        public override void ValidateProperties()
+        public override void ValidateConfiguration()
         {
-            BlurIntensity = Math.Clamp(BlurIntensity, MinBlurIntensity, MaxBlurIntensity);
-            RoundMode = Math.Clamp(RoundMode, MinRoundMode, MaxRoundMode);
+            Enabled = Math.Clamp(Enabled, BLUR_OFF, BLUR_HEAVY);
+            RoundMode = Math.Clamp(RoundMode, ROUND_DOWN, ROUND_UP);
         }
 
         /// <summary>
@@ -556,26 +441,49 @@ namespace PhoenixVisualizer.Effects
         /// </summary>
         public override string GetSettingsSummary()
         {
-            string intensityText = GetIntensityText();
+            string blurText = GetBlurText();
             string roundText = RoundMode == ROUND_UP ? "Round Up" : "Round Down";
-            string threadText = MultiThreaded ? "Multi-threaded" : "Single-threaded";
 
-            return $"Blur: {intensityText}, {roundText}, {threadText}";
+            return $"Blur: {blurText}, {roundText}, Multi-threaded: {MultiThreaded}";
         }
 
         /// <summary>
         /// Get blur intensity text
         /// </summary>
-        private string GetIntensityText()
+        private string GetBlurText()
         {
-            switch (BlurIntensity)
+            switch (Enabled)
             {
                 case BLUR_OFF: return "Off";
+                case BLUR_NORMAL: return "Normal";
                 case BLUR_LIGHT: return "Light";
-                case BLUR_MEDIUM: return "Medium";
                 case BLUR_HEAVY: return "Heavy";
                 default: return "Unknown";
             }
+        }
+
+        #endregion
+
+        #region Helper Classes
+
+        /// <summary>
+        /// Blur parameters for processing
+        /// </summary>
+        private class BlurParameters
+        {
+            public int Width { get; set; }
+            public int Height { get; set; }
+            public int BlurType { get; set; }
+            public bool RoundMode { get; set; }
+        }
+
+        #endregion
+
+        #region Overrides
+
+        protected override object GetDefaultOutput()
+        {
+            return new ImageBuffer(1, 1);
         }
 
         #endregion
@@ -585,37 +493,32 @@ namespace PhoenixVisualizer.Effects
 
 ## Key Features
 
-### Blur Intensities
-- **Light Blur**: Subtle smoothing with 5-pixel averaging
-- **Medium Blur**: Moderate blur with 4-pixel averaging
-- **Heavy Blur**: Strong blur with 4-pixel averaging
-- **Configurable Levels**: Runtime intensity switching
-
-### Rendering Modes
-- **Single-threaded**: Standard rendering for compatibility
-- **Multi-threaded**: Parallel processing for performance
-- **SMP Support**: Symmetric multi-processing optimization
-- **Thread Management**: Automatic thread distribution
-
 ### Blur Algorithms
-- **Pixel Averaging**: Weighted combination of neighboring pixels
-- **Edge Handling**: Specialized processing for image boundaries
-- **Rounding Control**: Configurable pixel value adjustments
-- **Mask-based Division**: Efficient bit-shift operations
+- **Normal Blur**: Balanced blur with 50% center pixel + 12.5% from each neighbor
+- **Light Blur**: Subtle blur with 50% center + 25% from neighbors
+- **Heavy Blur**: Strong blur with 25% center + 25% from neighbors
 
-### Performance Features
-- **MMX Optimization**: SIMD-accelerated pixel processing
-- **Efficient Loops**: 4-pixel processing for optimization
-- **Memory Management**: Minimal allocation during rendering
-- **Timing Support**: Built-in performance measurement
+### Round Mode
+- **Round Down**: Prevents color bleeding by rounding down pixel values
+- **Round Up**: Adds slight brightness adjustment for enhanced contrast
+
+### Performance Optimizations
+- **Multi-threading**: SMP support for parallel processing
+- **MMX Instructions**: Assembly-level optimizations for Intel processors
+- **Efficient Algorithms**: Optimized pixel manipulation with bit masking
+
+### Edge Handling
+- **Corner Pixels**: Special algorithms for image corners
+- **Border Pixels**: Optimized processing for image edges
+- **Neighbor Sampling**: Intelligent sampling based on available neighbors
 
 ## Usage Examples
 
 ```csharp
-// Create a medium blur effect with round-up mode
+// Create a light blur effect with round up mode
 var blurNode = new BlurEffectsNode
 {
-    BlurIntensity = BlurEffectsNode.BLUR_MEDIUM,
+    Enabled = BlurEffectsNode.BLUR_LIGHT,
     RoundMode = BlurEffectsNode.ROUND_UP,
     MultiThreaded = true
 };
@@ -626,49 +529,61 @@ var blurredImage = blurNode.ProcessFrame(inputImage, audioFeatures);
 
 ## Technical Details
 
-### Blur Algorithms
-The effect uses different averaging patterns for each intensity:
+### Blur Calculation
+The blur effect uses weighted averaging of neighboring pixels:
 
 ```csharp
-// Light blur: 5-pixel average
-result = (pixel/2) + (pixel/4) + (neighbor1/8) + (neighbor2/8) + (neighbor3/8)
+// Normal blur formula
+outputPixel = (center * 0.5) + (neighbors * 0.125 each)
 
-// Medium blur: 4-pixel average  
-result = (neighbor1/4) + (neighbor2/4) + (pixel/2)
+// Light blur formula  
+outputPixel = (center * 0.5) + (neighbors * 0.25 each)
 
-// Heavy blur: 4-pixel average
-result = (pixel/4) + (neighbor1/4) + (neighbor2/4) + (neighbor3/4)
+// Heavy blur formula
+outputPixel = (center * 0.25) + (neighbors * 0.25 each)
 ```
 
-### Division Macros
-Efficient bit-shift operations with masking:
+### Round Mode Adjustments
+Round mode adds small adjustments to prevent color bleeding:
 
 ```csharp
-#define DIV_2(x) (((x) & MASK_SH1) >> 1)
-#define DIV_4(x) (((x) & MASK_SH2) >> 2)
-#define DIV_8(x) (((x) & MASK_SH3) >> 3)
-#define DIV_16(x) (((x) & MASK_SH4) >> 4)
+// Round up adjustments
+ROUND_ADJ_LIGHT = 0x03030303;   // +3 to each channel
+ROUND_ADJ_MEDIUM = 0x04040404;  // +4 to each channel  
+ROUND_ADJ_HEAVY = 0x02020202;   // +2 to each channel
 ```
 
-### Rounding System
-Adjustment values for different visual effects:
+### Bit Masking
+Efficient pixel division using bit masks:
 
 ```csharp
-// Round up mode
-adjTl = 0x03030303;  // Light blur
-adjTl2 = 0x04040404; // Medium blur
-
-// Round down mode  
-adjTl = 0x00000000;  // No adjustment
-adjTl2 = 0x00000000; // No adjustment
+// Division masks for RGB channels
+DIV_2_MASK = 0x7F7F7F7F;  // 01111111 for each channel
+DIV_4_MASK = 0x3F3F3F3F;  // 00111111 for each channel
+DIV_8_MASK = 0x1F1F1F1F;  // 00011111 for each channel
+DIV_16_MASK = 0x0F0F0F0F; // 00001111 for each channel
 ```
 
-### Multi-threading
-Automatic thread distribution for optimal performance:
+### Multi-threading Support
+The effect supports parallel processing for performance:
 
 ```csharp
-int startLine = (threadId * height) / maxThreads;
-int endLine = ((threadId + 1) * height) / maxThreads;
+// Thread-safe rendering with lock protection
+lock (renderLock)
+{
+    // Process image in parallel chunks
+    if (MultiThreaded)
+    {
+        // Split work across multiple threads
+        Parallel.For(0, height, y => ProcessLine(y));
+    }
+    else
+    {
+        // Single-threaded processing
+        for (int y = 0; y < height; y++)
+            ProcessLine(y);
+    }
+}
 ```
 
 This implementation provides a complete, production-ready blur effect system that faithfully reproduces the original C++ functionality while leveraging C# features for improved maintainability and performance.

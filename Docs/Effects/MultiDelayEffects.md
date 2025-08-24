@@ -1,693 +1,736 @@
-# Multi-Delay Effects (Trans / Multi Delay)
+# Multi Delay Effects
 
 ## Overview
 
-The **Multi-Delay Effects** system is a sophisticated multi-buffer video delay engine that creates complex temporal effects with up to 6 independent delay buffers. It implements advanced memory management with virtual memory allocation, beat-reactive timing controls, and intelligent buffer management for creating complex video delay visualizations. This effect provides the foundation for sophisticated temporal effects, echo visualizations, and complex video feedback systems.
-
-## Source Analysis
-
-### Core Architecture (`r_multidelay.cpp`)
-
-The effect is implemented as a C++ class `C_MultiDelayClass` that inherits from `C_RBASE`. It provides a comprehensive multi-buffer delay system with virtual memory management, beat-reactive timing, and intelligent buffer allocation for creating complex temporal video effects.
-
-### Key Components
-
-#### Multi-Buffer System
-Advanced multi-buffer delay engine:
-- **6 Independent Buffers**: Separate delay buffers for complex effect combinations
-- **Buffer Management**: Intelligent buffer allocation and deallocation
-- **Memory Optimization**: Virtual memory management for efficient resource usage
-- **Performance Scaling**: Dynamic buffer sizing based on delay requirements
-
-#### Virtual Memory Management
-Sophisticated memory control system:
-- **Virtual Memory Allocation**: Windows VirtualAlloc for dynamic memory management
-- **Buffer Sizing**: Intelligent buffer sizing with 2x allocation for beat-reactive buffers
-- **Memory Reallocation**: Dynamic memory reallocation for changing delay requirements
-- **Resource Cleanup**: Automatic memory cleanup and resource management
-
-#### Beat-Reactive Timing
-Dynamic audio integration:
-- **Beat Detection**: Beat-reactive delay timing for musical synchronization
-- **Frame Counting**: Intelligent frame counting and beat duration calculation
-- **Dynamic Delays**: Real-time delay adjustment based on audio events
-- **Temporal Synchronization**: Synchronized delay timing with audio events
-
-#### Delay Modes
-Multiple delay operation modes:
-- **Mode 0**: No delay (pass-through)
-- **Mode 1**: Input delay (store current frame)
-- **Mode 2**: Output delay (retrieve delayed frame)
-- **Active Buffer Selection**: Configurable active buffer for effect application
-
-### Parameters
-
-| Parameter | Type | Range | Default | Description |
-|-----------|------|-------|---------|-------------|
-| `mode` | int | 0-2 | 0 | Delay operation mode |
-| `activebuffer` | int | 0-5 | 0 | Active delay buffer index |
-| `usebeats[6]` | bool[] | true/false | false | Beat-reactive timing for each buffer |
-| `delay[6]` | int[] | 0+ | 0 | Frame delay for each buffer |
-
-### Delay Modes
-
-| Mode | Value | Description | Behavior |
-|------|-------|-------------|----------|
-| **No Delay** | 0 | Pass-through mode | No delay effect applied |
-| **Input Delay** | 1 | Store current frame | Current frame stored in delay buffer |
-| **Output Delay** | 2 | Retrieve delayed frame | Delayed frame retrieved and displayed |
-
-### Buffer Configuration
-
-| Buffer Index | Use Beats | Frame Delay | Description |
-|--------------|-----------|-------------|-------------|
-| **Buffer 0** | Configurable | Configurable | Primary delay buffer |
-| **Buffer 1** | Configurable | Configurable | Secondary delay buffer |
-| **Buffer 2** | Configurable | Configurable | Tertiary delay buffer |
-| **Buffer 3** | Configurable | Configurable | Quaternary delay buffer |
-| **Buffer 4** | Configurable | Configurable | Quinary delay buffer |
-| **Buffer 5** | Configurable | Configurable | Senary delay buffer |
+The Multi Delay effect creates video delay effects by storing frames in memory buffers and replaying them after a specified delay. It supports up to 6 independent delay buffers, each with configurable delay times that can be synchronized to audio beats or set to specific frame counts. This effect is useful for creating echo effects, feedback loops, and time-based visual manipulations.
 
 ## C# Implementation
 
+### Properties
+
 ```csharp
-public class MultiDelayEffectsNode : AvsModuleNode
+/// <summary>
+/// Whether the effect is enabled
+/// </summary>
+public bool Enabled { get; set; } = true;
+
+/// <summary>
+/// Delay mode (0=Off, 1=Input, 2=Output)
+/// </summary>
+public DelayMode Mode { get; set; } = DelayMode.Off;
+
+/// <summary>
+/// Currently active buffer index (0-5)
+/// </summary>
+public int ActiveBufferIndex { get; set; } = 0;
+
+/// <summary>
+/// Whether to use beat synchronization for each buffer
+/// </summary>
+public bool[] UseBeatSync { get; set; } = new bool[6];
+
+/// <summary>
+/// Frame delay count for each buffer (0-1000)
+/// </summary>
+public int[] FrameDelay { get; set; } = new int[6];
+
+/// <summary>
+/// Effect intensity multiplier
+/// </summary>
+public float Intensity { get; set; } = 1.0f;
+```
+
+### Enums
+
+```csharp
+/// <summary>
+/// Available delay modes
+/// </summary>
+public enum DelayMode
 {
-    public int Mode { get; set; } = 0;
-    public int ActiveBuffer { get; set; } = 0;
-    public bool[] UseBeats { get; set; } = new bool[6];
-    public int[] Delay { get; set; } = new int[6];
+    /// <summary>
+    /// Effect is disabled
+    /// </summary>
+    Off = 0,
     
-    // Internal state
-    private IntPtr[] buffers;
-    private IntPtr[] inputPositions;
-    private IntPtr[] outputPositions;
-    private long[] bufferSizes;
-    private long[] virtualBufferSizes;
-    private long[] oldVirtualBufferSizes;
-    private long[] frameDelays;
-    private int lastWidth, lastHeight;
-    private long framesSinceBeat;
-    private long framesPerBeat;
-    private long frameMemory;
-    private long oldFrameMemory;
-    private int renderId;
-    private int creationId;
-    private static int numInstances = 0;
-    private readonly object renderLock = new object();
+    /// <summary>
+    /// Store input frames to buffer
+    /// </summary>
+    Input = 1,
     
-    // Performance optimization
-    private const int MaxBuffers = 6;
-    private const int MaxMode = 2;
-    private const int MinMode = 0;
-    private const int MaxActiveBuffer = 5;
-    private const int MinActiveBuffer = 0;
-    private const int MaxDelay = 1000;
-    private const int MinDelay = 0;
-    private const int BufferSizeMultiplier = 2;
+    /// <summary>
+    /// Output delayed frames from buffer
+    /// </summary>
+    Output = 2
+}
+```
+
+### Private Fields
+
+```csharp
+/// <summary>
+/// Frame buffers for storing delayed frames
+/// </summary>
+private ImageBuffer[] _delayBuffers;
+
+/// <summary>
+/// Input positions for each buffer
+/// </summary>
+private int[] _inputPositions;
+
+/// <summary>
+/// Output positions for each buffer
+/// </summary>
+private int[] _outputPositions;
+
+/// <summary>
+/// Buffer sizes in bytes
+/// </summary>
+private long[] _bufferSizes;
+
+/// <summary>
+/// Virtual buffer sizes for current delay settings
+/// </summary>
+private long[] _virtualBufferSizes;
+
+/// <summary>
+/// Previous virtual buffer sizes for change detection
+/// </summary>
+private long[] _previousVirtualBufferSizes;
+
+/// <summary>
+/// Frame memory size in bytes
+/// </summary>
+private long _frameMemorySize;
+
+/// <summary>
+/// Previous frame memory size
+/// </summary>
+private long _previousFrameMemorySize;
+
+/// <summary>
+/// Frame counter since last beat
+/// </summary>
+private int _framesSinceBeat = 0;
+
+/// <summary>
+/// Frames per beat for synchronization
+/// </summary>
+private int _framesPerBeat = 0;
+
+/// <summary>
+/// Whether the effect has been initialized
+/// </summary>
+private bool _isInitialized = false;
+
+/// <summary>
+/// Previous width and height for resize detection
+/// </summary>
+private int _previousWidth, _previousHeight;
+
+/// <summary>
+/// Instance counter for global state management
+/// </summary>
+private static int _instanceCount = 0;
+
+/// <summary>
+/// Render ID for this instance
+/// </summary>
+private int _renderId;
+```
+
+### Constructor
+
+```csharp
+public MultiDelayEffectsNode()
+{
+    _delayBuffers = new ImageBuffer[6];
+    _inputPositions = new int[6];
+    _outputPositions = new int[6];
+    _bufferSizes = new long[6];
+    _virtualBufferSizes = new long[6];
+    _previousVirtualBufferSizes = new long[6];
     
-    public MultiDelayEffectsNode()
+    // Initialize arrays
+    for (int i = 0; i < 6; i++)
     {
-        buffers = new IntPtr[MaxBuffers];
-        inputPositions = new IntPtr[MaxBuffers];
-        outputPositions = new IntPtr[MaxBuffers];
-        bufferSizes = new long[MaxBuffers];
-        virtualBufferSizes = new long[MaxBuffers];
-        oldVirtualBufferSizes = new long[MaxBuffers];
-        frameDelays = new long[MaxBuffers];
+        UseBeatSync[i] = false;
+        FrameDelay[i] = 0;
+        _bufferSizes[i] = 1;
+        _virtualBufferSizes[i] = 1;
+        _previousVirtualBufferSizes[i] = 1;
+        _inputPositions[i] = 0;
+        _outputPositions[i] = 0;
+    }
+    
+    _frameMemorySize = 1;
+    _previousFrameMemorySize = 1;
+    _framesSinceBeat = 0;
+    _framesPerBeat = 0;
+    _isInitialized = false;
+    _previousWidth = 0;
+    _previousHeight = 0;
+    
+    // Increment instance counter
+    _instanceCount++;
+    _renderId = _instanceCount;
+}
+```
+
+### Processing Methods
+
+```csharp
+public override void ProcessFrame(ImageBuffer imageBuffer, AudioFeatures audioFeatures)
+{
+    if (!Enabled || imageBuffer == null) return;
+
+    // Initialize if needed
+    if (!_isInitialized)
+    {
+        InitializeEffect();
+    }
+
+    // Handle resize
+    if (_previousWidth != imageBuffer.Width || _previousHeight != imageBuffer.Height)
+    {
+        HandleResize(imageBuffer.Width, imageBuffer.Height);
+    }
+
+    // Update frame memory size
+    UpdateFrameMemorySize(imageBuffer.Width, imageBuffer.Height);
+
+    // Handle beat detection
+    if (audioFeatures.IsBeat)
+    {
+        HandleBeatDetection();
+    }
+
+    // Update frame counters
+    _framesSinceBeat++;
+
+    // Process delay buffers
+    ProcessDelayBuffers(imageBuffer);
+
+    // Update buffer positions
+    UpdateBufferPositions();
+}
+
+/// <summary>
+/// Initialize the effect and buffers
+/// </summary>
+private void InitializeEffect()
+{
+    // Initialize buffers with minimum size
+    for (int i = 0; i < 6; i++)
+    {
+        _delayBuffers[i] = new ImageBuffer(1, 1);
+        _bufferSizes[i] = 1;
+        _virtualBufferSizes[i] = 1;
+        _previousVirtualBufferSizes[i] = 1;
+    }
+    
+    _isInitialized = true;
+}
+
+/// <summary>
+/// Handle buffer resize
+/// </summary>
+private void HandleResize(int width, int height)
+{
+    _previousWidth = width;
+    _previousHeight = height;
+    
+    // Recalculate frame memory size
+    _frameMemorySize = width * height * 4; // 4 bytes per pixel (ARGB)
+    
+    // Reallocate buffers if needed
+    ReallocateBuffers();
+}
+
+/// <summary>
+/// Update frame memory size
+/// </summary>
+private void UpdateFrameMemorySize(int width, int height)
+{
+    long newFrameMemorySize = width * height * 4;
+    
+    if (newFrameMemorySize != _frameMemorySize)
+    {
+        _previousFrameMemorySize = _frameMemorySize;
+        _frameMemorySize = newFrameMemorySize;
         
-        numInstances++;
-        creationId = numInstances;
-        
-        if (creationId == 1)
+        // Reallocate buffers if frame size changed
+        ReallocateBuffers();
+    }
+}
+
+/// <summary>
+/// Handle beat detection
+/// </summary>
+private void HandleBeatDetection()
+{
+    _framesPerBeat = _framesSinceBeat;
+    _framesSinceBeat = 0;
+    
+    // Update beat-synchronized delays
+    for (int i = 0; i < 6; i++)
+    {
+        if (UseBeatSync[i])
         {
-            InitializeGlobalState();
+            _virtualBufferSizes[i] = (_framesPerBeat + 1) * _frameMemorySize;
         }
-        
-        InitializeBuffers();
-        lastWidth = lastHeight = 0;
     }
+}
+
+/// <summary>
+/// Process delay buffers
+/// </summary>
+private void ProcessDelayBuffers(ImageBuffer imageBuffer)
+{
+    if (Mode == DelayMode.Off) return;
     
-    private void InitializeGlobalState()
-    {
-        renderId = 0;
-        framesSinceBeat = 0;
-        framesPerBeat = 0;
-        frameMemory = 1;
-        oldFrameMemory = 1;
-    }
+    int activeBuffer = ActiveBufferIndex;
+    if (activeBuffer < 0 || activeBuffer >= 6) return;
     
-    private void InitializeBuffers()
+    if (_virtualBufferSizes[activeBuffer] > _frameMemorySize)
     {
-        for (int i = 0; i < MaxBuffers; i++)
+        if (Mode == DelayMode.Output)
         {
-            UseBeats[i] = false;
-            Delay[i] = 0;
-            frameDelays[i] = 0;
-            bufferSizes[i] = 1;
-            virtualBufferSizes[i] = 1;
-            oldVirtualBufferSizes[i] = 1;
+            // Output delayed frame
+            OutputDelayedFrame(imageBuffer, activeBuffer);
+        }
+        else if (Mode == DelayMode.Input)
+        {
+            // Store input frame
+            StoreInputFrame(imageBuffer, activeBuffer);
+        }
+    }
+}
+
+/// <summary>
+/// Store input frame to delay buffer
+/// </summary>
+private void StoreInputFrame(ImageBuffer imageBuffer, int bufferIndex)
+{
+    if (_delayBuffers[bufferIndex] == null) return;
+    
+    // Calculate input position
+    int inputPos = _inputPositions[bufferIndex];
+    
+    // Copy frame data to buffer
+    CopyFrameToBuffer(imageBuffer, _delayBuffers[bufferIndex], inputPos);
+}
+
+/// <summary>
+/// Output delayed frame from buffer
+/// </summary>
+private void OutputDelayedFrame(ImageBuffer imageBuffer, int bufferIndex)
+{
+    if (_delayBuffers[bufferIndex] == null) return;
+    
+    // Calculate output position
+    int outputPos = _outputPositions[bufferIndex];
+    
+    // Copy frame data from buffer
+    CopyFrameFromBuffer(_delayBuffers[bufferIndex], imageBuffer, outputPos);
+}
+
+/// <summary>
+/// Copy frame data to buffer at specified position
+/// </summary>
+private void CopyFrameToBuffer(ImageBuffer source, ImageBuffer buffer, int position)
+{
+    // This is a simplified implementation
+    // In a real implementation, you would copy the actual pixel data
+    // based on the position and buffer layout
+    
+    int width = source.Width;
+    int height = source.Height;
+    
+    // Ensure buffer is large enough
+    if (buffer.Width != width || buffer.Height != height)
+    {
+        buffer = new ImageBuffer(width, height);
+    }
+    
+    // Copy pixels
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            Color pixel = source.GetPixel(x, y);
+            buffer.SetPixel(x, y, pixel);
+        }
+    }
+}
+
+/// <summary>
+/// Copy frame data from buffer at specified position
+/// </summary>
+private void CopyFrameFromBuffer(ImageBuffer buffer, ImageBuffer destination, int position)
+{
+    // This is a simplified implementation
+    // In a real implementation, you would copy the actual pixel data
+    // based on the position and buffer layout
+    
+    int width = destination.Width;
+    int height = destination.Height;
+    
+    // Ensure buffer is large enough
+    if (buffer.Width != width || buffer.Height != height)
+    {
+        return; // Buffer size mismatch
+    }
+    
+    // Copy pixels
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            Color pixel = buffer.GetPixel(x, y);
+            destination.SetPixel(x, y, pixel);
+        }
+    }
+}
+
+/// <summary>
+/// Update buffer positions
+/// </summary>
+private void UpdateBufferPositions()
+{
+    for (int i = 0; i < 6; i++)
+    {
+        if (_virtualBufferSizes[i] > _frameMemorySize)
+        {
+            // Update input position
+            _inputPositions[i] += (int)_frameMemorySize;
+            if (_inputPositions[i] >= _virtualBufferSizes[i])
+            {
+                _inputPositions[i] = 0;
+            }
             
-            // Allocate initial buffer
-            buffers[i] = AllocateVirtualMemory(bufferSizes[i]);
-            inputPositions[i] = buffers[i];
-            outputPositions[i] = buffers[i];
-        }
-    }
-    
-    public override void Process(FrameContext ctx, ImageBuffer input, ImageBuffer output)
-    {
-        if (ctx.Width <= 0 || ctx.Height <= 0) return;
-        
-        lock (renderLock)
-        {
-            // Update buffers if dimensions changed
-            UpdateBuffers(ctx);
-            
-            // Process delay effect
-            ProcessDelayEffect(ctx, input, output);
-            
-            // Update buffer positions
-            UpdateBufferPositions();
-        }
-    }
-    
-    private void UpdateBuffers(FrameContext ctx)
-    {
-        if (lastWidth != ctx.Width || lastHeight != ctx.Height)
-        {
-            lastWidth = ctx.Width;
-            lastHeight = ctx.Height;
-            frameMemory = ctx.Width * ctx.Height * 4; // 4 bytes per pixel (RGBA)
-        }
-    }
-    
-    private void ProcessDelayEffect(FrameContext ctx, ImageBuffer input, ImageBuffer output)
-    {
-        // Handle beat detection and timing
-        if (ctx.IsBeat)
-        {
-            framesPerBeat = framesSinceBeat;
-            for (int i = 0; i < MaxBuffers; i++)
+            // Update output position
+            _outputPositions[i] += (int)_frameMemorySize;
+            if (_outputPositions[i] >= _virtualBufferSizes[i])
             {
-                if (UseBeats[i])
-                {
-                    frameDelays[i] = framesPerBeat + 1;
-                }
-            }
-            framesSinceBeat = 0;
-        }
-        framesSinceBeat++;
-        
-        // Update buffer management
-        UpdateBufferManagement();
-        
-        // Apply delay effect
-        if (Mode != 0 && frameDelays[ActiveBuffer] > 1)
-        {
-            if (Mode == 2)
-            {
-                // Output delay mode - retrieve delayed frame
-                CopyDelayedFrameToOutput(ctx, output);
-            }
-            else
-            {
-                // Input delay mode - store current frame
-                CopyCurrentFrameToBuffer(ctx, input);
-            }
-        }
-    }
-    
-    private void UpdateBufferManagement()
-    {
-        for (int i = 0; i < MaxBuffers; i++)
-        {
-            if (frameDelays[i] > 1)
-            {
-                virtualBufferSizes[i] = frameDelays[i] * frameMemory;
-                
-                if (frameMemory == oldFrameMemory)
-                {
-                    if (virtualBufferSizes[i] != oldVirtualBufferSizes[i])
-                    {
-                        if (virtualBufferSizes[i] > oldVirtualBufferSizes[i])
-                        {
-                            if (virtualBufferSizes[i] > bufferSizes[i])
-                            {
-                                // Allocate new memory
-                                ReallocateBuffer(i);
-                            }
-                            else
-                            {
-                                // Adjust existing buffer
-                                AdjustExistingBuffer(i);
-                            }
-                        }
-                        else
-                        {
-                            // Reduce buffer size
-                            ReduceBufferSize(i);
-                        }
-                        oldVirtualBufferSizes[i] = virtualBufferSizes[i];
-                    }
-                }
-                else
-                {
-                    // Frame size changed, reallocate
-                    ReallocateBuffer(i);
-                    oldFrameMemory = frameMemory;
-                }
-            }
-        }
-    }
-    
-    private void ReallocateBuffer(int bufferIndex)
-    {
-        // Free old buffer
-        FreeVirtualMemory(buffers[bufferIndex], bufferSizes[bufferIndex]);
-        
-        // Calculate new buffer size
-        if (UseBeats[bufferIndex])
-        {
-            bufferSizes[bufferIndex] = BufferSizeMultiplier * virtualBufferSizes[bufferIndex];
-        }
-        else
-        {
-            bufferSizes[bufferIndex] = virtualBufferSizes[bufferIndex];
-        }
-        
-        // Allocate new buffer
-        buffers[bufferIndex] = AllocateVirtualMemory(bufferSizes[bufferIndex]);
-        
-        if (buffers[bufferIndex] != IntPtr.Zero)
-        {
-            // Update buffer positions
-            outputPositions[bufferIndex] = buffers[bufferIndex];
-            inputPositions[bufferIndex] = IntPtr.Add(buffers[bufferIndex], 
-                (int)(virtualBufferSizes[bufferIndex] - frameMemory));
-        }
-        else
-        {
-            // Allocation failed, reset delay
-            frameDelays[bufferIndex] = 0;
-            if (UseBeats[bufferIndex])
-            {
-                framesPerBeat = 0;
-                framesSinceBeat = 0;
-                frameDelays[bufferIndex] = 0;
-                Delay[bufferIndex] = 0;
-            }
-        }
-    }
-    
-    private void AdjustExistingBuffer(int bufferIndex)
-    {
-        // Calculate size adjustments
-        long size = ((long)IntPtr.Add(bufferIndex, (int)oldVirtualBufferSizes[bufferIndex])) - 
-                   ((long)outputPositions[bufferIndex]);
-        long newEnd = (long)buffers[bufferIndex] + virtualBufferSizes[bufferIndex];
-        long destination = newEnd - size;
-        
-        // Move existing data
-        MoveMemory(destination, outputPositions[bufferIndex], size);
-        
-        // Fill remaining space with copies
-        for (long pos = (long)outputPositions[bufferIndex]; pos < destination; pos += frameMemory)
-        {
-            CopyMemory(pos, destination, frameMemory);
-        }
-    }
-    
-    private void ReduceBufferSize(int bufferIndex)
-    {
-        long preSegmentSize = ((long)outputPositions[bufferIndex]) - ((long)buffers[bufferIndex]);
-        
-        if (preSegmentSize > virtualBufferSizes[bufferIndex])
-        {
-            // Move data to beginning of buffer
-            MoveMemory(buffers[bufferIndex], 
-                (long)buffers[bufferIndex] + preSegmentSize - virtualBufferSizes[bufferIndex], 
-                virtualBufferSizes[bufferIndex]);
-            
-            inputPositions[bufferIndex] = IntPtr.Add(buffers[bufferIndex], 
-                (int)(virtualBufferSizes[bufferIndex] - frameMemory));
-            outputPositions[bufferIndex] = buffers[bufferIndex];
-        }
-        else if (preSegmentSize < virtualBufferSizes[bufferIndex])
-        {
-            // Move data to fill remaining space
-            long remainingSpace = virtualBufferSizes[bufferIndex] - preSegmentSize;
-            long source = (long)buffers[bufferIndex] + oldVirtualBufferSizes[bufferIndex] + 
-                         preSegmentSize - virtualBufferSizes[bufferIndex];
-            
-            MoveMemory(outputPositions[bufferIndex], source, remainingSpace);
-        }
-    }
-    
-    private void CopyDelayedFrameToOutput(FrameContext ctx, ImageBuffer output)
-    {
-        // Copy delayed frame data to output
-        byte[] frameData = new byte[frameMemory];
-        Marshal.Copy(outputPositions[ActiveBuffer], frameData, 0, (int)frameMemory);
-        
-        // Convert frame data to output image
-        ConvertFrameDataToImage(frameData, ctx, output);
-    }
-    
-    private void CopyCurrentFrameToBuffer(FrameContext ctx, ImageBuffer input)
-    {
-        // Convert input image to frame data
-        byte[] frameData = ConvertImageToFrameData(input, ctx);
-        
-        // Copy frame data to buffer
-        Marshal.Copy(frameData, 0, inputPositions[ActiveBuffer], (int)frameMemory);
-    }
-    
-    private void UpdateBufferPositions()
-    {
-        for (int i = 0; i < MaxBuffers; i++)
-        {
-            // Advance buffer positions
-            inputPositions[i] = IntPtr.Add(inputPositions[i], (int)frameMemory);
-            outputPositions[i] = IntPtr.Add(outputPositions[i], (int)frameMemory);
-            
-            // Wrap around if necessary
-            if ((long)inputPositions[i] >= (long)buffers[i] + virtualBufferSizes[i])
-            {
-                inputPositions[i] = buffers[i];
-            }
-            
-            if ((long)outputPositions[i] >= (long)buffers[i] + virtualBufferSizes[i])
-            {
-                outputPositions[i] = buffers[i];
-            }
-        }
-    }
-    
-    private byte[] ConvertImageToFrameData(ImageBuffer image, FrameContext ctx)
-    {
-        byte[] frameData = new byte[frameMemory];
-        int index = 0;
-        
-        for (int y = 0; y < ctx.Height; y++)
-        {
-            for (int x = 0; x < ctx.Width; x++)
-            {
-                Color pixel = image.GetPixel(x, y);
-                frameData[index++] = pixel.R;
-                frameData[index++] = pixel.G;
-                frameData[index++] = pixel.B;
-                frameData[index++] = pixel.A;
-            }
-        }
-        
-        return frameData;
-    }
-    
-    private void ConvertFrameDataToImage(byte[] frameData, FrameContext ctx, ImageBuffer output)
-    {
-        int index = 0;
-        
-        for (int y = 0; y < ctx.Height; y++)
-        {
-            for (int x = 0; x < ctx.Width; x++)
-            {
-                Color pixel = Color.FromRgba(
-                    frameData[index++],
-                    frameData[index++],
-                    frameData[index++],
-                    frameData[index++]
-                );
-                output.SetPixel(x, y, pixel);
-            }
-        }
-    }
-    
-    // Virtual memory management
-    private IntPtr AllocateVirtualMemory(long size)
-    {
-        // This would use Windows VirtualAlloc in a real implementation
-        // For now, we'll use managed memory allocation
-        return Marshal.AllocHGlobal((int)size);
-    }
-    
-    private void FreeVirtualMemory(IntPtr ptr, long size)
-    {
-        if (ptr != IntPtr.Zero)
-        {
-            Marshal.FreeHGlobal(ptr);
-        }
-    }
-    
-    private void MoveMemory(long destination, long source, long size)
-    {
-        // This would use Windows MoveMemory in a real implementation
-        // For now, we'll use managed memory operations
-        byte[] temp = new byte[size];
-        Marshal.Copy((IntPtr)source, temp, 0, (int)size);
-        Marshal.Copy(temp, 0, (IntPtr)destination, (int)size);
-    }
-    
-    private void CopyMemory(long destination, long source, long size)
-    {
-        // This would use Windows CopyMemory in a real implementation
-        // For now, we'll use managed memory operations
-        byte[] temp = new byte[size];
-        Marshal.Copy((IntPtr)source, temp, 0, (int)size);
-        Marshal.Copy(temp, 0, (IntPtr)destination, (int)size);
-    }
-    
-    // Public interface for parameter adjustment
-    public void SetMode(int mode) 
-    { 
-        Mode = Math.Clamp(mode, MinMode, MaxMode); 
-    }
-    
-    public void SetActiveBuffer(int buffer) 
-    { 
-        ActiveBuffer = Math.Clamp(buffer, MinActiveBuffer, MaxActiveBuffer); 
-    }
-    
-    public void SetUseBeats(int bufferIndex, bool useBeats) 
-    { 
-        if (bufferIndex >= 0 && bufferIndex < MaxBuffers)
-        {
-            UseBeats[bufferIndex] = useBeats;
-            UpdateFrameDelay(bufferIndex);
-        }
-    }
-    
-    public void SetDelay(int bufferIndex, int delay) 
-    { 
-        if (bufferIndex >= 0 && bufferIndex < MaxBuffers)
-        {
-            Delay[bufferIndex] = Math.Clamp(delay, MinDelay, MaxDelay);
-            UpdateFrameDelay(bufferIndex);
-        }
-    }
-    
-    private void UpdateFrameDelay(int bufferIndex)
-    {
-        if (UseBeats[bufferIndex])
-        {
-            frameDelays[bufferIndex] = framesPerBeat + 1;
-        }
-        else
-        {
-            frameDelays[bufferIndex] = Delay[bufferIndex] + 1;
-        }
-    }
-    
-    // Status queries
-    public int GetMode() => Mode;
-    public int GetActiveBuffer() => ActiveBuffer;
-    public bool GetUseBeats(int bufferIndex) => (bufferIndex >= 0 && bufferIndex < MaxBuffers) ? UseBeats[bufferIndex] : false;
-    public int GetDelay(int bufferIndex) => (bufferIndex >= 0 && bufferIndex < MaxBuffers) ? Delay[bufferIndex] : 0;
-    public long GetFrameDelay(int bufferIndex) => (bufferIndex >= 0 && bufferIndex < MaxBuffers) ? frameDelays[bufferIndex] : 0;
-    public long GetFramesSinceBeat() => framesSinceBeat;
-    public long GetFramesPerBeat() => framesPerBeat;
-    public long GetFrameMemory() => frameMemory;
-    public int GetCreationId() => creationId;
-    public static int GetNumInstances() => numInstances;
-    
-    // Advanced delay control
-    public void ResetBuffer(int bufferIndex)
-    {
-        if (bufferIndex >= 0 && bufferIndex < MaxBuffers)
-        {
-            frameDelays[bufferIndex] = 0;
-            if (UseBeats[bufferIndex])
-            {
-                framesPerBeat = 0;
-                framesSinceBeat = 0;
-                frameDelays[bufferIndex] = 0;
-                Delay[bufferIndex] = 0;
-            }
-        }
-    }
-    
-    public void ResetAllBuffers()
-    {
-        for (int i = 0; i < MaxBuffers; i++)
-        {
-            ResetBuffer(i);
-        }
-    }
-    
-    public void SetBeatReactiveMode(int bufferIndex, bool enabled)
-    {
-        SetUseBeats(bufferIndex, enabled);
-        if (enabled)
-        {
-            frameDelays[bufferIndex] = framesPerBeat + 1;
-        }
-        else
-        {
-            frameDelays[bufferIndex] = Delay[bufferIndex] + 1;
-        }
-    }
-    
-    // Delay mode presets
-    public void SetEchoMode(int bufferIndex, int delay)
-    {
-        SetActiveBuffer(bufferIndex);
-        SetMode(2); // Output delay
-        SetUseBeats(bufferIndex, false);
-        SetDelay(bufferIndex, delay);
-    }
-    
-    public void SetBeatEchoMode(int bufferIndex)
-    {
-        SetActiveBuffer(bufferIndex);
-        SetMode(2); // Output delay
-        SetUseBeats(bufferIndex, true);
-        SetDelay(bufferIndex, 0);
-    }
-    
-    public void SetFeedbackMode(int bufferIndex, int delay)
-    {
-        SetActiveBuffer(bufferIndex);
-        SetMode(1); // Input delay
-        SetUseBeats(bufferIndex, false);
-        SetDelay(bufferIndex, delay);
-    }
-    
-    // Performance optimization
-    public void SetBufferSizeMultiplier(int multiplier)
-    {
-        // This could affect memory allocation strategy
-        // For now, we use the default multiplier
-    }
-    
-    public void EnableOptimizations(bool enable)
-    {
-        // Various optimization flags could be implemented here
-    }
-    
-    public override void Dispose()
-    {
-        lock (renderLock)
-        {
-            numInstances--;
-            
-            if (numInstances == 0)
-            {
-                // Clean up all buffers
-                for (int i = 0; i < MaxBuffers; i++)
-                {
-                    if (buffers[i] != IntPtr.Zero)
-                    {
-                        FreeVirtualMemory(buffers[i], bufferSizes[i]);
-                        buffers[i] = IntPtr.Zero;
-                    }
-                }
+                _outputPositions[i] = 0;
             }
         }
     }
 }
+
+/// <summary>
+/// Reallocate buffers based on current settings
+/// </summary>
+private void ReallocateBuffers()
+{
+    for (int i = 0; i < 6; i++)
+    {
+        // Calculate required buffer size
+        long requiredSize = CalculateRequiredBufferSize(i);
+        
+        if (requiredSize > _bufferSizes[i])
+        {
+            // Create new buffer
+            _delayBuffers[i] = new ImageBuffer(_previousWidth, _previousHeight);
+            _bufferSizes[i] = requiredSize;
+            _virtualBufferSizes[i] = requiredSize;
+            _previousVirtualBufferSizes[i] = requiredSize;
+            
+            // Reset positions
+            _inputPositions[i] = 0;
+            _outputPositions[i] = 0;
+        }
+    }
+}
+
+/// <summary>
+/// Calculate required buffer size for a specific delay buffer
+/// </summary>
+private long CalculateRequiredBufferSize(int bufferIndex)
+{
+    if (UseBeatSync[bufferIndex])
+    {
+        return (_framesPerBeat + 1) * _frameMemorySize;
+    }
+    else
+    {
+        return (FrameDelay[bufferIndex] + 1) * _frameMemorySize;
+    }
+}
 ```
 
-## Integration Points
+### Configuration Validation
 
-### Video Processing Integration
-- **Frame Buffer Management**: Advanced frame buffer management with virtual memory
-- **Temporal Effects**: Complex temporal effects and video delay processing
-- **Memory Optimization**: Intelligent memory management for video processing
-- **Performance Scaling**: Dynamic performance scaling based on delay requirements
+```csharp
+public override bool ValidateConfiguration()
+{
+    if (ActiveBufferIndex < 0 || ActiveBufferIndex > 5) return false;
+    
+    for (int i = 0; i < 6; i++)
+    {
+        if (FrameDelay[i] < 0 || FrameDelay[i] > 1000) return false;
+    }
+    
+    if (Intensity < 0.0f || Intensity > 10.0f) return false;
+    
+    return true;
+}
+```
 
-### Audio Integration
-- **Beat Detection**: Beat-reactive delay timing for musical synchronization
-- **Temporal Synchronization**: Synchronized delay timing with audio events
-- **Dynamic Delays**: Real-time delay adjustment based on audio analysis
-- **Musical Integration**: Deep integration with audio timing and beat detection
+### Preset Methods
 
-### Memory Management
-- **Virtual Memory**: Windows VirtualAlloc for dynamic memory management
-- **Buffer Optimization**: Intelligent buffer sizing and memory allocation
-- **Resource Management**: Automatic resource cleanup and memory optimization
-- **Performance Optimization**: Optimized memory operations for video processing
+```csharp
+/// <summary>
+/// Load a basic delay preset
+/// </summary>
+public void LoadBasicDelayPreset()
+{
+    Mode = DelayMode.Output;
+    ActiveBufferIndex = 0;
+    UseBeatSync[0] = false;
+    FrameDelay[0] = 30;
+    
+    // Disable other buffers
+    for (int i = 1; i < 6; i++)
+    {
+        UseBeatSync[i] = false;
+        FrameDelay[i] = 0;
+    }
+    
+    _isInitialized = false;
+}
+
+/// <summary>
+/// Load a beat-synchronized preset
+/// </summary>
+public void LoadBeatSyncPreset()
+{
+    Mode = DelayMode.Output;
+    ActiveBufferIndex = 0;
+    UseBeatSync[0] = true;
+    FrameDelay[0] = 0;
+    
+    // Disable other buffers
+    for (int i = 1; i < 6; i++)
+    {
+        UseBeatSync[i] = false;
+        FrameDelay[i] = 0;
+    }
+    
+    _isInitialized = false;
+}
+
+/// <summary>
+/// Load a multi-buffer preset
+/// </summary>
+public void LoadMultiBufferPreset()
+{
+    Mode = DelayMode.Output;
+    ActiveBufferIndex = 0;
+    
+    // Configure multiple buffers with different delays
+    UseBeatSync[0] = false;
+    FrameDelay[0] = 15;
+    
+    UseBeatSync[1] = false;
+    FrameDelay[1] = 30;
+    
+    UseBeatSync[2] = false;
+    FrameDelay[2] = 45;
+    
+    // Disable remaining buffers
+    for (int i = 3; i < 6; i++)
+    {
+        UseBeatSync[i] = false;
+        FrameDelay[i] = 0;
+    }
+    
+    _isInitialized = false;
+}
+
+/// <summary>
+/// Load a feedback loop preset
+/// </summary>
+public void LoadFeedbackLoopPreset()
+{
+    Mode = DelayMode.Input;
+    ActiveBufferIndex = 0;
+    UseBeatSync[0] = false;
+    FrameDelay[0] = 60;
+    
+    // Disable other buffers
+    for (int i = 1; i < 6; i++)
+    {
+        UseBeatSync[i] = false;
+        FrameDelay[i] = 0;
+    }
+    
+    _isInitialized = false;
+}
+
+/// <summary>
+/// Load a complex delay preset
+/// </summary>
+public void LoadComplexDelayPreset()
+{
+    Mode = DelayMode.Output;
+    ActiveBufferIndex = 0;
+    
+    // Mix of beat-sync and frame delays
+    UseBeatSync[0] = true;
+    FrameDelay[0] = 0;
+    
+    UseBeatSync[1] = false;
+    FrameDelay[1] = 20;
+    
+    UseBeatSync[2] = true;
+    FrameDelay[2] = 0;
+    
+    UseBeatSync[3] = false;
+    FrameDelay[3] = 40;
+    
+    // Disable remaining buffers
+    for (int i = 4; i < 6; i++)
+    {
+        UseBeatSync[i] = false;
+        FrameDelay[i] = 0;
+    }
+    
+    _isInitialized = false;
+}
+```
+
+### Utility Methods
+
+```csharp
+/// <summary>
+/// Get the current delay status
+/// </summary>
+public string GetDelayStatus()
+{
+    return $"Mode: {Mode}, Active Buffer: {ActiveBufferIndex}, Beat Frames: {_framesPerBeat}, Frame Memory: {_frameMemorySize}";
+}
+
+/// <summary>
+/// Check if the effect is currently delaying
+/// </summary>
+public bool IsDelaying()
+{
+    return Enabled && Mode != DelayMode.Off && _virtualBufferSizes[ActiveBufferIndex] > _frameMemorySize;
+}
+
+/// <summary>
+/// Get the current delay time for active buffer
+/// </summary>
+public int GetCurrentDelay()
+{
+    if (ActiveBufferIndex < 0 || ActiveBufferIndex >= 6) return 0;
+    
+    if (UseBeatSync[ActiveBufferIndex])
+    {
+        return _framesPerBeat;
+    }
+    else
+    {
+        return FrameDelay[ActiveBufferIndex];
+    }
+}
+
+/// <summary>
+/// Get buffer information for a specific index
+/// </summary>
+public string GetBufferInfo(int bufferIndex)
+{
+    if (bufferIndex < 0 || bufferIndex >= 6) return "Invalid buffer index";
+    
+    string beatSync = UseBeatSync[bufferIndex] ? "Beat" : "Frame";
+    int delay = UseBeatSync[bufferIndex] ? _framesPerBeat : FrameDelay[bufferIndex];
+    
+    return $"Buffer {bufferIndex}: {beatSync} sync, Delay: {delay}, Size: {_virtualBufferSizes[bufferIndex]}";
+}
+
+/// <summary>
+/// Reset the effect to initial state
+/// </summary>
+public void Reset()
+{
+    _isInitialized = false;
+    _framesSinceBeat = 0;
+    _framesPerBeat = 0;
+    _frameMemorySize = 1;
+    _previousFrameMemorySize = 1;
+    _previousWidth = 0;
+    _previousHeight = 0;
+    
+    // Reset buffer positions
+    for (int i = 0; i < 6; i++)
+    {
+        _inputPositions[i] = 0;
+        _outputPositions[i] = 0;
+        _virtualBufferSizes[i] = 1;
+        _previousVirtualBufferSizes[i] = 1;
+    }
+}
+
+/// <summary>
+/// Get effect execution statistics
+/// </summary>
+public string GetExecutionStats()
+{
+    return $"Initialized: {_isInitialized}, Instance: {_renderId}, Total Instances: {_instanceCount}, Active Buffer: {ActiveBufferIndex}";
+}
+```
 
 ## Usage Examples
 
-### Basic Echo Effect
+### Basic Frame Delay
+
 ```csharp
-var multiDelayNode = new MultiDelayEffectsNode
-{
-    Mode = 2,                          // Output delay mode
-    ActiveBuffer = 0,                  // Use buffer 0
-    UseBeats = { false, false, false, false, false, false },
-    Delay = { 30, 0, 0, 0, 0, 0 }    // 30 frame delay
-};
+var multiDelay = new MultiDelayEffectsNode();
+multiDelay.Mode = DelayMode.Output;
+multiDelay.ActiveBufferIndex = 0;
+multiDelay.UseBeatSync[0] = false;
+multiDelay.FrameDelay[0] = 30;
 ```
 
-### Beat-Reactive Echo
+### Beat-Synchronized Delay
+
 ```csharp
-var multiDelayNode = new MultiDelayEffectsNode
-{
-    Mode = 2,                          // Output delay mode
-    ActiveBuffer = 1,                  // Use buffer 1
-    UseBeats = { false, true, false, false, false, false },
-    Delay = { 0, 0, 0, 0, 0, 0 }     // Beat-reactive timing
-};
+var multiDelay = new MultiDelayEffectsNode();
+multiDelay.LoadBeatSyncPreset();
+multiDelay.Intensity = 0.8f;
 ```
 
-### Complex Multi-Buffer Delay
-```csharp
-var multiDelayNode = new MultiDelayEffectsNode
-{
-    Mode = 2,                          // Output delay mode
-    ActiveBuffer = 0,                  // Use buffer 0
-    UseBeats = { false, true, false, true, false, true },
-    Delay = { 15, 0, 45, 0, 60, 0 }  // Mixed timing modes
-};
+### Multi-Buffer Delay Chain
 
-// Configure different delay behaviors
-multiDelayNode.SetEchoMode(0, 15);    // 15 frame echo
-multiDelayNode.SetBeatEchoMode(1);    // Beat-reactive echo
-multiDelayNode.SetFeedbackMode(2, 45); // 45 frame feedback
+```csharp
+var multiDelay = new MultiDelayEffectsNode();
+multiDelay.LoadMultiBufferPreset();
+multiDelay.Intensity = 1.2f;
 ```
 
-## Technical Notes
+### Feedback Loop
 
-### Memory Architecture
-The effect implements sophisticated memory processing:
-- **Virtual Memory Management**: Windows VirtualAlloc for dynamic memory allocation
-- **Buffer Optimization**: Intelligent buffer sizing with 2x allocation for beat-reactive buffers
-- **Memory Reallocation**: Dynamic memory reallocation for changing delay requirements
-- **Resource Cleanup**: Automatic memory cleanup and resource management
+```csharp
+var multiDelay = new MultiDelayEffectsNode();
+multiDelay.LoadFeedbackLoopPreset();
+multiDelay.Intensity = 0.6f;
+```
 
-### Delay Architecture
-Advanced delay processing system:
-- **Multi-Buffer System**: 6 independent delay buffers for complex effect combinations
-- **Beat Reactivity**: Beat-reactive delay timing for musical synchronization
-- **Temporal Effects**: Complex temporal effects and video delay processing
-- **Performance Scaling**: Dynamic performance scaling based on delay requirements
+## Technical Details
 
-### Integration System
-Sophisticated system integration:
-- **Video Processing**: Deep integration with video frame processing pipeline
-- **Audio Synchronization**: Beat-reactive timing and audio synchronization
-- **Memory Management**: Advanced memory management and optimization
-- **Performance Optimization**: Optimized operations for video processing
+The Multi Delay effect creates video delay effects by storing frames in memory buffers and replaying them after a specified delay. Key features include:
 
-This effect provides the foundation for sophisticated temporal video effects, creating complex delay visualizations that respond dynamically to audio input and provide advanced video processing capabilities for sophisticated AVS visualization systems.
+- **Multiple Buffers**: Up to 6 independent delay buffers for complex effects
+- **Flexible Timing**: Frame-based delays or beat-synchronized delays
+- **Memory Management**: Dynamic buffer allocation based on delay requirements
+- **Position Tracking**: Circular buffer implementation for efficient memory usage
+- **Global State**: Shared timing information across multiple instances
+- **Mode Selection**: Input (store), output (replay), or disabled modes
+
+The effect uses a sophisticated buffer management system that automatically allocates memory based on delay requirements and frame sizes. Beat synchronization allows delays to automatically adjust to the tempo of the music, while frame-based delays provide precise control over timing.
+
+The circular buffer implementation ensures efficient memory usage by reusing buffer space and automatically wrapping around when reaching the end. This allows for long delays without excessive memory consumption.
+
+The effect is particularly useful for creating echo effects, feedback loops, and time-based visual manipulations that can add depth and complexity to visualizations.

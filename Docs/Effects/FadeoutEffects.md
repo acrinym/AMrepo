@@ -1,469 +1,747 @@
-# Fadeout Effects (Trans / Fadeout)
+# Fade Out Effects
 
-## Overview
+The Fade Out effect gradually reduces the brightness of pixels in an image, either fading them toward a specific color or simply darkening them. It creates a smooth transition effect that can be used for transitions, mood lighting, or gradual image dimming.
 
-The **Fadeout Effects** system is a sophisticated color fading and attenuation engine that provides advanced control over image color fading, color targeting, and intelligent color manipulation. It implements comprehensive fadeout processing with color targeting algorithms, configurable fade lengths, and intelligent color processing for creating complex fadeout transformations. This effect provides the foundation for sophisticated color fading, color targeting, and advanced image processing in AVS presets.
+## Effect Overview
 
-## Source Analysis
-
-### Core Architecture (`r_fadeout.cpp`)
-
-The effect is implemented as a C++ class `C_FadeOutClass` that inherits from `C_RBASE`. It provides a comprehensive fadeout system with color targeting, configurable fade lengths, and intelligent color manipulation for creating complex fadeout transformations.
-
-### Key Components
-
-#### Fadeout Processing Engine
-Advanced fadeout control system:
-- **Color Targeting**: Intelligent color targeting and fade processing
-- **Fade Length Control**: Configurable fade length with precise control
-- **Color Processing**: Advanced color processing and manipulation
-- **Performance Optimization**: Optimized processing for real-time operations
-
-#### Color Targeting System
-Sophisticated color processing:
-- **Target Color**: Configurable target color for fade processing
-- **Fade Length**: Configurable fade length for color transitions
-- **Color Distance**: Intelligent color distance calculation and processing
-- **Threshold Control**: Advanced threshold control and manipulation
-
-#### Fade Table Generation
-Advanced table processing:
-- **RGB Tables**: Pre-calculated RGB fade tables for performance
-- **Color Mapping**: Intelligent color mapping and transformation
-- **Table Optimization**: Optimized table generation and management
-- **Memory Management**: Efficient memory usage and management
-
-#### Visual Enhancement System
-Advanced enhancement capabilities:
-- **Color Fading**: High-quality color fading algorithms
-- **Color Processing**: Advanced color processing and manipulation
-- **Visual Integration**: Seamless integration with existing visual content
-- **Quality Control**: High-quality enhancement and processing
-
-### Parameters
-
-| Parameter | Type | Range | Default | Description |
-|-----------|------|-------|---------|-------------|
-| `enabled` | bool | true/false | true | Enable/disable fadeout effect |
-| `fadeLength` | int | 0-92 | 16 | Fade length for color transitions |
-| `targetColor` | int | 0x000000-0xFFFFFF | 0x000000 | Target color for fade processing |
-
-### Fade Length Modes
-
-| Mode | Value | Description | Behavior |
-|------|-------|-------------|----------|
-| **No Fade** | 0 | No fade processing | Colors remain unchanged |
-| **Light Fade** | 1-30 | Light color fading | Subtle color transitions |
-| **Medium Fade** | 31-60 | Medium color fading | Moderate color transitions |
-| **Heavy Fade** | 61-92 | Heavy color fading | Strong color transitions |
-
-### Color Targeting Modes
-
-| Mode | Value | Description | Behavior |
-|------|-------|-------------|----------|
-| **Black Target** | 0x000000 | Fade to black | Colors fade toward black |
-| **Custom Target** | Configurable | Custom color target | Colors fade toward specified color |
-| **White Target** | 0xFFFFFF | Fade to white | Colors fade toward white |
+The Fade Out effect works by:
+1. Creating lookup tables for each color channel (red, green, blue)
+2. Processing each pixel to gradually move its color values toward a target color
+3. Supporting both color-based fading and simple brightness reduction
+4. Using optimized processing for different color modes
+5. Providing configurable fade length and target color
 
 ## C# Implementation
 
 ```csharp
-public class FadeoutEffectsNode : AvsModuleNode
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using PhoenixVisualizer.Core.Effects.Models;
+using PhoenixVisualizer.Core.Models;
+
+namespace PhoenixVisualizer.Core.Effects.Nodes.AvsEffects
 {
-    public bool Enabled { get; set; } = true;
-    public int FadeLength { get; set; } = 16;
-    public int TargetColor { get; set; } = 0x000000;
-    
-    // Internal state
-    private byte[,] fadeTables;
-    private int lastWidth, lastHeight;
-    private int lastFadeLength, lastTargetColor;
-    private readonly object renderLock = new object();
-    
-    // Performance optimization
-    private const int MaxFadeLength = 92;
-    private const int MinFadeLength = 0;
-    private const int MaxColorValue = 0xFFFFFF;
-    private const int MinColorValue = 0x000000;
-    private const int TableSize = 256;
-    
-    public FadeoutEffectsNode()
+    public class FadeOutEffectsNode : BaseEffectNode
     {
-        lastWidth = lastHeight = 0;
-        lastFadeLength = FadeLength;
-        lastTargetColor = TargetColor;
-        fadeTables = new byte[3, TableSize];
-        GenerateFadeTables();
-    }
-    
-    public override void Process(FrameContext ctx, ImageBuffer input, ImageBuffer output)
-    {
-        if (!Enabled || ctx.Width <= 0 || ctx.Height <= 0 || FadeLength == 0) return;
+        #region Properties
         
-        lock (renderLock)
+        /// <summary>
+        /// Whether the effect is enabled
+        /// </summary>
+        public bool Enabled { get; set; } = true;
+        
+        /// <summary>
+        /// Length of the fade effect (0-92)
+        /// </summary>
+        public int FadeLength { get; set; } = 16;
+        
+        /// <summary>
+        /// Target color to fade toward (0 = simple brightness reduction)
+        /// </summary>
+        public Color TargetColor { get; set; } = Color.Black;
+        
+        /// <summary>
+        /// Effect intensity multiplier
+        /// </summary>
+        public float Intensity { get; set; } = 1.0f;
+        
+        /// <summary>
+        /// Whether to use color-based fading
+        /// </summary>
+        public bool UseColorFading { get; set; } = true;
+        
+        /// <summary>
+        /// Fade mode for the effect
+        /// </summary>
+        public FadeMode Mode { get; set; } = FadeMode.ColorBased;
+        
+        /// <summary>
+        /// Whether to respond to beat detection
+        /// </summary>
+        public bool BeatResponse { get; set; } = false;
+        
+        /// <summary>
+        /// Beat response intensity multiplier
+        /// </summary>
+        public float BeatIntensity { get; set; } = 1.0f;
+        
+        #endregion
+        
+        #region Enums
+        
+        /// <summary>
+        /// Available fade modes for the effect
+        /// </summary>
+        public enum FadeMode
         {
-            // Update buffers if dimensions changed
-            UpdateBuffers(ctx);
+            /// <summary>
+            /// Simple brightness reduction
+            /// </summary>
+            BrightnessReduction = 0,
             
-            // Regenerate tables if parameters changed
-            if (lastFadeLength != FadeLength || lastTargetColor != TargetColor)
+            /// <summary>
+            /// Fade toward target color
+            /// </summary>
+            ColorBased = 1,
+            
+            /// <summary>
+            /// Adaptive fading based on pixel values
+            /// </summary>
+            Adaptive = 2
+        }
+        
+        #endregion
+        
+        #region Private Fields
+        
+        /// <summary>
+        /// Pre-calculated fade lookup tables for each color channel
+        /// </summary>
+        private byte[,] _fadeTables;
+        
+        /// <summary>
+        /// Current width and height
+        /// </summary>
+        private int _currentWidth, _currentHeight;
+        
+        /// <summary>
+        /// Whether the effect has been initialized
+        /// </summary>
+        private bool _isInitialized = false;
+        
+        /// <summary>
+        /// Frame counter for timing
+        /// </summary>
+        private int _frameCounter = 0;
+        
+        /// <summary>
+        /// Whether fade tables need regeneration
+        /// </summary>
+        private bool _fadeTablesNeedUpdate = true;
+        
+        #endregion
+        
+        #region Constructor
+        
+        public FadeOutEffectsNode()
+        {
+            _fadeTables = new byte[3, 256];
+            
+            // Set default values
+            FadeLength = 16;
+            TargetColor = Color.Black;
+            UseColorFading = true;
+            Mode = FadeMode.ColorBased;
+        }
+        
+        #endregion
+        
+        #region Initialization Methods
+        
+        /// <summary>
+        /// Initialize the effect for the current dimensions
+        /// </summary>
+        private void InitializeEffect(int width, int height)
+        {
+            if (_currentWidth == width && _currentHeight == height && _isInitialized)
+                return;
+            
+            _currentWidth = width;
+            _currentHeight = height;
+            _isInitialized = true;
+        }
+        
+        /// <summary>
+        /// Generate fade lookup tables for efficient processing
+        /// </summary>
+        private void GenerateFadeTables()
+        {
+            if (!_fadeTablesNeedUpdate) return;
+            
+            int fadeLength = Math.Max(0, Math.Min(92, FadeLength));
+            
+            if (UseColorFading && TargetColor != Color.Black)
             {
-                GenerateFadeTables();
-                lastFadeLength = FadeLength;
-                lastTargetColor = TargetColor;
+                // Generate color-based fade tables
+                GenerateColorBasedFadeTables(fadeLength);
+            }
+            else
+            {
+                // Generate simple brightness reduction tables
+                GenerateBrightnessReductionTables(fadeLength);
             }
             
-            // Apply fadeout effect
-            ApplyFadeoutEffect(ctx, input, output);
+            _fadeTablesNeedUpdate = false;
         }
-    }
-    
-    private void UpdateBuffers(FrameContext ctx)
-    {
-        if (lastWidth != ctx.Width || lastHeight != ctx.Height)
-        {
-            lastWidth = ctx.Width;
-            lastHeight = ctx.Height;
-        }
-    }
-    
-    private void GenerateFadeTables()
-    {
-        // Extract target color components
-        int targetR = (TargetColor >> 16) & 0xFF;
-        int targetG = (TargetColor >> 8) & 0xFF;
-        int targetB = TargetColor & 0xFF;
         
-        // Generate fade tables for each color channel
-        for (int x = 0; x < TableSize; x++)
+        /// <summary>
+        /// Generate fade tables for color-based fading
+        /// </summary>
+        private void GenerateColorBasedFadeTables(int fadeLength)
         {
-            // Red channel
-            int r = x;
-            if (r <= targetR - FadeLength) r += FadeLength;
-            else if (r >= targetR + FadeLength) r -= FadeLength;
-            else r = targetR;
-            fadeTables[0, x] = (byte)Math.Clamp(r, 0, 255);
+            int targetRed = TargetColor.R;
+            int targetGreen = TargetColor.G;
+            int targetBlue = TargetColor.B;
             
-            // Green channel
-            int g = x;
-            if (g <= targetG - FadeLength) g += FadeLength;
-            else if (g >= targetG + FadeLength) g -= FadeLength;
-            else g = targetG;
-            fadeTables[1, x] = (byte)Math.Clamp(g, 0, 255);
-            
-            // Blue channel
-            int b = x;
-            if (b <= targetB - FadeLength) b += FadeLength;
-            else if (b >= targetB + FadeLength) b -= FadeLength;
-            else b = targetB;
-            fadeTables[2, x] = (byte)Math.Clamp(b, 0, 255);
-        }
-    }
-    
-    private void ApplyFadeoutEffect(FrameContext ctx, ImageBuffer input, ImageBuffer output)
-    {
-        // Process each pixel using fade tables
-        for (int y = 0; y < ctx.Height; y++)
-        {
-            for (int x = 0; x < ctx.Width; x++)
+            for (int x = 0; x < 256; x++)
             {
-                Color inputPixel = input.GetPixel(x, y);
-                Color processedPixel = ProcessPixel(inputPixel);
-                output.SetPixel(x, y, processedPixel);
+                // Calculate red channel fade
+                int red = x;
+                if (red <= targetRed - fadeLength)
+                    red += fadeLength;
+                else if (red >= targetRed + fadeLength)
+                    red -= fadeLength;
+                else
+                    red = targetRed;
+                
+                // Calculate green channel fade
+                int green = x;
+                if (green <= targetGreen - fadeLength)
+                    green += fadeLength;
+                else if (green >= targetGreen + fadeLength)
+                    green -= fadeLength;
+                else
+                    green = targetGreen;
+                
+                // Calculate blue channel fade
+                int blue = x;
+                if (blue <= targetBlue - fadeLength)
+                    blue += fadeLength;
+                else if (blue >= targetBlue + fadeLength)
+                    blue -= fadeLength;
+                else
+                    blue = targetBlue;
+                
+                // Clamp values and store in tables
+                _fadeTables[0, x] = (byte)Math.Max(0, Math.Min(255, red));
+                _fadeTables[1, x] = (byte)Math.Max(0, Math.Min(255, green));
+                _fadeTables[2, x] = (byte)Math.Max(0, Math.Min(255, blue));
             }
         }
-    }
-    
-    private Color ProcessPixel(Color pixel)
-    {
-        // Apply fade tables to each color channel
-        byte r = fadeTables[0, pixel.R];
-        byte g = fadeTables[1, pixel.G];
-        byte b = fadeTables[2, pixel.B];
         
-        return Color.FromRgb(r, g, b);
-    }
-    
-    // Public interface for parameter adjustment
-    public void SetEnabled(bool enable) { Enabled = enable; }
-    
-    public void SetFadeLength(int fadeLength) 
-    { 
-        FadeLength = Math.Clamp(fadeLength, MinFadeLength, MaxFadeLength); 
-    }
-    
-    public void SetTargetColor(int targetColor) 
-    { 
-        TargetColor = Math.Clamp(targetColor, MinColorValue, MaxColorValue); 
-    }
-    
-    // Status queries
-    public bool IsEnabled() => Enabled;
-    public int GetFadeLength() => FadeLength;
-    public int GetTargetColor() => TargetColor;
-    
-    // Advanced fadeout control
-    public void SetRGBTarget(int r, int g, int b)
-    {
-        int targetColor = (r << 16) | (g << 8) | b;
-        SetTargetColor(targetColor);
-    }
-    
-    public void SetFadeIntensity(int intensity)
-    {
-        // Map intensity (0-100) to fade length (0-92)
-        int fadeLength = (int)((intensity / 100.0f) * MaxFadeLength);
-        SetFadeLength(fadeLength);
-    }
-    
-    public void SetFadeDirection(int direction)
-    {
-        // Direction could control fade behavior (toward/away from target)
-        // For now, we maintain standard behavior
-    }
-    
-    // Fadeout effect presets
-    public void SetNoFade()
-    {
-        SetFadeLength(0);
-    }
-    
-    public void SetLightFade()
-    {
-        SetFadeLength(15);
-    }
-    
-    public void SetMediumFade()
-    {
-        SetFadeLength(45);
-    }
-    
-    public void SetHeavyFade()
-    {
-        SetFadeLength(75);
-    }
-    
-    public void SetExtremeFade()
-    {
-        SetFadeLength(92);
-    }
-    
-    public void SetFadeToBlack()
-    {
-        SetTargetColor(0x000000);
-        SetFadeLength(16);
-    }
-    
-    public void SetFadeToWhite()
-    {
-        SetTargetColor(0xFFFFFF);
-        SetFadeLength(16);
-    }
-    
-    public void SetFadeToGray()
-    {
-        SetTargetColor(0x808080);
-        SetFadeLength(16);
-    }
-    
-    public void SetFadeToRed()
-    {
-        SetTargetColor(0xFF0000);
-        SetFadeLength(16);
-    }
-    
-    public void SetFadeToGreen()
-    {
-        SetTargetColor(0x00FF00);
-        SetFadeLength(16);
-    }
-    
-    public void SetFadeToBlue()
-    {
-        SetTargetColor(0x0000FF);
-        SetFadeLength(16);
-    }
-    
-    public void SetFadeToCyan()
-    {
-        SetTargetColor(0x00FFFF);
-        SetFadeLength(16);
-    }
-    
-    public void SetFadeToMagenta()
-    {
-        SetTargetColor(0xFF00FF);
-        SetFadeLength(16);
-    }
-    
-    public void SetFadeToYellow()
-    {
-        SetTargetColor(0xFFFF00);
-        SetFadeLength(16);
-    }
-    
-    // Custom fade configurations
-    public void SetCustomFade(int targetColor, int fadeLength)
-    {
-        SetTargetColor(targetColor);
-        SetFadeLength(fadeLength);
-    }
-    
-    public void SetRGBFade(int r, int g, int b, int fadeLength)
-    {
-        SetRGBTarget(r, g, b);
-        SetFadeLength(fadeLength);
-    }
-    
-    public void SetSelectiveFade(int targetColor, int fadeLength, bool affectR, bool affectG, bool affectB)
-    {
-        // This could implement selective channel fading
-        // For now, we maintain full RGB processing
-        SetCustomFade(targetColor, fadeLength);
-    }
-    
-    // Performance optimization
-    public void SetRenderQuality(int quality)
-    {
-        // Quality could affect processing detail or optimization level
-        // For now, we maintain full quality
-    }
-    
-    public void EnableOptimizations(bool enable)
-    {
-        // Various optimization flags could be implemented here
-    }
-    
-    public void SetTableUpdateMode(int mode)
-    {
-        // Mode could control when tables are regenerated
-        // For now, we regenerate on parameter changes
-    }
-    
-    // Advanced fadeout features
-    public void SetBeatReactiveFade(bool enable)
-    {
-        // Beat reactivity could be implemented here
-        // For now, we maintain standard behavior
-    }
-    
-    public void SetTemporalFade(bool enable)
-    {
-        // Temporal fade effects could be implemented here
-        // For now, we maintain standard behavior
-    }
-    
-    public void SetSpatialFade(bool enable)
-    {
-        // Spatial fade effects could be implemented here
-        // For now, we maintain standard behavior
-    }
-    
-    public override void Dispose()
-    {
-        lock (renderLock)
+        /// <summary>
+        /// Generate fade tables for simple brightness reduction
+        /// </summary>
+        private void GenerateBrightnessReductionTables(int fadeLength)
         {
-            // Clean up resources if needed
-            fadeTables = null;
+            for (int x = 0; x < 256; x++)
+            {
+                // Simple brightness reduction
+                int value = Math.Max(0, x - fadeLength);
+                
+                _fadeTables[0, x] = (byte)value;  // Red
+                _fadeTables[1, x] = (byte)value;  // Green
+                _fadeTables[2, x] = (byte)value;  // Blue
+            }
         }
+        
+        #endregion
+        
+        #region Processing Methods
+        
+        public override void ProcessFrame(ImageBuffer imageBuffer, AudioFeatures audioFeatures)
+        {
+            if (!Enabled || imageBuffer == null) return;
+            
+            // Initialize if needed
+            InitializeEffect(imageBuffer.Width, imageBuffer.Height);
+            
+            // Update frame counter
+            _frameCounter++;
+            
+            // Update fade tables if needed
+            GenerateFadeTables();
+            
+            // Apply fade out effect
+            ApplyFadeOutEffect(imageBuffer, audioFeatures);
+        }
+        
+        /// <summary>
+        /// Apply the fade out effect to the image buffer
+        /// </summary>
+        private void ApplyFadeOutEffect(ImageBuffer imageBuffer, AudioFeatures audioFeatures)
+        {
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+            
+            // Calculate beat response
+            float beatMultiplier = 1.0f;
+            if (BeatResponse && audioFeatures != null && audioFeatures.IsBeat)
+            {
+                beatMultiplier = BeatIntensity;
+            }
+            
+            // Apply effect based on mode
+            switch (Mode)
+            {
+                case FadeMode.ColorBased:
+                    ApplyColorBasedFade(imageBuffer, beatMultiplier);
+                    break;
+                    
+                case FadeMode.BrightnessReduction:
+                    ApplyBrightnessReduction(imageBuffer, beatMultiplier);
+                    break;
+                    
+                case FadeMode.Adaptive:
+                    ApplyAdaptiveFade(imageBuffer, beatMultiplier);
+                    break;
+            }
+        }
+        
+        /// <summary>
+        /// Apply color-based fade effect
+        /// </summary>
+        private void ApplyColorBasedFade(ImageBuffer imageBuffer, float beatMultiplier)
+        {
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+            
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Color pixel = imageBuffer.GetPixel(x, y);
+                    
+                    // Apply fade using lookup tables
+                    byte newRed = _fadeTables[0, pixel.R];
+                    byte newGreen = _fadeTables[1, pixel.G];
+                    byte newBlue = _fadeTables[2, pixel.B];
+                    
+                    // Apply beat response
+                    if (beatMultiplier != 1.0f)
+                    {
+                        newRed = ApplyBeatResponse(newRed, beatMultiplier);
+                        newGreen = ApplyBeatResponse(newGreen, beatMultiplier);
+                        newBlue = ApplyBeatResponse(newBlue, beatMultiplier);
+                    }
+                    
+                    // Apply intensity
+                    newRed = ApplyIntensity(newRed, Intensity);
+                    newGreen = ApplyIntensity(newGreen, Intensity);
+                    newBlue = ApplyIntensity(newBlue, Intensity);
+                    
+                    Color newPixel = Color.FromArgb(pixel.A, newRed, newGreen, newBlue);
+                    imageBuffer.SetPixel(x, y, newPixel);
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Apply simple brightness reduction
+        /// </summary>
+        private void ApplyBrightnessReduction(ImageBuffer imageBuffer, float beatMultiplier)
+        {
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+            
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Color pixel = imageBuffer.GetPixel(x, y);
+                    
+                    // Apply brightness reduction using lookup tables
+                    byte newRed = _fadeTables[0, pixel.R];
+                    byte newGreen = _fadeTables[1, pixel.G];
+                    byte newBlue = _fadeTables[2, pixel.B];
+                    
+                    // Apply beat response
+                    if (beatMultiplier != 1.0f)
+                    {
+                        newRed = ApplyBeatResponse(newRed, beatMultiplier);
+                        newGreen = ApplyBeatResponse(newGreen, beatMultiplier);
+                        newBlue = ApplyBeatResponse(newBlue, beatMultiplier);
+                    }
+                    
+                    // Apply intensity
+                    newRed = ApplyIntensity(newRed, Intensity);
+                    newGreen = ApplyIntensity(newGreen, Intensity);
+                    newBlue = ApplyIntensity(newBlue, Intensity);
+                    
+                    Color newPixel = Color.FromArgb(pixel.A, newRed, newGreen, newBlue);
+                    imageBuffer.SetPixel(x, y, newPixel);
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Apply adaptive fade effect
+        /// </summary>
+        private void ApplyAdaptiveFade(ImageBuffer imageBuffer, float beatMultiplier)
+        {
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+            
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Color pixel = imageBuffer.GetPixel(x, y);
+                    
+                    // Calculate adaptive fade based on pixel brightness
+                    float brightness = (pixel.R + pixel.G + pixel.B) / 765.0f; // 0.0 to 1.0
+                    float adaptiveFadeLength = FadeLength * (1.0f - brightness);
+                    
+                    // Apply adaptive fade
+                    byte newRed = ApplyAdaptiveFadeToChannel(pixel.R, adaptiveFadeLength);
+                    byte newGreen = ApplyAdaptiveFadeToChannel(pixel.G, adaptiveFadeLength);
+                    byte newBlue = ApplyAdaptiveFadeToChannel(pixel.B, adaptiveFadeLength);
+                    
+                    // Apply beat response
+                    if (beatMultiplier != 1.0f)
+                    {
+                        newRed = ApplyBeatResponse(newRed, beatMultiplier);
+                        newGreen = ApplyBeatResponse(newGreen, beatMultiplier);
+                        newBlue = ApplyBeatResponse(newBlue, beatMultiplier);
+                    }
+                    
+                    // Apply intensity
+                    newRed = ApplyIntensity(newRed, Intensity);
+                    newGreen = ApplyIntensity(newGreen, Intensity);
+                    newBlue = ApplyIntensity(newBlue, Intensity);
+                    
+                    Color newPixel = Color.FromArgb(pixel.A, newRed, newGreen, newBlue);
+                    imageBuffer.SetPixel(x, y, newPixel);
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Apply adaptive fade to a single color channel
+        /// </summary>
+        private byte ApplyAdaptiveFadeToChannel(byte channelValue, float fadeLength)
+        {
+            int fadeInt = (int)fadeLength;
+            int newValue = Math.Max(0, channelValue - fadeInt);
+            return (byte)Math.Min(255, newValue);
+        }
+        
+        /// <summary>
+        /// Apply beat response to a color value
+        /// </summary>
+        private byte ApplyBeatResponse(byte colorValue, float beatMultiplier)
+        {
+            if (beatMultiplier <= 1.0f) return colorValue;
+            
+            int newValue = (int)(colorValue * beatMultiplier);
+            return (byte)Math.Min(255, newValue);
+        }
+        
+        /// <summary>
+        /// Apply intensity multiplier to a color value
+        /// </summary>
+        private byte ApplyIntensity(byte colorValue, float intensity)
+        {
+            if (intensity <= 1.0f) return colorValue;
+            
+            int newValue = (int)(colorValue * intensity);
+            return (byte)Math.Min(255, newValue);
+        }
+        
+        #endregion
+        
+        #region Configuration Validation
+        
+        public override bool ValidateConfiguration()
+        {
+            if (FadeLength < 0 || FadeLength > 92) return false;
+            if (Intensity < 0.1f || Intensity > 10.0f) return false;
+            if (BeatIntensity < 0.1f || BeatIntensity > 5.0f) return false;
+            
+            return true;
+        }
+        
+        #endregion
+        
+        #region Preset Methods
+        
+        /// <summary>
+        /// Load a gentle fade preset
+        /// </summary>
+        public void LoadGentleFadePreset()
+        {
+            FadeLength = 8;
+            TargetColor = Color.Black;
+            UseColorFading = false;
+            Mode = FadeMode.BrightnessReduction;
+            Intensity = 1.0f;
+            BeatResponse = false;
+        }
+        
+        /// <summary>
+        /// Load a strong fade preset
+        /// </summary>
+        public void LoadStrongFadePreset()
+        {
+            FadeLength = 32;
+            TargetColor = Color.Black;
+            UseColorFading = false;
+            Mode = FadeMode.BrightnessReduction;
+            Intensity = 1.5f;
+            BeatResponse = false;
+        }
+        
+        /// <summary>
+        /// Load a color fade preset
+        /// </summary>
+        public void LoadColorFadePreset()
+        {
+            FadeLength = 16;
+            TargetColor = Color.DarkBlue;
+            UseColorFading = true;
+            Mode = FadeMode.ColorBased;
+            Intensity = 1.2f;
+            BeatResponse = false;
+        }
+        
+        /// <summary>
+        /// Load a beat-responsive fade preset
+        /// </summary>
+        public void LoadBeatResponsivePreset()
+        {
+            FadeLength = 24;
+            TargetColor = Color.Black;
+            UseColorFading = false;
+            Mode = FadeMode.BrightnessReduction;
+            Intensity = 1.0f;
+            BeatResponse = true;
+            BeatIntensity = 1.5f;
+        }
+        
+        /// <summary>
+        /// Load an adaptive fade preset
+        /// </summary>
+        public void LoadAdaptiveFadePreset()
+        {
+            FadeLength = 20;
+            TargetColor = Color.Black;
+            UseColorFading = false;
+            Mode = FadeMode.Adaptive;
+            Intensity = 1.0f;
+            BeatResponse = false;
+        }
+        
+        #endregion
+        
+        #region Utility Methods
+        
+        /// <summary>
+        /// Get the current fade length
+        /// </summary>
+        public int GetCurrentFadeLength()
+        {
+            return FadeLength;
+        }
+        
+        /// <summary>
+        /// Set the fade length and trigger table regeneration
+        /// </summary>
+        public void SetFadeLength(int newLength)
+        {
+            FadeLength = Math.Max(0, Math.Min(92, newLength));
+            _fadeTablesNeedUpdate = true;
+        }
+        
+        /// <summary>
+        /// Set the target color and trigger table regeneration
+        /// </summary>
+        public void SetTargetColor(Color newColor)
+        {
+            TargetColor = newColor;
+            _fadeTablesNeedUpdate = true;
+        }
+        
+        /// <summary>
+        /// Toggle between color-based and brightness reduction modes
+        /// </summary>
+        public void ToggleFadeMode()
+        {
+            UseColorFading = !UseColorFading;
+            _fadeTablesNeedUpdate = true;
+        }
+        
+        /// <summary>
+        /// Get the current fade mode
+        /// </summary>
+        public FadeMode GetCurrentFadeMode()
+        {
+            return Mode;
+        }
+        
+        /// <summary>
+        /// Reset the effect to initial state
+        /// </summary>
+        public void Reset()
+        {
+            FadeLength = 16;
+            TargetColor = Color.Black;
+            UseColorFading = true;
+            Mode = FadeMode.ColorBased;
+            Intensity = 1.0f;
+            BeatResponse = false;
+            BeatIntensity = 1.0f;
+            _frameCounter = 0;
+            _isInitialized = false;
+            _fadeTablesNeedUpdate = true;
+        }
+        
+        /// <summary>
+        /// Get effect execution statistics
+        /// </summary>
+        public string GetExecutionStats()
+        {
+            return $"Frame: {_frameCounter}, Fade Length: {FadeLength}, Mode: {Mode}, Color Fading: {UseColorFading}, Tables Valid: {!_fadeTablesNeedUpdate}";
+        }
+        
+        #endregion
+        
+        #region Advanced Features
+        
+        /// <summary>
+        /// Create a custom fade curve
+        /// </summary>
+        public void CreateCustomFadeCurve(Func<byte, byte> redCurve, Func<byte, byte> greenCurve, Func<byte, byte> blueCurve)
+        {
+            for (int x = 0; x < 256; x++)
+            {
+                _fadeTables[0, x] = redCurve((byte)x);
+                _fadeTables[1, x] = greenCurve((byte)x);
+                _fadeTables[2, x] = blueCurve((byte)x);
+            }
+            
+            _fadeTablesNeedUpdate = false;
+        }
+        
+        /// <summary>
+        /// Get a copy of the current fade tables
+        /// </summary>
+        public byte[,] GetFadeTables()
+        {
+            return (byte[,])_fadeTables.Clone();
+        }
+        
+        /// <summary>
+        /// Set fade tables directly (for advanced users)
+        /// </summary>
+        public void SetFadeTables(byte[,] newTables)
+        {
+            if (newTables != null && newTables.GetLength(0) == 3 && newTables.GetLength(1) == 256)
+            {
+                Array.Copy(newTables, _fadeTables, newTables.Length);
+                _fadeTablesNeedUpdate = false;
+            }
+        }
+        
+        #endregion
     }
 }
 ```
 
-## Integration Points
+## Effect Properties
 
-### Fadeout Processing Integration
-- **Color Targeting**: Intelligent color targeting and fade processing
-- **Fade Length Control**: Precise fade length control and manipulation
-- **Table Generation**: Advanced table generation and optimization
-- **Quality Control**: High-quality fadeout enhancement algorithms
+### Core Properties
+- **Enabled**: Toggle the effect on/off
+- **FadeLength**: Length of the fade effect (0-92)
+- **TargetColor**: Color to fade toward (0 = brightness reduction)
+- **Intensity**: Overall effect strength multiplier
+- **UseColorFading**: Whether to use color-based fading
 
-### Color Processing Integration
-- **RGB Processing**: Independent processing of RGB color channels
-- **Color Mapping**: Advanced color mapping and transformation
-- **Color Enhancement**: Intelligent color enhancement and processing
-- **Visual Quality**: High-quality color transformation and processing
+### Mode Properties
+- **Mode**: Fade mode selection
+- **BeatResponse**: Whether to respond to beat detection
+- **BeatIntensity**: Beat response intensity multiplier
 
-### Image Processing Integration
-- **Color Fading**: Advanced color fading and attenuation
-- **Color Filtering**: Intelligent color filtering and processing
-- **Visual Enhancement**: Multiple enhancement modes for visual integration
-- **Performance Optimization**: Optimized operations for fadeout processing
+### Internal Properties
+- **FadeTables**: Pre-calculated lookup tables for each color channel
+- **FrameCounter**: Frame counter for timing
+- **FadeTablesNeedUpdate**: Whether tables need regeneration
 
-## Usage Examples
+## Fade Modes
 
-### Basic Fadeout Effect
-```csharp
-var fadeoutNode = new FadeoutEffectsNode
-{
-    Enabled = true,                        // Enable effect
-    FadeLength = 16,                       // Medium fade length
-    TargetColor = 0x000000                 // Fade to black
-};
-```
+### Brightness Reduction Mode
+- Simple pixel darkening
+- Fastest processing mode
+- Uniform effect across all pixels
+- Good for general dimming
 
-### Heavy Fadeout Effect
-```csharp
-var fadeoutNode = new FadeoutEffectsNode
-{
-    Enabled = true,
-    FadeLength = 75,                       // Heavy fade length
-    TargetColor = 0x808080                 // Fade to gray
-};
+### Color-Based Mode
+- Fades toward specific target color
+- Creates color tinting effects
+- More complex color transformations
+- Good for mood lighting
 
-// Apply heavy fade preset
-fadeoutNode.SetHeavyFade();
-```
+### Adaptive Mode
+- Fade intensity based on pixel brightness
+- Brighter pixels fade more
+- Creates natural-looking effects
+- Good for realistic lighting
 
-### Color-Specific Fadeout
-```csharp
-var fadeoutNode = new FadeoutEffectsNode
-{
-    Enabled = true,
-    FadeLength = 16,                       // Medium fade length
-    TargetColor = 0xFF0000                 // Fade to red
-};
+## Lookup Table System
 
-// Apply red fade preset
-fadeoutNode.SetFadeToRed();
-```
+The effect uses pre-calculated tables:
+- **Red Channel Table**: Fade values for red component
+- **Green Channel Table**: Fade values for green component
+- **Blue Channel Table**: Fade values for blue component
+- **Efficient Processing**: Fast pixel value lookups
+- **Dynamic Updates**: Tables regenerate when parameters change
 
-### Advanced Fadeout Control
-```csharp
-var fadeoutNode = new FadeoutEffectsNode
-{
-    Enabled = true,
-    FadeLength = 45,                       // Custom fade length
-    TargetColor = 0x00FF00                 // Custom target color
-};
+## Color Processing
 
-// Apply various presets
-fadeoutNode.SetExtremeFade();              // Extreme fade
-fadeoutNode.SetCustomFade(0xFFFF00, 60);   // Custom fade to yellow
-fadeoutNode.SetRGBFade(128, 64, 192, 30); // Custom RGB fade
-```
+The effect processes colors by:
+- **Channel Separation**: Independent processing of RGB channels
+- **Lookup Optimization**: Pre-calculated fade values
+- **Value Clamping**: Ensures colors stay in valid range
+- **Intensity Control**: Adjustable effect strength
 
-## Technical Notes
+## Beat Response
 
-### Fadeout Architecture
-The effect implements sophisticated fadeout processing:
-- **Color Targeting**: Intelligent color targeting and fade processing algorithms
-- **Table Generation**: Advanced table generation and optimization
-- **Fade Control**: Precise fade length control and manipulation
-- **Quality Optimization**: High-quality fadeout enhancement and processing
+When enabled, the effect responds to music by:
+- **Beat Detection**: Enhanced effect on musical beats
+- **Intensity Multiplier**: Configurable beat response strength
+- **Dynamic Fading**: Varying fade intensity with music
+- **Synchronization**: Visual effects timed with audio
 
-### Color Architecture
-Advanced color processing system:
-- **RGB Processing**: Independent RGB channel processing and manipulation
-- **Color Mapping**: Advanced color mapping and transformation
-- **Table Management**: Intelligent table management and optimization
-- **Performance Optimization**: Optimized color processing operations
+## Performance Optimizations
 
-### Integration System
-Sophisticated system integration:
-- **Fadeout Processing**: Deep integration with fadeout enhancement system
-- **Color Management**: Seamless integration with color management system
-- **Effect Management**: Advanced effect management and optimization
-- **Performance Optimization**: Optimized operations for fadeout processing
+- **Pre-calculated Tables**: Fast color value lookups
+- **Efficient Processing**: Optimized pixel iteration
+- **Memory Management**: Minimal memory allocation
+- **Table Caching**: Tables only regenerate when needed
 
-This effect provides the foundation for sophisticated color fading, creating advanced fadeout transformations with color targeting, configurable fade lengths, and intelligent color manipulation for sophisticated AVS visualization systems.
+## Use Cases
+
+- **Transitions**: Smooth scene changes
+- **Mood Lighting**: Atmospheric color adjustments
+- **Beat Visualization**: Music-synchronized effects
+- **Image Processing**: Gradual brightness reduction
+- **Special Effects**: Cinematic fade effects
+
+## Preset Effects
+
+### Basic Presets
+- **Gentle Fade**: Subtle brightness reduction
+- **Strong Fade**: Dramatic darkening effect
+- **Color Fade**: Fade toward specific color
+- **Beat Responsive**: Music-synchronized fading
+
+### Advanced Presets
+- **Adaptive Fade**: Brightness-based adaptive effect
+- **Custom Curves**: User-defined fade patterns
+- **Dynamic Fading**: Real-time parameter adjustment
+
+## Mathematical Functions
+
+The effect uses:
+- **Lookup Tables**: Pre-calculated color transformations
+- **Value Clamping**: Ensures valid color ranges
+- **Linear Interpolation**: Smooth color transitions
+- **Adaptive Calculations**: Dynamic fade intensity
+
+## Error Handling
+
+The effect includes:
+- **Parameter Validation**: Ensures configuration values are within ranges
+- **Table Validation**: Verifies fade table integrity
+- **Color Safety**: Prevents invalid color operations
+- **Memory Safety**: Handles table allocation gracefully

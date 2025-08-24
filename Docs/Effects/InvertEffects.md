@@ -1,510 +1,404 @@
-# Invert Effects (Trans / Invert)
+# Invert Effects
 
 ## Overview
 
-The **Invert Effects** system is a high-performance color inversion engine that provides ultra-fast color inversion with optimized processing algorithms. It implements comprehensive color inversion with bitwise XOR operations, optimized MMX processing, and intelligent color manipulation for creating rapid color inversion transformations. This effect provides the foundation for high-performance color inversion, real-time color manipulation, and advanced image processing in AVS presets.
-
-## Source Analysis
-
-### Core Architecture (`r_invert.cpp`)
-
-The effect is implemented as a C++ class `C_InvertClass` that inherits from `C_RBASE`. It provides a high-performance color inversion system with bitwise XOR operations, optimized MMX processing, and intelligent color manipulation for creating rapid color inversion transformations.
-
-### Key Components
-
-#### Color Inversion Processing Engine
-High-performance inversion control system:
-- **Bitwise XOR Operations**: Efficient color inversion using XOR with 0xFFFFFF
-- **MMX Optimization**: MMX-optimized processing for ultra-fast operations
-- **Standard Processing**: Fallback processing for non-MMX systems
-- **Performance Optimization**: Ultra-fast processing for real-time operations
-
-#### Color Inversion System
-Sophisticated color processing:
-- **RGB Inversion**: Complete RGB color channel inversion
-- **Bitwise Operations**: Efficient bitwise XOR color manipulation
-- **Color Mapping**: Intelligent color mapping and transformation
-- **Performance Optimization**: Optimized color processing operations
-
-#### MMX Processing System
-Advanced processing capabilities:
-- **MMX Instructions**: MMX-optimized color inversion algorithms
-- **Batch Processing**: 8-pixel batch processing for performance
-- **Memory Alignment**: 16-byte aligned memory access
-- **Efficient Loops**: Optimized loop structures for speed
-
-#### Visual Enhancement System
-Advanced enhancement capabilities:
-- **Color Inversion**: High-quality color inversion algorithms
-- **Color Processing**: Advanced color processing and manipulation
-- **Visual Integration**: Seamless integration with existing visual content
-- **Quality Control**: High-quality enhancement and processing
-
-### Parameters
-
-| Parameter | Type | Range | Default | Description |
-|-----------|------|-------|---------|-------------|
-| `enabled` | bool | true/false | true | Enable/disable invert effect |
-
-### Inversion Modes
-
-| Mode | Value | Description | Behavior |
-|------|-------|-------------|----------|
-| **Disabled** | false | No inversion | Colors remain unchanged |
-| **Enabled** | true | Full inversion | All colors are inverted |
-
-### Color Inversion Behavior
-
-| Color | Original | Inverted | Description |
-|-------|----------|----------|-------------|
-| **Black** | 0x000000 | 0xFFFFFF | Black becomes white |
-| **White** | 0xFFFFFF | 0x000000 | White becomes black |
-| **Red** | 0xFF0000 | 0x00FFFF | Red becomes cyan |
-| **Green** | 0x00FF00 | 0xFF00FF | Green becomes magenta |
-| **Blue** | 0x0000FF | 0xFFFF00 | Blue becomes yellow |
+The Invert effect provides a fundamental color inversion capability that transforms images by inverting all color values. It creates a photographic negative effect by subtracting each color component from the maximum value (255), effectively flipping the color spectrum. This effect is useful for creating dramatic visual transformations, artistic effects, and can be combined with other effects for complex visual compositions.
 
 ## C# Implementation
 
+### InvertEffectsNode Class
+
 ```csharp
-public class InvertEffectsNode : AvsModuleNode
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using PhoenixVisualizer.Core.Effects.Models;
+using PhoenixVisualizer.Core.Models;
+
+namespace PhoenixVisualizer.Core.Effects.Nodes.AvsEffects
 {
-    public bool Enabled { get; set; } = true;
-    
-    // Internal state
-    private int lastWidth, lastHeight;
-    private readonly object renderLock = new object();
-    
-    // Performance optimization
-    private const uint InversionMask = 0xFFFFFF;
-    
-    public InvertEffectsNode()
+    public class InvertEffectsNode : BaseEffectNode
     {
-        lastWidth = lastHeight = 0;
-    }
-    
-    public override void Process(FrameContext ctx, ImageBuffer input, ImageBuffer output)
-    {
-        if (!Enabled || ctx.Width <= 0 || ctx.Height <= 0) 
+        #region Properties
+
+        /// <summary>
+        /// Enable/disable the invert effect
+        /// </summary>
+        public bool Enabled { get; set; } = true;
+
+        /// <summary>
+        /// Effect intensity (0.0 to 1.0)
+        /// </summary>
+        public float Intensity { get; set; } = 1.0f;
+
+        /// <summary>
+        /// Invert only specific color channels
+        /// </summary>
+        public bool InvertRed { get; set; } = true;
+
+        /// <summary>
+        /// Invert only specific color channels
+        /// </summary>
+        public bool InvertGreen { get; set; } = true;
+
+        /// <summary>
+        /// Invert only specific color channels
+        /// </summary>
+        public bool InvertBlue { get; set; } = true;
+
+        /// <summary>
+        /// Preserve alpha channel
+        /// </summary>
+        public bool PreserveAlpha { get; set; } = true;
+
+        /// <summary>
+        /// Blending mode - 0=replace, 1=additive, 2=50/50
+        /// </summary>
+        public int BlendMode { get; set; } = 0;
+
+        #endregion
+
+        #region Processing
+
+        public override void ProcessFrame(ImageBuffer imageBuffer, AudioFeatures audioFeatures)
         {
-            // Pass through if disabled
-            if (input != output)
+            if (!Enabled) return;
+
+            int width = imageBuffer.Width;
+            int height = imageBuffer.Height;
+
+            for (int y = 0; y < height; y++)
             {
-                input.CopyTo(output);
-            }
-            return;
-        }
-        
-        lock (renderLock)
-        {
-            // Update buffers if dimensions changed
-            UpdateBuffers(ctx);
-            
-            // Apply invert effect
-            ApplyInvertEffect(ctx, input, output);
-        }
-    }
-    
-    private void UpdateBuffers(FrameContext ctx)
-    {
-        if (lastWidth != ctx.Width || lastHeight != ctx.Height)
-        {
-            lastWidth = ctx.Width;
-            lastHeight = ctx.Height;
-        }
-    }
-    
-    private void ApplyInvertEffect(FrameContext ctx, ImageBuffer input, ImageBuffer output)
-    {
-        // Process each pixel with color inversion
-        for (int y = 0; y < ctx.Height; y++)
-        {
-            for (int x = 0; x < ctx.Width; x++)
-            {
-                Color inputPixel = input.GetPixel(x, y);
-                Color processedPixel = ProcessPixel(inputPixel);
-                output.SetPixel(x, y, processedPixel);
-            }
-        }
-    }
-    
-    private Color ProcessPixel(Color pixel)
-    {
-        // Apply bitwise XOR inversion to each color channel
-        byte r = (byte)(pixel.R ^ 0xFF);
-        byte g = (byte)(pixel.G ^ 0xFF);
-        byte b = (byte)(pixel.B ^ 0xFF);
-        
-        return Color.FromRgb(r, g, b);
-    }
-    
-    // Optimized processing for large images
-    private void ApplyInvertEffectOptimized(FrameContext ctx, ImageBuffer input, ImageBuffer output)
-    {
-        // Use parallel processing for large images
-        if (ctx.Width * ctx.Height > 10000)
-        {
-            ApplyInvertEffectParallel(ctx, input, output);
-        }
-        else
-        {
-            ApplyInvertEffect(ctx, input, output);
-        }
-    }
-    
-    private void ApplyInvertEffectParallel(FrameContext ctx, ImageBuffer input, ImageBuffer output)
-    {
-        int processorCount = Environment.ProcessorCount;
-        int chunkSize = ctx.Height / processorCount;
-        
-        var tasks = new Task[processorCount];
-        
-        for (int i = 0; i < processorCount; i++)
-        {
-            int startY = i * chunkSize;
-            int endY = (i == processorCount - 1) ? ctx.Height : (i + 1) * chunkSize;
-            
-            tasks[i] = Task.Run(() => ProcessImageChunk(input, output, ctx.Width, startY, endY));
-        }
-        
-        Task.WaitAll(tasks);
-    }
-    
-    private void ProcessImageChunk(ImageBuffer input, ImageBuffer output, int width, int startY, int endY)
-    {
-        for (int y = startY; y < endY; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                Color inputPixel = input.GetPixel(x, y);
-                Color processedPixel = ProcessPixel(inputPixel);
-                output.SetPixel(x, y, processedPixel);
-            }
-        }
-    }
-    
-    // Public interface for parameter adjustment
-    public void SetEnabled(bool enable) { Enabled = enable; }
-    
-    // Status queries
-    public bool IsEnabled() => Enabled;
-    
-    // Advanced inversion control
-    public void SetInversionMode(int mode)
-    {
-        switch (mode)
-        {
-            case 0: SetEnabled(false); break;
-            case 1: SetEnabled(true); break;
-            default: SetEnabled(true); break;
-        }
-    }
-    
-    public void SetInversionIntensity(int intensity)
-    {
-        // Map intensity (0-100) to enabled state
-        if (intensity < 50)
-        {
-            SetEnabled(false);
-        }
-        else
-        {
-            SetEnabled(true);
-        }
-    }
-    
-    // Invert effect presets
-    public void SetNoInversion()
-    {
-        SetEnabled(false);
-    }
-    
-    public void SetFullInversion()
-    {
-        SetEnabled(true);
-    }
-    
-    public void SetInversionOn()
-    {
-        SetEnabled(true);
-    }
-    
-    public void SetInversionOff()
-    {
-        SetEnabled(false);
-    }
-    
-    // Toggle functionality
-    public void ToggleInversion()
-    {
-        Enabled = !Enabled;
-    }
-    
-    // Beat-reactive inversion
-    public void SetBeatReactiveInversion(bool enable)
-    {
-        // Beat reactivity could be implemented here
-        // For now, we maintain standard behavior
-    }
-    
-    // Temporal inversion
-    public void SetTemporalInversion(bool enable)
-    {
-        // Temporal inversion effects could be implemented here
-        // For now, we maintain standard behavior
-    }
-    
-    // Spatial inversion
-    public void SetSpatialInversion(bool enable)
-    {
-        // Spatial inversion effects could be implemented here
-        // For now, we maintain standard behavior
-    }
-    
-    // Channel-specific inversion
-    public void SetRedInversion(bool enable)
-    {
-        // This could implement per-channel inversion control
-        // For now, we maintain full RGB processing
-    }
-    
-    public void SetGreenInversion(bool enable)
-    {
-        // This could implement per-channel inversion control
-        // For now, we maintain full RGB processing
-    }
-    
-    public void SetBlueInversion(bool enable)
-    {
-        // This could implement per-channel inversion control
-        // For now, we maintain full RGB processing
-    }
-    
-    // Custom inversion operations
-    public void SetCustomInversion(uint mask)
-    {
-        // This could implement custom inversion masks
-        // For now, we maintain standard 0xFFFFFF inversion
-    }
-    
-    public void SetSelectiveInversion(bool invertR, bool invertG, bool invertB)
-    {
-        // This could implement selective channel inversion
-        // For now, we maintain full RGB processing
-    }
-    
-    // Performance optimization
-    public void SetRenderQuality(int quality)
-    {
-        // Quality could affect processing detail or optimization level
-        // For now, we maintain full quality
-    }
-    
-    public void EnableOptimizations(bool enable)
-    {
-        // Various optimization flags could be implemented here
-    }
-    
-    public void SetProcessingMode(int mode)
-    {
-        // Mode could control processing method (standard vs parallel)
-        // For now, we maintain automatic mode selection
-    }
-    
-    // Advanced inversion features
-    public void SetThresholdInversion(int threshold)
-    {
-        // This could implement threshold-based inversion
-        // For now, we maintain standard behavior
-    }
-    
-    public void SetRangeInversion(int minValue, int maxValue)
-    {
-        // This could implement range-based inversion
-        // For now, we maintain standard behavior
-    }
-    
-    public void SetCurveInversion(int curveType)
-    {
-        // This could implement different inversion curves
-        // For now, we maintain standard behavior
-    }
-    
-    // Inversion analysis
-    public float GetInversionPercentage(ImageBuffer input)
-    {
-        if (!Enabled) return 0.0f;
-        
-        int totalPixels = input.Width * input.Height;
-        int invertedPixels = 0;
-        
-        for (int y = 0; y < input.Height; y++)
-        {
-            for (int x = 0; x < input.Width; x++)
-            {
-                Color pixel = input.GetPixel(x, y);
-                Color inverted = ProcessPixel(pixel);
-                
-                // Check if pixel was significantly inverted
-                if (Math.Abs(pixel.R - inverted.R) > 50 ||
-                    Math.Abs(pixel.G - inverted.G) > 50 ||
-                    Math.Abs(pixel.B - inverted.B) > 50)
+                for (int x = 0; x < width; x++)
                 {
-                    invertedPixels++;
+                    Color originalColor = imageBuffer.GetPixel(x, y);
+                    Color invertedColor = InvertColor(originalColor);
+
+                    // Apply blending if enabled
+                    if (BlendMode > 0)
+                    {
+                        invertedColor = ApplyBlending(originalColor, invertedColor);
+                    }
+
+                    imageBuffer.SetPixel(x, y, invertedColor);
                 }
             }
         }
-        
-        return (float)invertedPixels / totalPixels * 100.0f;
-    }
-    
-    public Color GetAverageInversion(ImageBuffer input)
-    {
-        if (!Enabled) return Color.Black;
-        
-        long totalR = 0, totalG = 0, totalB = 0;
-        int totalPixels = input.Width * input.Height;
-        
-        for (int y = 0; y < input.Height; y++)
+
+        private Color InvertColor(Color originalColor)
         {
-            for (int x = 0; x < input.Width; x++)
+            int red = originalColor.R;
+            int green = originalColor.G;
+            int blue = originalColor.B;
+            byte alpha = originalColor.A;
+
+            // Invert selected channels
+            if (InvertRed)
             {
-                Color pixel = input.GetPixel(x, y);
-                Color inverted = ProcessPixel(pixel);
-                
-                totalR += inverted.R;
-                totalG += inverted.G;
-                totalB += inverted.B;
+                red = 255 - red;
+            }
+
+            if (InvertGreen)
+            {
+                green = 255 - green;
+            }
+
+            if (InvertBlue)
+            {
+                blue = 255 - blue;
+            }
+
+            // Apply intensity
+            if (Intensity != 1.0f)
+            {
+                red = (int)(red * Intensity + (255 - red) * (1.0f - Intensity));
+                green = (int)(green * Intensity + (255 - green) * (1.0f - Intensity));
+                blue = (int)(blue * Intensity + (255 - blue) * (1.0f - Intensity));
+            }
+
+            // Clamp values
+            red = Math.Max(0, Math.Min(255, red));
+            green = Math.Max(0, Math.Min(255, green));
+            blue = Math.Max(0, Math.Min(255, blue));
+
+            // Preserve or modify alpha
+            if (PreserveAlpha)
+            {
+                return Color.FromArgb(alpha, red, green, blue);
+            }
+            else
+            {
+                // Invert alpha as well
+                byte invertedAlpha = (byte)(255 - alpha);
+                return Color.FromArgb(invertedAlpha, red, green, blue);
             }
         }
-        
-        byte avgR = (byte)(totalR / totalPixels);
-        byte avgG = (byte)(totalG / totalPixels);
-        byte avgB = (byte)(totalB / totalPixels);
-        
-        return Color.FromRgb(avgR, avgG, avgB);
-    }
-    
-    // Inversion presets for common scenarios
-    public void SetPhotographicInversion()
-    {
-        // Optimized for photographic images
-        SetEnabled(true);
-    }
-    
-    public void SetArtisticInversion()
-    {
-        // Optimized for artistic effects
-        SetEnabled(true);
-    }
-    
-    public void SetTechnicalInversion()
-    {
-        // Optimized for technical visualization
-        SetEnabled(true);
-    }
-    
-    public void SetCinematicInversion()
-    {
-        // Optimized for cinematic effects
-        SetEnabled(true);
-    }
-    
-    public override void Dispose()
-    {
-        lock (renderLock)
+
+        private Color ApplyBlending(Color original, Color inverted)
         {
-            // Clean up resources if needed
+            switch (BlendMode)
+            {
+                case 1: // Additive blending
+                    return BlendAdditive(original, inverted);
+                case 2: // 50/50 blending
+                    return BlendAverage(original, inverted);
+                default:
+                    return inverted;
+            }
         }
+
+        private Color BlendAdditive(Color a, Color b)
+        {
+            return Color.FromArgb(
+                Math.Min(255, a.R + b.R),
+                Math.Min(255, a.G + b.G),
+                Math.Min(255, a.B + b.B)
+            );
+        }
+
+        private Color BlendAverage(Color a, Color b)
+        {
+            return Color.FromArgb(
+                (a.R + b.R) / 2,
+                (a.G + b.G) / 2,
+                (a.B + b.B) / 2
+            );
+        }
+
+        #endregion
+
+        #region Configuration
+
+        public override bool ValidateConfiguration()
+        {
+            // Validate property ranges
+            Intensity = Math.Max(0.0f, Math.Min(1.0f, Intensity);
+            BlendMode = Math.Max(0, Math.Min(2, BlendMode));
+
+            return true;
+        }
+
+        public override string GetSettingsSummary()
+        {
+            string channels = "";
+            if (InvertRed) channels += "R";
+            if (InvertGreen) channels += "G";
+            if (InvertBlue) channels += "B";
+            if (string.IsNullOrEmpty(channels)) channels = "None";
+
+            string blendMode = BlendMode switch
+            {
+                0 => "Replace",
+                1 => "Additive",
+                2 => "50/50",
+                _ => "Unknown"
+            };
+
+            return $"Invert Effect - Enabled: {Enabled}, Channels: {channels}, " +
+                   $"Intensity: {Intensity:F2}, Blend: {blendMode}, " +
+                   $"Preserve Alpha: {PreserveAlpha}";
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Invert all color channels
+        /// </summary>
+        public void InvertAllChannels()
+        {
+            InvertRed = true;
+            InvertGreen = true;
+            InvertBlue = true;
+        }
+
+        /// <summary>
+        /// Invert only red channel
+        /// </summary>
+        public void InvertRedOnly()
+        {
+            InvertRed = true;
+            InvertGreen = false;
+            InvertBlue = false;
+        }
+
+        /// <summary>
+        /// Invert only green channel
+        /// </summary>
+        public void InvertGreenOnly()
+        {
+            InvertRed = false;
+            InvertGreen = true;
+            InvertBlue = false;
+        }
+
+        /// <summary>
+        /// Invert only blue channel
+        /// </summary>
+        public void InvertBlueOnly()
+        {
+            InvertRed = false;
+            InvertGreen = false;
+            InvertBlue = true;
+        }
+
+        /// <summary>
+        /// Create a full negative effect
+        /// </summary>
+        public void SetFullNegative()
+        {
+            InvertAllChannels();
+            Intensity = 1.0f;
+            BlendMode = 0;
+        }
+
+        /// <summary>
+        /// Create a partial negative effect
+        /// </summary>
+        public void SetPartialNegative()
+        {
+            InvertAllChannels();
+            Intensity = 0.5f;
+            BlendMode = 2; // 50/50 blending
+        }
+
+        /// <summary>
+        /// Create a red channel inversion effect
+        /// </summary>
+        public void SetRedInversion()
+        {
+            InvertRedOnly();
+            Intensity = 1.0f;
+            BlendMode = 0;
+        }
+
+        /// <summary>
+        /// Create a green channel inversion effect
+        /// </summary>
+        public void SetGreenInversion()
+        {
+            InvertGreenOnly();
+            Intensity = 1.0f;
+            BlendMode = 0;
+        }
+
+        /// <summary>
+        /// Create a blue channel inversion effect
+        /// </summary>
+        public void SetBlueInversion()
+        {
+            InvertBlueOnly();
+            Intensity = 1.0f;
+            BlendMode = 0;
+        }
+
+        #endregion
+
+        #region Utility Methods
+
+        /// <summary>
+        /// Invert a single color value
+        /// </summary>
+        /// <param name="value">Color component value (0-255)</param>
+        /// <returns>Inverted value</returns>
+        public static int InvertColorComponent(int value)
+        {
+            return 255 - value;
+        }
+
+        /// <summary>
+        /// Invert a color with full intensity
+        /// </summary>
+        /// <param name="color">Original color</param>
+        /// <returns>Fully inverted color</returns>
+        public static Color InvertColor(Color color)
+        {
+            return Color.FromArgb(
+                color.A,
+                255 - color.R,
+                255 - color.G,
+                255 - color.B
+            );
+        }
+
+        /// <summary>
+        /// Check if a color is inverted
+        /// </summary>
+        /// <param name="original">Original color</param>
+        /// <param name="inverted">Potentially inverted color</param>
+        /// <returns>True if colors are inverted</returns>
+        public static bool IsInverted(Color original, Color inverted)
+        {
+            return (original.R + inverted.R == 255) &&
+                   (original.G + inverted.G == 255) &&
+                   (original.B + inverted.B == 255);
+        }
+
+        #endregion
     }
 }
 ```
 
-## Integration Points
+## Effect Behavior
 
-### Invert Processing Integration
-- **Color Inversion**: Intelligent color inversion and processing
-- **Bitwise Operations**: Advanced bitwise XOR color manipulation
-- **Performance Optimization**: Ultra-fast color inversion algorithms
-- **Quality Control**: High-quality color inversion and processing
+The Invert effect transforms images by:
 
-### Color Processing Integration
-- **RGB Processing**: Independent processing of RGB color channels
-- **Color Mapping**: Advanced color mapping and transformation
-- **Color Enhancement**: Intelligent color enhancement and processing
-- **Visual Quality**: High-quality color transformation and processing
+1. **Color Inversion**: Subtracts each color component from 255 (maximum value)
+2. **Selective Channel Control**: Invert individual red, green, or blue channels
+3. **Intensity Control**: Adjustable effect strength from 0% to 100%
+4. **Alpha Channel Handling**: Option to preserve or invert transparency
+5. **Multiple Blending Modes**: Replace, additive, or 50/50 blending options
+6. **Performance Optimization**: Efficient pixel-by-pixel processing
 
-### Image Processing Integration
-- **Color Inversion**: Advanced color inversion and manipulation
-- **Color Filtering**: Intelligent color filtering and processing
-- **Visual Enhancement**: Multiple enhancement modes for visual integration
-- **Performance Optimization**: Optimized operations for invert processing
+## Color Inversion Process
 
-## Usage Examples
+### Full Inversion
+- **Red Channel**: 255 - R
+- **Green Channel**: 255 - G  
+- **Blue Channel**: 255 - B
+- **Result**: Complete photographic negative effect
 
-### Basic Invert Effect
-```csharp
-var invertNode = new InvertEffectsNode
-{
-    Enabled = true                        // Enable effect
-};
+### Partial Inversion
+- **Intensity Control**: Blend between original and inverted colors
+- **Channel Selection**: Invert only specific color channels
+- **Blending Modes**: Combine original and inverted results
+
+## Key Features
+
+- **Channel-Specific Control**: Invert individual color channels independently
+- **Intensity Adjustment**: Fine-tune effect strength for subtle to dramatic results
+- **Alpha Channel Preservation**: Maintain transparency information
+- **Multiple Blending Modes**: Different ways to combine original and inverted colors
+- **Performance Optimized**: Efficient color processing algorithms
+- **Flexible Configuration**: Customizable inversion behavior
+
+## Configuration Options
+
+- **Channel Selection**: Choose which color channels to invert
+- **Intensity Control**: Adjust effect strength (0.0-1.0)
+- **Alpha Handling**: Preserve or invert transparency
+- **Blending Mode**: Select how to combine with original image
+- **Enable/Disable**: Simple on/off control
+
+## Use Cases
+
+- **Photographic Negatives**: Create classic film negative effects
+- **Artistic Transformations**: Dramatic color inversions for creative projects
+- **Color Correction**: Invert specific channels for color balancing
+- **Visual Effects**: Combine with other effects for complex compositions
+- **Video Processing**: Real-time color inversion for live streams
+- **Image Analysis**: Highlight inverted color relationships
+
+## Mathematical Foundation
+
+The inversion process follows the mathematical principle:
+```
+Inverted_Value = 255 - Original_Value
 ```
 
-### Disabled Invert Effect
-```csharp
-var invertNode = new InvertEffectsNode
-{
-    Enabled = false                       // Disable effect
-};
-
-// Apply no inversion preset
-invertNode.SetNoInversion();
-```
-
-### Toggle Invert Effect
-```csharp
-var invertNode = new InvertEffectsNode
-{
-    Enabled = true                        // Enable effect
-};
-
-// Toggle inversion
-invertNode.ToggleInversion();
-```
-
-### Advanced Invert Control
-```csharp
-var invertNode = new InvertEffectsNode
-{
-    Enabled = true                        // Enable effect
-};
-
-// Apply various presets
-invertNode.SetFullInversion();           // Full inversion
-invertNode.SetPhotographicInversion();   // Photographic optimization
-invertNode.SetArtisticInversion();       // Artistic optimization
-```
-
-## Technical Notes
-
-### Invert Architecture
-The effect implements sophisticated invert processing:
-- **Color Inversion**: Intelligent color inversion and processing algorithms
-- **Bitwise Operations**: Advanced bitwise XOR color manipulation
-- **Performance Optimization**: Ultra-fast color inversion and manipulation
-- **Quality Optimization**: High-quality color inversion and processing
-
-### Color Architecture
-Advanced color processing system:
-- **RGB Processing**: Independent RGB channel processing and manipulation
-- **Color Mapping**: Advanced color mapping and transformation
-- **Bitwise Operations**: Intelligent bitwise operation management
-- **Performance Optimization**: Optimized color processing operations
-
-### Integration System
-Sophisticated system integration:
-- **Invert Processing**: Deep integration with invert enhancement system
-- **Color Management**: Seamless integration with color management system
-- **Effect Management**: Advanced effect management and optimization
-- **Performance Optimization**: Optimized operations for invert processing
-
-This effect provides the foundation for high-performance color inversion, creating ultra-fast color inversion transformations with bitwise XOR operations, optimized processing, and intelligent color manipulation for sophisticated AVS visualization systems.
+This creates a perfect complement where:
+- Black (0) becomes White (255)
+- White (255) becomes Black (0)
+- Mid-gray (128) remains Mid-gray (128)
+- All other values are symmetrically inverted around the midpoint
