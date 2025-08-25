@@ -2592,32 +2592,32 @@ We can write a follow-up **Python converter** to:
 
 Ready to run? Want the Python viewer next?
 
-**USER**: offset   filesize   filename
---------------------------------------
-  000000fc 1024       02_pal_001.pal
-  00000000 0          COREA\00000001.dat
-  00000000 0          COREA\00000002.dat
-  00000000 0          COREA\00000003.dat
-  00000000 0          COREA\00000004.dat
-  00000000 0          COREA\00000005.dat
-  00000000 0          COREA\00000006.dat
-  00000000 0          �
-  00000000 0          COREA\00000008.dat
-  00000000 0          COREA\00000009.dat
-
-Error: incomplete input file 0: C:\Users\User\Downloads\Marble Drop (1997)(Maxis)\Marble\Win95\COREA.DAT
-       Can't read 1 bytes from offset 05001157.
-       Anyway don't worry, it's possible that the BMS script has been written
-       to exit in this way if it's reached the end of the archive so check it
-       or contact its author or verify that all the files have been extracted.
-       Please check the following coverage information to know if it's ok.
-
-  coverage file 0     0%   1571       1179102    . offset 05001157
-
-Last script line before the error or that produced the error:
-  16  get ENTRY_TYPE byte
-  coverage file 0     0%   1571       1179102    . offset 05001157
-
+**USER**: offset   filesize   filename
+--------------------------------------
+  000000fc 1024       02_pal_001.pal
+  00000000 0          COREA\00000001.dat
+  00000000 0          COREA\00000002.dat
+  00000000 0          COREA\00000003.dat
+  00000000 0          COREA\00000004.dat
+  00000000 0          COREA\00000005.dat
+  00000000 0          COREA\00000006.dat
+  00000000 0          �
+  00000000 0          COREA\00000008.dat
+  00000000 0          COREA\00000009.dat
+
+Error: incomplete input file 0: C:\Users\User\Downloads\Marble Drop (1997)(Maxis)\Marble\Win95\COREA.DAT
+       Can't read 1 bytes from offset 05001157.
+       Anyway don't worry, it's possible that the BMS script has been written
+       to exit in this way if it's reached the end of the archive so check it
+       or contact its author or verify that all the files have been extracted.
+       Please check the following coverage information to know if it's ok.
+
+  coverage file 0     0%   1571       1179102    . offset 05001157
+
+Last script line before the error or that produced the error:
+  16  get ENTRY_TYPE byte
+  coverage file 0     0%   1571       1179102    . offset 05001157
+
 Press ENTER or close the window to quit
 
 **ASSISTANT**: Perfect — this gives us a clear starting point. Here's a quick rundown and a refined plan:
@@ -3453,57 +3453,57 @@ Drop the goals here—I'll match the upgrade path to your flow.
 
 **USER**: Eh, can we fix this setup script for Codex? it keeps timing out before getting to 200 seconds... also if it needs a package it can fetch it interactively(fetch on use since it has net access)
 
-# --- Universal Upgrades ---
-python3 -m pip install --upgrade pip setuptools wheel
-
-# --- Python: Data Science & ML Tools ---
-python3 -m pip install --upgrade \
-    jupyterlab notebook pandas numpy matplotlib \
-    scikit-learn requests beautifulsoup4 \
-    transformers torch \
-    fastapi uvicorn \
-    python-dotenv
-
-# --- Node.js / Web Dev Tools ---
-npm install -g npm yarn pnpm \
-    typescript ts-node \
-    create-next-app create-react-app \
-    eslint prettier \
-    tailwindcss \
-    vite \
-    serve \
-    nodemon
-
-# --- Web Libraries (for React/Next.js) ---
-npm install -g \
-    @chakra-ui/react \
-    @shadcn/ui \
-    @heroicons/react \
-    react-icons \
-    @mdx-js/react \
-    fuse.js \
-    lunr \
-    recharts \
-    d3
-
-# --- Markdown/MDX ---
-npm install -g \
-    gray-matter \
-    remark remark-html remark-mdx \
-    next-mdx-remote
-
-# --- Media Utilities ---
-apt-get update && apt-get install -y \
-    ffmpeg imagemagick gifsicle
-
-# --- Shell Utilities ---
-apt-get install -y git curl wget unzip zip jq nano htop tree tmux && apt-get clean
-
-# --- Project Bootstrap (if not already initialized) ---
-# npx create-next-app amandamap
-# cd amandamap && npm install tailwindcss @chakra-ui/react @heroicons/react
-
-# --- Clean Up ---
+# --- Universal Upgrades ---
+python3 -m pip install --upgrade pip setuptools wheel
+
+# --- Python: Data Science & ML Tools ---
+python3 -m pip install --upgrade \
+    jupyterlab notebook pandas numpy matplotlib \
+    scikit-learn requests beautifulsoup4 \
+    transformers torch \
+    fastapi uvicorn \
+    python-dotenv
+
+# --- Node.js / Web Dev Tools ---
+npm install -g npm yarn pnpm \
+    typescript ts-node \
+    create-next-app create-react-app \
+    eslint prettier \
+    tailwindcss \
+    vite \
+    serve \
+    nodemon
+
+# --- Web Libraries (for React/Next.js) ---
+npm install -g \
+    @chakra-ui/react \
+    @shadcn/ui \
+    @heroicons/react \
+    react-icons \
+    @mdx-js/react \
+    fuse.js \
+    lunr \
+    recharts \
+    d3
+
+# --- Markdown/MDX ---
+npm install -g \
+    gray-matter \
+    remark remark-html remark-mdx \
+    next-mdx-remote
+
+# --- Media Utilities ---
+apt-get update && apt-get install -y \
+    ffmpeg imagemagick gifsicle
+
+# --- Shell Utilities ---
+apt-get install -y git curl wget unzip zip jq nano htop tree tmux && apt-get clean
+
+# --- Project Bootstrap (if not already initialized) ---
+# npx create-next-app amandamap
+# cd amandamap && npm install tailwindcss @chakra-ui/react @heroicons/react
+
+# --- Clean Up ---
 rm -rf /var/lib/apt/lists/* ~/.cache/pip
 
 **ASSISTANT**: Absolutely. Let's make this **Codex setup script** rock-solid, interactive, and timeout-resistant. Here's how we'll fix it:
@@ -3752,57 +3752,57 @@ Let me know how you want to evolve the build stack 🔧
 
 **USER**: This is even too heavy. We need to go lighter. NPM keeps stalling as it has too many packages to install for things I'm not using right now. 
 
-#!/bin/bash
-set -euo pipefail
-
-echo "🔧 Stage 1: Python basics..."
-python3 -m pip install --upgrade pip setuptools wheel || true
-
-echo "📦 Stage 2: Lightweight Python packages..."
-python3 -m pip install --upgrade \
-  pandas numpy matplotlib \
-  requests beautifulsoup4 \
-  python-dotenv fastapi uvicorn || true
-
-echo "🧠 Stage 3: Heavy ML packages (may take longer)..."
-python3 -m pip install --upgrade \
-  scikit-learn || true
-
-# Torch & Transformers last — high risk for timeout
-echo "🔥 Stage 4: Torch + Transformers (split to retry if fails)..."
-if ! python3 -m pip show torch &>/dev/null; then
-  python3 -m pip install torch || echo "⚠️ Torch install failed. Try manually."
-fi
-
-if ! python3 -m pip show transformers &>/dev/null; then
-  python3 -m pip install transformers || echo "⚠️ Transformers install failed. Try manually."
-fi
-
-echo "🌐 Stage 5: Node.js global tools..."
-npm install -g npm yarn pnpm typescript ts-node || true
-npm install -g tailwindcss vite nodemon serve || true
-
-echo "📚 Stage 6: React/Web Libraries..."
-npm install -g \
-  create-next-app create-react-app \
-  eslint prettier \
-  @chakra-ui/react @shadcn/ui @heroicons/react \
-  react-icons @mdx-js/react \
-  fuse.js lunr \
-  recharts d3 || true
-
-echo "📖 Stage 7: Markdown/MDX tools..."
-npm install -g \
-  gray-matter \
-  remark remark-html remark-mdx \
-  next-mdx-remote || true
-
-echo "🎞️ Stage 8: Media & Shell utilities..."
-apt-get update -qq
-DEBIAN_FRONTEND=noninteractive apt-get install -y \
-  ffmpeg imagemagick gifsicle git curl wget unzip zip jq nano htop tree tmux || true
-apt-get clean
-
+#!/bin/bash
+set -euo pipefail
+
+echo "🔧 Stage 1: Python basics..."
+python3 -m pip install --upgrade pip setuptools wheel || true
+
+echo "📦 Stage 2: Lightweight Python packages..."
+python3 -m pip install --upgrade \
+  pandas numpy matplotlib \
+  requests beautifulsoup4 \
+  python-dotenv fastapi uvicorn || true
+
+echo "🧠 Stage 3: Heavy ML packages (may take longer)..."
+python3 -m pip install --upgrade \
+  scikit-learn || true
+
+# Torch & Transformers last — high risk for timeout
+echo "🔥 Stage 4: Torch + Transformers (split to retry if fails)..."
+if ! python3 -m pip show torch &>/dev/null; then
+  python3 -m pip install torch || echo "⚠️ Torch install failed. Try manually."
+fi
+
+if ! python3 -m pip show transformers &>/dev/null; then
+  python3 -m pip install transformers || echo "⚠️ Transformers install failed. Try manually."
+fi
+
+echo "🌐 Stage 5: Node.js global tools..."
+npm install -g npm yarn pnpm typescript ts-node || true
+npm install -g tailwindcss vite nodemon serve || true
+
+echo "📚 Stage 6: React/Web Libraries..."
+npm install -g \
+  create-next-app create-react-app \
+  eslint prettier \
+  @chakra-ui/react @shadcn/ui @heroicons/react \
+  react-icons @mdx-js/react \
+  fuse.js lunr \
+  recharts d3 || true
+
+echo "📖 Stage 7: Markdown/MDX tools..."
+npm install -g \
+  gray-matter \
+  remark remark-html remark-mdx \
+  next-mdx-remote || true
+
+echo "🎞️ Stage 8: Media & Shell utilities..."
+apt-get update -qq
+DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  ffmpeg imagemagick gifsicle git curl wget unzip zip jq nano htop tree tmux || true
+apt-get clean
+
 echo "✅ Done. If torch or transformers failed, install them manually."
 
 **ASSISTANT**: **This refactor is exactly the right move.** 🔥 You’re chunking it smartly by:

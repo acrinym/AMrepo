@@ -1821,8 +1821,8 @@ Just say the word, Justin.
 
 **USER**: Like this? 
 
-(function() {
-'use strict';
+(function() {
+'use strict';
 const fflate = window.fflate;
 
 **ASSISTANT**: **Yes, Justin—**that’s *exactly* right.
@@ -1863,10 +1863,10 @@ Let me know if you want the *final* “ready-to-run” script with this already 
 
 **USER**: Didn't like this line - missing a curly. 
 
-                html.replace(/<a[^>]+href=['"]([^'"]+)['"]/ig, (_, href) => {
-                    if (/\.(zip|rar|7z|exe|mp3|mp4|wav|avi|mov|pdf|docx?|xlsx?|pptx?|png|jpe?g|gif|svg|webp|csv|json|xml|txt|tar|gz)$/i.test(href))
-                        resList.push({type: 'file', url: absUrl(href, next.url)});
-                    return '';
+                html.replace(/<a[^>]+href=['"]([^'"]+)['"]/ig, (_, href) => {
+                    if (/\.(zip|rar|7z|exe|mp3|mp4|wav|avi|mov|pdf|docx?|xlsx?|pptx?|png|jpe?g|gif|svg|webp|csv|json|xml|txt|tar|gz)$/i.test(href))
+                        resList.push({type: 'file', url: absUrl(href, next.url)});
+                    return '';
                 });
 
 **ASSISTANT**: **Great eye—yep, that’s classic JavaScript “arrow function with an implicit block.”**  
@@ -2909,27 +2909,27 @@ Let me know your results or send more info.
 
 **USER**: (this userscript doing this) 
 
-userscript.html?name…8ef6-1404eb5434de:2 
- Uncaught (in promise) TypeError: Object.defineProperty called on non-object
-    at Object.defineProperty (<anonymous>)
-    at userscript.html?name…-1404eb5434de:2:225
-    at userscript.html?name…-1404eb5434de:2:179
-    at Proxy.<anonymous> (userscript.html?name…-1404eb5434de:2:183)
-    at Pt (<anonymous>:10:89)
-    at userscript.html?name…6-1404eb5434de:1:87
-    at window.__f__mbb22ysg.45 (userscript.html?name…-1404eb5434de:1:418)
-    at Pt (<anonymous>:10:89)
-    at r.setMessageListener.r (<anonymous>:86:186)
-    at <anonymous>:89:176
-(anonymous)	@	userscript.html?name…8ef6-1404eb5434de:2
-(anonymous)	@	userscript.html?name…8ef6-1404eb5434de:2
-(anonymous)	@	userscript.html?name…8ef6-1404eb5434de:2
-Pt	@	VM150:10
-(anonymous)	@	userscript.html?name…8ef6-1404eb5434de:1
-window.__f__mbb22ysg.45	@	userscript.html?name…8ef6-1404eb5434de:1
-Pt	@	VM150:10
-r.setMessageListener.r	@	VM150:86
-(anonymous)	@	VM150:89
+userscript.html?name…8ef6-1404eb5434de:2 
+ Uncaught (in promise) TypeError: Object.defineProperty called on non-object
+    at Object.defineProperty (<anonymous>)
+    at userscript.html?name…-1404eb5434de:2:225
+    at userscript.html?name…-1404eb5434de:2:179
+    at Proxy.<anonymous> (userscript.html?name…-1404eb5434de:2:183)
+    at Pt (<anonymous>:10:89)
+    at userscript.html?name…6-1404eb5434de:1:87
+    at window.__f__mbb22ysg.45 (userscript.html?name…-1404eb5434de:1:418)
+    at Pt (<anonymous>:10:89)
+    at r.setMessageListener.r (<anonymous>:86:186)
+    at <anonymous>:89:176
+(anonymous)	@	userscript.html?name…8ef6-1404eb5434de:2
+(anonymous)	@	userscript.html?name…8ef6-1404eb5434de:2
+(anonymous)	@	userscript.html?name…8ef6-1404eb5434de:2
+Pt	@	VM150:10
+(anonymous)	@	userscript.html?name…8ef6-1404eb5434de:1
+window.__f__mbb22ysg.45	@	userscript.html?name…8ef6-1404eb5434de:1
+Pt	@	VM150:10
+r.setMessageListener.r	@	VM150:86
+(anonymous)	@	VM150:89
 _	@	VM150:22
 
 **ASSISTANT**: **Justin, this is a classic Tampermonkey/GreaseMonkey "sandbox import bug"—not your script, but how Tampermonkey loads certain UMD/ESM modules (like fflate) via `@require`.**
@@ -4529,21 +4529,21 @@ But we could do this>>
 
 https://drbh.github.io/wasm-flate/browser.html
 
-**USER**: respond.js:375  [Deprecation] Listener added for a 'DOMNodeInserted' mutation event. Support for this event type has been removed, and this event will no longer be fired. See https://chromestatus.com/feature/5083947249172480 for more information.
-(anonymous) @ respond.js:375
-browser.js:1 
-            
-            
-            Failed to load resource: the server responded with a status of 404 ()
+**USER**: respond.js:375  [Deprecation] Listener added for a 'DOMNodeInserted' mutation event. Support for this event type has been removed, and this event will no longer be fired. See https://chromestatus.com/feature/5083947249172480 for more information.
+(anonymous) @ respond.js:375
+browser.js:1 
+            
+            
+            Failed to load resource: the server responded with a status of 404 ()
 userscript.html?name=wasm-flate-ZIP-Test.user.js&id=d24bcf52-e4ae-4bf4-828f-6752062688ce:45  Uncaught (in promise) EventisTrusted: truebubbles: falsecancelBubble: falsecancelable: falsecomposed: falsecurrentTarget: nulldefaultPrevented: falseeventPhase: 0returnValue: truesrcElement: scripttarget: scripttimeStamp: 203.90000009536743type: "error"[[Prototype]]: Event
 
 
-respond.js:375  [Deprecation] Listener added for a 'DOMNodeInserted' mutation event. Support for this event type has been removed, and this event will no longer be fired. See https://chromestatus.com/feature/5083947249172480 for more information.
-(anonymous) @ respond.js:375
-browser.js:1 
-            
-            
-            Failed to load resource: the server responded with a status of 404 ()
+respond.js:375  [Deprecation] Listener added for a 'DOMNodeInserted' mutation event. Support for this event type has been removed, and this event will no longer be fired. See https://chromestatus.com/feature/5083947249172480 for more information.
+(anonymous) @ respond.js:375
+browser.js:1 
+            
+            
+            Failed to load resource: the server responded with a status of 404 ()
 userscript.html?name=wasm-flate-ZIP-Test.user.js&id=d24bcf52-e4ae-4bf4-828f-6752062688ce:45  Uncaught (in promise) EventisTrusted: truebubbles: falsecancelBubble: falsecancelable: falsecomposed: falsecurrentTarget: nulldefaultPrevented: falseeventPhase: 0returnValue: truesrcElement: scripttarget: scripttimeStamp: 203.90000009536743type: "error"[[Prototype]]: Event
 
 **ASSISTANT**: Bingo. We just confirmed it—**the `browser.js` file failed to load because it doesn’t exist at that URL anymore**:

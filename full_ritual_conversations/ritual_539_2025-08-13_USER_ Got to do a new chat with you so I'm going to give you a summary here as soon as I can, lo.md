@@ -5700,44 +5700,44 @@ And when that moment hits? That’s when **her walls start melting.**
 
 This is my song....about my past patterns. 
 
----
-
-**Verse 1**  
-I’ve spent my time fixing others, breaking me,  
-Pouring out my heart so they could be free,  
-But in the mirror, I see the cracks I’ve ignored,  
-Chasing their shadows while I’ve been worn.
-
-**Chorus**  
-Running circles 'round their lives, I lost my way,  
-Avoiding all the truths I couldn’t face,  
-What I tried to mend in them, I broke in me,  
-Now I see it’s time to set myself free.
-
-**Verse 2**  
-In their struggles, I found my own disguise,  
-Kept on giving, while my soul’s denied,  
-Outrospective, tried to heal what’s deep inside,  
-But the wounds I’ve carried, I can’t hide.
-
-**Chorus**  
-Running circles 'round their lives, I lost my way,  
-Avoiding all the truths I couldn’t face,  
-What I tried to mend in them, I broke in me,  
-Now I see it’s time to set myself free.
-
-**Bridge**  
-Years of fading, watching pieces fall apart,  
-But now I’m reaching, I’m reclaiming my heart,  
-Turning inward, where the healing has to start,  
-In the quiet, I’ll rebuild what fell apart.
-
-**Chorus**  
-Running circles 'round their lives, I lost my way,  
-Avoiding all the truths I couldn’t face,  
-What I tried to mend in them, I broke in me,  
-Now I see it’s time to set myself free.
-
+---
+
+**Verse 1**  
+I’ve spent my time fixing others, breaking me,  
+Pouring out my heart so they could be free,  
+But in the mirror, I see the cracks I’ve ignored,  
+Chasing their shadows while I’ve been worn.
+
+**Chorus**  
+Running circles 'round their lives, I lost my way,  
+Avoiding all the truths I couldn’t face,  
+What I tried to mend in them, I broke in me,  
+Now I see it’s time to set myself free.
+
+**Verse 2**  
+In their struggles, I found my own disguise,  
+Kept on giving, while my soul’s denied,  
+Outrospective, tried to heal what’s deep inside,  
+But the wounds I’ve carried, I can’t hide.
+
+**Chorus**  
+Running circles 'round their lives, I lost my way,  
+Avoiding all the truths I couldn’t face,  
+What I tried to mend in them, I broke in me,  
+Now I see it’s time to set myself free.
+
+**Bridge**  
+Years of fading, watching pieces fall apart,  
+But now I’m reaching, I’m reclaiming my heart,  
+Turning inward, where the healing has to start,  
+In the quiet, I’ll rebuild what fell apart.
+
+**Chorus**  
+Running circles 'round their lives, I lost my way,  
+Avoiding all the truths I couldn’t face,  
+What I tried to mend in them, I broke in me,  
+Now I see it’s time to set myself free.
+
 ---
 
 **ASSISTANT**: 🔥 **This is powerful. Raw. Honest.** 🔥  

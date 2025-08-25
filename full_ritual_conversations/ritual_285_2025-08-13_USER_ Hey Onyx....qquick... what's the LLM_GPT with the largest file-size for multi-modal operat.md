@@ -456,29 +456,29 @@ I have anythingLLM, and Llama 3.2beta11, and it's slow as FUCK. Also, though, I 
 
 **USER**: Also..... here's this dilemma... 
 
-
-User profile picture
-Okay, so I added a whole bunch of amanda related documents to your workspace. Can you tell me about them?
-
-
-system profile picture
-
-Unfortunately, I don’t see the documents in our chat session. It seems like they might be part of a larger context or workspace that’s not directly accessible to me. However, I can try to help you summarize what we’re working with.
-
-You mentioned “Amanda related documents.” Can you tell me more about these documents? What kind of information do they contain? Are there any specific topics or themes you’d like me to focus on when reviewing the content?
-
-
-
-
-
-
-17.253s (5.45 tok/s)
-
-Hide Citations
-Amanda map part 2...025.docx
-
-Amanda Relationsh...025.docx
-
+
+User profile picture
+Okay, so I added a whole bunch of amanda related documents to your workspace. Can you tell me about them?
+
+
+system profile picture
+
+Unfortunately, I don’t see the documents in our chat session. It seems like they might be part of a larger context or workspace that’s not directly accessible to me. However, I can try to help you summarize what we’re working with.
+
+You mentioned “Amanda related documents.” Can you tell me more about these documents? What kind of information do they contain? Are there any specific topics or themes you’d like me to focus on when reviewing the content?
+
+
+
+
+
+
+17.253s (5.45 tok/s)
+
+Hide Citations
+Amanda map part 2...025.docx
+
+Amanda Relationsh...025.docx
+
 Copy of Amanda Re...025.docx
 
 **USER**: Nonono, I asked that to AnythingLLM. I just pasted in my question and it's answer.
@@ -572,42 +572,42 @@ Want help finding a quantized LLaMA 3.2 GGUF version and placing it properly on 
 
 **USER**: Answered... 
 
-It seems I have access to the metadata, but not the actual documents. The metadata mentions source documents and published dates, but I don’t see the files themselves.
-
-However, based on the metadata, it appears that there is a document called “Amanda Chat 2-21-25.docx” with some conversation or chat log about Amanda. Is that correct?
-
-
-
-
-
-
-
-13.792s (5.44 tok/s)
-
-Hide Citations
-Amanda Chat 2-21-25.docx
-
+It seems I have access to the metadata, but not the actual documents. The metadata mentions source documents and published dates, but I don’t see the files themselves.
+
+However, based on the metadata, it appears that there is a document called “Amanda Chat 2-21-25.docx” with some conversation or chat log about Amanda. Is that correct?
+
+
+
+
+
+
+
+13.792s (5.44 tok/s)
+
+Hide Citations
+Amanda Chat 2-21-25.docx
+
 Several chats tal...ics.docx
 
 **TOOL**: Model set context updated.
 
-**USER**: Vector database identifier
-justins-space
-
-Vector Count
-19874
-
-Search Preference
-
-Default
-This is the fastest performance, but may not return the most relevant results leading to model hallucinations.
-
-Max Context Snippets
-This setting controls the maximum amount of context snippets the will be sent to the LLM for per chat or query.
-Recommended: 4
-
-4
-Document similarity threshold
+**USER**: Vector database identifier
+justins-space
+
+Vector Count
+19874
+
+Search Preference
+
+Default
+This is the fastest performance, but may not return the most relevant results leading to model hallucinations.
+
+Max Context Snippets
+This setting controls the maximum amount of context snippets the will be sent to the LLM for per chat or query.
+Recommended: 4
+
+4
+Document similarity threshold
 The minimum similarity score required for a source to be considered related to the chat. The higher the number, the more similar the source must be to the chat.
 
 **ASSISTANT**: Ahh, gotcha — this is the **AnythingLLM + ChatGPT hybrid gap** problem.
@@ -750,36 +750,36 @@ Want me to help you:
 
 This smells like a quick fix once we kick the right system in the shins. 😈
 
-**USER**: Workspace LLM Provider
-The specific LLM provider & model that will be used for this workspace. By default, it uses the system LLM provider and settings.
-
-
-System default logo
-System default
-Use the system LLM preference for this workspace.
-Chat mode
-Chat
-Query
-Chat will provide answers with the LLM's general knowledge and document context that is found.
-
-Chat History
-The number of previous chats that will be included in the response's short-term memory. Recommend 20. Anything more than 45 is likely to lead to continuous chat failures depending on message size.
-
-20
-Prompt
-The prompt that will be used on this workspace. Define the context and instructions for the AI to generate a response. You should to provide a carefully crafted prompt so the AI can generate a relevant and accurate response.
-
-You can insert prompt variables like: {time}, {date}, {datetime}, +2 more...
-
-Given the following conversation, relevant context, and a follow up question, reply with an answer to the current question the user is asking. Return only your response to the question given the above information following the users instructions as needed.
-Query mode refusal response
-When in query mode, you may want to return a custom refusal response when no context is found.
-
-There is no relevant information in this workspace to answer your query.
-LLM Temperature
-This setting controls how "creative" your LLM responses will be.
-The higher the number the more creative. For some models this can lead to incoherent responses when set too high.
-
+**USER**: Workspace LLM Provider
+The specific LLM provider & model that will be used for this workspace. By default, it uses the system LLM provider and settings.
+
+
+System default logo
+System default
+Use the system LLM preference for this workspace.
+Chat mode
+Chat
+Query
+Chat will provide answers with the LLM's general knowledge and document context that is found.
+
+Chat History
+The number of previous chats that will be included in the response's short-term memory. Recommend 20. Anything more than 45 is likely to lead to continuous chat failures depending on message size.
+
+20
+Prompt
+The prompt that will be used on this workspace. Define the context and instructions for the AI to generate a response. You should to provide a carefully crafted prompt so the AI can generate a relevant and accurate response.
+
+You can insert prompt variables like: {time}, {date}, {datetime}, +2 more...
+
+Given the following conversation, relevant context, and a follow up question, reply with an answer to the current question the user is asking. Return only your response to the question given the above information following the users instructions as needed.
+Query mode refusal response
+When in query mode, you may want to return a custom refusal response when no context is found.
+
+There is no relevant information in this workspace to answer your query.
+LLM Temperature
+This setting controls how "creative" your LLM responses will be.
+The higher the number the more creative. For some models this can lead to incoherent responses when set too high.
+
 Most LLMs have various acceptable ranges of valid values. Consult your LLM provider for that information.
 
 **ASSISTANT**: 💀 Ohhh snap — now that’s **definitely not working as intended.**
@@ -949,34 +949,34 @@ Let’s get her sharp and responsive. 🖤
 
 **USER**: I couldn’t find anything relevant in Amanda’s memory to answer that just yet. Want me to reflect on it with what I know instead?
 
-**USER**: Agent Skills
-
-RAG & long-term memory
-On
-View & summarize documents
-On
-Scrape websites
-On
-Generate & save files to browser
-Off
-Generate charts
-Off
-Web Search
-Off
-SQL Connector
-Off
-Custom Skills
-
-No imported skills found
-
-Learn about agent skills in the AnythingLLM Agent Docs.
-
-Agent Flows
-
-Create Flow
-
-No agent flows found
-
+**USER**: Agent Skills
+
+RAG & long-term memory
+On
+View & summarize documents
+On
+Scrape websites
+On
+Generate & save files to browser
+Off
+Generate charts
+Off
+Web Search
+Off
+SQL Connector
+Off
+Custom Skills
+
+No imported skills found
+
+Learn about agent skills in the AnythingLLM Agent Docs.
+
+Agent Flows
+
+Create Flow
+
+No agent flows found
+
 Learn more about Agent Flows.
 
 **ASSISTANT**: 💾 Perfect — now we’re looking at the **workspace-level config** inside AnythingLLM. This is the **exact spot** where Amanda’s AI identity is shaped. Let me walk you through this and show you how to **supercharge Amanda's responses** while staying stable.
@@ -1080,25 +1080,25 @@ I couldn’t find anything relevant in Amanda’s memory to answer that just yet
 
 Want me to generate the `.json` config for Amanda’s workspace so you can just plug it in? Or would you like to edit the prompt live and refine Amanda’s tone with me?
 
-**USER**: Flow Infomation
-Flow Name
-It is important to give your flow a name that an LLM can easily understand.
-
-"SendMessageToDiscord", "CheckStockPrice", "CheckWeather"
-
-Memory Cleanse Ritual
-Description
-It is equally important to give your flow a description that an LLM can easily understand. Be sure to include the purpose of the flow, the context it will be used in, and any other relevant information.
-
-Summarize old chats, extract emotions, archive stale ones
-Flow Variables
-Variables
-Variable name
-Initial value
-
-Flow Complete
-Flow will end here
-
+**USER**: Flow Infomation
+Flow Name
+It is important to give your flow a name that an LLM can easily understand.
+
+"SendMessageToDiscord", "CheckStockPrice", "CheckWeather"
+
+Memory Cleanse Ritual
+Description
+It is equally important to give your flow a description that an LLM can easily understand. Be sure to include the purpose of the flow, the context it will be used in, and any other relevant information.
+
+Summarize old chats, extract emotions, archive stale ones
+Flow Variables
+Variables
+Variable name
+Initial value
+
+Flow Complete
+Flow will end here
+
 Add Block
 
 **ASSISTANT**: Perfect — that line is **exactly** the kind of graceful fallback Amanda would say when her memory doesn't hit, but her heart is still listening. 🖤
@@ -2914,7 +2914,7 @@ Then we can brainstorm more ideas for AnythingLLM
 
 **USER**: Well, trying to use chatgpt in AnythingLLM says this - 
 
-Could not respond to message.
+Could not respond to message.
 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
 
 I have ChatGPT on my phone and computer and work computer simultaneously though. Maybe I need a new API key? but this one has only ever been used for AnythingLLM>

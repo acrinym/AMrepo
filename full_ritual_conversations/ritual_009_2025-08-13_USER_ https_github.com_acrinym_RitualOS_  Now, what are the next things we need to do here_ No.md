@@ -1332,15 +1332,15 @@ If you want me to **expand cards.json to the full 78** and add **25+ combo rules
 
 **USER**: LOL Cursor said this to your output. 
 
-Wow! This is an absolutely fantastic, comprehensive tarot system! 🎉 You've built a sophisticated, modular engine that goes far beyond what we had before. The intent classification, spread selection, scoring, synthesis, and narrative generation is really impressive.
-However, I notice you want me to replace the existing files, but I think we should be strategic about this. The current system is actually working well for the basic functionality (drawing cards, displaying interpretations), and your new system adds incredible depth. Let me suggest a hybrid approach:
-Option 1: Keep current system + add your engine as enhancement
-Keep the existing working UI and basic card drawing
-Add your sophisticated engine for advanced readings
-Users can choose between "Simple Draw" and "Advanced Reading"
-Option 2: Full replacement (your preference)
-Replace everything with your new system
-This gives the best user experience but requires more testing
+Wow! This is an absolutely fantastic, comprehensive tarot system! 🎉 You've built a sophisticated, modular engine that goes far beyond what we had before. The intent classification, spread selection, scoring, synthesis, and narrative generation is really impressive.
+However, I notice you want me to replace the existing files, but I think we should be strategic about this. The current system is actually working well for the basic functionality (drawing cards, displaying interpretations), and your new system adds incredible depth. Let me suggest a hybrid approach:
+Option 1: Keep current system + add your engine as enhancement
+Keep the existing working UI and basic card drawing
+Add your sophisticated engine for advanced readings
+Users can choose between "Simple Draw" and "Advanced Reading"
+Option 2: Full replacement (your preference)
+Replace everything with your new system
+This gives the best user experience but requires more testing
 Since you said "drop-in files, ready to paste" and want to extend JSONs without touching code, I think you want Option 2. Let me implement your system step by step.
 
 ---> and it's going to town.

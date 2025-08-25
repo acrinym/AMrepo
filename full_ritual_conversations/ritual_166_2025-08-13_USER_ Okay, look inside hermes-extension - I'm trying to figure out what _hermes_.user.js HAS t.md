@@ -509,18 +509,18 @@ Whenever you hit a “too complex” or “can’t help” wall, just remember:
 
 **So, what’s next—do you want to attack a specific feature gap, automate a checklist, or just have me generate a meme badge for “Solo QA/Dev King”?**
 
-**USER**: Write a Tampermonkey userscript that fully implements the Chrome extension API in pure JS with settings sync, context menus, background messaging, and drag-and-drop modularity.
-Copy
-Notes
-
-The project had no test setup, so npm test failed because package.json was missing
-
-Summary
-
-Added a new chrome-api-emulator.user.js userscript that emulates parts of the Chrome extension API, including storage sync, context menus, runtime messaging, and a drag‑and‑drop plugin loader
-
-Documented the emulator in the README with installation details
-
+**USER**: Write a Tampermonkey userscript that fully implements the Chrome extension API in pure JS with settings sync, context menus, background messaging, and drag-and-drop modularity.
+Copy
+Notes
+
+The project had no test setup, so npm test failed because package.json was missing
+
+Summary
+
+Added a new chrome-api-emulator.user.js userscript that emulates parts of the Chrome extension API, including storage sync, context menus, runtime messaging, and a drag‑and‑drop plugin loader
+
+Documented the emulator in the README with installation details
+
 Updated .gitignore to track the new userscript file
 
 **ASSISTANT**: 🤣 Okay, you want a **meta** Tampermonkey userscript—a tongue-in-cheek, proof-of-concept “Chrome Extension API Emulator” for user scripts, implementing:
@@ -670,10 +670,10 @@ If you want a code comment, a “How it works” section for the README, or to p
 **USER**: OMG. 
 (posed to ChatGPT Codex: ) 
 
-Here's an idea. Just an idea. 
-
-Could I write a a chrome extension(front and back end - server and client) that takes over the BMC(or other ticket system or enterprise system) and injects my own - using JS and similar things - using my own JQ, JS, WebAssy, etc? 
-The entire corpo structure would be taken out of memory and replaced with mine. This would be a hell of an achievement,.
+Here's an idea. Just an idea. 
+
+Could I write a a chrome extension(front and back end - server and client) that takes over the BMC(or other ticket system or enterprise system) and injects my own - using JS and similar things - using my own JQ, JS, WebAssy, etc? 
+The entire corpo structure would be taken out of memory and replaced with mine. This would be a hell of an achievement,.
 
 
  CODEX: 
@@ -5205,18 +5205,18 @@ Want a session summary or ready to keep going here?
 
 **USER**: Out of all that - 
 
-Summary
-
-Added new IWindowEffect interface defining basic methods for compositor effects
-
-Implemented WindowEffectsManager singleton that registers effects and loads plugins from an Effects directory
-
-Created sample RollUpEffect using Avalonia animations to collapse a window on double‑click
-
-Created sample WobblyWindowEffect which adds a springy motion while dragging windows
-
-Extended AppSettings with a WindowEffects dictionary for per-window effect configuration
-
+Summary
+
+Added new IWindowEffect interface defining basic methods for compositor effects
+
+Implemented WindowEffectsManager singleton that registers effects and loads plugins from an Effects directory
+
+Created sample RollUpEffect using Avalonia animations to collapse a window on double‑click
+
+Created sample WobblyWindowEffect which adds a springy motion while dragging windows
+
+Extended AppSettings with a WindowEffects dictionary for per-window effect configuration
+
 Testing
 
 Lots of new fun stuff, but the docs is kind of small :P
@@ -5383,16 +5383,16 @@ Your “desktop as code” playground is *almost* a reality.
 
 **USER**: <_<.... it did it again LOL
 
-Restored the complete PluginSettingsWindow implementation, added effect hooks to all main windows and built‑in plugins, and expanded the design document with a detailed list of planned effects. The compositor is now invoked whenever a window is created.
-
-Summary
-
-Windows now register configured effects through the manager, e.g. in MainWindow constructor
-
-Restored full PluginSettingsWindow and applied effects when opened
-
-Expanded design doc with a full catalog of planned effects and notes on stacking and tuning them
-
+Restored the complete PluginSettingsWindow implementation, added effect hooks to all main windows and built‑in plugins, and expanded the design document with a detailed list of planned effects. The compositor is now invoked whenever a window is created.
+
+Summary
+
+Windows now register configured effects through the manager, e.g. in MainWindow constructor
+
+Restored full PluginSettingsWindow and applied effects when opened
+
+Expanded design doc with a full catalog of planned effects and notes on stacking and tuning them
+
 Testing
 
 **ASSISTANT**: 🤣 I saw that coming!  

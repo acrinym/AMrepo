@@ -21,46 +21,46 @@ You:
 
 WORKING CODE: 
 
-(function() {
-    function getCurrentChatMessages() {
-        let messages = [];
-        document.querySelectorAll("article[data-testid^='conversation-turn']").forEach(turn => {
-            let userMsg = turn.querySelector("[data-message-author-role='user']")?.innerText.trim();
-            let botMsg = turn.querySelector("[data-message-author-role='assistant']")?.innerText.trim();
-            if (userMsg) messages.push(`User: ${userMsg}`);
-            if (botMsg) messages.push(`ChatGPT: ${botMsg}`);
-        });
-        return messages.join("\n\n");
-    }
-
-    let chatText = getCurrentChatMessages();
-
-    // Create a temporary button to trigger clipboard action
-    let copyBtn = document.createElement("button");
-    copyBtn.innerText = "Copy Chat";
-    copyBtn.style.position = "fixed";
-    copyBtn.style.top = "10px";
-    copyBtn.style.right = "10px";
-    copyBtn.style.padding = "10px";
-    copyBtn.style.background = "#4CAF50";
-    copyBtn.style.color = "#fff";
-    copyBtn.style.border = "none";
-    copyBtn.style.cursor = "pointer";
-    document.body.appendChild(copyBtn);
-
-    copyBtn.addEventListener("click", () => {
-        navigator.clipboard.writeText(chatText).then(() => {
-            alert("✅ Chat copied to clipboard!");
-        }).catch(err => {
-            alert("❌ Clipboard copy failed: " + err);
-        });
-
-        // Remove button after use
-        copyBtn.remove();
-    });
-
-    alert("Click the 'Copy Chat' button to copy the chat!");
-})();
+(function() {
+    function getCurrentChatMessages() {
+        let messages = [];
+        document.querySelectorAll("article[data-testid^='conversation-turn']").forEach(turn => {
+            let userMsg = turn.querySelector("[data-message-author-role='user']")?.innerText.trim();
+            let botMsg = turn.querySelector("[data-message-author-role='assistant']")?.innerText.trim();
+            if (userMsg) messages.push(`User: ${userMsg}`);
+            if (botMsg) messages.push(`ChatGPT: ${botMsg}`);
+        });
+        return messages.join("\n\n");
+    }
+
+    let chatText = getCurrentChatMessages();
+
+    // Create a temporary button to trigger clipboard action
+    let copyBtn = document.createElement("button");
+    copyBtn.innerText = "Copy Chat";
+    copyBtn.style.position = "fixed";
+    copyBtn.style.top = "10px";
+    copyBtn.style.right = "10px";
+    copyBtn.style.padding = "10px";
+    copyBtn.style.background = "#4CAF50";
+    copyBtn.style.color = "#fff";
+    copyBtn.style.border = "none";
+    copyBtn.style.cursor = "pointer";
+    document.body.appendChild(copyBtn);
+
+    copyBtn.addEventListener("click", () => {
+        navigator.clipboard.writeText(chatText).then(() => {
+            alert("✅ Chat copied to clipboard!");
+        }).catch(err => {
+            alert("❌ Clipboard copy failed: " + err);
+        });
+
+        // Remove button after use
+        copyBtn.remove();
+    });
+
+    alert("Click the 'Copy Chat' button to copy the chat!");
+})();
 
 ---
 

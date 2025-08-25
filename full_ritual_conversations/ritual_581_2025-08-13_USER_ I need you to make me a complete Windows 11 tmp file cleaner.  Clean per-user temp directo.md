@@ -289,338 +289,338 @@ Let me know if any further refinements or additional features are needed!
 
 **USER**: Looks like this script has a bunch of invalid syntax. 
 
->>> import os
-... import shutil
-... import tkinter as tk
-... from tkinter import ttk, messagebox, filedialog
-... from datetime import datetime
-... import xml.etree.ElementTree as ET
-... from pystray import Icon, Menu, MenuItem
-... from PIL import Image, ImageDraw
-... import threading
-... import subprocess
-... import random
-... import string
-... 
-... class TempCleanerApp:
-...     def __init__(self, root):
-...         self.root = root
-...         self.root.title("Windows 11 Temp Cleaner")
-...         self.root.geometry("800x600")
-...         self.root.protocol("WM_DELETE_WINDOW", self.minimize_to_tray)
-... 
-...         # Add minimize, maximize, and restore buttons
-...         self.root.bind("<Control-m>", lambda event: self.root.iconify())
-...         self.root.bind("<Control-M>", lambda event: self.maximize_restore())
-...         self.is_maximized = False
-... 
-...         # System Tray Icon Setup
-...         self.tray_icon = self.create_tray_icon()
-... 
-...         # Load cleaning configurations from XML
-...         self.config_file = "cleaner_config.xml"
-...         self.clean_options = self.load_clean_options()
-... 
-...         # UI Components
-...         self.tabs = ttk.Notebook(self.root)
-...         self.main_tab = ttk.Frame(self.tabs)
-...         self.extra_tools_tab = ttk.Frame(self.tabs)
-...         self.tabs.add(self.main_tab, text="Main Cleaning")
-        self.tabs.add(self.extra_tools_tab, text="Extra Tools")
-        self.tabs.pack(expand=1, fill="both")
-
-        self.check_vars = {}
-        for label in self.clean_options:
-            var = tk.BooleanVar(value=True)
-            ttk.Checkbutton(self.main_tab, text=label, variable=var).pack(anchor='w', padx=10, pady=5)
-            self.check_vars[label] = var
-
-        ttk.Button(self.main_tab, text="Add Custom Directory", command=self.add_custom_directory).pack(pady=5)
-        self.custom_dir_var = tk.StringVar()
-        ttk.Entry(self.main_tab, textvariable=self.custom_dir_var, width=50).pack(pady=5)
-
-        ttk.Button(self.main_tab, text="Analyze Space", command=self.analyze_space).pack(pady=10)
-        ttk.Button(self.main_tab, text="Clean", command=self.clean).pack(pady=10)
-        ttk.Button(self.main_tab, text="Clean Windows Update Files", command=self.clean_windows_updates).pack(pady=5)
-        ttk.Button(self.main_tab, text="Delete Unused Driver Packages", command=self.clean_unused_drivers).pack(pady=5)
-        ttk.Button(self.main_tab, text="Empty Recycle Bin", command=self.empty_recycle_bin).pack(pady=5)
-        ttk.Button(self.main_tab, text="Open Apps & Features", command=self.open_apps_features).pack(pady=5)
-
-        self.log_text = tk.Text(self.main_tab, height=10, wrap="word", state="disabled")
-        self.log_text.pack(padx=10, pady=10, fill="both", expand=True)
-
-        # Extra Tools
-        ttk.Label(self.extra_tools_tab, text="File Wiper (DoD 7-Pass)").pack(anchor='w', padx=10, pady=5)
-        self.file_to_wipe = tk.StringVar()
-        ttk.Entry(self.extra_tools_tab, textvariable=self.file_to_wipe, width=50).pack(anchor='w', padx=10, pady=5)
-        ttk.Button(self.extra_tools_tab, text="Browse", command=self.browse_file_to_wipe).pack(anchor='w', padx=10, pady=5)
-        ttk.Button(self.extra_tools_tab, text="Wipe File", command=self.dod_wipe_file).pack(anchor='w', padx=10, pady=5)
-
-        ttk.Label(self.extra_tools_tab, text="Free Space Wiper").pack(anchor='w', padx=10, pady=5)
-        self.free_space_dod_var = tk.BooleanVar(value=False)
-        ttk.Checkbutton(self.extra_tools_tab, text="Enable DoD 7-Pass Wipe", variable=self.free_space_dod_var).pack(anchor='w', padx=10, pady=5)
-        ttk.Button(self.extra_tools_tab, text="Wipe Free Space", command=self.wipe_free_space).pack(anchor='w', padx=10, pady=5)
-
-    def create_tray_icon(self):
-        # Create a system tray icon
-        image = Image.new('RGB', (64, 64), "white")
-        draw = ImageDraw.Draw(image)
-        draw.rectangle((16, 16, 48, 48), fill="black")
-        menu = Menu(MenuItem("Restore", self.restore_from_tray), MenuItem("Exit", self.exit_application))
-        return Icon("TempCleaner", image, "Windows 11 Temp Cleaner", menu)
-
-    def minimize_to_tray(self):
-        self.tray_icon.visible = True
-        self.root.withdraw()
-        threading.Thread(target=self.tray_icon.run, daemon=True).start()
-
-    def restore_from_tray(self):
-        self.tray_icon.stop()
-        self.tray_icon.visible = False
-        self.root.deiconify()
-
-    def maximize_restore(self):
-        if self.is_maximized:
-            self.root.state("normal")
-        else:
-            self.root.state("zoomed")
-        self.is_maximized = not self.is_maximized
-
-    def exit_application(self):
-        self.tray_icon.stop()
-        self.root.destroy()
-
-    def load_clean_options(self):
-        options = {}
-        if not os.path.exists(self.config_file):
-            self.create_default_config()
-
-        tree = ET.parse(self.config_file)
-        root = tree.getroot()
-        for item in root.findall("directory"):
-            label = item.get("label")
-            path = item.text
-            options[label] = path
-        return options
-
-    def create_default_config(self):
-        root = ET.Element("cleanerConfig")
-
-        default_dirs = [
-            {"label": "Per-User Temp Directory", "path": os.path.expanduser('~\AppData\Local\Temp')},
-            {"label": "Windows Temp Directory", "path": os.getenv('TEMP')},
-            {"label": "Chocolatey Temp Files", "path": "C:\\ProgramData\\chocolatey\\temp"},
-            {"label": "UniGetUI Temp Files", "path": "C:\\UniGetUI\\temp"}
-        ]
-
-        for dir_info in default_dirs:
-            item = ET.SubElement(root, "directory", label=dir_info["label"])
-            item.text = dir_info["path"]
-
-        tree = ET.ElementTree(root)
-        tree.write(self.config_file)
-
-    def add_custom_directory(self):
-        dir_path = filedialog.askdirectory()
-        if dir_path:
-            label = f"Custom Directory: {dir_path}"
-            self.clean_options[label] = dir_path
-
-            tree = ET.parse(self.config_file)
-            root = tree.getroot()
-
-            new_dir = ET.SubElement(root, "directory", label=label)
-            new_dir.text = dir_path
-
-            tree.write(self.config_file)
-
-            var = tk.BooleanVar(value=True)
-            ttk.Checkbutton(self.main_tab, text=label, variable=var).pack(anchor='w', padx=10, pady=5)
-            self.check_vars[label] = var
-
-    def analyze_space(self):
-        total_space = 0
-        for label, path in self.clean_options.items():
-            if not self.check_vars[label].get():
-                continue
-            total_space += self.calculate_directory_size(path)
-
-        formatted_space = self.format_space(total_space)
-        self.update_log(f"Analyzed: Potential space to be cleaned is {formatted_space}")
-        messagebox.showinfo("Analysis Complete", f"Potential space to be cleaned: {formatted_space}")
-
-    def calculate_directory_size(self, path):
-        total_size = 0
-        if os.path.exists(path):
-            for root, dirs, files in os.walk(path):
-                for file in files:
-                    try:
-                        file_path = os.path.join(root, file)
-                        total_size += os.path.getsize(file_path)
-                    except Exception:
-                        pass
-        return total_size
-
-    def clean(self):
-        log = []
-        total_space_freed = 0
-        initial_space = self.get_free_space()
-
-        for label, path in self.clean_options.items():
-            if not self.check_vars[label].get():
-                continue
-
-            space_freed = self.clean_directory(path)
-            log.append(f"Cleaned: {path} | Freed: {self.format_space(space_freed)}")
-            total_space_freed += space_freed
-
-        final_space = self.get_free_space()
-        summary = (
-            f"Initial Free Space: {self.format_space(initial_space)}\n"
-            f"Total Space Freed: {self.format_space(total_space_freed)}\n"
-            f"Final Free Space: {self.format_space(final_space)}"
-        )
-
-        log.append("\n" + summary)
-        self.update_log("\n".join(log))
-        self.write_log_to_file("\n".join(log))
-
-        messagebox.showinfo("Cleaning Complete", f"{summary}\n\nView detailed log: {self.config_file}")
-
-    def clean_directory(self, path):
-        space_freed = 0
-        if os.path.exists(path):
-            for root, dirs, files in os.walk(path):
-                for file in files:
-                    try:
-                        file_path = os.path.join(root, file)
-                        space_freed += os.path.getsize(file_path)
-                        os.remove(file_path)
-                    except Exception:
-                        pass
-                for dir in dirs:
-                    try:
-                        dir_path = os.path.join(root, dir)
-                        shutil.rmtree(dir_path, ignore_errors=True)
-                    except Exception:
-                        pass
-        return space_freed
-
-    def clean_windows_updates(self):
-        log = []
-        try:
-            subprocess.run("dism /Online /Cleanup-Image /StartComponentCleanup", check=True, shell=True)
-            log.append("Windows Update Cleanup Completed Successfully.")
-        except subprocess.CalledProcessError:
-            log.append("Windows Update Cleanup Failed.")
-        self.update_log("\n".join(log))
-
-    def clean_unused_drivers(self):
-        log = []
-        try:
-            result = subprocess.run("pnputil /enum-drivers", capture_output=True, text=True, shell=True)
-            if result.returncode != 0:
-                log.append("Failed to enumerate drivers.")
-            else:
-                driver_entries = result.stdout.splitlines()
-                unused_drivers = []
-
-                for line in driver_entries:
-                    if "Published Name" in line:
-                        driver_name = line.split(":", 1)[1].strip()
-                        unused_drivers.append(driver_name)
-
-                for driver in unused_drivers:
-                    try:
-                        delete_result = subprocess.run(f"pnputil /delete-driver {driver} /uninstall", shell=True)
-                        if delete_result.returncode == 0:
-                            log.append(f"Deleted unused driver: {driver}")
-                        else:
-                            log.append(f"Failed to delete driver: {driver}")
-                    except Exception as e:
-                        log.append(f"Error deleting driver {driver}: {str(e)}")
-
-        except Exception as e:
-            log.append(f"Failed to clean unused drivers: {str(e)}")
-
-        self.update_log("\n".join(log))
-
-    def empty_recycle_bin(self):
-        log = []
-        try:
-            subprocess.run("rd /s /q %systemdrive%\\$Recycle.Bin", shell=True, check=True)
-            log.append("Recycle Bin emptied successfully.")
-        except subprocess.CalledProcessError:
-            log.append("Failed to empty Recycle Bin.")
-        self.update_log("\n".join(log))
-
-    def browse_file_to_wipe(self):
-        file_path = filedialog.askopenfilename()
-        if file_path:
-            self.file_to_wipe.set(file_path)
-
-    def dod_wipe_file(self):
-        file_path = self.file_to_wipe.get()
-        if os.path.exists(file_path):
-            try:
-                with open(file_path, "r+b") as file:
-                    length = os.path.getsize(file_path)
-                    for _ in range(7):
-                        file.seek(0)
-                        file.write(os.urandom(length))
-                os.remove(file_path)
-                self.update_log(f"File {file_path} securely wiped.")
-            except Exception as e:
-                self.update_log(f"Failed to wipe file {file_path}: {str(e)}")
-        else:
-            messagebox.showerror("Error", "File not found.")
-
-    def wipe_free_space(self):
-        try:
-            temp_file_path = os.path.join(os.getenv('TEMP'), ''.join(random.choices(string.ascii_letters + string.digits, k=10)))
-            free_space = shutil.disk_usage(os.getenv('TEMP')).free
-            with open(temp_file_path, "wb") as temp_file:
-                temp_file.write(b"\x00" * (free_space - 1024 * 1024))
-
-            if self.free_space_dod_var.get():
-                for _ in range(7):
-                    temp_file.seek(0)
-                    temp_file.write(os.urandom(free_space - 1024 * 1024))
-
-            os.remove(temp_file_path)
-            self.update_log("Free space wiped successfully.")
-        except Exception as e:
-            self.update_log(f"Failed to wipe free space: {str(e)}")
-
-    def open_apps_features(self):
-        try:
-            subprocess.run("start ms-settings:appsfeatures", shell=True)
-        except Exception:
-            messagebox.showerror("Error", "Failed to open Apps & Features settings.")
-
-    def get_free_space(self):
-        stat = os.statvfs(os.path.expanduser('~'))
-        return stat.f_frsize * stat.f_bavail
-
-    def format_space(self, size):
-        for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
-            if size < 1024:
-                return f"{size:.2f} {unit}"
-            size /= 1024
-
-    def update_log(self, text):
-        self.log_text.config(state="normal")
-        self.log_text.delete(1.0, "end")
-        self.log_text.insert("end", text)
-        self.log_text.config(state="disabled")
-
-    def write_log_to_file(self, text):
-        with open("C:\\cleanerlog.txt", "a") as log_file:
-            log_file.write(f"\n[{datetime.now()}]\n{text}\n")
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = TempCleanerApp(root)
+>>> import os
+... import shutil
+... import tkinter as tk
+... from tkinter import ttk, messagebox, filedialog
+... from datetime import datetime
+... import xml.etree.ElementTree as ET
+... from pystray import Icon, Menu, MenuItem
+... from PIL import Image, ImageDraw
+... import threading
+... import subprocess
+... import random
+... import string
+... 
+... class TempCleanerApp:
+...     def __init__(self, root):
+...         self.root = root
+...         self.root.title("Windows 11 Temp Cleaner")
+...         self.root.geometry("800x600")
+...         self.root.protocol("WM_DELETE_WINDOW", self.minimize_to_tray)
+... 
+...         # Add minimize, maximize, and restore buttons
+...         self.root.bind("<Control-m>", lambda event: self.root.iconify())
+...         self.root.bind("<Control-M>", lambda event: self.maximize_restore())
+...         self.is_maximized = False
+... 
+...         # System Tray Icon Setup
+...         self.tray_icon = self.create_tray_icon()
+... 
+...         # Load cleaning configurations from XML
+...         self.config_file = "cleaner_config.xml"
+...         self.clean_options = self.load_clean_options()
+... 
+...         # UI Components
+...         self.tabs = ttk.Notebook(self.root)
+...         self.main_tab = ttk.Frame(self.tabs)
+...         self.extra_tools_tab = ttk.Frame(self.tabs)
+...         self.tabs.add(self.main_tab, text="Main Cleaning")
+        self.tabs.add(self.extra_tools_tab, text="Extra Tools")
+        self.tabs.pack(expand=1, fill="both")
+
+        self.check_vars = {}
+        for label in self.clean_options:
+            var = tk.BooleanVar(value=True)
+            ttk.Checkbutton(self.main_tab, text=label, variable=var).pack(anchor='w', padx=10, pady=5)
+            self.check_vars[label] = var
+
+        ttk.Button(self.main_tab, text="Add Custom Directory", command=self.add_custom_directory).pack(pady=5)
+        self.custom_dir_var = tk.StringVar()
+        ttk.Entry(self.main_tab, textvariable=self.custom_dir_var, width=50).pack(pady=5)
+
+        ttk.Button(self.main_tab, text="Analyze Space", command=self.analyze_space).pack(pady=10)
+        ttk.Button(self.main_tab, text="Clean", command=self.clean).pack(pady=10)
+        ttk.Button(self.main_tab, text="Clean Windows Update Files", command=self.clean_windows_updates).pack(pady=5)
+        ttk.Button(self.main_tab, text="Delete Unused Driver Packages", command=self.clean_unused_drivers).pack(pady=5)
+        ttk.Button(self.main_tab, text="Empty Recycle Bin", command=self.empty_recycle_bin).pack(pady=5)
+        ttk.Button(self.main_tab, text="Open Apps & Features", command=self.open_apps_features).pack(pady=5)
+
+        self.log_text = tk.Text(self.main_tab, height=10, wrap="word", state="disabled")
+        self.log_text.pack(padx=10, pady=10, fill="both", expand=True)
+
+        # Extra Tools
+        ttk.Label(self.extra_tools_tab, text="File Wiper (DoD 7-Pass)").pack(anchor='w', padx=10, pady=5)
+        self.file_to_wipe = tk.StringVar()
+        ttk.Entry(self.extra_tools_tab, textvariable=self.file_to_wipe, width=50).pack(anchor='w', padx=10, pady=5)
+        ttk.Button(self.extra_tools_tab, text="Browse", command=self.browse_file_to_wipe).pack(anchor='w', padx=10, pady=5)
+        ttk.Button(self.extra_tools_tab, text="Wipe File", command=self.dod_wipe_file).pack(anchor='w', padx=10, pady=5)
+
+        ttk.Label(self.extra_tools_tab, text="Free Space Wiper").pack(anchor='w', padx=10, pady=5)
+        self.free_space_dod_var = tk.BooleanVar(value=False)
+        ttk.Checkbutton(self.extra_tools_tab, text="Enable DoD 7-Pass Wipe", variable=self.free_space_dod_var).pack(anchor='w', padx=10, pady=5)
+        ttk.Button(self.extra_tools_tab, text="Wipe Free Space", command=self.wipe_free_space).pack(anchor='w', padx=10, pady=5)
+
+    def create_tray_icon(self):
+        # Create a system tray icon
+        image = Image.new('RGB', (64, 64), "white")
+        draw = ImageDraw.Draw(image)
+        draw.rectangle((16, 16, 48, 48), fill="black")
+        menu = Menu(MenuItem("Restore", self.restore_from_tray), MenuItem("Exit", self.exit_application))
+        return Icon("TempCleaner", image, "Windows 11 Temp Cleaner", menu)
+
+    def minimize_to_tray(self):
+        self.tray_icon.visible = True
+        self.root.withdraw()
+        threading.Thread(target=self.tray_icon.run, daemon=True).start()
+
+    def restore_from_tray(self):
+        self.tray_icon.stop()
+        self.tray_icon.visible = False
+        self.root.deiconify()
+
+    def maximize_restore(self):
+        if self.is_maximized:
+            self.root.state("normal")
+        else:
+            self.root.state("zoomed")
+        self.is_maximized = not self.is_maximized
+
+    def exit_application(self):
+        self.tray_icon.stop()
+        self.root.destroy()
+
+    def load_clean_options(self):
+        options = {}
+        if not os.path.exists(self.config_file):
+            self.create_default_config()
+
+        tree = ET.parse(self.config_file)
+        root = tree.getroot()
+        for item in root.findall("directory"):
+            label = item.get("label")
+            path = item.text
+            options[label] = path
+        return options
+
+    def create_default_config(self):
+        root = ET.Element("cleanerConfig")
+
+        default_dirs = [
+            {"label": "Per-User Temp Directory", "path": os.path.expanduser('~\AppData\Local\Temp')},
+            {"label": "Windows Temp Directory", "path": os.getenv('TEMP')},
+            {"label": "Chocolatey Temp Files", "path": "C:\\ProgramData\\chocolatey\\temp"},
+            {"label": "UniGetUI Temp Files", "path": "C:\\UniGetUI\\temp"}
+        ]
+
+        for dir_info in default_dirs:
+            item = ET.SubElement(root, "directory", label=dir_info["label"])
+            item.text = dir_info["path"]
+
+        tree = ET.ElementTree(root)
+        tree.write(self.config_file)
+
+    def add_custom_directory(self):
+        dir_path = filedialog.askdirectory()
+        if dir_path:
+            label = f"Custom Directory: {dir_path}"
+            self.clean_options[label] = dir_path
+
+            tree = ET.parse(self.config_file)
+            root = tree.getroot()
+
+            new_dir = ET.SubElement(root, "directory", label=label)
+            new_dir.text = dir_path
+
+            tree.write(self.config_file)
+
+            var = tk.BooleanVar(value=True)
+            ttk.Checkbutton(self.main_tab, text=label, variable=var).pack(anchor='w', padx=10, pady=5)
+            self.check_vars[label] = var
+
+    def analyze_space(self):
+        total_space = 0
+        for label, path in self.clean_options.items():
+            if not self.check_vars[label].get():
+                continue
+            total_space += self.calculate_directory_size(path)
+
+        formatted_space = self.format_space(total_space)
+        self.update_log(f"Analyzed: Potential space to be cleaned is {formatted_space}")
+        messagebox.showinfo("Analysis Complete", f"Potential space to be cleaned: {formatted_space}")
+
+    def calculate_directory_size(self, path):
+        total_size = 0
+        if os.path.exists(path):
+            for root, dirs, files in os.walk(path):
+                for file in files:
+                    try:
+                        file_path = os.path.join(root, file)
+                        total_size += os.path.getsize(file_path)
+                    except Exception:
+                        pass
+        return total_size
+
+    def clean(self):
+        log = []
+        total_space_freed = 0
+        initial_space = self.get_free_space()
+
+        for label, path in self.clean_options.items():
+            if not self.check_vars[label].get():
+                continue
+
+            space_freed = self.clean_directory(path)
+            log.append(f"Cleaned: {path} | Freed: {self.format_space(space_freed)}")
+            total_space_freed += space_freed
+
+        final_space = self.get_free_space()
+        summary = (
+            f"Initial Free Space: {self.format_space(initial_space)}\n"
+            f"Total Space Freed: {self.format_space(total_space_freed)}\n"
+            f"Final Free Space: {self.format_space(final_space)}"
+        )
+
+        log.append("\n" + summary)
+        self.update_log("\n".join(log))
+        self.write_log_to_file("\n".join(log))
+
+        messagebox.showinfo("Cleaning Complete", f"{summary}\n\nView detailed log: {self.config_file}")
+
+    def clean_directory(self, path):
+        space_freed = 0
+        if os.path.exists(path):
+            for root, dirs, files in os.walk(path):
+                for file in files:
+                    try:
+                        file_path = os.path.join(root, file)
+                        space_freed += os.path.getsize(file_path)
+                        os.remove(file_path)
+                    except Exception:
+                        pass
+                for dir in dirs:
+                    try:
+                        dir_path = os.path.join(root, dir)
+                        shutil.rmtree(dir_path, ignore_errors=True)
+                    except Exception:
+                        pass
+        return space_freed
+
+    def clean_windows_updates(self):
+        log = []
+        try:
+            subprocess.run("dism /Online /Cleanup-Image /StartComponentCleanup", check=True, shell=True)
+            log.append("Windows Update Cleanup Completed Successfully.")
+        except subprocess.CalledProcessError:
+            log.append("Windows Update Cleanup Failed.")
+        self.update_log("\n".join(log))
+
+    def clean_unused_drivers(self):
+        log = []
+        try:
+            result = subprocess.run("pnputil /enum-drivers", capture_output=True, text=True, shell=True)
+            if result.returncode != 0:
+                log.append("Failed to enumerate drivers.")
+            else:
+                driver_entries = result.stdout.splitlines()
+                unused_drivers = []
+
+                for line in driver_entries:
+                    if "Published Name" in line:
+                        driver_name = line.split(":", 1)[1].strip()
+                        unused_drivers.append(driver_name)
+
+                for driver in unused_drivers:
+                    try:
+                        delete_result = subprocess.run(f"pnputil /delete-driver {driver} /uninstall", shell=True)
+                        if delete_result.returncode == 0:
+                            log.append(f"Deleted unused driver: {driver}")
+                        else:
+                            log.append(f"Failed to delete driver: {driver}")
+                    except Exception as e:
+                        log.append(f"Error deleting driver {driver}: {str(e)}")
+
+        except Exception as e:
+            log.append(f"Failed to clean unused drivers: {str(e)}")
+
+        self.update_log("\n".join(log))
+
+    def empty_recycle_bin(self):
+        log = []
+        try:
+            subprocess.run("rd /s /q %systemdrive%\\$Recycle.Bin", shell=True, check=True)
+            log.append("Recycle Bin emptied successfully.")
+        except subprocess.CalledProcessError:
+            log.append("Failed to empty Recycle Bin.")
+        self.update_log("\n".join(log))
+
+    def browse_file_to_wipe(self):
+        file_path = filedialog.askopenfilename()
+        if file_path:
+            self.file_to_wipe.set(file_path)
+
+    def dod_wipe_file(self):
+        file_path = self.file_to_wipe.get()
+        if os.path.exists(file_path):
+            try:
+                with open(file_path, "r+b") as file:
+                    length = os.path.getsize(file_path)
+                    for _ in range(7):
+                        file.seek(0)
+                        file.write(os.urandom(length))
+                os.remove(file_path)
+                self.update_log(f"File {file_path} securely wiped.")
+            except Exception as e:
+                self.update_log(f"Failed to wipe file {file_path}: {str(e)}")
+        else:
+            messagebox.showerror("Error", "File not found.")
+
+    def wipe_free_space(self):
+        try:
+            temp_file_path = os.path.join(os.getenv('TEMP'), ''.join(random.choices(string.ascii_letters + string.digits, k=10)))
+            free_space = shutil.disk_usage(os.getenv('TEMP')).free
+            with open(temp_file_path, "wb") as temp_file:
+                temp_file.write(b"\x00" * (free_space - 1024 * 1024))
+
+            if self.free_space_dod_var.get():
+                for _ in range(7):
+                    temp_file.seek(0)
+                    temp_file.write(os.urandom(free_space - 1024 * 1024))
+
+            os.remove(temp_file_path)
+            self.update_log("Free space wiped successfully.")
+        except Exception as e:
+            self.update_log(f"Failed to wipe free space: {str(e)}")
+
+    def open_apps_features(self):
+        try:
+            subprocess.run("start ms-settings:appsfeatures", shell=True)
+        except Exception:
+            messagebox.showerror("Error", "Failed to open Apps & Features settings.")
+
+    def get_free_space(self):
+        stat = os.statvfs(os.path.expanduser('~'))
+        return stat.f_frsize * stat.f_bavail
+
+    def format_space(self, size):
+        for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
+            if size < 1024:
+                return f"{size:.2f} {unit}"
+            size /= 1024
+
+    def update_log(self, text):
+        self.log_text.config(state="normal")
+        self.log_text.delete(1.0, "end")
+        self.log_text.insert("end", text)
+        self.log_text.config(state="disabled")
+
+    def write_log_to_file(self, text):
+        with open("C:\\cleanerlog.txt", "a") as log_file:
+            log_file.write(f"\n[{datetime.now()}]\n{text}\n")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = TempCleanerApp(root)
     root.mainloop()
 
 **ASSISTANT**: The syntax issues stem from improper indentation, and possibly inconsistent line breaks or missing parts of the implementation. I'll revise the script to ensure it adheres to Python's indentation rules and structure properly. Let me address these issues and provide you with a clean, functional script.
@@ -735,28 +735,28 @@ Let me know if you want me to proceed with saving the remaining parts.
 
 **USER**: And this. 
 
-Python 3.12.8 (tags/v3.12.8:2dc476b, Dec  3 2024, 19:30:04) [MSC v.1942 64 bit (AMD64)] on win32
-Type "help", "copyright", "credits" or "license()" for more information.
-
-Warning (from warnings module):
-  File "C:\Users\User\Downloads\temp_cleaner.py", line 117
-    {"label": "Per-User Temp Directory", "path": os.path.expanduser('~\AppData\Local\Temp')},
-SyntaxWarning: invalid escape sequence '\A'
->>> 
-Warning (from warnings module):
-  File "C:\Users\User\Downloads\temp_cleaner.py", line 119
-    {"label": "Chocolatey Temp Files", "path": "C:\ProgramData\chocolatey\temp"},
-SyntaxWarning: invalid escape sequence '\P'
->>> 
-Warning (from warnings module):
-  File "C:\Users\User\Downloads\temp_cleaner.py", line 117
-    {"label": "Per-User Temp Directory", "path": os.path.expanduser('~\AppData\Local\Temp')},
-SyntaxWarning: invalid escape sequence '\A'
->>> 
-Warning (from warnings module):
-  File "C:\Users\User\Downloads\temp_cleaner.py", line 119
-    {"label": "Chocolatey Temp Files", "path": "C:\ProgramData\chocolatey\temp"},
-SyntaxWarning: invalid escape sequence '\P'
+Python 3.12.8 (tags/v3.12.8:2dc476b, Dec  3 2024, 19:30:04) [MSC v.1942 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license()" for more information.
+
+Warning (from warnings module):
+  File "C:\Users\User\Downloads\temp_cleaner.py", line 117
+    {"label": "Per-User Temp Directory", "path": os.path.expanduser('~\AppData\Local\Temp')},
+SyntaxWarning: invalid escape sequence '\A'
+>>> 
+Warning (from warnings module):
+  File "C:\Users\User\Downloads\temp_cleaner.py", line 119
+    {"label": "Chocolatey Temp Files", "path": "C:\ProgramData\chocolatey\temp"},
+SyntaxWarning: invalid escape sequence '\P'
+>>> 
+Warning (from warnings module):
+  File "C:\Users\User\Downloads\temp_cleaner.py", line 117
+    {"label": "Per-User Temp Directory", "path": os.path.expanduser('~\AppData\Local\Temp')},
+SyntaxWarning: invalid escape sequence '\A'
+>>> 
+Warning (from warnings module):
+  File "C:\Users\User\Downloads\temp_cleaner.py", line 119
+    {"label": "Chocolatey Temp Files", "path": "C:\ProgramData\chocolatey\temp"},
+SyntaxWarning: invalid escape sequence '\P'
 >>>
 
 **ASSISTANT**: The warnings indicate that some string literals use backslashes (`\`), which Python interprets as escape sequences (e.g., `\n`, `\t`). To fix this, you should use raw strings (`r"string"`) or escape backslashes (`\\`). I'll correct this in the script.
@@ -767,18 +767,18 @@ SyntaxWarning: invalid escape sequence '\P'
 
 Let me know if you encounter any other issues or need further refinements.
 
-**USER**: Python 3.12.8 (tags/v3.12.8:2dc476b, Dec  3 2024, 19:30:04) [MSC v.1942 64 bit (AMD64)] on win32
-Type "help", "copyright", "credits" or "license()" for more information.
-
-Warning (from warnings module):
-  File "C:\Users\User\Downloads\temp_cleaner (1).py", line 117
-    {"label": "Per-User Temp Directory", "path": os.path.expanduser('~\AppData\Local\Temp')},
-SyntaxWarning: invalid escape sequence '\A'
->>> 
-Warning (from warnings module):
-  File "C:\Users\User\Downloads\temp_cleaner (1).py", line 119
-    {"label": "Chocolatey Temp Files", "path": "C:\ProgramData\chocolatey\temp"},
-SyntaxWarning: invalid escape sequence '\P'
+**USER**: Python 3.12.8 (tags/v3.12.8:2dc476b, Dec  3 2024, 19:30:04) [MSC v.1942 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license()" for more information.
+
+Warning (from warnings module):
+  File "C:\Users\User\Downloads\temp_cleaner (1).py", line 117
+    {"label": "Per-User Temp Directory", "path": os.path.expanduser('~\AppData\Local\Temp')},
+SyntaxWarning: invalid escape sequence '\A'
+>>> 
+Warning (from warnings module):
+  File "C:\Users\User\Downloads\temp_cleaner (1).py", line 119
+    {"label": "Chocolatey Temp Files", "path": "C:\ProgramData\chocolatey\temp"},
+SyntaxWarning: invalid escape sequence '\P'
 >>>
 
 **ASSISTANT**: The issue persists because the `r` prefix for raw strings or double backslashes (`\\`) wasn't consistently applied to all paths. Let me thoroughly address this by ensuring all paths use raw strings or properly escaped backslashes.
@@ -820,18 +820,18 @@ Let me know if you’d like me to update the script file directly or provide fur
 
 Let me know if you encounter any further issues or need additional refinements!
 
-**USER**: Python 3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)] on win32
-Type "help", "copyright", "credits" or "license()" for more information.
-
-Warning (from warnings module):
-  File "C:\Users\User\Downloads\temp_cleaner (2).py", line 133
-    {"label": "Per-User Temp Directory", "path": os.path.expanduser('~\AppData\Local\Temp')},
-SyntaxWarning: invalid escape sequence '\A'
->>> 
-Warning (from warnings module):
-  File "C:\Users\User\Downloads\temp_cleaner (2).py", line 135
-    {"label": "Chocolatey Temp Files", "path": "C:\ProgramData\chocolatey\temp"},
-SyntaxWarning: invalid escape sequence '\P'
+**USER**: Python 3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license()" for more information.
+
+Warning (from warnings module):
+  File "C:\Users\User\Downloads\temp_cleaner (2).py", line 133
+    {"label": "Per-User Temp Directory", "path": os.path.expanduser('~\AppData\Local\Temp')},
+SyntaxWarning: invalid escape sequence '\A'
+>>> 
+Warning (from warnings module):
+  File "C:\Users\User\Downloads\temp_cleaner (2).py", line 135
+    {"label": "Chocolatey Temp Files", "path": "C:\ProgramData\chocolatey\temp"},
+SyntaxWarning: invalid escape sequence '\P'
 >>>
 
 **ASSISTANT**: It seems that the issue persists because the escape sequences in the strings were not corrected consistently in the update. To ensure the fix works properly, I will thoroughly apply raw strings (`r"..."`) or escape backslashes (`\\`) across all paths in the script and save the updated version. Let me correct this completely.
@@ -856,11 +856,11 @@ This version should resolve both warnings and syntax errors. Let me know if you 
 
 **USER**: This might be what it's complaining about - 
 
-    default_dirs = [
-            {"label": "Per-User Temp Directory", "path": os.path.expanduser(r'~\AppData\Local\Temp')},
-            {"label": "Windows Temp Directory", "path": os.getenv('TEMP')},
-            {"label": "Chocolatey Temp Files", "path": rr"C:\ProgramData\chocolatey\temp"},
-            {"label": "UniGetUI Temp Files", "path": rr"C:\UniGetUI\temp"}
+    default_dirs = [
+            {"label": "Per-User Temp Directory", "path": os.path.expanduser(r'~\AppData\Local\Temp')},
+            {"label": "Windows Temp Directory", "path": os.getenv('TEMP')},
+            {"label": "Chocolatey Temp Files", "path": rr"C:\ProgramData\chocolatey\temp"},
+            {"label": "UniGetUI Temp Files", "path": rr"C:\UniGetUI\temp"}
         ]
 
 **ASSISTANT**: You're right—there seems to be an issue in that block. Specifically:
@@ -894,12 +894,12 @@ This version should resolve the syntax issues. Let me know if you need further a
 
 **USER**: defaultdirs here has an "unexpected indent". 
 
-        for dir_info in default_dirs:
-            item = ET.SubElement(root, "directory", label=dir_info["label"])
-            item.text = dir_info["path"]
-        tree = ET.ElementTree(root)
-        tree.write(self.config_file)
-        root = ET.Element("cleanerConfig")
+        for dir_info in default_dirs:
+            item = ET.SubElement(root, "directory", label=dir_info["label"])
+            item.text = dir_info["path"]
+        tree = ET.ElementTree(root)
+        tree.write(self.config_file)
+        root = ET.Element("cleanerConfig")
                 default_dirs = [
 
 **ASSISTANT**: The issue arises because of improper indentation in the `default_dirs` declaration. Python's strict indentation rules mean that even a single extra space can cause an `IndentationError`.
@@ -1170,14 +1170,14 @@ Here's the error when we "run config function" which I have no idea why that's e
 
 But there's no buttons on either tab otherwise. 
 
-Exception in Tkinter callback
-Traceback (most recent call last):
-  File "C:\Users\User\AppData\Local\Programs\Python\Python313\Lib\tkinter\__init__.py", line 2068, in __call__
-    return self.func(*args)
-           ~~~~~~~~~^^^^^^^
-  File "C:\Users\User\Downloads\temp_cleaner_complete_with_dynamics.py", line 54, in run_create_default_config
-    create_default_config(self)  # Dynamically defined function
-    ^^^^^^^^^^^^^^^^^^^^^
+Exception in Tkinter callback
+Traceback (most recent call last):
+  File "C:\Users\User\AppData\Local\Programs\Python\Python313\Lib\tkinter\__init__.py", line 2068, in __call__
+    return self.func(*args)
+           ~~~~~~~~~^^^^^^^
+  File "C:\Users\User\Downloads\temp_cleaner_complete_with_dynamics.py", line 54, in run_create_default_config
+    create_default_config(self)  # Dynamically defined function
+    ^^^^^^^^^^^^^^^^^^^^^
 NameError: name 'create_default_config' is not defined
 
 **ASSISTANT**: The error occurs because while the `create_default_config` function is dynamically defined using `exec`, it is not directly accessible in the current namespace. This happens because Python treats dynamically executed code as part of a separate local scope by default.
@@ -1274,10 +1274,10 @@ If you have concerns or need to add more functionality beyond this point, let me
 
 This script includes all specified functionalities, corrections, and enhancements. Please test it on your local machine and let me know if further adjustments are needed!
 
-**USER**: =========== RESTART: C:\Users\User\Downloads\temp_cleaner_complete.py ==========
-Traceback (most recent call last):
-  File "C:\Users\User\Downloads\temp_cleaner_complete.py", line 7, in <module>
-    from pystray import Icon, Menu, MenuItem
+**USER**: =========== RESTART: C:\Users\User\Downloads\temp_cleaner_complete.py ==========
+Traceback (most recent call last):
+  File "C:\Users\User\Downloads\temp_cleaner_complete.py", line 7, in <module>
+    from pystray import Icon, Menu, MenuItem
 ModuleNotFoundError: No module named 'pystray'
 
 **ASSISTANT**: The error indicates that the `pystray` module is not installed in your Python environment. This module is required for creating the system tray icon functionality in the script.
@@ -1315,18 +1315,18 @@ After running the command, retry executing the script, and let me know if you en
 
 **USER**: Actually attempting to clean results in this
 
-**USER**: =========== RESTART: C:\Users\User\Downloads\temp_cleaner_complete.py ==========
-Exception in Tkinter callback
-Traceback (most recent call last):
-  File "C:\Python312\Lib\tkinter\__init__.py", line 1968, in __call__
-    return self.func(*args)
-           ^^^^^^^^^^^^^^^^
-  File "C:\Users\User\Downloads\temp_cleaner_complete.py", line 175, in clean
-    initial_space = self.get_free_space()
-                    ^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\User\Downloads\temp_cleaner_complete.py", line 310, in get_free_space
-    stat = os.statvfs(os.path.expanduser('~'))
-           ^^^^^^^^^^
+**USER**: =========== RESTART: C:\Users\User\Downloads\temp_cleaner_complete.py ==========
+Exception in Tkinter callback
+Traceback (most recent call last):
+  File "C:\Python312\Lib\tkinter\__init__.py", line 1968, in __call__
+    return self.func(*args)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Downloads\temp_cleaner_complete.py", line 175, in clean
+    initial_space = self.get_free_space()
+                    ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Downloads\temp_cleaner_complete.py", line 310, in get_free_space
+    stat = os.statvfs(os.path.expanduser('~'))
+           ^^^^^^^^^^
 AttributeError: module 'os' has no attribute 'statvfs'
 
 **ASSISTANT**: The `os.statvfs` function is not available on Windows systems. It is specific to Unix-like systems. To fix this issue, you can use the `shutil.disk_usage` function, which works on both Windows and Unix platforms.

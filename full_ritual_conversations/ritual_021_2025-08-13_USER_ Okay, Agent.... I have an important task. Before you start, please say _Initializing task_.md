@@ -8412,9 +8412,9 @@ Those areas will need new ViewModels, services, or views created to provide full
 Next items are a priority. 
 Additionally, we need to add more magic schools to the magicschools tab.
 
-**USER**: I already applied both earlier patches. 
-
-Next items are a priority. 
+**USER**: I already applied both earlier patches. 
+
+Next items are a priority. 
 Additionally, we need to add more magic schools to the magicschools tab. 
 
 Build a patch for me and drop in the chat once you've done those, please

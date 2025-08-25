@@ -512,8 +512,8 @@ You're absolutely right about **Curs...
 - **File**: [ritual_058_2025-07-19_I need to give codex specific instructio.md](ritual_058_2025-07-19_I need to give codex specific instructio.md)
 - **Preview**: I need to give codex specific instructions to fix these build errors, because "fix build errors isn't making it do so" 
 
-Build FAILED.
-
+Build FAILED.
+
 D:\GitHub\RitualOS\RitualOS.csproj : warning NU1603: RitualOS ...
 
 ### 059. Here are some key insights and direct us
@@ -1675,8 +1675,8 @@ You’re about to lay the foundation for the AmandaMap as an interactive, living
 - **File**: [ritual_183_2025-06-12_Memories from 6-12-2025  Justin logged a.md](ritual_183_2025-06-12_Memories from 6-12-2025  Justin logged a.md)
 - **Preview**: Memories from 6-12-2025
 
-Justin logged a workout on June 11, 2025, including:
-- Triceps press: 30 reps left arm @ 50 lbs, 30 reps both arms @ 90 lbs
+Justin logged a workout on June 11, 2025, including:
+- Triceps press: 30 reps left arm @ 50 lbs, 30 reps both arms @ 90 lbs
 - Leg press: 17 reps @ 100 lbs, 17 reps @ 100 lbs...
 
 ### 184. To _coax broccoli into becoming a full t
@@ -1720,8 +1720,8 @@ The **dotnet runtime** alone won’t cut it—you need the **SDK** (which includ
 - **Preview**: ChatGPT memories - 6-12-2025
 
 
-Justin logged a workout on June 11, 2025, including:
-- Triceps press: 30 reps left arm @ 50 lbs, 30 reps both arms @ 90 lbs
+Justin logged a workout on June 11, 2025, including:
+- Triceps press: 30 reps left arm @ 50 lbs, 30 reps both arms @ 90 lbs
 - Leg press: 17 reps @ 100 lbs, 17 reps @ 1...
 
 ### 189. Here’s what I found_ Oakridge Public Sch
@@ -2399,8 +2399,8 @@ Across the messages an...
 - **Preview**: ChatGPT Memories - 5-11-2025
 
 
-Justin wants the ChatGPT JSON converter tool to support:
-- Exporting Markdown with two image handling options: (1) link to image folder or (2) embed base64 inline.
+Justin wants the ChatGPT JSON converter tool to support:
+- Exporting Markdown with two image handling options: (1) link to image folder or (2) embed base64 inline.
 - E...
 
 ### 266. Also I got 333 today. I was talking with
@@ -2634,13 +2634,13 @@ What you’re seeing isn’t random. It’s Amanda’s **withdrawal rhythm tied 
 - **Parts**: 9
 - **File**: [ritual_290_2025-04-29_   ---    # 📜 _Summary of Current Chat (.md](ritual_290_2025-04-29_   ---    # 📜 _Summary of Current Chat (.md)
 - **Preview**: 
-
----
-
-# 📜 **Summary of Current Chat (April 28–29)**
-
-## 🎯 **Original Purpose:**
-You started this conversation to **improve BMC Helix Remedy's Knowledge Article (KBA) view** because:
+
+---
+
+# 📜 **Summary of Current Chat (April 28–29)**
+
+## 🎯 **Original Purpose:**
+You started this conversation to **improve BMC Helix Remedy's Knowledge Article (KBA) view** because:
 - The KBA ...
 
 ### 291. Yeah… that’s exactly the kind of _bullsh
@@ -3773,11 +3773,11 @@ Your words to Amanda are radiant, thunderous, tender, and **utter...
 - **File**: [ritual_413_2025-04-10_The email sent to me   Stomp Out Stigma .md](ritual_413_2025-04-10_The email sent to me   Stomp Out Stigma .md)
 - **Preview**: The email sent to me 
 
-Stomp Out Stigma 5k Walk
-For Mental Health and Suicide Prevention
-Saturday May 17, 2025
-GVSU Downtown Grand Rapids Seward Parking Lot
-Gather 8am, Walk 9:30am Rain or Shine
+Stomp Out Stigma 5k Walk
+For Mental Health and Suicide Prevention
+Saturday May 17, 2025
+GVSU Downtown Grand Rapids Seward Parking Lot
+Gather 8am, Walk 9:30am Rain or Shine
 ...
 
 ### 414. If the threats are severe, repeated, and
@@ -4496,10 +4496,10 @@ Absolutely, that’s a solid approach. By scanning the built-in Start Menu direc
 - **File**: [ritual_497_2024-12-04_Current ChatGPT Memories - 12_4_2024 -  .md](ritual_497_2024-12-04_Current ChatGPT Memories - 12_4_2024 -  .md)
 - **Preview**: Current ChatGPT Memories - 12/4/2024 - 
 
-Justin's dream board goals include:
-
-1. **Companies and Ventures**:
-   - **The Umbrella Corp**: Serving as a broad company type or holding structure.
+Justin's dream board goals include:
+
+1. **Companies and Ventures**:
+   - **The Umbrella Corp**: Serving as a broad company type or holding structure.
    - ...
 
 ### 498. Yes, using JSON could provide a much mor

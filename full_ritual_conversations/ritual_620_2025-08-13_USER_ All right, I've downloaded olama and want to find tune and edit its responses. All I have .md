@@ -1054,7 +1054,7 @@ Send me!
 
 Output - 
 
-Sent: Send me!
+Sent: Send me!
 Received: Echo 'Send me!'
 
 **ASSISTANT**: Great! It looks like the basic functionality of sending and receiving messages is working well. The GUI is showing the sent message and the simulated response in the chat log, which is exactly what we expected for now.
@@ -1373,21 +1373,21 @@ Let me know what output you see in the chat log and console, and we can take it 
 
 **USER**: This is what I get back, besides a PS window at the Ollama dir. 
 
-Sent: Test
-Received: 
-Welcome to Ollama!
-
-Run your first model:
-
-	ollama run llama3.2
-
-
-Sent: ollama run llama3.2
-Received: 
-Welcome to Ollama!
-
-Run your first model:
-
+Sent: Test
+Received: 
+Welcome to Ollama!
+
+Run your first model:
+
+	ollama run llama3.2
+
+
+Sent: ollama run llama3.2
+Received: 
+Welcome to Ollama!
+
+Run your first model:
+
 	ollama run llama3.2
 
 I sent test and then typed the ollama run llama3.2 and sent that and it said to type it again. Subsequent typing repeats the same.
@@ -1562,12 +1562,12 @@ These are the main ways to "clear" your workspace in IDLE. The **Restart Shell**
 
 Reopening IDLE is always a good way to get a fresh start too. Let me know how things go once you're back up and running, and feel free to ask if you need help with anything else, whether it's working with **Ollama**, LLaMA, or anything else!
 
-**USER**: Sent: ollama run llama3.2
-Error: Ollama Error: Error: unknown flag: --prompt
-
+**USER**: Sent: ollama run llama3.2
+Error: Ollama Error: Error: unknown flag: --prompt
+
 is displayed in the GUI and in IDLE Shell, I see this - 
 
-= RESTART: C:\Users\User\AppData\Local\Programs\Python\Python313\Llama\gui_test.py
+= RESTART: C:\Users\User\AppData\Local\Programs\Python\Python313\Llama\gui_test.py
 Ollama Error: Error: unknown flag: --prompt
 
 **ASSISTANT**: It looks like the **Ollama** command doesn't recognize the `--prompt` flag. My mistake! The correct way to pass the prompt to Ollama should be directly after the command, without using a `--prompt` flag.

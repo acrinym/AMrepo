@@ -2738,10 +2738,10 @@ Bracketed things are sounds in the song....
 
 things like "WHY!?" should be inserted etc. 
 
-[clicking sounds] 
-[Barking]
-[Laughing]
-[Crying]
+[clicking sounds] 
+[Barking]
+[Laughing]
+[Crying]
 WHY!? 
 [Muffled crying]
 make it much longer.

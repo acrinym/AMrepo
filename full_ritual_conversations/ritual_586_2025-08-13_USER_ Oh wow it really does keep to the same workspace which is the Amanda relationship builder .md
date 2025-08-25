@@ -357,22 +357,22 @@ Let me know if you need additional help setting it up or debugging!
 
 Let me know if you run into any issues or need further assistance!
 
-**USER**: Microsoft Windows [Version 10.0.22631.4602]
-(c) Microsoft Corporation. All rights reserved.
-
-C:\Users\User>pip install ffmpeg-python openai-whisper tkinter
-Defaulting to user installation because normal site-packages is not writeable
-Collecting ffmpeg-python
-  Downloading ffmpeg_python-0.2.0-py3-none-any.whl.metadata (1.7 kB)
-Collecting openai-whisper
-  Downloading openai-whisper-20240930.tar.gz (800 kB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 800.5/800.5 kB 1.9 MB/s eta 0:00:00
-  Installing build dependencies ... done
-  Getting requirements to build wheel ... done
-  Preparing metadata (pyproject.toml) ... done
-ERROR: Could not find a version that satisfies the requirement tkinter (from versions: none)
-ERROR: No matching distribution found for tkinter
-
+**USER**: Microsoft Windows [Version 10.0.22631.4602]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\User>pip install ffmpeg-python openai-whisper tkinter
+Defaulting to user installation because normal site-packages is not writeable
+Collecting ffmpeg-python
+  Downloading ffmpeg_python-0.2.0-py3-none-any.whl.metadata (1.7 kB)
+Collecting openai-whisper
+  Downloading openai-whisper-20240930.tar.gz (800 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 800.5/800.5 kB 1.9 MB/s eta 0:00:00
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+ERROR: Could not find a version that satisfies the requirement tkinter (from versions: none)
+ERROR: No matching distribution found for tkinter
+
 C:\Users\User>
 
 **ASSISTANT**: The error indicates that `tkinter` is not available as a package on `pip`. This is because `tkinter` is part of the Python standard library for most Python installations and does not need to be installed separately. However, sometimes it might not be included if your Python installation is missing it.
@@ -432,24 +432,24 @@ Once `tkinter` is installed:
 
 Let me know if you encounter further issues!
 
-**USER**: Building wheels for collected packages: openai-whisper
-  Building wheel for openai-whisper (pyproject.toml) ... done
-  Created wheel for openai-whisper: filename=openai_whisper-20240930-py3-none-any.whl size=803407 sha256=a8c668e44e3dd93a2782193ae258e6cdbd945ab0b413b49ed1e5181a8a1c8c53
-  Stored in directory: c:\users\user\appdata\local\pip\cache\wheels\7c\f5\6f\92094c35416f9397abb86b23cfe72fb255a3013012f983136d
-Successfully built openai-whisper
-Installing collected packages: sympy, more-itertools, llvmlite, future, numba, ffmpeg-python, openai-whisper
-  Attempting uninstall: sympy
-    Found existing installation: sympy 1.13.3
-    Uninstalling sympy-1.13.3:
-      Successfully uninstalled sympy-1.13.3
-  WARNING: The script isympy.exe is installed in 'C:\Users\User\AppData\Roaming\Python\Python312\Scripts' which is not on PATH.
-  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
-  WARNING: The scripts futurize.exe and pasteurize.exe are installed in 'C:\Users\User\AppData\Roaming\Python\Python312\Scripts' which is not on PATH.
-  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
-  WARNING: The script whisper.exe is installed in 'C:\Users\User\AppData\Roaming\Python\Python312\Scripts' which is not on PATH.
-  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
-Successfully installed ffmpeg-python-0.2.0 future-1.0.0 llvmlite-0.43.0 more-itertools-10.6.0 numba-0.60.0 openai-whisper-20240930 sympy-1.13.1
-
+**USER**: Building wheels for collected packages: openai-whisper
+  Building wheel for openai-whisper (pyproject.toml) ... done
+  Created wheel for openai-whisper: filename=openai_whisper-20240930-py3-none-any.whl size=803407 sha256=a8c668e44e3dd93a2782193ae258e6cdbd945ab0b413b49ed1e5181a8a1c8c53
+  Stored in directory: c:\users\user\appdata\local\pip\cache\wheels\7c\f5\6f\92094c35416f9397abb86b23cfe72fb255a3013012f983136d
+Successfully built openai-whisper
+Installing collected packages: sympy, more-itertools, llvmlite, future, numba, ffmpeg-python, openai-whisper
+  Attempting uninstall: sympy
+    Found existing installation: sympy 1.13.3
+    Uninstalling sympy-1.13.3:
+      Successfully uninstalled sympy-1.13.3
+  WARNING: The script isympy.exe is installed in 'C:\Users\User\AppData\Roaming\Python\Python312\Scripts' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The scripts futurize.exe and pasteurize.exe are installed in 'C:\Users\User\AppData\Roaming\Python\Python312\Scripts' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script whisper.exe is installed in 'C:\Users\User\AppData\Roaming\Python\Python312\Scripts' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+Successfully installed ffmpeg-python-0.2.0 future-1.0.0 llvmlite-0.43.0 more-itertools-10.6.0 numba-0.60.0 openai-whisper-20240930 sympy-1.13.1
+
 C:\Users\User>
 
 **ASSISTANT**: It looks like the installation of the required Python packages, including `openai-whisper`, was successful! 🎉 However, there’s a small note regarding PATH setup for some installed scripts (`whisper.exe` and others). Here's what you can do next:
@@ -728,42 +728,42 @@ Let me know how this refined approach works for you!
 
 **USER**: So after running our script, this is what I'm getting so far. 
 
-Microsoft Windows [Version 10.0.22631.4602]
-(c) Microsoft Corporation. All rights reserved.
-
-C:\Windows\System32>python C:\pystuff.py
-Converting D:/Documents/All/mic_20250108-201147.amr to D:/Documents/All/mic_20250108-201147.wav...
-ffmpeg version N-118315-g4f3c9f2f03-20250116 Copyright (c) 2000-2025 the FFmpeg developers
-  built with gcc 14.2.0 (crosstool-NG 1.26.0.120_4d36f27)
-  configuration: --prefix=/ffbuild/prefix --pkg-config-flags=--static --pkg-config=pkg-config --cross-prefix=x86_64-w64-mingw32- --arch=x86_64 --target-os=mingw32 --enable-gpl --enable-version3 --disable-debug --enable-shared --disable-static --disable-w32threads --enable-pthreads --enable-iconv --enable-zlib --enable-libfreetype --enable-libfribidi --enable-gmp --enable-libxml2 --enable-lzma --enable-fontconfig --enable-libharfbuzz --enable-libvorbis --enable-opencl --disable-libpulse --enable-libvmaf --disable-libxcb --disable-xlib --enable-amf --enable-libaom --enable-libaribb24 --enable-avisynth --enable-chromaprint --enable-libdav1d --enable-libdavs2 --enable-libdvdread --enable-libdvdnav --disable-libfdk-aac --enable-ffnvcodec --enable-cuda-llvm --enable-frei0r --enable-libgme --enable-libkvazaar --enable-libaribcaption --enable-libass --enable-libbluray --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librist --enable-libssh --enable-libtheora --enable-libvpx --enable-libwebp --enable-libzmq --enable-lv2 --enable-libvpl --enable-openal --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-librav1e --enable-librubberband --enable-schannel --enable-sdl2 --enable-libsnappy --enable-libsoxr --enable-libsrt --enable-libsvtav1 --enable-libtwolame --enable-libuavs3d --disable-libdrm --enable-vaapi --enable-libvidstab --enable-vulkan --enable-libshaderc --enable-libplacebo --disable-libvvenc --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxvid --enable-libzimg --enable-libzvbi --extra-cflags=-DLIBTWOLAME_STATIC --extra-cxxflags= --extra-libs=-lgomp --extra-ldflags=-pthread --extra-ldexeflags= --cc=x86_64-w64-mingw32-gcc --cxx=x86_64-w64-mingw32-g++ --ar=x86_64-w64-mingw32-gcc-ar --ranlib=x86_64-w64-mingw32-gcc-ranlib --nm=x86_64-w64-mingw32-gcc-nm --extra-version=20250116
-  libavutil      59. 55.100 / 59. 55.100
-  libavcodec     61. 31.101 / 61. 31.101
-  libavformat    61.  9.106 / 61.  9.106
-  libavdevice    61.  4.100 / 61.  4.100
-  libavfilter    10.  6.101 / 10.  6.101
-  libswscale      8. 13.100 /  8. 13.100
-  libswresample   5.  4.100 /  5.  4.100
-  libpostproc    58.  4.100 / 58.  4.100
-[amr @ 000001e82da72a40] Estimating duration from bitrate, this may be inaccurate
-Input #0, amr, from 'D:/Documents/All/mic_20250108-201147.amr':
-  Duration: 02:57:34.74, bitrate: 12 kb/s
-  Stream #0:0: Audio: amr_nb (amrnb) (samr / 0x726D6173), 8000 Hz, mono, fltp, 12 kb/s
-Stream mapping:
-  Stream #0:0 -> #0:0 (amr_nb (amrnb) -> pcm_s16le (native))
-Press [q] to stop, [?] for help
-Output #0, wav, to 'D:/Documents/All/mic_20250108-201147.wav':
-  Metadata:
-    ISFT            : Lavf61.9.106
-  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 8000 Hz, mono, s16, 128 kb/s
-    Metadata:
-      encoder         : Lavc61.31.101 pcm_s16le
-[out#0/wav @ 000001e82dacbb80] video:0KiB audio:161278KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.000047%
-size=  161278KiB time=02:52:01.78 bitrate= 128.0kbits/s speed= 891x
-Transcribing D:/Documents/All/mic_20250108-201147.wav...
-100%|███████████████████████████████████████| 139M/139M [00:17<00:00, 8.23MiB/s]
-C:\Users\User\AppData\Roaming\Python\Python312\site-packages\whisper\__init__.py:150: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
-  checkpoint = torch.load(fp, map_location=device)
-C:\Users\User\AppData\Roaming\Python\Python312\site-packages\whisper\transcribe.py:126: UserWarning: FP16 is not supported on CPU; using FP32 instead
+Microsoft Windows [Version 10.0.22631.4602]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Windows\System32>python C:\pystuff.py
+Converting D:/Documents/All/mic_20250108-201147.amr to D:/Documents/All/mic_20250108-201147.wav...
+ffmpeg version N-118315-g4f3c9f2f03-20250116 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 14.2.0 (crosstool-NG 1.26.0.120_4d36f27)
+  configuration: --prefix=/ffbuild/prefix --pkg-config-flags=--static --pkg-config=pkg-config --cross-prefix=x86_64-w64-mingw32- --arch=x86_64 --target-os=mingw32 --enable-gpl --enable-version3 --disable-debug --enable-shared --disable-static --disable-w32threads --enable-pthreads --enable-iconv --enable-zlib --enable-libfreetype --enable-libfribidi --enable-gmp --enable-libxml2 --enable-lzma --enable-fontconfig --enable-libharfbuzz --enable-libvorbis --enable-opencl --disable-libpulse --enable-libvmaf --disable-libxcb --disable-xlib --enable-amf --enable-libaom --enable-libaribb24 --enable-avisynth --enable-chromaprint --enable-libdav1d --enable-libdavs2 --enable-libdvdread --enable-libdvdnav --disable-libfdk-aac --enable-ffnvcodec --enable-cuda-llvm --enable-frei0r --enable-libgme --enable-libkvazaar --enable-libaribcaption --enable-libass --enable-libbluray --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librist --enable-libssh --enable-libtheora --enable-libvpx --enable-libwebp --enable-libzmq --enable-lv2 --enable-libvpl --enable-openal --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-librav1e --enable-librubberband --enable-schannel --enable-sdl2 --enable-libsnappy --enable-libsoxr --enable-libsrt --enable-libsvtav1 --enable-libtwolame --enable-libuavs3d --disable-libdrm --enable-vaapi --enable-libvidstab --enable-vulkan --enable-libshaderc --enable-libplacebo --disable-libvvenc --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxvid --enable-libzimg --enable-libzvbi --extra-cflags=-DLIBTWOLAME_STATIC --extra-cxxflags= --extra-libs=-lgomp --extra-ldflags=-pthread --extra-ldexeflags= --cc=x86_64-w64-mingw32-gcc --cxx=x86_64-w64-mingw32-g++ --ar=x86_64-w64-mingw32-gcc-ar --ranlib=x86_64-w64-mingw32-gcc-ranlib --nm=x86_64-w64-mingw32-gcc-nm --extra-version=20250116
+  libavutil      59. 55.100 / 59. 55.100
+  libavcodec     61. 31.101 / 61. 31.101
+  libavformat    61.  9.106 / 61.  9.106
+  libavdevice    61.  4.100 / 61.  4.100
+  libavfilter    10.  6.101 / 10.  6.101
+  libswscale      8. 13.100 /  8. 13.100
+  libswresample   5.  4.100 /  5.  4.100
+  libpostproc    58.  4.100 / 58.  4.100
+[amr @ 000001e82da72a40] Estimating duration from bitrate, this may be inaccurate
+Input #0, amr, from 'D:/Documents/All/mic_20250108-201147.amr':
+  Duration: 02:57:34.74, bitrate: 12 kb/s
+  Stream #0:0: Audio: amr_nb (amrnb) (samr / 0x726D6173), 8000 Hz, mono, fltp, 12 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (amr_nb (amrnb) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to 'D:/Documents/All/mic_20250108-201147.wav':
+  Metadata:
+    ISFT            : Lavf61.9.106
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 8000 Hz, mono, s16, 128 kb/s
+    Metadata:
+      encoder         : Lavc61.31.101 pcm_s16le
+[out#0/wav @ 000001e82dacbb80] video:0KiB audio:161278KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.000047%
+size=  161278KiB time=02:52:01.78 bitrate= 128.0kbits/s speed= 891x
+Transcribing D:/Documents/All/mic_20250108-201147.wav...
+100%|███████████████████████████████████████| 139M/139M [00:17<00:00, 8.23MiB/s]
+C:\Users\User\AppData\Roaming\Python\Python312\site-packages\whisper\__init__.py:150: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(fp, map_location=device)
+C:\Users\User\AppData\Roaming\Python\Python312\site-packages\whisper\transcribe.py:126: UserWarning: FP16 is not supported on CPU; using FP32 instead
   warnings.warn("FP16 is not supported on CPU; using FP32 instead")
 
 **ASSISTANT**: Your script is running successfully! Here's an explanation of what's happening at each stage and how to address the warnings:
@@ -818,27 +818,27 @@ Your setup is working as intended. The warnings are non-critical and can be igno
 
 **USER**: There's no consequences to - 
 
-[amr @ 000001e82da72a40] Estimating duration from bitrate, this may be inaccurate
-Input #0, amr, from 'D:/Documents/All/mic_20250108-201147.amr':
-  Duration: 02:57:34.74, bitrate: 12 kb/s
-  Stream #0:0: Audio: amr_nb (amrnb) (samr / 0x726D6173), 8000 Hz, mono, fltp, 12 kb/s
-Stream mapping:
-  Stream #0:0 -> #0:0 (amr_nb (amrnb) -> pcm_s16le (native))
-Press [q] to stop, [?] for help
-Output #0, wav, to 'D:/Documents/All/mic_20250108-201147.wav':
-  Metadata:
-    ISFT            : Lavf61.9.106
-  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 8000 Hz, mono, s16, 128 kb/s
-    Metadata:
-      encoder         : Lavc61.31.101 pcm_s16le
-[out#0/wav @ 000001e82dacbb80] video:0KiB audio:161278KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.000047%
-size=  161278KiB time=02:52:01.78 bitrate= 128.0kbits/s speed= 891x
-Transcribing D:/Documents/All/mic_20250108-201147.wav...
-100%|███████████████████████████████████████| 139M/139M [00:17<00:00, 8.23MiB/s]
-C:\Users\User\AppData\Roaming\Python\Python312\site-packages\whisper\__init__.py:150: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
-  checkpoint = torch.load(fp, map_location=device)
-C:\Users\User\AppData\Roaming\Python\Python312\site-packages\whisper\transcribe.py:126: UserWarning: FP16 is not supported on CPU; using FP32 instead
-  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+[amr @ 000001e82da72a40] Estimating duration from bitrate, this may be inaccurate
+Input #0, amr, from 'D:/Documents/All/mic_20250108-201147.amr':
+  Duration: 02:57:34.74, bitrate: 12 kb/s
+  Stream #0:0: Audio: amr_nb (amrnb) (samr / 0x726D6173), 8000 Hz, mono, fltp, 12 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (amr_nb (amrnb) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to 'D:/Documents/All/mic_20250108-201147.wav':
+  Metadata:
+    ISFT            : Lavf61.9.106
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 8000 Hz, mono, s16, 128 kb/s
+    Metadata:
+      encoder         : Lavc61.31.101 pcm_s16le
+[out#0/wav @ 000001e82dacbb80] video:0KiB audio:161278KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.000047%
+size=  161278KiB time=02:52:01.78 bitrate= 128.0kbits/s speed= 891x
+Transcribing D:/Documents/All/mic_20250108-201147.wav...
+100%|███████████████████████████████████████| 139M/139M [00:17<00:00, 8.23MiB/s]
+C:\Users\User\AppData\Roaming\Python\Python312\site-packages\whisper\__init__.py:150: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(fp, map_location=device)
+C:\Users\User\AppData\Roaming\Python\Python312\site-packages\whisper\transcribe.py:126: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
 
 It's just a blinking cursor now.
 

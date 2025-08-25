@@ -19,439 +19,439 @@
 
 **USER**: Help, Onyx, Codex doesn't want to create a PR for these files. Everything is here to build the scaffolded PhoenixCodex. 
 
-.gitignore
-+5
--0
-
-__pycache__/
-*.py[cod]
-*~
-*.tmp
-*.bak
-*_search_index.json
-# Binary and document files
-*.docx
-*.xlsx
-*.lnk
-*.ico
-# Ignore runtime logs
-*.log
-app_config.json
-bin/
-obj/
-GPTExporterIndexerAvalonia/bin/
-GPTExporterIndexerAvalonia/obj/
-
-*.log
-GPTExporterIndexerAvalonia/App.axaml
-New
-+15
--0
-
-<Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="GPTExporterIndexerAvalonia.App"
-             xmlns:local="using:GPTExporterIndexerAvalonia"
-             RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-
-    <Application.DataTemplates>
-        <local:ViewLocator/>
-    </Application.DataTemplates>
-  
-    <Application.Styles>
-        <FluentTheme />
-    </Application.Styles>
-</Application>
-GPTExporterIndexerAvalonia/App.axaml.cs
-New
-+47
--0
-
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
-using System.Linq;
-using Avalonia.Markup.Xaml;
-using GPTExporterIndexerAvalonia.ViewModels;
-using GPTExporterIndexerAvalonia.Views;
-
-namespace GPTExporterIndexerAvalonia;
-
-public partial class App : Application
-{
-    public override void Initialize()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    public override void OnFrameworkInitializationCompleted()
-    {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
-            // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
-            DisableAvaloniaDataAnnotationValidation();
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = new MainWindowViewModel(),
-            };
-        }
-
-        base.OnFrameworkInitializationCompleted();
-    }
-
-    private void DisableAvaloniaDataAnnotationValidation()
-    {
-        // Get an array of plugins to remove
-        var dataValidationPluginsToRemove =
-            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
-
-        // remove each entry found
-        foreach (var plugin in dataValidationPluginsToRemove)
-        {
-            BindingPlugins.DataValidators.Remove(plugin);
-        }
-    }
-}
-GPTExporterIndexerAvalonia/GPTExporterIndexerAvalonia.csproj
-New
-+23
--0
-
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.0" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.0" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.0" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.0" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.0">
-      <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
-      <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
-  </ItemGroup>
-</Project>
-GPTExporterIndexerAvalonia/Helpers/SimpleIndexer.cs
-New
-+71
--0
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-
-namespace GPTExporterIndexerAvalonia.Helpers;
-
-public static class SimpleIndexer
-{
-    private static readonly Regex TokenPattern = new(@"[\w]+|[^\s\w]", RegexOptions.Compiled);
-
-    public static void BuildIndex(string folderPath, string indexPath)
-    {
-        var tokens = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
-        foreach (var file in Directory.EnumerateFiles(folderPath, "*", SearchOption.AllDirectories))
-        {
-            var ext = Path.GetExtension(file).ToLowerInvariant();
-            if (ext != ".txt" && ext != ".json" && ext != ".md")
-                continue;
-            string text;
-            try
-            {
-                text = File.ReadAllText(file);
-            }
-            catch
-            {
-                continue;
-            }
-            foreach (Match m in TokenPattern.Matches(text))
-            {
-                var token = m.Value.ToLowerInvariant();
-                if (!tokens.TryGetValue(token, out var set))
-                {
-                    set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                    tokens[token] = set;
-                }
-                set.Add(Path.GetRelativePath(folderPath, file));
-            }
-        }
-        var index = new Index { Tokens = tokens };
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        File.WriteAllText(indexPath, JsonSerializer.Serialize(index, options));
-    }
-
-    public static IEnumerable<string> Search(string indexPath, string phrase)
-    {
-        if (!File.Exists(indexPath))
-            return Array.Empty<string>();
-        var index = JsonSerializer.Deserialize<Index>(File.ReadAllText(indexPath));
-        if (index == null || index.Tokens == null)
-            return Array.Empty<string>();
-        var terms = phrase.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        HashSet<string>? result = null;
-        foreach (var term in terms)
-        {
-            if (!index.Tokens.TryGetValue(term.ToLowerInvariant(), out var files))
-                return Array.Empty<string>();
-            result = result == null ? new HashSet<string>(files) : new HashSet<string>(result.Intersect(files));
-            if (result.Count == 0)
-                return Array.Empty<string>();
-        }
-        return result ?? Enumerable.Empty<string>();
-    }
-
-    private class Index
-    {
-        public Dictionary<string, HashSet<string>> Tokens { get; set; } = new();
-    }
-}
-GPTExporterIndexerAvalonia/Program.cs
-New
-+21
--0
-
-﻿using Avalonia;
-using System;
-
-namespace GPTExporterIndexerAvalonia;
-
-sealed class Program
-{
-    // Initialization code. Don't use any Avalonia, third-party APIs or any
-    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
-    // yet and stuff might break.
-    [STAThread]
-    public static void Main(string[] args) => BuildAvaloniaApp()
-        .StartWithClassicDesktopLifetime(args);
-
-    // Avalonia configuration, don't remove; also used by visual designer.
-    public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .WithInterFont()
-            .LogToTrace();
-}
-GPTExporterIndexerAvalonia/ViewLocator.cs
-New
-+31
--0
-
-using System;
-using Avalonia.Controls;
-using Avalonia.Controls.Templates;
-using GPTExporterIndexerAvalonia.ViewModels;
-
-namespace GPTExporterIndexerAvalonia;
-
-public class ViewLocator : IDataTemplate
-{
-
-    public Control? Build(object? param)
-    {
-        if (param is null)
-            return null;
-        
-        var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
-        var type = Type.GetType(name);
-
-        if (type != null)
-        {
-            return (Control)Activator.CreateInstance(type)!;
-        }
-        
-        return new TextBlock { Text = "Not Found: " + name };
-    }
-
-    public bool Match(object? data)
-    {
-        return data is ViewModelBase;
-    }
-}
-GPTExporterIndexerAvalonia/ViewModels/MainWindowViewModel.cs
-New
-+82
--0
-
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using CommunityToolkit.Mvvm.Input;
-using GPTExporterIndexerAvalonia.Helpers;
-
-namespace GPTExporterIndexerAvalonia.ViewModels;
-
-public partial class MainWindowViewModel : ViewModelBase
-{
-    private string? _folderPath;
-    private string? _searchPhrase;
-    private string _indexStatus = string.Empty;
-    private ObservableCollection<string> _searchResults = new();
-
-    public string? FolderPath
-    {
-        get => _folderPath;
-        set => SetProperty(ref _folderPath, value);
-    }
-
-    public string? SearchPhrase
-    {
-        get => _searchPhrase;
-        set => SetProperty(ref _searchPhrase, value);
-    }
-
-    public string IndexStatus
-    {
-        get => _indexStatus;
-        set => SetProperty(ref _indexStatus, value);
-    }
-
-    public ObservableCollection<string> SearchResults
-    {
-        get => _searchResults;
-        set => SetProperty(ref _searchResults, value);
-    }
-
-    [RelayCommand]
-    private async Task ChooseFolder()
-    {
-        var dialog = new OpenFolderDialog();
-        var lifetime = (IClassicDesktopStyleApplicationLifetime)App.Current!.ApplicationLifetime!;
-        var result = await dialog.ShowAsync(lifetime.MainWindow!);
-        if (!string.IsNullOrEmpty(result))
-        {
-            FolderPath = result;
-        }
-    }
-
-    [RelayCommand]
-    private async Task BuildIndex()
-    {
-        if (string.IsNullOrEmpty(FolderPath))
-        {
-            IndexStatus = "Please select a folder.";
-            return;
-        }
-
-        var indexFile = Path.Combine(FolderPath, "index.json");
-        await Task.Run(() => SimpleIndexer.BuildIndex(FolderPath, indexFile));
-        IndexStatus = $"Index written to {indexFile}";
-    }
-
-    [RelayCommand]
-    private async Task Search()
-    {
-        if (string.IsNullOrEmpty(FolderPath))
-        {
-            IndexStatus = "Select folder with index first.";
-            return;
-        }
-        var indexFile = Path.Combine(FolderPath, "index.json");
-        var phrase = SearchPhrase ?? string.Empty;
-        var results = await Task.Run(() => SimpleIndexer.Search(indexFile, phrase));
-        SearchResults = new ObservableCollection<string>(results);
-    }
-}
-GPTExporterIndexerAvalonia/ViewModels/ViewModelBase.cs
-New
-+7
--0
-
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace GPTExporterIndexerAvalonia.ViewModels;
-
-public class ViewModelBase : ObservableObject
-{
-}
-GPTExporterIndexerAvalonia/Views/MainWindow.axaml
-New
-+29
--0
-
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:GPTExporterIndexerAvalonia.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="GPTExporterIndexerAvalonia.Views.MainWindow"
-        Title="GPT Exporter/Indexer">
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
-    <TabControl>
-        <TabItem Header="Index">
-            <StackPanel Margin="10">
-                <TextBox Text="{Binding FolderPath}" IsReadOnly="True" Width="400"/>
-                <Button Content="Choose Folder" Command="{Binding ChooseFolderCommand}" Margin="0,5,0,0"/>
-                <Button Content="Build Index" Command="{Binding BuildIndexCommand}" Margin="0,5,0,0"/>
-                <TextBlock Text="{Binding IndexStatus}" Margin="0,5,0,0"/>
-            </StackPanel>
-        </TabItem>
-        <TabItem Header="Search">
-            <StackPanel Margin="10">
-                <TextBox Text="{Binding SearchPhrase, UpdateSourceTrigger=PropertyChanged}" Width="400"/>
-                <Button Content="Search" Command="{Binding SearchCommand}" Margin="0,5,0,0"/>
-                <ListBox ItemsSource="{Binding SearchResults}" Margin="0,5,0,0" Height="300"/>
-            </StackPanel>
-        </TabItem>
-    </TabControl>
-</Window>
-GPTExporterIndexerAvalonia/Views/MainWindow.axaml.cs
-New
-+11
--0
-
-using Avalonia.Controls;
-
-namespace GPTExporterIndexerAvalonia.Views;
-
-public partial class MainWindow : Window
-{
-    public MainWindow()
-    {
-        InitializeComponent();
-    }
-}
-GPTExporterIndexerAvalonia/app.manifest
-New
-+18
--0
-
-﻿<?xml version="1.0" encoding="utf-8"?>
-<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
-  <!-- This manifest is used on Windows only.
-       Don't remove it as it might cause problems with window transparency and embedded controls.
-       For more details visit https://learn.microsoft.com/en-us/windows/win32/sbscs/application-manifests -->
-  <assemblyIdentity version="1.0.0.0" name="GPTExporterIndexerAvalonia.Desktop"/>
-
-  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
-    <application>
-      <!-- A list of the Windows versions that this application has been tested on
-           and is designed to work with. Uncomment the appropriate elements
-           and Windows will automatically select the most compatible environment. -->
-
-      <!-- Windows 10 -->
-      <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
-    </application>
-  </compatibility>
+.gitignore
++5
+-0
+
+__pycache__/
+*.py[cod]
+*~
+*.tmp
+*.bak
+*_search_index.json
+# Binary and document files
+*.docx
+*.xlsx
+*.lnk
+*.ico
+# Ignore runtime logs
+*.log
+app_config.json
+bin/
+obj/
+GPTExporterIndexerAvalonia/bin/
+GPTExporterIndexerAvalonia/obj/
+
+*.log
+GPTExporterIndexerAvalonia/App.axaml
+New
++15
+-0
+
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="GPTExporterIndexerAvalonia.App"
+             xmlns:local="using:GPTExporterIndexerAvalonia"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+  
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+</Application>
+GPTExporterIndexerAvalonia/App.axaml.cs
+New
++47
+-0
+
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Data.Core;
+using Avalonia.Data.Core.Plugins;
+using System.Linq;
+using Avalonia.Markup.Xaml;
+using GPTExporterIndexerAvalonia.ViewModels;
+using GPTExporterIndexerAvalonia.Views;
+
+namespace GPTExporterIndexerAvalonia;
+
+public partial class App : Application
+{
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
+            // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
+            DisableAvaloniaDataAnnotationValidation();
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = new MainWindowViewModel(),
+            };
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+
+    private void DisableAvaloniaDataAnnotationValidation()
+    {
+        // Get an array of plugins to remove
+        var dataValidationPluginsToRemove =
+            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
+
+        // remove each entry found
+        foreach (var plugin in dataValidationPluginsToRemove)
+        {
+            BindingPlugins.DataValidators.Remove(plugin);
+        }
+    }
+}
+GPTExporterIndexerAvalonia/GPTExporterIndexerAvalonia.csproj
+New
++23
+-0
+
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.0" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.0" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.0" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.0">
+      <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+      <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+  </ItemGroup>
+</Project>
+GPTExporterIndexerAvalonia/Helpers/SimpleIndexer.cs
+New
++71
+-0
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+
+namespace GPTExporterIndexerAvalonia.Helpers;
+
+public static class SimpleIndexer
+{
+    private static readonly Regex TokenPattern = new(@"[\w]+|[^\s\w]", RegexOptions.Compiled);
+
+    public static void BuildIndex(string folderPath, string indexPath)
+    {
+        var tokens = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
+        foreach (var file in Directory.EnumerateFiles(folderPath, "*", SearchOption.AllDirectories))
+        {
+            var ext = Path.GetExtension(file).ToLowerInvariant();
+            if (ext != ".txt" && ext != ".json" && ext != ".md")
+                continue;
+            string text;
+            try
+            {
+                text = File.ReadAllText(file);
+            }
+            catch
+            {
+                continue;
+            }
+            foreach (Match m in TokenPattern.Matches(text))
+            {
+                var token = m.Value.ToLowerInvariant();
+                if (!tokens.TryGetValue(token, out var set))
+                {
+                    set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    tokens[token] = set;
+                }
+                set.Add(Path.GetRelativePath(folderPath, file));
+            }
+        }
+        var index = new Index { Tokens = tokens };
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        File.WriteAllText(indexPath, JsonSerializer.Serialize(index, options));
+    }
+
+    public static IEnumerable<string> Search(string indexPath, string phrase)
+    {
+        if (!File.Exists(indexPath))
+            return Array.Empty<string>();
+        var index = JsonSerializer.Deserialize<Index>(File.ReadAllText(indexPath));
+        if (index == null || index.Tokens == null)
+            return Array.Empty<string>();
+        var terms = phrase.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        HashSet<string>? result = null;
+        foreach (var term in terms)
+        {
+            if (!index.Tokens.TryGetValue(term.ToLowerInvariant(), out var files))
+                return Array.Empty<string>();
+            result = result == null ? new HashSet<string>(files) : new HashSet<string>(result.Intersect(files));
+            if (result.Count == 0)
+                return Array.Empty<string>();
+        }
+        return result ?? Enumerable.Empty<string>();
+    }
+
+    private class Index
+    {
+        public Dictionary<string, HashSet<string>> Tokens { get; set; } = new();
+    }
+}
+GPTExporterIndexerAvalonia/Program.cs
+New
++21
+-0
+
+﻿using Avalonia;
+using System;
+
+namespace GPTExporterIndexerAvalonia;
+
+sealed class Program
+{
+    // Initialization code. Don't use any Avalonia, third-party APIs or any
+    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
+    // yet and stuff might break.
+    [STAThread]
+    public static void Main(string[] args) => BuildAvaloniaApp()
+        .StartWithClassicDesktopLifetime(args);
+
+    // Avalonia configuration, don't remove; also used by visual designer.
+    public static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .WithInterFont()
+            .LogToTrace();
+}
+GPTExporterIndexerAvalonia/ViewLocator.cs
+New
++31
+-0
+
+using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using GPTExporterIndexerAvalonia.ViewModels;
+
+namespace GPTExporterIndexerAvalonia;
+
+public class ViewLocator : IDataTemplate
+{
+
+    public Control? Build(object? param)
+    {
+        if (param is null)
+            return null;
+        
+        var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
+        var type = Type.GetType(name);
+
+        if (type != null)
+        {
+            return (Control)Activator.CreateInstance(type)!;
+        }
+        
+        return new TextBlock { Text = "Not Found: " + name };
+    }
+
+    public bool Match(object? data)
+    {
+        return data is ViewModelBase;
+    }
+}
+GPTExporterIndexerAvalonia/ViewModels/MainWindowViewModel.cs
+New
++82
+-0
+
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using CommunityToolkit.Mvvm.Input;
+using GPTExporterIndexerAvalonia.Helpers;
+
+namespace GPTExporterIndexerAvalonia.ViewModels;
+
+public partial class MainWindowViewModel : ViewModelBase
+{
+    private string? _folderPath;
+    private string? _searchPhrase;
+    private string _indexStatus = string.Empty;
+    private ObservableCollection<string> _searchResults = new();
+
+    public string? FolderPath
+    {
+        get => _folderPath;
+        set => SetProperty(ref _folderPath, value);
+    }
+
+    public string? SearchPhrase
+    {
+        get => _searchPhrase;
+        set => SetProperty(ref _searchPhrase, value);
+    }
+
+    public string IndexStatus
+    {
+        get => _indexStatus;
+        set => SetProperty(ref _indexStatus, value);
+    }
+
+    public ObservableCollection<string> SearchResults
+    {
+        get => _searchResults;
+        set => SetProperty(ref _searchResults, value);
+    }
+
+    [RelayCommand]
+    private async Task ChooseFolder()
+    {
+        var dialog = new OpenFolderDialog();
+        var lifetime = (IClassicDesktopStyleApplicationLifetime)App.Current!.ApplicationLifetime!;
+        var result = await dialog.ShowAsync(lifetime.MainWindow!);
+        if (!string.IsNullOrEmpty(result))
+        {
+            FolderPath = result;
+        }
+    }
+
+    [RelayCommand]
+    private async Task BuildIndex()
+    {
+        if (string.IsNullOrEmpty(FolderPath))
+        {
+            IndexStatus = "Please select a folder.";
+            return;
+        }
+
+        var indexFile = Path.Combine(FolderPath, "index.json");
+        await Task.Run(() => SimpleIndexer.BuildIndex(FolderPath, indexFile));
+        IndexStatus = $"Index written to {indexFile}";
+    }
+
+    [RelayCommand]
+    private async Task Search()
+    {
+        if (string.IsNullOrEmpty(FolderPath))
+        {
+            IndexStatus = "Select folder with index first.";
+            return;
+        }
+        var indexFile = Path.Combine(FolderPath, "index.json");
+        var phrase = SearchPhrase ?? string.Empty;
+        var results = await Task.Run(() => SimpleIndexer.Search(indexFile, phrase));
+        SearchResults = new ObservableCollection<string>(results);
+    }
+}
+GPTExporterIndexerAvalonia/ViewModels/ViewModelBase.cs
+New
++7
+-0
+
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace GPTExporterIndexerAvalonia.ViewModels;
+
+public class ViewModelBase : ObservableObject
+{
+}
+GPTExporterIndexerAvalonia/Views/MainWindow.axaml
+New
++29
+-0
+
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:GPTExporterIndexerAvalonia.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="GPTExporterIndexerAvalonia.Views.MainWindow"
+        Title="GPT Exporter/Indexer">
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    <TabControl>
+        <TabItem Header="Index">
+            <StackPanel Margin="10">
+                <TextBox Text="{Binding FolderPath}" IsReadOnly="True" Width="400"/>
+                <Button Content="Choose Folder" Command="{Binding ChooseFolderCommand}" Margin="0,5,0,0"/>
+                <Button Content="Build Index" Command="{Binding BuildIndexCommand}" Margin="0,5,0,0"/>
+                <TextBlock Text="{Binding IndexStatus}" Margin="0,5,0,0"/>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="Search">
+            <StackPanel Margin="10">
+                <TextBox Text="{Binding SearchPhrase, UpdateSourceTrigger=PropertyChanged}" Width="400"/>
+                <Button Content="Search" Command="{Binding SearchCommand}" Margin="0,5,0,0"/>
+                <ListBox ItemsSource="{Binding SearchResults}" Margin="0,5,0,0" Height="300"/>
+            </StackPanel>
+        </TabItem>
+    </TabControl>
+</Window>
+GPTExporterIndexerAvalonia/Views/MainWindow.axaml.cs
+New
++11
+-0
+
+using Avalonia.Controls;
+
+namespace GPTExporterIndexerAvalonia.Views;
+
+public partial class MainWindow : Window
+{
+    public MainWindow()
+    {
+        InitializeComponent();
+    }
+}
+GPTExporterIndexerAvalonia/app.manifest
+New
++18
+-0
+
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
+  <!-- This manifest is used on Windows only.
+       Don't remove it as it might cause problems with window transparency and embedded controls.
+       For more details visit https://learn.microsoft.com/en-us/windows/win32/sbscs/application-manifests -->
+  <assemblyIdentity version="1.0.0.0" name="GPTExporterIndexerAvalonia.Desktop"/>
+
+  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+    <application>
+      <!-- A list of the Windows versions that this application has been tested on
+           and is designed to work with. Uncomment the appropriate elements
+           and Windows will automatically select the most compatible environment. -->
+
+      <!-- Windows 10 -->
+      <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
+    </application>
+  </compatibility>
 </assembly>
 
 **ASSISTANT**: Alright, Justin—let’s handle this like the **PhoenixCodex deserves**: with precision, clarity, and a fireproof plan.
@@ -616,51 +616,51 @@ Would you like me to wrap all this into a `.ps1` file so you can run it directly
 
 **USER**: Get help isn't on the MS Store and the 365 apps are NOT gone and cannot run uninstall from apps/settings.
 
-PS D:\github\newideas\Cycloside> Get-Process -Name winword, excel, outlook, onenote, powerpnt, teams, officeclicktorun -ErrorAction SilentlyContinue | Stop-Process -Force
-PS D:\github\newideas\Cycloside>
-PS D:\github\newideas\Cycloside> # Step 2: Uninstall Microsoft 365 via Click-to-Run
-PS D:\github\newideas\Cycloside> $OfficeProducts = Get-WmiObject -Query "SELECT * FROM Win32_Product WHERE Name LIKE '%Microsoft 365%'"
-PS D:\github\newideas\Cycloside>
-PS D:\github\newideas\Cycloside> if ($OfficeProducts.Count -gt 0) {
->>     foreach ($product in $OfficeProducts) {
->>         Write-Host "Uninstalling $($product.Name)..."
->>         $product.Uninstall()
->>     }
->> } else {
->>     Write-Host "No Microsoft 365 products found via Win32_Product. Trying Office Click-to-Run cleanup..."
->> }
-No Microsoft 365 products found via Win32_Product. Trying Office Click-to-Run cleanup...
-PS D:\github\newideas\Cycloside>
-PS D:\github\newideas\Cycloside> # Step 3: Use Office Removal Tool if necessary
-PS D:\github\newideas\Cycloside> $OfficeScrubPath = "$env:TEMP\OfficeScrubber"
-PS D:\github\newideas\Cycloside> $OfficeScrubURL = "https://aka.ms/saRA-OfficeUninstallFromPC"
-PS D:\github\newideas\Cycloside> $OfficeScrubInstaller = "$OfficeScrubPath\SaRA.exe"
-PS D:\github\newideas\Cycloside>
-PS D:\github\newideas\Cycloside> New-Item -ItemType Directory -Path $OfficeScrubPath -Force | Out-Null
-PS D:\github\newideas\Cycloside> Invoke-WebRequest -Uri $OfficeScrubURL -OutFile $OfficeScrubInstaller
-Invoke-WebRequest : Cannot handle redirect from HTTP/HTTPS protocols to other dissimilar ones.
-At line:1 char:1
-+ Invoke-WebRequest -Uri $OfficeScrubURL -OutFile $OfficeScrubInstaller
-+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-WebRequest], WebExc
-   eption
-    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeWebRequestCommand
-
-PS D:\github\newideas\Cycloside>
-PS D:\github\newideas\Cycloside> Start-Process -FilePath $OfficeScrubInstaller -Wait
-Start-Process : This command cannot be run due to the error: The system cannot find the file specified.
-At line:1 char:1
-+ Start-Process -FilePath $OfficeScrubInstaller -Wait
-+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : InvalidOperation: (:) [Start-Process], InvalidOperationException
-    + FullyQualifiedErrorId : InvalidOperationException,Microsoft.PowerShell.Commands.StartProcessCommand
-
-PS D:\github\newideas\Cycloside>
-PS D:\github\newideas\Cycloside> # Note to user
-PS D:\github\newideas\Cycloside> Write-Host "Manual prompt may open from Microsoft Support and Recovery Assistant (SaRA). Follow instructions to uninstall Office."
-Manual prompt may open from Microsoft Support and Recovery Assistant (SaRA). Follow instructions to uninstall Office.
-PS D:\github\newideas\Cycloside>
-PS D:\github\newideas\Cycloside> Get-AppXPackage *Microsoft.GetHelp* -AllUsers | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+PS D:\github\newideas\Cycloside> Get-Process -Name winword, excel, outlook, onenote, powerpnt, teams, officeclicktorun -ErrorAction SilentlyContinue | Stop-Process -Force
+PS D:\github\newideas\Cycloside>
+PS D:\github\newideas\Cycloside> # Step 2: Uninstall Microsoft 365 via Click-to-Run
+PS D:\github\newideas\Cycloside> $OfficeProducts = Get-WmiObject -Query "SELECT * FROM Win32_Product WHERE Name LIKE '%Microsoft 365%'"
+PS D:\github\newideas\Cycloside>
+PS D:\github\newideas\Cycloside> if ($OfficeProducts.Count -gt 0) {
+>>     foreach ($product in $OfficeProducts) {
+>>         Write-Host "Uninstalling $($product.Name)..."
+>>         $product.Uninstall()
+>>     }
+>> } else {
+>>     Write-Host "No Microsoft 365 products found via Win32_Product. Trying Office Click-to-Run cleanup..."
+>> }
+No Microsoft 365 products found via Win32_Product. Trying Office Click-to-Run cleanup...
+PS D:\github\newideas\Cycloside>
+PS D:\github\newideas\Cycloside> # Step 3: Use Office Removal Tool if necessary
+PS D:\github\newideas\Cycloside> $OfficeScrubPath = "$env:TEMP\OfficeScrubber"
+PS D:\github\newideas\Cycloside> $OfficeScrubURL = "https://aka.ms/saRA-OfficeUninstallFromPC"
+PS D:\github\newideas\Cycloside> $OfficeScrubInstaller = "$OfficeScrubPath\SaRA.exe"
+PS D:\github\newideas\Cycloside>
+PS D:\github\newideas\Cycloside> New-Item -ItemType Directory -Path $OfficeScrubPath -Force | Out-Null
+PS D:\github\newideas\Cycloside> Invoke-WebRequest -Uri $OfficeScrubURL -OutFile $OfficeScrubInstaller
+Invoke-WebRequest : Cannot handle redirect from HTTP/HTTPS protocols to other dissimilar ones.
+At line:1 char:1
++ Invoke-WebRequest -Uri $OfficeScrubURL -OutFile $OfficeScrubInstaller
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-WebRequest], WebExc
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeWebRequestCommand
+
+PS D:\github\newideas\Cycloside>
+PS D:\github\newideas\Cycloside> Start-Process -FilePath $OfficeScrubInstaller -Wait
+Start-Process : This command cannot be run due to the error: The system cannot find the file specified.
+At line:1 char:1
++ Start-Process -FilePath $OfficeScrubInstaller -Wait
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [Start-Process], InvalidOperationException
+    + FullyQualifiedErrorId : InvalidOperationException,Microsoft.PowerShell.Commands.StartProcessCommand
+
+PS D:\github\newideas\Cycloside>
+PS D:\github\newideas\Cycloside> # Note to user
+PS D:\github\newideas\Cycloside> Write-Host "Manual prompt may open from Microsoft Support and Recovery Assistant (SaRA). Follow instructions to uninstall Office."
+Manual prompt may open from Microsoft Support and Recovery Assistant (SaRA). Follow instructions to uninstall Office.
+PS D:\github\newideas\Cycloside>
+PS D:\github\newideas\Cycloside> Get-AppXPackage *Microsoft.GetHelp* -AllUsers | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 PS D:\github\newideas\Cycloside>
 
 **USER**: SARA is no longer supported and integrated into get help.
@@ -835,40 +835,40 @@ Do you want that file? Or want me to create a self-elevating `.bat` launcher for
 
 You’re a flame-tier operator now. Let’s finish the purge.
 
-**USER**: PS D:\github\newideas\Cycloside> Get-ItemProperty -Path "HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" |
->> Where-Object { $_.DisplayName -like "*Office*" -or $_.DisplayName -like "*365*" } |
->> Select DisplayName, UninstallString
-PS D:\github\newideas\Cycloside> & "C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeClickToRun.exe" scenario=install scenarios=forceappshutdown displaylevel=false
-PS D:\github\newideas\Cycloside> # SERVICES
->> Stop-Service -Name "ClickToRunSvc" -Force -ErrorAction SilentlyContinue
->> sc.exe delete "ClickToRunSvc"
->>
->> # FILE SYSTEM
->> $officePaths = @(
->>     "$env:ProgramFiles\Common Files\Microsoft Shared\ClickToRun",
->>     "$env:ProgramFiles\Microsoft Office",
->>     "$env:ProgramFiles (x86)\Microsoft Office",
->>     "$env:LocalAppData\Microsoft\Office",
->>     "$env:AppData\Microsoft\Office"
->> )
->> foreach ($path in $officePaths) {
->>     Remove-Item -Path $path -Recurse -Force -ErrorAction SilentlyContinue
->> }
->>
->> # REGISTRY
->> $registryPaths = @(
->>     "HKCU:\Software\Microsoft\Office",
->>     "HKLM:\SOFTWARE\Microsoft\Office",
->>     "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Office"
->> )
->> foreach ($reg in $registryPaths) {
->>     Remove-Item -Path $reg -Recurse -Force -ErrorAction SilentlyContinue
->> }
->>
->> # SCHEDULED TASKS
->> schtasks /Delete /TN "OfficeClickToRunScheduler" /F 2>$null
->>
-[SC] DeleteService SUCCESS
+**USER**: PS D:\github\newideas\Cycloside> Get-ItemProperty -Path "HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" |
+>> Where-Object { $_.DisplayName -like "*Office*" -or $_.DisplayName -like "*365*" } |
+>> Select DisplayName, UninstallString
+PS D:\github\newideas\Cycloside> & "C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeClickToRun.exe" scenario=install scenarios=forceappshutdown displaylevel=false
+PS D:\github\newideas\Cycloside> # SERVICES
+>> Stop-Service -Name "ClickToRunSvc" -Force -ErrorAction SilentlyContinue
+>> sc.exe delete "ClickToRunSvc"
+>>
+>> # FILE SYSTEM
+>> $officePaths = @(
+>>     "$env:ProgramFiles\Common Files\Microsoft Shared\ClickToRun",
+>>     "$env:ProgramFiles\Microsoft Office",
+>>     "$env:ProgramFiles (x86)\Microsoft Office",
+>>     "$env:LocalAppData\Microsoft\Office",
+>>     "$env:AppData\Microsoft\Office"
+>> )
+>> foreach ($path in $officePaths) {
+>>     Remove-Item -Path $path -Recurse -Force -ErrorAction SilentlyContinue
+>> }
+>>
+>> # REGISTRY
+>> $registryPaths = @(
+>>     "HKCU:\Software\Microsoft\Office",
+>>     "HKLM:\SOFTWARE\Microsoft\Office",
+>>     "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Office"
+>> )
+>> foreach ($reg in $registryPaths) {
+>>     Remove-Item -Path $reg -Recurse -Force -ErrorAction SilentlyContinue
+>> }
+>>
+>> # SCHEDULED TASKS
+>> schtasks /Delete /TN "OfficeClickToRunScheduler" /F 2>$null
+>>
+[SC] DeleteService SUCCESS
 PS D:\github\newideas\Cycloside>
 
 **USER**: Nice, totally gone.

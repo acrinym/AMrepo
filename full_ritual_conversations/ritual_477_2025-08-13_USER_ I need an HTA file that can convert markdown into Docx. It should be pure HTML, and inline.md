@@ -166,22 +166,22 @@ Would you like the final one all zipped up and emailed/shared?
 
 **USER**: Hey..... this is what you're returning to me for libraries. 
 
- <!-- Inline marked.js library -->
-    <script>
-        // Marked.js library code here (minified for brevity)
-        // You can obtain the minified version from the official marked.js repository
-    </script>
-
-    <!-- Inline PizZip library -->
-    <script>
-        // PizZip library code here (minified for brevity)
-        // You can obtain the minified version from the official PizZip repository
-    </script>
-
-    <!-- Inline docxtemplater library -->
-    <script>
-        // docxtemplater library code here (minified for brevity)
-        // You can obtain the minified version from the official docxtemplater repository
+ <!-- Inline marked.js library -->
+    <script>
+        // Marked.js library code here (minified for brevity)
+        // You can obtain the minified version from the official marked.js repository
+    </script>
+
+    <!-- Inline PizZip library -->
+    <script>
+        // PizZip library code here (minified for brevity)
+        // You can obtain the minified version from the official PizZip repository
+    </script>
+
+    <!-- Inline docxtemplater library -->
+    <script>
+        // docxtemplater library code here (minified for brevity)
+        // You can obtain the minified version from the official docxtemplater repository
     </script>
 
 **USER**: apparently i should add search so you can do it. try now.

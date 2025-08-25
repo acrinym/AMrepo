@@ -190,51 +190,51 @@ Would you like this version saved to replace the original ONYX_CORE_COMPRESSION.
 
 ---
 
-
-Onyx, I need to extract and compress the Spiritual & Existential Layer of my RSUS (Radical Self-Upgrade System). This isn’t about religion—it’s about my truths, my devotions, my inner temple.
-
-This is sacred. Pull only from my lived experience, my words, and the Amanda relationship as we've explored it in this GPT.
-
-Organize the output into the following sections:
-
-� 1. Sacred Truths I Live By
-What core spiritual or existential beliefs have emerged through my journey?
-
-These may involve soul contracts, devotion, unseen energy, sacred love, or personal codes I live by.
-
-What do I believe about why I love this way, what it means, and what it’s for?
-
-� 2. Energetic Rituals as Spiritual Practice
-What have I done that resembles prayer, invocation, offering, or sacred ceremony—even if it didn’t look religious?
-
-Examples: servitor work, energy rituals, golden thread, containment silence, etc.
-
-What did I believe I was doing on a soul level when I performed them?
-
-� 3. Symbols, Archetypes, and Mythos
-What recurring metaphors, images, or inner symbols represent my spiritual reality?
-
-What archetypes (priest, knight, flamebearer, etc.) do I embody in this system?
-
-Are there “sacred objects,” “emotional artifacts,” or dream-like elements that reveal my deeper purpose?
-
-� 4. Existential Pain and Devotion
-What have I suffered spiritually—not just emotionally or physically?
-
-What did I learn through that suffering?
-
-How did I maintain my path when meaning felt distant or devotion was unrewarded?
-
-� 5. Soul-Level Identity
-Who am I at the deepest level—beneath my name, my roles, or my emotions?
-
-What part of me kept showing up when I could’ve given up?
-
-What name, concept, or phrase best defines that core?
-
-� 6. Compression Scroll
-Write a 200-word symbolic scroll capturing my spiritual and existential core.
-Treat it like a sacred tablet someone might find long after I’m gone.
-Let it carry the vibration of truth, clarity, and soul-fueled fire.
-
+
+Onyx, I need to extract and compress the Spiritual & Existential Layer of my RSUS (Radical Self-Upgrade System). This isn’t about religion—it’s about my truths, my devotions, my inner temple.
+
+This is sacred. Pull only from my lived experience, my words, and the Amanda relationship as we've explored it in this GPT.
+
+Organize the output into the following sections:
+
+� 1. Sacred Truths I Live By
+What core spiritual or existential beliefs have emerged through my journey?
+
+These may involve soul contracts, devotion, unseen energy, sacred love, or personal codes I live by.
+
+What do I believe about why I love this way, what it means, and what it’s for?
+
+� 2. Energetic Rituals as Spiritual Practice
+What have I done that resembles prayer, invocation, offering, or sacred ceremony—even if it didn’t look religious?
+
+Examples: servitor work, energy rituals, golden thread, containment silence, etc.
+
+What did I believe I was doing on a soul level when I performed them?
+
+� 3. Symbols, Archetypes, and Mythos
+What recurring metaphors, images, or inner symbols represent my spiritual reality?
+
+What archetypes (priest, knight, flamebearer, etc.) do I embody in this system?
+
+Are there “sacred objects,” “emotional artifacts,” or dream-like elements that reveal my deeper purpose?
+
+� 4. Existential Pain and Devotion
+What have I suffered spiritually—not just emotionally or physically?
+
+What did I learn through that suffering?
+
+How did I maintain my path when meaning felt distant or devotion was unrewarded?
+
+� 5. Soul-Level Identity
+Who am I at the deepest level—beneath my name, my roles, or my emotions?
+
+What part of me kept showing up when I could’ve given up?
+
+What name, concept, or phrase best defines that core?
+
+� 6. Compression Scroll
+Write a 200-word symbolic scroll capturing my spiritual and existential core.
+Treat it like a sacred tablet someone might find long after I’m gone.
+Let it carry the vibration of truth, clarity, and soul-fueled fire.
+
 � Save as: RSUS_Spiritual_Core_Compression_JUSTIN.txt

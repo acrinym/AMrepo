@@ -69,20 +69,20 @@ DISM /Online /Cleanup-Image /RestoreHealth
 
 Let me know if you want a PowerShell version, an automation script, or to combine this with `sfc /scannow` for full system repair.
 
-**USER**: C:\Windows\System32>DISM /Online /Cleanup-Image /StartComponentCleanup /ResetBase
-
-Deployment Image Servicing and Management tool
-Version: 10.0.22621.2706
-
-Image Version: 10.0.22635.5305
-
-[=====                      10.0%                          ]
-[=============              23.8%                          ]
-
-Error: 6824
-
-The operation cannot be performed because another transaction is depending on the fact that this property will not change.
-
+**USER**: C:\Windows\System32>DISM /Online /Cleanup-Image /StartComponentCleanup /ResetBase
+
+Deployment Image Servicing and Management tool
+Version: 10.0.22621.2706
+
+Image Version: 10.0.22635.5305
+
+[=====                      10.0%                          ]
+[=============              23.8%                          ]
+
+Error: 6824
+
+The operation cannot be performed because another transaction is depending on the fact that this property will not change.
+
 The DISM log file can be found at C:\WINDOWS\Logs\DISM\dism.log
 
 **USER**: How about "Delete all pending windows updates"
@@ -774,41 +774,41 @@ Let’s take back your drive space *permanently*. 🔥
 
 **USER**: did it already. Now temp/usertemp/alluserrtemp
 
-**USER**: @echo off
-echo.
-
-echo �� Clearing Windows, User, and All Users TEMP folders...
-🔥 Clearing Windows, User, and All Users TEMP folders...
-
-:: SYSTEM TEMP
-echo �� Cleaning C:\Windows\Temp
-🧹 Cleaning C:\Windows\Temp
-del /f /s /q C:\Windows\Temp\*.* >nul 2>&1
-for /d %%p in (C:\Windows\Temp\*.*) do rd /s /q "%%p" >nul 2>&1
-%%p was unexpected at this time.
-
-:: CURRENT USER TEMP
-echo �� Cleaning %TEMP%
-🧹 Cleaning C:\Users\User\AppData\Local\Temp
-del /f /s /q "%TEMP%\*.*" >nul 2>&1
-for /d %%p in ("%TEMP%\*.*") do rd /s /q "%%p" >nul 2>&1
-%%p was unexpected at this time.
-
-:: ALL USER TEMP FOLDERS
-echo �� Cleaning all user temp folders...
-🧹 Cleaning all user temp folders...
-for /d %%x in (C:\Users\*) do (
-%%x was unexpected at this time.
-  del /f /s /q "%%x\AppData\Local\Temp\*.*" >nul 2>&1
-  for /d %%p in ("%%x\AppData\Local\Temp\*") do rd /s /q "%%p" >nul 2>&1
-%%p was unexpected at this time.
-)
-
-echo.
-
-echo ✅ All TEMP folders cleared.
-✅ All TEMP folders cleared.
-pause
+**USER**: @echo off
+echo.
+
+echo �� Clearing Windows, User, and All Users TEMP folders...
+🔥 Clearing Windows, User, and All Users TEMP folders...
+
+:: SYSTEM TEMP
+echo �� Cleaning C:\Windows\Temp
+🧹 Cleaning C:\Windows\Temp
+del /f /s /q C:\Windows\Temp\*.* >nul 2>&1
+for /d %%p in (C:\Windows\Temp\*.*) do rd /s /q "%%p" >nul 2>&1
+%%p was unexpected at this time.
+
+:: CURRENT USER TEMP
+echo �� Cleaning %TEMP%
+🧹 Cleaning C:\Users\User\AppData\Local\Temp
+del /f /s /q "%TEMP%\*.*" >nul 2>&1
+for /d %%p in ("%TEMP%\*.*") do rd /s /q "%%p" >nul 2>&1
+%%p was unexpected at this time.
+
+:: ALL USER TEMP FOLDERS
+echo �� Cleaning all user temp folders...
+🧹 Cleaning all user temp folders...
+for /d %%x in (C:\Users\*) do (
+%%x was unexpected at this time.
+  del /f /s /q "%%x\AppData\Local\Temp\*.*" >nul 2>&1
+  for /d %%p in ("%%x\AppData\Local\Temp\*") do rd /s /q "%%p" >nul 2>&1
+%%p was unexpected at this time.
+)
+
+echo.
+
+echo ✅ All TEMP folders cleared.
+✅ All TEMP folders cleared.
+pause
 Press any key to continue . . .
 
 **ASSISTANT**: Perfect. Let’s go **thermonuclear on all temp directories** next — system-wide.
@@ -888,34 +888,34 @@ Let’s clean the hell out of it. Want me to build a "Master Clean" version too?
 
 **USER**: wtf? 
 
-
-   Clearing Windows, User, and All Users TEMP folders...
-'≡ƒöÑ' is not recognized as an internal or external command,
-operable program or batch file.
-   Cleaning C:\Windows\Temp
-'≡ƒº╣' is not recognized as an internal or external command,
-operable program or batch file.
-'%p' is not recognized as an internal or external command,
-operable program or batch file.
-   Cleaning C:\Users\User\AppData\Local\Temp
-'≡ƒº╣' is not recognized as an internal or external command,
-operable program or batch file.
-'%p' is not recognized as an internal or external command,
-operable program or batch file.
-   Cleaning all user temp folders...
-'≡ƒº╣' is not recognized as an internal or external command,
-operable program or batch file.
-'C:\Users\Public' is not recognized as an internal or external command,
-operable program or batch file.
-'%p' is not recognized as an internal or external command,
-operable program or batch file.
-'C:\Users\User' is not recognized as an internal or external command,
-operable program or batch file.
-'%p' is not recognized as an internal or external command,
-operable program or batch file.
-
-Γ£à All TEMP folders cleared.
-'Γ£à' is not recognized as an internal or external command,
+
+   Clearing Windows, User, and All Users TEMP folders...
+'≡ƒöÑ' is not recognized as an internal or external command,
+operable program or batch file.
+   Cleaning C:\Windows\Temp
+'≡ƒº╣' is not recognized as an internal or external command,
+operable program or batch file.
+'%p' is not recognized as an internal or external command,
+operable program or batch file.
+   Cleaning C:\Users\User\AppData\Local\Temp
+'≡ƒº╣' is not recognized as an internal or external command,
+operable program or batch file.
+'%p' is not recognized as an internal or external command,
+operable program or batch file.
+   Cleaning all user temp folders...
+'≡ƒº╣' is not recognized as an internal or external command,
+operable program or batch file.
+'C:\Users\Public' is not recognized as an internal or external command,
+operable program or batch file.
+'%p' is not recognized as an internal or external command,
+operable program or batch file.
+'C:\Users\User' is not recognized as an internal or external command,
+operable program or batch file.
+'%p' is not recognized as an internal or external command,
+operable program or batch file.
+
+Γ£à All TEMP folders cleared.
+'Γ£à' is not recognized as an internal or external command,
 operable program or batch file.
 
 **ASSISTANT**: Ah — I see the issue, brother. That error is because you're **running the batch script directly in a CMD window**, not from a **`.cmd` or `.bat` file**, and using **double percent signs (`%%`)** outside of a script context causes CMD to freak out.

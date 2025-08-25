@@ -13,48 +13,48 @@
 
 I need to give codex specific instructions to fix these build errors, because "fix build errors isn't making it do so" 
 
-Build FAILED.
-
-D:\GitHub\RitualOS\RitualOS.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1.4) but QuestPDF 2024.1.4 w
-as not found. An approximate best match of QuestPDF 2024.3.0 was resolved. [D:\GitHub\RitualOS\RitualOS.sln]
-D:\GitHub\RitualOS\tests\RitualOS.Tests\RitualOS.Tests.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1
-.4) but QuestPDF 2024.1.4 was not found. An approximate best match of QuestPDF 2024.3.0 was resolved. [D:\GitHub\Ritual
-OS\RitualOS.sln]
-D:\GitHub\RitualOS\tests\RitualOS.Tests\RitualOS.Tests.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1
-.4) but QuestPDF 2024.1.4 was not found. An approximate best match of QuestPDF 2024.3.0 was resolved.
-D:\GitHub\RitualOS\RitualOS.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1.4) but QuestPDF 2024.1.4 w
-as not found. An approximate best match of QuestPDF 2024.3.0 was resolved.
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001: File doesn't contain valid XAML: Sys
-tem.Xml.XmlException: An error occurred while parsing EntityName. Line 134, position 52. [D:\GitHub\RitualOS\RitualOS.c
-sproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.T
-hrow(Exception e) [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.T
-hrow(String res, Int32 lineNo, Int32 linePos) [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.H
-andleEntityReference(Boolean isInAttributeValue, EntityExpandType expandType, Int32& charRefEndPos) [D:\GitHub\RitualOS
-\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
-arseAttributeValueSlow(Int32 curPos, Char quoteChar, NodeData attr) [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
-arseAttributes() [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
-arseElement() [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
-arseElementContent() [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.Linq.XContainer.Rea
-dContentFrom(XmlReader r) [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.Linq.XDocument.Load
-(XmlReader reader, LoadOptions options) [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.Linq.XDocument.Pars
-e(String text, LoadOptions options) [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at Avalonia.Build.Tasks.XamlFileI
-nfo.Parse(String data) in /_/src/Avalonia.Build.Tasks/XamlFileInfo.cs:line 11 [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at Avalonia.Build.Tasks.GenerateA
-valoniaResourcesTask.PreProcessXamlFiles(List`1 sources) in /_/src/Avalonia.Build.Tasks/GenerateAvaloniaResourcesTask.c
-s:line 96 [D:\GitHub\RitualOS\RitualOS.csproj]
-    4 Warning(s)
-    1 Error(s)
+Build FAILED.
+
+D:\GitHub\RitualOS\RitualOS.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1.4) but QuestPDF 2024.1.4 w
+as not found. An approximate best match of QuestPDF 2024.3.0 was resolved. [D:\GitHub\RitualOS\RitualOS.sln]
+D:\GitHub\RitualOS\tests\RitualOS.Tests\RitualOS.Tests.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1
+.4) but QuestPDF 2024.1.4 was not found. An approximate best match of QuestPDF 2024.3.0 was resolved. [D:\GitHub\Ritual
+OS\RitualOS.sln]
+D:\GitHub\RitualOS\tests\RitualOS.Tests\RitualOS.Tests.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1
+.4) but QuestPDF 2024.1.4 was not found. An approximate best match of QuestPDF 2024.3.0 was resolved.
+D:\GitHub\RitualOS\RitualOS.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1.4) but QuestPDF 2024.1.4 w
+as not found. An approximate best match of QuestPDF 2024.3.0 was resolved.
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001: File doesn't contain valid XAML: Sys
+tem.Xml.XmlException: An error occurred while parsing EntityName. Line 134, position 52. [D:\GitHub\RitualOS\RitualOS.c
+sproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.T
+hrow(Exception e) [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.T
+hrow(String res, Int32 lineNo, Int32 linePos) [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.H
+andleEntityReference(Boolean isInAttributeValue, EntityExpandType expandType, Int32& charRefEndPos) [D:\GitHub\RitualOS
+\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
+arseAttributeValueSlow(Int32 curPos, Char quoteChar, NodeData attr) [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
+arseAttributes() [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
+arseElement() [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
+arseElementContent() [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.Linq.XContainer.Rea
+dContentFrom(XmlReader r) [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.Linq.XDocument.Load
+(XmlReader reader, LoadOptions options) [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.Linq.XDocument.Pars
+e(String text, LoadOptions options) [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at Avalonia.Build.Tasks.XamlFileI
+nfo.Parse(String data) in /_/src/Avalonia.Build.Tasks/XamlFileInfo.cs:line 11 [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at Avalonia.Build.Tasks.GenerateA
+valoniaResourcesTask.PreProcessXamlFiles(List`1 sources) in /_/src/Avalonia.Build.Tasks/GenerateAvaloniaResourcesTask.c
+s:line 96 [D:\GitHub\RitualOS\RitualOS.csproj]
+    4 Warning(s)
+    1 Error(s)
 
 ---
 

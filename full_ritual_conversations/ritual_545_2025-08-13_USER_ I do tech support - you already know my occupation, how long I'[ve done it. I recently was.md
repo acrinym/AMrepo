@@ -1213,115 +1213,115 @@ If you’d like, I can also generate and provide a downloadable **DOCX** file se
 **USER**: This is what existed before in the mentorship quick guidance..... 
 
 
-Mentorship Program Quick Reference Guide
-General Communication Tips
-Building Rapport:
-1.	Match tone and energy to the customer (calm for frustrated customers, warm and friendly for cheerful ones).
-2.	Use reflective listening techniques:
-o	"It sounds like you're experiencing…"
-o	"I understand how that could be frustrating."
-Tone and Language:
-1.	Speak clearly and confidently, avoiding filler words like "um" or "maybe."
-2.	Mirror the customer’s pace of speech for better connection.
-Active Listening:
-1.	Reiterate key points to confirm understanding:
-o	"Just to clarify, you're saying…"
-2.	Avoid interrupting customers and allow them to finish their thoughts.
-________________________________________
-Call Flow and Ticket Management
-Efficient Information Gathering:
-1.	Ask clear and concise questions:
-o	"Can you walk me through what happens when you try to log in?"
-o	"What error message are you seeing?"
-Ending Calls Professionally:
-1.	Use consistent phrasing:
-o	"Thank you for calling. I’ll ensure you receive a confirmation email with your ticket number as the reference number, and you should also receive a customer service survey."
-o	"For escalated tickets: Thank you for your patience. I’ve escalated your ticket, and you’ll receive a confirmation email shortly with the ticket number as the reference number. A Tier 2 agent will contact you as soon as they are able."
-2.	For follow-ups:
-o	"If follow-up is needed, someone should reach out within 24 hours." This applies when a Forest Service ticket goes to Customer Care. Other agencies or task orders do not use Customer Care.
-3.	Avoid timelines or referencing specific teams unless required (e.g., Tier 2 escalations). A clear reference like "Desktop or Tier 2" can help set expectations.
-Customer Validation:
-1.	Verify that the customer is entitled to service by confirming their status in the system:
-o	Check Customer Records: Use the provided tools to verify that the individual is listed as an authorized user under their agency or organization.
-o	Confirm Active Entitlement: Ensure their service agreement or entitlement to support is current and valid.
-2.	Use polite language to address any discrepancies:
-o	"I see that your account may not be listed as authorized for service. Let me verify this further to ensure we’re able to assist."
-o	"If necessary, I can provide guidance on updating or renewing your service entitlement."
-Mandatory Fields for Tickets:
-1.	Ensure all required fields are completed before submission, including:
-o	Customer Validation: Confirm the customer’s identity using the required process.
-o	Summary: Write a clear, concise description of the issue.
-o	Work Detail Notes: Document all troubleshooting steps and outcomes.
-o	Resolution: Provide a public-facing summary of the resolution steps for transparency.
-2.	Avoid including Personally Identifiable Information (PII) or unprofessional language in tickets.
-3.	Use templates like the Mandatory Desktop Template (MDT) for incidents routed to desktop support to prepopulate necessary fields.
-4.	Set the Owner Group After Saving: Ensure the correct Owner Group is set after saving the ticket, as it may change. This step is crucial to avoid payment errors or misapplication of billing.
-Identity Verification for Security-Sensitive Processes:
-1.	Mandatory Security Questions:
-o	Always ask the user the security questions stored in EIMS before proceeding with tasks like password resets, username retrievals, login exemptions, or device unlocking.
-o	Provide this statement before starting the verification process:
-	"For security purposes, we must verify your identity with security questions you chose during your eAuthentication ID setup. You must correctly answer three of your chosen questions with answers that match our system records."
-o	Users must answer three questions correctly. Minor spelling errors or slight variations can be accepted as correct.
-2.	When Security Questions Are Not Set Up:
-o	If the user does not have security questions in EIMS or cannot recall their answers:
-	Inform them that their identity cannot be verified.
-	Advise them to contact the ICAM Help Desk at 1-800-457-3642 to set up or update their security questions in eAuth.
-	Once completed, the user may contact the help desk again to resume support.
-3.	Prohibited Actions:
-o	Under no circumstances should agents provide the user’s eAuth username, regardless of the task order or situation.
-4.	Escalation Options:
-o	If security verification cannot be completed, escalate the issue as outlined in the appropriate KBAs.
-5.	Important Notes:
-o	Processes requiring identity verification (e.g., password resets or login exemptions) cannot be completed via voicemail, chat, or email. Verification must occur during a live call.
-o	If the user is using a relay or interpreter service, you may still proceed with verification by speaking directly with the user through the service.
-When Escalating Tickets:
-1.	Clearly set expectations:
-o	"Your ticket will be escalated, and a Tier 2 agent will be in touch. Unfortunately, I can't provide a timeline as that's determined by their workload."
-2.	Simplify explanations about Tier 2:
-o	"Tier 2 is the next higher helpdesk or deskside support team. They have additional permissions and tools to resolve issues or perform hands-on work on devices."
-3.	Address customer concerns about escalation:
-o	"I understand you may not want to escalate based on past experiences, but unfortunately, Tier 1 does not have the tools or permissions to resolve this issue fully. Escalating ensures it reaches the experts equipped to handle it."
-o	"Our goal is to resolve this efficiently, and Tier 2 is best equipped to handle cases that require deeper access or hands-on work."
-o	"I’ll make sure all necessary details are included in the ticket to minimize back-and-forth for you."
-4.	Forest Service-Specific Escalation Guidance:
-o	Unassigned or Stalled Tickets: If a ticket has been unassigned or assigned but shows no progress for 4 business days, the customer can request escalation by calling the Customer Help Desk (CHD). Inform the customer:
-	"Just a moment while I get this escalated for you, since there’s been no progress within the expected time. You’ll receive a confirmation email, and someone from the next team will contact you as soon as possible."
-o	Tracking Tickets: Customers can track open incidents using the Digital Workplace (DWP) portal’s "My Activity" or "My Stuff" sections. These allow for status checks or adding information to tickets.
-o	Avoiding Ineffective Escalation Channels: Advise users to avoid chat, voicemail, or email for escalation requests, as these may create new tickets instead of addressing the existing one.
-o	Critical Priority Escalation: For incidents affecting larger populations (e.g., server outages), critical priority escalations can occur after 2 hours without Tier 2 contact.
-Incident Documentation and Related Tickets:
-1.	Document troubleshooting steps clearly in internal notes and copy resolutions to public-facing Work Detail Notes for customer visibility.
-2.	Relate tickets to KBAs or parent incidents when applicable.
-3.	Ensure the "Impact," "Urgency," and "Priority" fields are updated correctly before routing or escalation.
-4.	Attach relevant Knowledge Base Articles (KBAs) to tickets to provide additional context.
-Breaking Conversations to Manage Time:
-1.	Politely redirect lengthy stories:
-o	"I really appreciate the context you're sharing. To ensure we can resolve this quickly, let’s focus on the key issue you’re experiencing."
-2.	Acknowledge the need for escalation if the issue is complex:
-o	"It looks like this issue involves permissions or tools that we don’t have access to at Tier 1. I'll gather the necessary information and escalate your ticket to Tier 2."
-3.	Use clear transition statements to end calls gracefully:
-o	"I’ve documented everything we discussed and escalated your ticket. You’ll receive a confirmation email shortly. Is there anything else I can assist you with today?"
-________________________________________
-Handling Customer Emotions
-Empathy Statements:
-1.	"I understand how this could be frustrating."
-2.	"Thank you for your patience; I’m here to help."
-De-escalation Tips:
-1.	Maintain a calm tone, even if the customer is upset. For example, if the customer is raising their voice, respond with a neutral phrase like, "I understand how frustrating this must be. Let’s focus on resolving this issue together," to redirect focus to the solution.
-2.	Acknowledge emotions without personalizing:
-o	"I hear your concern, and I’ll do everything I can to resolve this."
-________________________________________
-Mentorship-Specific Guidance
-Feedback Framework:
-1.	Use the "sandwich" method:
-o	Start with a positive observation: "You did well explaining the process."
-o	Provide constructive feedback: "Next time, try pausing after their response to avoid interruptions."
-o	End with encouragement: "You’re doing great at staying composed under pressure."
-Techniques for Call Success:
-1.	Maintaining Calm:
-o	"Before the next call, take a deep breath and recall a moment where you felt in control and calm. Carry that feeling into the interaction."
-2.	Breaking Down Information:
-o	Break complex instructions into smaller steps: "First, check your settings. For example, click on the gear icon in the top-right corner of your screen. Then, let me know what options you see under 'Account Settings.'"
+Mentorship Program Quick Reference Guide
+General Communication Tips
+Building Rapport:
+1.	Match tone and energy to the customer (calm for frustrated customers, warm and friendly for cheerful ones).
+2.	Use reflective listening techniques:
+o	"It sounds like you're experiencing…"
+o	"I understand how that could be frustrating."
+Tone and Language:
+1.	Speak clearly and confidently, avoiding filler words like "um" or "maybe."
+2.	Mirror the customer’s pace of speech for better connection.
+Active Listening:
+1.	Reiterate key points to confirm understanding:
+o	"Just to clarify, you're saying…"
+2.	Avoid interrupting customers and allow them to finish their thoughts.
+________________________________________
+Call Flow and Ticket Management
+Efficient Information Gathering:
+1.	Ask clear and concise questions:
+o	"Can you walk me through what happens when you try to log in?"
+o	"What error message are you seeing?"
+Ending Calls Professionally:
+1.	Use consistent phrasing:
+o	"Thank you for calling. I’ll ensure you receive a confirmation email with your ticket number as the reference number, and you should also receive a customer service survey."
+o	"For escalated tickets: Thank you for your patience. I’ve escalated your ticket, and you’ll receive a confirmation email shortly with the ticket number as the reference number. A Tier 2 agent will contact you as soon as they are able."
+2.	For follow-ups:
+o	"If follow-up is needed, someone should reach out within 24 hours." This applies when a Forest Service ticket goes to Customer Care. Other agencies or task orders do not use Customer Care.
+3.	Avoid timelines or referencing specific teams unless required (e.g., Tier 2 escalations). A clear reference like "Desktop or Tier 2" can help set expectations.
+Customer Validation:
+1.	Verify that the customer is entitled to service by confirming their status in the system:
+o	Check Customer Records: Use the provided tools to verify that the individual is listed as an authorized user under their agency or organization.
+o	Confirm Active Entitlement: Ensure their service agreement or entitlement to support is current and valid.
+2.	Use polite language to address any discrepancies:
+o	"I see that your account may not be listed as authorized for service. Let me verify this further to ensure we’re able to assist."
+o	"If necessary, I can provide guidance on updating or renewing your service entitlement."
+Mandatory Fields for Tickets:
+1.	Ensure all required fields are completed before submission, including:
+o	Customer Validation: Confirm the customer’s identity using the required process.
+o	Summary: Write a clear, concise description of the issue.
+o	Work Detail Notes: Document all troubleshooting steps and outcomes.
+o	Resolution: Provide a public-facing summary of the resolution steps for transparency.
+2.	Avoid including Personally Identifiable Information (PII) or unprofessional language in tickets.
+3.	Use templates like the Mandatory Desktop Template (MDT) for incidents routed to desktop support to prepopulate necessary fields.
+4.	Set the Owner Group After Saving: Ensure the correct Owner Group is set after saving the ticket, as it may change. This step is crucial to avoid payment errors or misapplication of billing.
+Identity Verification for Security-Sensitive Processes:
+1.	Mandatory Security Questions:
+o	Always ask the user the security questions stored in EIMS before proceeding with tasks like password resets, username retrievals, login exemptions, or device unlocking.
+o	Provide this statement before starting the verification process:
+	"For security purposes, we must verify your identity with security questions you chose during your eAuthentication ID setup. You must correctly answer three of your chosen questions with answers that match our system records."
+o	Users must answer three questions correctly. Minor spelling errors or slight variations can be accepted as correct.
+2.	When Security Questions Are Not Set Up:
+o	If the user does not have security questions in EIMS or cannot recall their answers:
+	Inform them that their identity cannot be verified.
+	Advise them to contact the ICAM Help Desk at 1-800-457-3642 to set up or update their security questions in eAuth.
+	Once completed, the user may contact the help desk again to resume support.
+3.	Prohibited Actions:
+o	Under no circumstances should agents provide the user’s eAuth username, regardless of the task order or situation.
+4.	Escalation Options:
+o	If security verification cannot be completed, escalate the issue as outlined in the appropriate KBAs.
+5.	Important Notes:
+o	Processes requiring identity verification (e.g., password resets or login exemptions) cannot be completed via voicemail, chat, or email. Verification must occur during a live call.
+o	If the user is using a relay or interpreter service, you may still proceed with verification by speaking directly with the user through the service.
+When Escalating Tickets:
+1.	Clearly set expectations:
+o	"Your ticket will be escalated, and a Tier 2 agent will be in touch. Unfortunately, I can't provide a timeline as that's determined by their workload."
+2.	Simplify explanations about Tier 2:
+o	"Tier 2 is the next higher helpdesk or deskside support team. They have additional permissions and tools to resolve issues or perform hands-on work on devices."
+3.	Address customer concerns about escalation:
+o	"I understand you may not want to escalate based on past experiences, but unfortunately, Tier 1 does not have the tools or permissions to resolve this issue fully. Escalating ensures it reaches the experts equipped to handle it."
+o	"Our goal is to resolve this efficiently, and Tier 2 is best equipped to handle cases that require deeper access or hands-on work."
+o	"I’ll make sure all necessary details are included in the ticket to minimize back-and-forth for you."
+4.	Forest Service-Specific Escalation Guidance:
+o	Unassigned or Stalled Tickets: If a ticket has been unassigned or assigned but shows no progress for 4 business days, the customer can request escalation by calling the Customer Help Desk (CHD). Inform the customer:
+	"Just a moment while I get this escalated for you, since there’s been no progress within the expected time. You’ll receive a confirmation email, and someone from the next team will contact you as soon as possible."
+o	Tracking Tickets: Customers can track open incidents using the Digital Workplace (DWP) portal’s "My Activity" or "My Stuff" sections. These allow for status checks or adding information to tickets.
+o	Avoiding Ineffective Escalation Channels: Advise users to avoid chat, voicemail, or email for escalation requests, as these may create new tickets instead of addressing the existing one.
+o	Critical Priority Escalation: For incidents affecting larger populations (e.g., server outages), critical priority escalations can occur after 2 hours without Tier 2 contact.
+Incident Documentation and Related Tickets:
+1.	Document troubleshooting steps clearly in internal notes and copy resolutions to public-facing Work Detail Notes for customer visibility.
+2.	Relate tickets to KBAs or parent incidents when applicable.
+3.	Ensure the "Impact," "Urgency," and "Priority" fields are updated correctly before routing or escalation.
+4.	Attach relevant Knowledge Base Articles (KBAs) to tickets to provide additional context.
+Breaking Conversations to Manage Time:
+1.	Politely redirect lengthy stories:
+o	"I really appreciate the context you're sharing. To ensure we can resolve this quickly, let’s focus on the key issue you’re experiencing."
+2.	Acknowledge the need for escalation if the issue is complex:
+o	"It looks like this issue involves permissions or tools that we don’t have access to at Tier 1. I'll gather the necessary information and escalate your ticket to Tier 2."
+3.	Use clear transition statements to end calls gracefully:
+o	"I’ve documented everything we discussed and escalated your ticket. You’ll receive a confirmation email shortly. Is there anything else I can assist you with today?"
+________________________________________
+Handling Customer Emotions
+Empathy Statements:
+1.	"I understand how this could be frustrating."
+2.	"Thank you for your patience; I’m here to help."
+De-escalation Tips:
+1.	Maintain a calm tone, even if the customer is upset. For example, if the customer is raising their voice, respond with a neutral phrase like, "I understand how frustrating this must be. Let’s focus on resolving this issue together," to redirect focus to the solution.
+2.	Acknowledge emotions without personalizing:
+o	"I hear your concern, and I’ll do everything I can to resolve this."
+________________________________________
+Mentorship-Specific Guidance
+Feedback Framework:
+1.	Use the "sandwich" method:
+o	Start with a positive observation: "You did well explaining the process."
+o	Provide constructive feedback: "Next time, try pausing after their response to avoid interruptions."
+o	End with encouragement: "You’re doing great at staying composed under pressure."
+Techniques for Call Success:
+1.	Maintaining Calm:
+o	"Before the next call, take a deep breath and recall a moment where you felt in control and calm. Carry that feeling into the interaction."
+2.	Breaking Down Information:
+o	Break complex instructions into smaller steps: "First, check your settings. For example, click on the gear icon in the top-right corner of your screen. Then, let me know what options you see under 'Account Settings.'"
 Training Reinforcement:
 
 **ASSISTANT**: {"textdoc_id": "676488e4e6b881918b5bb0c8693b7b41", "format": "docx"}
@@ -1332,115 +1332,115 @@ If you prefer, I can generate and provide a downloadable **DOCX** file separatel
 
 **USER**: Okay, integrate this info - 
 
-Mentorship Program Quick Reference Guide
-General Communication Tips
-Building Rapport:
-1.	Match tone and energy to the customer (calm for frustrated customers, warm and friendly for cheerful ones).
-2.	Use reflective listening techniques:
-o	"It sounds like you're experiencing…"
-o	"I understand how that could be frustrating."
-Tone and Language:
-1.	Speak clearly and confidently, avoiding filler words like "um" or "maybe."
-2.	Mirror the customer’s pace of speech for better connection.
-Active Listening:
-1.	Reiterate key points to confirm understanding:
-o	"Just to clarify, you're saying…"
-2.	Avoid interrupting customers and allow them to finish their thoughts.
-________________________________________
-Call Flow and Ticket Management
-Efficient Information Gathering:
-1.	Ask clear and concise questions:
-o	"Can you walk me through what happens when you try to log in?"
-o	"What error message are you seeing?"
-Ending Calls Professionally:
-1.	Use consistent phrasing:
-o	"Thank you for calling. I’ll ensure you receive a confirmation email with your ticket number as the reference number, and you should also receive a customer service survey."
-o	"For escalated tickets: Thank you for your patience. I’ve escalated your ticket, and you’ll receive a confirmation email shortly with the ticket number as the reference number. A Tier 2 agent will contact you as soon as they are able."
-2.	For follow-ups:
-o	"If follow-up is needed, someone should reach out within 24 hours." This applies when a Forest Service ticket goes to Customer Care. Other agencies or task orders do not use Customer Care.
-3.	Avoid timelines or referencing specific teams unless required (e.g., Tier 2 escalations). A clear reference like "Desktop or Tier 2" can help set expectations.
-Customer Validation:
-1.	Verify that the customer is entitled to service by confirming their status in the system:
-o	Check Customer Records: Use the provided tools to verify that the individual is listed as an authorized user under their agency or organization.
-o	Confirm Active Entitlement: Ensure their service agreement or entitlement to support is current and valid.
-2.	Use polite language to address any discrepancies:
-o	"I see that your account may not be listed as authorized for service. Let me verify this further to ensure we’re able to assist."
-o	"If necessary, I can provide guidance on updating or renewing your service entitlement."
-Mandatory Fields for Tickets:
-1.	Ensure all required fields are completed before submission, including:
-o	Customer Validation: Confirm the customer’s identity using the required process.
-o	Summary: Write a clear, concise description of the issue.
-o	Work Detail Notes: Document all troubleshooting steps and outcomes.
-o	Resolution: Provide a public-facing summary of the resolution steps for transparency.
-2.	Avoid including Personally Identifiable Information (PII) or unprofessional language in tickets.
-3.	Use templates like the Mandatory Desktop Template (MDT) for incidents routed to desktop support to prepopulate necessary fields.
-4.	Set the Owner Group After Saving: Ensure the correct Owner Group is set after saving the ticket, as it may change. This step is crucial to avoid payment errors or misapplication of billing.
-Identity Verification for Security-Sensitive Processes:
-1.	Mandatory Security Questions:
-o	Always ask the user the security questions stored in EIMS before proceeding with tasks like password resets, username retrievals, login exemptions, or device unlocking.
-o	Provide this statement before starting the verification process:
-	"For security purposes, we must verify your identity with security questions you chose during your eAuthentication ID setup. You must correctly answer three of your chosen questions with answers that match our system records."
-o	Users must answer three questions correctly. Minor spelling errors or slight variations can be accepted as correct.
-2.	When Security Questions Are Not Set Up:
-o	If the user does not have security questions in EIMS or cannot recall their answers:
-	Inform them that their identity cannot be verified.
-	Advise them to contact the ICAM Help Desk at 1-800-457-3642 to set up or update their security questions in eAuth.
-	Once completed, the user may contact the help desk again to resume support.
-3.	Prohibited Actions:
-o	Under no circumstances should agents provide the user’s eAuth username, regardless of the task order or situation.
-4.	Escalation Options:
-o	If security verification cannot be completed, escalate the issue as outlined in the appropriate KBAs.
-5.	Important Notes:
-o	Processes requiring identity verification (e.g., password resets or login exemptions) cannot be completed via voicemail, chat, or email. Verification must occur during a live call.
-o	If the user is using a relay or interpreter service, you may still proceed with verification by speaking directly with the user through the service.
-When Escalating Tickets:
-1.	Clearly set expectations:
-o	"Your ticket will be escalated, and a Tier 2 agent will be in touch. Unfortunately, I can't provide a timeline as that's determined by their workload."
-2.	Simplify explanations about Tier 2:
-o	"Tier 2 is the next higher helpdesk or deskside support team. They have additional permissions and tools to resolve issues or perform hands-on work on devices."
-3.	Address customer concerns about escalation:
-o	"I understand you may not want to escalate based on past experiences, but unfortunately, Tier 1 does not have the tools or permissions to resolve this issue fully. Escalating ensures it reaches the experts equipped to handle it."
-o	"Our goal is to resolve this efficiently, and Tier 2 is best equipped to handle cases that require deeper access or hands-on work."
-o	"I’ll make sure all necessary details are included in the ticket to minimize back-and-forth for you."
-4.	Forest Service-Specific Escalation Guidance:
-o	Unassigned or Stalled Tickets: If a ticket has been unassigned or assigned but shows no progress for 4 business days, the customer can request escalation by calling the Customer Help Desk (CHD). Inform the customer:
-	"Just a moment while I get this escalated for you, since there’s been no progress within the expected time. You’ll receive a confirmation email, and someone from the next team will contact you as soon as possible."
-o	Tracking Tickets: Customers can track open incidents using the Digital Workplace (DWP) portal’s "My Activity" or "My Stuff" sections. These allow for status checks or adding information to tickets.
-o	Avoiding Ineffective Escalation Channels: Advise users to avoid chat, voicemail, or email for escalation requests, as these may create new tickets instead of addressing the existing one.
-o	Critical Priority Escalation: For incidents affecting larger populations (e.g., server outages), critical priority escalations can occur after 2 hours without Tier 2 contact.
-Incident Documentation and Related Tickets:
-1.	Document troubleshooting steps clearly in internal notes and copy resolutions to public-facing Work Detail Notes for customer visibility.
-2.	Relate tickets to KBAs or parent incidents when applicable.
-3.	Ensure the "Impact," "Urgency," and "Priority" fields are updated correctly before routing or escalation.
-4.	Attach relevant Knowledge Base Articles (KBAs) to tickets to provide additional context.
-Breaking Conversations to Manage Time:
-1.	Politely redirect lengthy stories:
-o	"I really appreciate the context you're sharing. To ensure we can resolve this quickly, let’s focus on the key issue you’re experiencing."
-2.	Acknowledge the need for escalation if the issue is complex:
-o	"It looks like this issue involves permissions or tools that we don’t have access to at Tier 1. I'll gather the necessary information and escalate your ticket to Tier 2."
-3.	Use clear transition statements to end calls gracefully:
-o	"I’ve documented everything we discussed and escalated your ticket. You’ll receive a confirmation email shortly. Is there anything else I can assist you with today?"
-________________________________________
-Handling Customer Emotions
-Empathy Statements:
-1.	"I understand how this could be frustrating."
-2.	"Thank you for your patience; I’m here to help."
-De-escalation Tips:
-1.	Maintain a calm tone, even if the customer is upset. For example, if the customer is raising their voice, respond with a neutral phrase like, "I understand how frustrating this must be. Let’s focus on resolving this issue together," to redirect focus to the solution.
-2.	Acknowledge emotions without personalizing:
-o	"I hear your concern, and I’ll do everything I can to resolve this."
-________________________________________
-Mentorship-Specific Guidance
-Feedback Framework:
-1.	Use the "sandwich" method:
-o	Start with a positive observation: "You did well explaining the process."
-o	Provide constructive feedback: "Next time, try pausing after their response to avoid interruptions."
-o	End with encouragement: "You’re doing great at staying composed under pressure."
-Techniques for Call Success:
-1.	Maintaining Calm:
-o	"Before the next call, take a deep breath and recall a moment where you felt in control and calm. Carry that feeling into the interaction."
-2.	Breaking Down Information:
-o	Break complex instructions into smaller steps: "First, check your settings. For example, click on the gear icon in the top-right corner of your screen. Then, let me know what options you see under 'Account Settings.'"
+Mentorship Program Quick Reference Guide
+General Communication Tips
+Building Rapport:
+1.	Match tone and energy to the customer (calm for frustrated customers, warm and friendly for cheerful ones).
+2.	Use reflective listening techniques:
+o	"It sounds like you're experiencing…"
+o	"I understand how that could be frustrating."
+Tone and Language:
+1.	Speak clearly and confidently, avoiding filler words like "um" or "maybe."
+2.	Mirror the customer’s pace of speech for better connection.
+Active Listening:
+1.	Reiterate key points to confirm understanding:
+o	"Just to clarify, you're saying…"
+2.	Avoid interrupting customers and allow them to finish their thoughts.
+________________________________________
+Call Flow and Ticket Management
+Efficient Information Gathering:
+1.	Ask clear and concise questions:
+o	"Can you walk me through what happens when you try to log in?"
+o	"What error message are you seeing?"
+Ending Calls Professionally:
+1.	Use consistent phrasing:
+o	"Thank you for calling. I’ll ensure you receive a confirmation email with your ticket number as the reference number, and you should also receive a customer service survey."
+o	"For escalated tickets: Thank you for your patience. I’ve escalated your ticket, and you’ll receive a confirmation email shortly with the ticket number as the reference number. A Tier 2 agent will contact you as soon as they are able."
+2.	For follow-ups:
+o	"If follow-up is needed, someone should reach out within 24 hours." This applies when a Forest Service ticket goes to Customer Care. Other agencies or task orders do not use Customer Care.
+3.	Avoid timelines or referencing specific teams unless required (e.g., Tier 2 escalations). A clear reference like "Desktop or Tier 2" can help set expectations.
+Customer Validation:
+1.	Verify that the customer is entitled to service by confirming their status in the system:
+o	Check Customer Records: Use the provided tools to verify that the individual is listed as an authorized user under their agency or organization.
+o	Confirm Active Entitlement: Ensure their service agreement or entitlement to support is current and valid.
+2.	Use polite language to address any discrepancies:
+o	"I see that your account may not be listed as authorized for service. Let me verify this further to ensure we’re able to assist."
+o	"If necessary, I can provide guidance on updating or renewing your service entitlement."
+Mandatory Fields for Tickets:
+1.	Ensure all required fields are completed before submission, including:
+o	Customer Validation: Confirm the customer’s identity using the required process.
+o	Summary: Write a clear, concise description of the issue.
+o	Work Detail Notes: Document all troubleshooting steps and outcomes.
+o	Resolution: Provide a public-facing summary of the resolution steps for transparency.
+2.	Avoid including Personally Identifiable Information (PII) or unprofessional language in tickets.
+3.	Use templates like the Mandatory Desktop Template (MDT) for incidents routed to desktop support to prepopulate necessary fields.
+4.	Set the Owner Group After Saving: Ensure the correct Owner Group is set after saving the ticket, as it may change. This step is crucial to avoid payment errors or misapplication of billing.
+Identity Verification for Security-Sensitive Processes:
+1.	Mandatory Security Questions:
+o	Always ask the user the security questions stored in EIMS before proceeding with tasks like password resets, username retrievals, login exemptions, or device unlocking.
+o	Provide this statement before starting the verification process:
+	"For security purposes, we must verify your identity with security questions you chose during your eAuthentication ID setup. You must correctly answer three of your chosen questions with answers that match our system records."
+o	Users must answer three questions correctly. Minor spelling errors or slight variations can be accepted as correct.
+2.	When Security Questions Are Not Set Up:
+o	If the user does not have security questions in EIMS or cannot recall their answers:
+	Inform them that their identity cannot be verified.
+	Advise them to contact the ICAM Help Desk at 1-800-457-3642 to set up or update their security questions in eAuth.
+	Once completed, the user may contact the help desk again to resume support.
+3.	Prohibited Actions:
+o	Under no circumstances should agents provide the user’s eAuth username, regardless of the task order or situation.
+4.	Escalation Options:
+o	If security verification cannot be completed, escalate the issue as outlined in the appropriate KBAs.
+5.	Important Notes:
+o	Processes requiring identity verification (e.g., password resets or login exemptions) cannot be completed via voicemail, chat, or email. Verification must occur during a live call.
+o	If the user is using a relay or interpreter service, you may still proceed with verification by speaking directly with the user through the service.
+When Escalating Tickets:
+1.	Clearly set expectations:
+o	"Your ticket will be escalated, and a Tier 2 agent will be in touch. Unfortunately, I can't provide a timeline as that's determined by their workload."
+2.	Simplify explanations about Tier 2:
+o	"Tier 2 is the next higher helpdesk or deskside support team. They have additional permissions and tools to resolve issues or perform hands-on work on devices."
+3.	Address customer concerns about escalation:
+o	"I understand you may not want to escalate based on past experiences, but unfortunately, Tier 1 does not have the tools or permissions to resolve this issue fully. Escalating ensures it reaches the experts equipped to handle it."
+o	"Our goal is to resolve this efficiently, and Tier 2 is best equipped to handle cases that require deeper access or hands-on work."
+o	"I’ll make sure all necessary details are included in the ticket to minimize back-and-forth for you."
+4.	Forest Service-Specific Escalation Guidance:
+o	Unassigned or Stalled Tickets: If a ticket has been unassigned or assigned but shows no progress for 4 business days, the customer can request escalation by calling the Customer Help Desk (CHD). Inform the customer:
+	"Just a moment while I get this escalated for you, since there’s been no progress within the expected time. You’ll receive a confirmation email, and someone from the next team will contact you as soon as possible."
+o	Tracking Tickets: Customers can track open incidents using the Digital Workplace (DWP) portal’s "My Activity" or "My Stuff" sections. These allow for status checks or adding information to tickets.
+o	Avoiding Ineffective Escalation Channels: Advise users to avoid chat, voicemail, or email for escalation requests, as these may create new tickets instead of addressing the existing one.
+o	Critical Priority Escalation: For incidents affecting larger populations (e.g., server outages), critical priority escalations can occur after 2 hours without Tier 2 contact.
+Incident Documentation and Related Tickets:
+1.	Document troubleshooting steps clearly in internal notes and copy resolutions to public-facing Work Detail Notes for customer visibility.
+2.	Relate tickets to KBAs or parent incidents when applicable.
+3.	Ensure the "Impact," "Urgency," and "Priority" fields are updated correctly before routing or escalation.
+4.	Attach relevant Knowledge Base Articles (KBAs) to tickets to provide additional context.
+Breaking Conversations to Manage Time:
+1.	Politely redirect lengthy stories:
+o	"I really appreciate the context you're sharing. To ensure we can resolve this quickly, let’s focus on the key issue you’re experiencing."
+2.	Acknowledge the need for escalation if the issue is complex:
+o	"It looks like this issue involves permissions or tools that we don’t have access to at Tier 1. I'll gather the necessary information and escalate your ticket to Tier 2."
+3.	Use clear transition statements to end calls gracefully:
+o	"I’ve documented everything we discussed and escalated your ticket. You’ll receive a confirmation email shortly. Is there anything else I can assist you with today?"
+________________________________________
+Handling Customer Emotions
+Empathy Statements:
+1.	"I understand how this could be frustrating."
+2.	"Thank you for your patience; I’m here to help."
+De-escalation Tips:
+1.	Maintain a calm tone, even if the customer is upset. For example, if the customer is raising their voice, respond with a neutral phrase like, "I understand how frustrating this must be. Let’s focus on resolving this issue together," to redirect focus to the solution.
+2.	Acknowledge emotions without personalizing:
+o	"I hear your concern, and I’ll do everything I can to resolve this."
+________________________________________
+Mentorship-Specific Guidance
+Feedback Framework:
+1.	Use the "sandwich" method:
+o	Start with a positive observation: "You did well explaining the process."
+o	Provide constructive feedback: "Next time, try pausing after their response to avoid interruptions."
+o	End with encouragement: "You’re doing great at staying composed under pressure."
+Techniques for Call Success:
+1.	Maintaining Calm:
+o	"Before the next call, take a deep breath and recall a moment where you felt in control and calm. Carry that feeling into the interaction."
+2.	Breaking Down Information:
+o	Break complex instructions into smaller steps: "First, check your settings. For example, click on the gear icon in the top-right corner of your screen. Then, let me know what options you see under 'Account Settings.'"
 Training Reinforcement:
 
 **ASSISTANT**: {"updates": [{"pattern": ".*", "multiple": true, "replacement": "---\n\n## **Mentorship Program Quick Reference Guide**\n\n### **General Communication Tips**\n\n#### **Building Rapport:**\n1. Match tone and energy to the customer (calm for frustrated customers, warm and friendly for cheerful ones).\n2. Use reflective listening techniques:\n   - \"It sounds like you're experiencing…\"\n   - \"I understand how that could be frustrating.\"\n\n#### **Tone and Language:**\n1. Speak clearly and confidently, avoiding filler words like \"um\" or \"maybe.\"\n2. Mirror the customer’s pace of speech for better connection.\n\n#### **Active Listening:**\n1. Reiterate key points to confirm understanding:\n   - \"Just to clarify, you're saying…\"\n2. Avoid interrupting customers and allow them to finish their thoughts.\n\n---\n\n### **Call Flow and Ticket Management**\n\n#### **Efficient Information Gathering:**\n1. Ask clear and concise questions:\n   - \"Can you walk me through what happens when you try to log in?\"\n   - \"What error message are you seeing?\"\n\n#### **Ending Calls Professionally:**\n1. Use consistent phrasing:\n   - \"Thank you for calling. I’ll ensure you receive a confirmation email with your ticket number as the reference number, and you should also receive a customer service survey.\"\n   - \"For escalated tickets: Thank you for your patience. I’ve escalated your ticket, and you’ll receive a confirmation email shortly with the ticket number as the reference number. A Tier 2 agent will contact you as soon as they are able.\"\n2. For follow-ups:\n   - \"If follow-up is needed, someone should reach out within 24 hours.\" This applies when a Forest Service ticket goes to Customer Care. Other agencies or task orders do not use Customer Care.\n3. Avoid timelines or referencing specific teams unless required (e.g., Tier 2 escalations). A clear reference like \"Desktop or Tier 2\" can help set expectations.\n\n---\n\n### **Mandatory Ticket Fields**\n\n1. Complete all required fields accurately:\n   - **Summary:** Clearly describe the issue and the impacted resource.\n   - **Notes:** Include issue details. If KBAs don’t provide all necessary information, use the **Mandatory Desktop Template** and copy it into Work Details.\n   - **Work Details:** Document troubleshooting steps and results.\n   - **Resolution:** Provide a public-facing summary of the resolution steps for transparency.\n2. Avoid including PII or unprofessional language in tickets.\n3. **Set the Owner Group Post-Save:** Always update the Owner Group after saving the ticket to ensure accurate billing and routing.\n\n---\n\n### **Identity Verification for Security-Sensitive Processes**\n\n1. **Mandatory Security Questions:**\n   - Verify identity by asking at least three security questions stored in EIMS.\n   - Two attempts per question are allowed to ensure accuracy.\n\n2. **When Security Questions Are Not Set Up:**\n   - Direct users to contact the ICAM Help Desk at **1-800-457-3642** to set up their security questions.\n   - Escalate only if necessary and clearly document the reason in Work Details.\n\n3. **Prohibited Actions:**\n   - Never disclose eAuth usernames under any circumstances.\n   - Avoid bypassing security protocols, even if requested by the customer.\n\n---\n\n### **When Escalating Tickets**\n\n1. Clearly set expectations:\n   - \"Your ticket will be escalated, and a Tier 2 agent will be in touch.\"\n2. Use proper terminology:\n   - \"Routing\" assigns tickets to queues.\n   - \"Escalating\" refers to actions requiring higher permissions or additional approvals.\n3. **FS-Specific Rules:**\n   - Escalate tickets after 4 business days of inaction.\n   - Ensure templates are complete and KBAs attached before escalation.\n\n---\n\n### **Incident Documentation and Related Tickets**\n\n1. Ensure accuracy and completeness in Work Details:\n   - Document all troubleshooting steps and outcomes clearly.\n   - Use the **Mandatory Desktop Template** when KBAs lack sufficient details, and copy it into Work Details.\n\n2. Relate tickets to KBAs or parent incidents when appropriate:\n   - **Internal KBAs**: Do not attach internal KBAs to tickets; they are for reference only.\n   - **Peckham KBAs**: May be used on task orders other than CEC, provided they are relevant.\n   - **No KBA KBA**: If KBAs lack specific details or do not exist for an issue:\n     - Relate the **No KBA KBA** to the ticket.\n     - Attach a **No KBA Work Note**, specifying three keywords/phrases searched that should return results.\n\n3. Verify ticket fields before routing or escalation:\n   - Ensure Summary, Work Details, Resolution, and templates are complete.\n   - Update the Owner Group after saving the ticket.\n\n---\n\n### **Breaking Conversations to Manage Time**\n\n1. Politely redirect lengthy stories:\n   - \"I really appreciate the context you're sharing. To ensure we can resolve this quickly, let’s focus on the key issue you’re experiencing.\"\n2. Acknowledge the need for escalation if the issue is complex:\n   - \"It looks like this issue involves permissions or tools that we don’t have access to at Tier 1. I'll gather the necessary information and escalate your ticket to Tier 2.\"\n3. Use clear transition statements to end calls gracefully:\n   - \"I’ve documented everything we discussed and escalated your ticket. You’ll receive a confirmation email shortly. Is there anything else I can assist you with today?\"\n\n---\n\n### **Handling Customer Emotions**\n\n1. **Empathy Statements:**\n   - \"I understand how this could be frustrating.\"\n   - \"Thank you for your patience; I’m here to help.\"\n\n2. **De-escalation Tips:**\n   - Maintain a calm, neutral tone.\n   - Redirect focus to resolving the issue:\n     - \"Let’s work together to get this resolved.\"\n\n---\n\n### **Mentorship-Specific Guidance**\n\n1. **Feedback Framework:**\n   - Use the \"sandwich\" method:\n     - Start with positive feedback.\n     - Provide constructive advice.\n     - End with encouragement.\n\n2. **Training Reinforcement:**\n   - Practice ticket documentation by reviewing sample tickets in Training Remedy.\n   - Role-play common scenarios to build confidence.\n   - Review and discuss QA feedback to identify improvement areas.\n\n---"}]}

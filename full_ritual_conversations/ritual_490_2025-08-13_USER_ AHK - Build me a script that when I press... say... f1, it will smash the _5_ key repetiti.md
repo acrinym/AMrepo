@@ -57,11 +57,11 @@ Let me know if you want it to *toggle* instead of requiring the key to be held d
 
 **USER**: Dammit. 
 
-Error: This local variable has not been assigned a value.
-A global declaration inside the function may be required.
-
-Specifically: toggle
-
+Error: This local variable has not been assigned a value.
+A global declaration inside the function may be required.
+
+Specifically: toggle
+
 ▶	005: toggle := !toggle
 
 **ASSISTANT**: Got you, brother. Let’s clean that up with **a fully compilable** and working AHK script.
@@ -146,15 +146,15 @@ Let me know if you want it:
 
 I got you 💪
 
-**USER**: Error: This local variable has not been assigned a value.
-A global declaration inside the function may be required.
-
-Specifically: toggle
-
-▶	005: toggle := !toggle
-
-Call stack:
-*#1 (5) : [<Hotkey>] toggle := !toggle
+**USER**: Error: This local variable has not been assigned a value.
+A global declaration inside the function may be required.
+
+Specifically: toggle
+
+▶	005: toggle := !toggle
+
+Call stack:
+*#1 (5) : [<Hotkey>] toggle := !toggle
 > F1
 
 **USER**: Include beeps

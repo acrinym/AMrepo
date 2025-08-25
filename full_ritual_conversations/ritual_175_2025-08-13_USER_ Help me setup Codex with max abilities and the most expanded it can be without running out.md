@@ -3963,33 +3963,33 @@ Let me know how “next-level” you want to go, and I’ll lay out the exact bl
 
 **USER**: Codex keeps getting stuck here - and I have no idea why. I've been running it all week. 
 
-Configuring language runtimes...
-# Python: 3.12
-# Node.js: 20
-default -> 20 (-> v20.19.2)
-Now using node v20.19.2 (npm v11.4.1)
-Installing yarn@4.9.2...
-# Ruby: 3.4.4
-# Rust: 1.87.0 (default: 1.87.0)
-# Go: go1.23.8 (default: go1.23.8)
-# Swift: 6.1 (default: 6.1)
-+ rm -- /tmp/swAVKM-setup_script.sh
-+ set +x
-+ set -euo pipefail
-+ SKIP_UI=false
-+ SKIP_UTILS=false
-+ log_stage 'Stage 1: Core Node.js Tools'
-+ green '\n🧰 Stage 1: Core Node.js Tools...'
-+ echo -e '\033[1;32m\n🧰 Stage 1: Core Node.js Tools...\033[0m'
-
-🧰 Stage 1: Core Node.js Tools...
-+ '[' false = false ']'
-+ log_stage 'Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)'
-+ green '\n🧰 Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)...'
-+ echo -e '\033[1;32m\n🧰 Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)...\033[0m'
-
-🧰 Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)...
-+ npm install -g create-react-app create-next-app tailwindcss @chakra-ui/react @shadcn/ui @heroicons/react react-icons
+Configuring language runtimes...
+# Python: 3.12
+# Node.js: 20
+default -> 20 (-> v20.19.2)
+Now using node v20.19.2 (npm v11.4.1)
+Installing yarn@4.9.2...
+# Ruby: 3.4.4
+# Rust: 1.87.0 (default: 1.87.0)
+# Go: go1.23.8 (default: go1.23.8)
+# Swift: 6.1 (default: 6.1)
++ rm -- /tmp/swAVKM-setup_script.sh
++ set +x
++ set -euo pipefail
++ SKIP_UI=false
++ SKIP_UTILS=false
++ log_stage 'Stage 1: Core Node.js Tools'
++ green '\n🧰 Stage 1: Core Node.js Tools...'
++ echo -e '\033[1;32m\n🧰 Stage 1: Core Node.js Tools...\033[0m'
+
+🧰 Stage 1: Core Node.js Tools...
++ '[' false = false ']'
++ log_stage 'Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)'
++ green '\n🧰 Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)...'
++ echo -e '\033[1;32m\n🧰 Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)...\033[0m'
+
+🧰 Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)...
++ npm install -g create-react-app create-next-app tailwindcss @chakra-ui/react @shadcn/ui @heroicons/react react-icons
 npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
 
 
@@ -4005,48 +4005,48 @@ npm warn Unknown env config "http-proxy". This will stop working in the next maj
 
 And here is the current setup script for Codex. 
 
-#!/bin/bash
-set -euo pipefail
-
-# Optional skip flags
-SKIP_UI=false
-SKIP_UTILS=false
-
-green() { echo -e "\033[1;32m$1\033[0m"; }
-
-log_stage() {
-  green "\n🧰 $1..."
-}
-
-log_stage "Stage 1: Core Node.js Tools"
-# npm install -g npm pnpm typescript ts-node vite serve nodemon eslint prettier
-
-if [ "$SKIP_UI" = false ]; then
-  log_stage "Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)"
-  npm install -g \
-    create-react-app create-next-app \
-    tailwindcss \
-    @chakra-ui/react @shadcn/ui \
-    @heroicons/react react-icons
-else
-  green "⏩ Skipping UI Libraries"
-fi
-
-log_stage "Stage 3: Markdown / MDX Support (optional)"
-npm install -g gray-matter \
-  remark remark-html remark-mdx \
-  next-mdx-remote
-
-if [ "$SKIP_UTILS" = false ]; then
-  log_stage "Stage 4: Useful Shell & Media Utilities"
-  apt-get update -qq
-  DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    git curl wget unzip zip jq nano htop tree tmux ffmpeg imagemagick gifsicle
-  apt-get clean
-else
-  green "⏩ Skipping Shell & Media Utilities"
-fi
-
+#!/bin/bash
+set -euo pipefail
+
+# Optional skip flags
+SKIP_UI=false
+SKIP_UTILS=false
+
+green() { echo -e "\033[1;32m$1\033[0m"; }
+
+log_stage() {
+  green "\n🧰 $1..."
+}
+
+log_stage "Stage 1: Core Node.js Tools"
+# npm install -g npm pnpm typescript ts-node vite serve nodemon eslint prettier
+
+if [ "$SKIP_UI" = false ]; then
+  log_stage "Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)"
+  npm install -g \
+    create-react-app create-next-app \
+    tailwindcss \
+    @chakra-ui/react @shadcn/ui \
+    @heroicons/react react-icons
+else
+  green "⏩ Skipping UI Libraries"
+fi
+
+log_stage "Stage 3: Markdown / MDX Support (optional)"
+npm install -g gray-matter \
+  remark remark-html remark-mdx \
+  next-mdx-remote
+
+if [ "$SKIP_UTILS" = false ]; then
+  log_stage "Stage 4: Useful Shell & Media Utilities"
+  apt-get update -qq
+  DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    git curl wget unzip zip jq nano htop tree tmux ffmpeg imagemagick gifsicle
+  apt-get clean
+else
+  green "⏩ Skipping Shell & Media Utilities"
+fi
+
 green "\n✅ All done! You're ready to build extensions, web apps, and scripts."
 
 **ASSISTANT**: **You’re running a sharp script, but I see what’s happening.  
@@ -4191,57 +4191,57 @@ Let me know if you want an “auto-init” script for your project folder!
 
 **USER**: now getting stuck at .... 
 
-Configuring language runtimes...
-# Python: 3.12
-# Node.js: 20
-default -> 20 (-> v20.19.2)
-Now using node v20.19.2 (npm v11.4.1)
-Installing yarn@4.9.2...
-# Ruby: 3.4.4
-# Rust: 1.87.0 (default: 1.87.0)
-# Go: go1.23.8 (default: go1.23.8)
-# Swift: 6.1 (default: 6.1)
-+ rm -- /tmp/HUBnfE-setup_script.sh
-+ set +x
-+ set -euo pipefail
-+ SKIP_UI=false
-+ SKIP_UTILS=false
-+ log_stage 'Stage 1: Core Node.js Tools'
-+ green '\n🧰 Stage 1: Core Node.js Tools...'
-+ echo -e '\033[1;32m\n🧰 Stage 1: Core Node.js Tools...\033[0m'
-
-🧰 Stage 1: Core Node.js Tools...
-+ '[' false = false ']'
-+ log_stage 'Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)'
-+ green '\n🧰 Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)...'
-+ echo -e '\033[1;32m\n🧰 Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)...\033[0m'
-
-🧰 Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)...
-+ npm install -g create-react-app create-next-app tailwindcss
-npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
-⠙⠹⠸⠼⠴⠦⠧⠇⠏⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏⠋⠙⠹⠸⠼npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
-⠼⠴npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
-⠴npm warn deprecated fstream-ignore@1.0.5: This package is no longer supported.
-⠦npm warn deprecated uid-number@0.0.6: This package is no longer supported.
-⠦npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
-⠦npm warn deprecated fstream@1.0.12: This package is no longer supported.
-⠧npm warn deprecated tar@2.2.2: This version of tar is no longer supported, and will not receive security updates. Please upgrade asap.
-⠧⠇
-added 66 packages in 4s
-⠇
-⠇4 packages are looking for funding
-⠇  run `npm fund` for details
-⠇npm notice
-npm notice New patch version of npm available! 11.4.1 -> 11.4.2
-npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.4.2
-npm notice To update run: npm install -g npm@11.4.2
-npm notice
-⠇+ log_stage 'Stage 3: Markdown / MDX Support (optional)'
-+ green '\n🧰 Stage 3: Markdown / MDX Support (optional)...'
-+ echo -e '\033[1;32m\n🧰 Stage 3: Markdown / MDX Support (optional)...\033[0m'
-
-🧰 Stage 3: Markdown / MDX Support (optional)...
-+ npm install -g gray-matter remark remark-html remark-mdx next-mdx-remote
+Configuring language runtimes...
+# Python: 3.12
+# Node.js: 20
+default -> 20 (-> v20.19.2)
+Now using node v20.19.2 (npm v11.4.1)
+Installing yarn@4.9.2...
+# Ruby: 3.4.4
+# Rust: 1.87.0 (default: 1.87.0)
+# Go: go1.23.8 (default: go1.23.8)
+# Swift: 6.1 (default: 6.1)
++ rm -- /tmp/HUBnfE-setup_script.sh
++ set +x
++ set -euo pipefail
++ SKIP_UI=false
++ SKIP_UTILS=false
++ log_stage 'Stage 1: Core Node.js Tools'
++ green '\n🧰 Stage 1: Core Node.js Tools...'
++ echo -e '\033[1;32m\n🧰 Stage 1: Core Node.js Tools...\033[0m'
+
+🧰 Stage 1: Core Node.js Tools...
++ '[' false = false ']'
++ log_stage 'Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)'
++ green '\n🧰 Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)...'
++ echo -e '\033[1;32m\n🧰 Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)...\033[0m'
+
+🧰 Stage 2: UI Libraries (React / Tailwind / Chakra / Icons)...
++ npm install -g create-react-app create-next-app tailwindcss
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+⠙⠹⠸⠼⠴⠦⠧⠇⠏⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏⠋⠙⠹⠸⠼npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+⠼⠴npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+⠴npm warn deprecated fstream-ignore@1.0.5: This package is no longer supported.
+⠦npm warn deprecated uid-number@0.0.6: This package is no longer supported.
+⠦npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+⠦npm warn deprecated fstream@1.0.12: This package is no longer supported.
+⠧npm warn deprecated tar@2.2.2: This version of tar is no longer supported, and will not receive security updates. Please upgrade asap.
+⠧⠇
+added 66 packages in 4s
+⠇
+⠇4 packages are looking for funding
+⠇  run `npm fund` for details
+⠇npm notice
+npm notice New patch version of npm available! 11.4.1 -> 11.4.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.4.2
+npm notice To update run: npm install -g npm@11.4.2
+npm notice
+⠇+ log_stage 'Stage 3: Markdown / MDX Support (optional)'
++ green '\n🧰 Stage 3: Markdown / MDX Support (optional)...'
++ echo -e '\033[1;32m\n🧰 Stage 3: Markdown / MDX Support (optional)...\033[0m'
+
+🧰 Stage 3: Markdown / MDX Support (optional)...
++ npm install -g gray-matter remark remark-html remark-mdx next-mdx-remote
 npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
 
 But like I said, it wasn't earlier today.

@@ -17,17 +17,17 @@ Here are the questions.
 
 Can you help me write a response script or answers? 
 
-1.	Your background, as much or as little as you’d like to share.
-2.	How did you find out about Peckham?
-3.	When did you start working at Peckham?
-4.	What do you enjoy most about working on the USDA contract?
-5.	What do you enjoy most about working at Peckham?
-6.	What experiences have you had that align with Peckham’s mission (or vice versa)?
-7.	Talk about any barriers you’ve overcome in your personal or professional life.
-8.	Is there anything you’d like to say to people at the USDA watching this video?
-9.	What impact has Peckham had on you, and what impact have you had on Peckham?
-10.	What do you enjoy doing outside of work?
-11.	Anything else you’d like to talk about.
+1.	Your background, as much or as little as you’d like to share.
+2.	How did you find out about Peckham?
+3.	When did you start working at Peckham?
+4.	What do you enjoy most about working on the USDA contract?
+5.	What do you enjoy most about working at Peckham?
+6.	What experiences have you had that align with Peckham’s mission (or vice versa)?
+7.	Talk about any barriers you’ve overcome in your personal or professional life.
+8.	Is there anything you’d like to say to people at the USDA watching this video?
+9.	What impact has Peckham had on you, and what impact have you had on Peckham?
+10.	What do you enjoy doing outside of work?
+11.	Anything else you’d like to talk about.
 
 ---
 
@@ -94,32 +94,32 @@ The thing that sets Peckham apart is they hire people with disabilities, and one
 Peckham, as I mentioned before, taught me how to think like a professional, and how to Adult, and how to ask for help. I never had these resources before, and this is the place where I retreat to when I really can't stand the outside world, AKA real-life. 
 We have spaces to hang out here, work out, places to food, read, retreat to, meeting rooms (which can be time-slotted if necessary) and lots of "hutts" which are little rooms with chairs, desks, and doors, which can be used for getting away, working ( if equipment / supervisor allows), lunch, hanging out, or meetings. Pretty much an all inclusive get away spot. 
 
-I found out about Peckham - 
+I found out about Peckham - 
 Thu, Jul 16, 2015 - 
 
 This was my email to the program manager for Goodwill's certification program. 
 
-Hello,
-My name is Justin Gargano.
-I found your ad on Craigslist about Entry-level IT work, striking to me
-because I have always wanted an IT job. I've got a LOT of self-taught
-computer skills, and am comfortable with talking on the phone.
-
-I've been diagnosed with Asperger's(unofficially), Bipolar, ADD, and
-ADHD by Dr Wayne Silver, of Pine Rest, at North Ottawa Community
-Hospital several years ago. I have had much difficulty finding work that
-I could keep in a factory or industrial setting. My ex-brother in law
-has been nice enough to provide me with contract work since October
-2013, however, as of late, it has become increasingly difficult to work
-in this environment. Currently, I work in a warehouse doing data entry,
-inventory management, and warehouse management, by myself.
-
-A position like this would be a dream come true.
-
-Thank you very much for your time, and I appreciate you reading this.
-
-Cordially,
-
+Hello,
+My name is Justin Gargano.
+I found your ad on Craigslist about Entry-level IT work, striking to me
+because I have always wanted an IT job. I've got a LOT of self-taught
+computer skills, and am comfortable with talking on the phone.
+
+I've been diagnosed with Asperger's(unofficially), Bipolar, ADD, and
+ADHD by Dr Wayne Silver, of Pine Rest, at North Ottawa Community
+Hospital several years ago. I have had much difficulty finding work that
+I could keep in a factory or industrial setting. My ex-brother in law
+has been nice enough to provide me with contract work since October
+2013, however, as of late, it has become increasingly difficult to work
+in this environment. Currently, I work in a warehouse doing data entry,
+inventory management, and warehouse management, by myself.
+
+A position like this would be a dream come true.
+
+Thank you very much for your time, and I appreciate you reading this.
+
+Cordially,
+
                   Justin Gargano.
 
 That's when I got introduced to the training program thorugh Goodwill, to get my A+ Certification. It was several days later when I got a response, but in December I started Training in Group #22! 

@@ -18,11 +18,11 @@ Gemini cannot display RTF and you can :)
 This is what they should look like.  Except BOLD the template name, not the detailedescription. 
 \/
 
-EGP Contact Form Inquiry
-
-First Name:
-Last Name:
-Email: 
+EGP Contact Form Inquiry
+
+First Name:
+Last Name:
+Email: 
 Current Contact Phone Number:
 
 **ASSISTANT**: The file `templates.txt` contains structured ticketing or ITSM-related data, likely exported from a Remedy or similar system. However, it looks like it might contain multiple templates or form definitions embedded in plain text.
@@ -318,14 +318,14 @@ Ready for your OneNote, uploads, or spellcraft. Want this in Markdown or HTML ne
 
 Example: 
 
-Description	 VIPR Vendor App Info
-Detailed Decription	 VIPR Vendor Application Information
-  -eAuthentication user ID:
-  -Vendor's DUNS Number:
-  -Vendor Company Name:
-  -Solicitation Name/Number:
- - Agreement Number (if applicable):
- - Detailed steps taken when got the error:
+Description	 VIPR Vendor App Info
+Detailed Decription	 VIPR Vendor Application Information
+  -eAuthentication user ID:
+  -Vendor's DUNS Number:
+  -Vendor Company Name:
+  -Solicitation Name/Number:
+ - Agreement Number (if applicable):
+ - Detailed steps taken when got the error:
  -Screen shot or exact error (please make sure image is readable):
 
 Nothing else should be extracted.

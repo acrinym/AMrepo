@@ -617,45 +617,45 @@ Let me know if you want a prefab UI overlay or want this turned into a component
 **USER**: Unity console errors and the files it is calling. Check the console errors (pasted here) first, and help me correct them. 
 
 Assets\scripts\ActivateLava.cs(4,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'ActivateLava'
-
+
 Assets\scripts\DeathScreen.cs(4,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'DeathScreen'
-
+
 Assets\scripts\DoorMover.cs(3,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'DoorMover'
-
+
 Assets\scripts\LavaKill.cs(4,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'LavaKill'
-
+
 Assets\scripts\LavaRise.cs(3,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'LavaRise'
-
+
 Assets\scripts\LavaTriggerrise.cs(3,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'LavaTriggerRise'
-
+
 Assets\scripts\PlayerMovement.cs(3,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'PlayerMovement'
-
+
 Assets\scripts\DeathScreen.cs(8,17): error CS0111: Type 'DeathScreen' already defines a member called 'ShowDeathScreen' with the same parameter types
-
+
 Assets\scripts\DeathScreen.cs(16,17): error CS0111: Type 'DeathScreen' already defines a member called 'RestartGame' with the same parameter types
-
+
 Assets\scripts\LavaRise.cs(13,10): error CS0111: Type 'LavaRise' already defines a member called 'Update' with the same parameter types
-
+
 Assets\scripts\LavaRise.cs(26,10): error CS0111: Type 'LavaRise' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\ActivateLava.cs(8,18): error CS0111: Type 'ActivateLava' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\DoorMover.cs(11,10): error CS0111: Type 'DoorMover' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\DoorMover.cs(19,10): error CS0111: Type 'DoorMover' already defines a member called 'Update' with the same parameter types
-
+
 Assets\scripts\LavaKill.cs(8,18): error CS0111: Type 'LavaKill' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\LavaKill.cs(16,17): error CS0111: Type 'LavaKill' already defines a member called 'KillPlayer' with the same parameter types
-
+
 Assets\scripts\LavaKill.cs(37,10): error CS0111: Type 'LavaKill' already defines a member called 'RestartLevel' with the same parameter types
-
+
 Assets\scripts\LavaTriggerrise.cs(15,10): error CS0111: Type 'LavaTriggerRise' already defines a member called 'Update' with the same parameter types
-
+
 Assets\scripts\LavaTriggerrise.cs(27,10): error CS0111: Type 'LavaTriggerRise' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\PlayerMovement.cs(32,10): error CS0111: Type 'PlayerMovement' already defines a member called 'Start' with the same parameter types
-
+
 Assets\scripts\PlayerMovement.cs(44,10): error CS0111: Type 'PlayerMovement' already defines a member called 'Update' with the same parameter types
 
 **ASSISTANT**: Here’s a clear breakdown of the **Unity console errors you're getting** and the **actual issues** in your scripts:
@@ -773,45 +773,45 @@ If you're still seeing error messages, drop me the new console logs and I’ll p
 **USER**: Errors. Recompiled. 
 
 Assets\scripts\ActivateLava.cs(4,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'ActivateLava'
-
+
 Assets\scripts\DeathScreen.cs(4,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'DeathScreen'
-
+
 Assets\scripts\DoorMover.cs(3,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'DoorMover'
-
+
 Assets\scripts\LavaKill.cs(4,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'LavaKill'
-
+
 Assets\scripts\LavaRise.cs(3,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'LavaRise'
-
+
 Assets\scripts\LavaTriggerrise.cs(3,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'LavaTriggerRise'
-
+
 Assets\scripts\PlayerMovement.cs(3,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'PlayerMovement'
-
+
 Assets\scripts\DeathScreen.cs(8,17): error CS0111: Type 'DeathScreen' already defines a member called 'ShowDeathScreen' with the same parameter types
-
+
 Assets\scripts\DeathScreen.cs(16,17): error CS0111: Type 'DeathScreen' already defines a member called 'RestartGame' with the same parameter types
-
+
 Assets\scripts\ActivateLava.cs(8,18): error CS0111: Type 'ActivateLava' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\LavaRise.cs(13,10): error CS0111: Type 'LavaRise' already defines a member called 'Update' with the same parameter types
-
+
 Assets\scripts\LavaRise.cs(26,10): error CS0111: Type 'LavaRise' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\LavaTriggerrise.cs(15,10): error CS0111: Type 'LavaTriggerRise' already defines a member called 'Update' with the same parameter types
-
+
 Assets\scripts\LavaTriggerrise.cs(27,10): error CS0111: Type 'LavaTriggerRise' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\LavaKill.cs(8,18): error CS0111: Type 'LavaKill' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\LavaKill.cs(16,17): error CS0111: Type 'LavaKill' already defines a member called 'KillPlayer' with the same parameter types
-
+
 Assets\scripts\LavaKill.cs(37,10): error CS0111: Type 'LavaKill' already defines a member called 'RestartLevel' with the same parameter types
-
+
 Assets\scripts\DoorMover.cs(11,10): error CS0111: Type 'DoorMover' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\DoorMover.cs(19,10): error CS0111: Type 'DoorMover' already defines a member called 'Update' with the same parameter types
-
+
 Assets\scripts\PlayerMovement.cs(32,10): error CS0111: Type 'PlayerMovement' already defines a member called 'Start' with the same parameter types
-
+
 Assets\scripts\PlayerMovement.cs(44,10): error CS0111: Type 'PlayerMovement' already defines a member called 'Update' with the same parameter types
 
 **ASSISTANT**: Got it. You're still getting `CS0101` and `CS0111` errors, which means **Unity is compiling duplicate class and method definitions**.
@@ -1005,45 +1005,45 @@ Want me to build you a Unity editor tool that shows all class duplicates across 
 Still... 
 
 Assets\scripts\ActivateLava.cs(4,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'ActivateLava'
-
+
 Assets\scripts\DeathScreen.cs(4,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'DeathScreen'
-
+
 Assets\scripts\DoorMover.cs(3,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'DoorMover'
-
+
 Assets\scripts\LavaKill.cs(4,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'LavaKill'
-
+
 Assets\scripts\LavaRise.cs(3,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'LavaRise'
-
+
 Assets\scripts\LavaTriggerrise.cs(3,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'LavaTriggerRise'
-
+
 Assets\scripts\PlayerMovement.cs(3,14): error CS0101: The namespace '<global namespace>' already contains a definition for 'PlayerMovement'
-
+
 Assets\scripts\ActivateLava.cs(8,18): error CS0111: Type 'ActivateLava' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\DeathScreen.cs(8,17): error CS0111: Type 'DeathScreen' already defines a member called 'ShowDeathScreen' with the same parameter types
-
+
 Assets\scripts\DeathScreen.cs(16,17): error CS0111: Type 'DeathScreen' already defines a member called 'RestartGame' with the same parameter types
-
+
 Assets\scripts\LavaRise.cs(13,10): error CS0111: Type 'LavaRise' already defines a member called 'Update' with the same parameter types
-
+
 Assets\scripts\LavaRise.cs(26,10): error CS0111: Type 'LavaRise' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\LavaKill.cs(8,18): error CS0111: Type 'LavaKill' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\LavaKill.cs(16,17): error CS0111: Type 'LavaKill' already defines a member called 'KillPlayer' with the same parameter types
-
+
 Assets\scripts\LavaKill.cs(37,10): error CS0111: Type 'LavaKill' already defines a member called 'RestartLevel' with the same parameter types
-
+
 Assets\scripts\LavaTriggerrise.cs(15,10): error CS0111: Type 'LavaTriggerRise' already defines a member called 'Update' with the same parameter types
-
+
 Assets\scripts\LavaTriggerrise.cs(27,10): error CS0111: Type 'LavaTriggerRise' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\DoorMover.cs(11,10): error CS0111: Type 'DoorMover' already defines a member called 'OnTriggerEnter' with the same parameter types
-
+
 Assets\scripts\DoorMover.cs(19,10): error CS0111: Type 'DoorMover' already defines a member called 'Update' with the same parameter types
-
+
 Assets\scripts\PlayerMovement.cs(27,10): error CS0111: Type 'PlayerMovement' already defines a member called 'Start' with the same parameter types
-
+
 Assets\scripts\PlayerMovement.cs(35,10): error CS0111: Type 'PlayerMovement' already defines a member called 'Update' with the same parameter types
 
 **ASSISTANT**: It means Unity is still seeing two (or more) copies of each class/method in your project—even though you believe you’ve deleted them. Unity will compile any ​`.cs`​ file it finds under ​`Assets/`​, so even a tiny leftover or mis‑named file will trigger these “duplicate” errors. Here’s how to track down and absolutely remove every duplicate class/method so that Unity can recompile cleanly:

@@ -188,451 +188,451 @@ In most cases, no. For most document querying, embedding generation, and retriev
 
 **USER**: I did that....and this
 
-pip install pypdf && pip install python-docx && pip install unstructured && pip install faiss-cpu && pip install sentence-transformers && pip install pinecone-client[grpc] && pip install weaviate-client && pip install haystack-client && pip install chromadb
-Requirement already satisfied: pypdf in c:\python312\lib\site-packages (5.0.1)
-Requirement already satisfied: python-docx in c:\python312\lib\site-packages (1.1.2)
-Requirement already satisfied: lxml>=3.1.0 in c:\python312\lib\site-packages (from python-docx) (5.3.0)
-Requirement already satisfied: typing-extensions>=4.9.0 in c:\python312\lib\site-packages (from python-docx) (4.12.2)
-Requirement already satisfied: unstructured in c:\python312\lib\site-packages (0.16.0)
-Requirement already satisfied: chardet in c:\python312\lib\site-packages (from unstructured) (5.2.0)
-Requirement already satisfied: filetype in c:\python312\lib\site-packages (from unstructured) (1.2.0)
-Requirement already satisfied: python-magic in c:\python312\lib\site-packages (from unstructured) (0.4.27)
-Requirement already satisfied: lxml in c:\python312\lib\site-packages (from unstructured) (5.3.0)
-Requirement already satisfied: nltk in c:\python312\lib\site-packages (from unstructured) (3.9.1)
-Requirement already satisfied: tabulate in c:\python312\lib\site-packages (from unstructured) (0.9.0)
-Requirement already satisfied: requests in c:\python312\lib\site-packages (from unstructured) (2.32.3)
-Requirement already satisfied: beautifulsoup4 in c:\python312\lib\site-packages (from unstructured) (4.12.3)
-Requirement already satisfied: emoji in c:\python312\lib\site-packages (from unstructured) (2.14.0)
-Requirement already satisfied: dataclasses-json in c:\python312\lib\site-packages (from unstructured) (0.6.7)
-Requirement already satisfied: python-iso639 in c:\python312\lib\site-packages (from unstructured) (2024.4.27)
-Requirement already satisfied: langdetect in c:\python312\lib\site-packages (from unstructured) (1.0.9)
-Requirement already satisfied: numpy<2 in c:\python312\lib\site-packages (from unstructured) (1.26.4)
-Requirement already satisfied: rapidfuzz in c:\python312\lib\site-packages (from unstructured) (3.10.0)
-Requirement already satisfied: backoff in c:\python312\lib\site-packages (from unstructured) (2.2.1)
-Requirement already satisfied: typing-extensions in c:\python312\lib\site-packages (from unstructured) (4.12.2)
-Requirement already satisfied: unstructured-client in c:\python312\lib\site-packages (from unstructured) (0.26.1)
-Requirement already satisfied: wrapt in c:\python312\lib\site-packages (from unstructured) (1.16.0)
-Requirement already satisfied: tqdm in c:\python312\lib\site-packages (from unstructured) (4.66.5)
-Requirement already satisfied: psutil in c:\python312\lib\site-packages (from unstructured) (6.1.0)
-Requirement already satisfied: python-oxmsg in c:\python312\lib\site-packages (from unstructured) (0.0.1)
-Requirement already satisfied: soupsieve>1.2 in c:\python312\lib\site-packages (from beautifulsoup4->unstructured) (2.6)
-Requirement already satisfied: marshmallow<4.0.0,>=3.18.0 in c:\python312\lib\site-packages (from dataclasses-json->unstructured) (3.23.0)
-Requirement already satisfied: typing-inspect<1,>=0.4.0 in c:\python312\lib\site-packages (from dataclasses-json->unstructured) (0.9.0)
-Requirement already satisfied: six in c:\python312\lib\site-packages (from langdetect->unstructured) (1.16.0)
-Requirement already satisfied: click in c:\python312\lib\site-packages (from nltk->unstructured) (8.1.7)
-Requirement already satisfied: joblib in c:\python312\lib\site-packages (from nltk->unstructured) (1.4.2)
-Requirement already satisfied: regex>=2021.8.3 in c:\python312\lib\site-packages (from nltk->unstructured) (2024.9.11)
-Requirement already satisfied: olefile in c:\python312\lib\site-packages (from python-oxmsg->unstructured) (0.47)
-Requirement already satisfied: charset-normalizer<4,>=2 in c:\python312\lib\site-packages (from requests->unstructured) (3.4.0)
-Requirement already satisfied: idna<4,>=2.5 in c:\python312\lib\site-packages (from requests->unstructured) (3.10)
-Requirement already satisfied: urllib3<3,>=1.21.1 in c:\python312\lib\site-packages (from requests->unstructured) (2.2.3)
-Requirement already satisfied: certifi>=2017.4.17 in c:\python312\lib\site-packages (from requests->unstructured) (2024.8.30)
-Requirement already satisfied: colorama in c:\python312\lib\site-packages (from tqdm->unstructured) (0.4.6)
-Requirement already satisfied: cryptography>=3.1 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (43.0.3)
-Requirement already satisfied: eval-type-backport<0.3.0,>=0.2.0 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (0.2.0)
-Requirement already satisfied: httpx>=0.27.0 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (0.27.2)
-Requirement already satisfied: jsonpath-python<2.0.0,>=1.0.6 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (1.0.6)
-Requirement already satisfied: nest-asyncio>=1.6.0 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (1.6.0)
-Requirement already satisfied: pydantic<2.10.0,>=2.9.0 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (2.9.2)
-Requirement already satisfied: pypdf>=4.0 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (5.0.1)
-Requirement already satisfied: python-dateutil==2.8.2 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (2.8.2)
-Requirement already satisfied: requests-toolbelt>=1.0.0 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (1.0.0)
-Requirement already satisfied: cffi>=1.12 in c:\python312\lib\site-packages (from cryptography>=3.1->unstructured-client->unstructured) (1.17.1)
-Requirement already satisfied: anyio in c:\python312\lib\site-packages (from httpx>=0.27.0->unstructured-client->unstructured) (4.6.2.post1)
-Requirement already satisfied: httpcore==1.* in c:\python312\lib\site-packages (from httpx>=0.27.0->unstructured-client->unstructured) (1.0.6)
-Requirement already satisfied: sniffio in c:\python312\lib\site-packages (from httpx>=0.27.0->unstructured-client->unstructured) (1.3.1)
-Requirement already satisfied: h11<0.15,>=0.13 in c:\python312\lib\site-packages (from httpcore==1.*->httpx>=0.27.0->unstructured-client->unstructured) (0.14.0)
-Requirement already satisfied: packaging>=17.0 in c:\python312\lib\site-packages (from marshmallow<4.0.0,>=3.18.0->dataclasses-json->unstructured) (24.1)
-Requirement already satisfied: annotated-types>=0.6.0 in c:\python312\lib\site-packages (from pydantic<2.10.0,>=2.9.0->unstructured-client->unstructured) (0.7.0)
-Requirement already satisfied: pydantic-core==2.23.4 in c:\python312\lib\site-packages (from pydantic<2.10.0,>=2.9.0->unstructured-client->unstructured) (2.23.4)
-Requirement already satisfied: mypy-extensions>=0.3.0 in c:\python312\lib\site-packages (from typing-inspect<1,>=0.4.0->dataclasses-json->unstructured) (1.0.0)
-Requirement already satisfied: pycparser in c:\python312\lib\site-packages (from cffi>=1.12->cryptography>=3.1->unstructured-client->unstructured) (2.22)
-Requirement already satisfied: faiss-cpu in c:\python312\lib\site-packages (1.9.0)
-Requirement already satisfied: numpy<3.0,>=1.25.0 in c:\python312\lib\site-packages (from faiss-cpu) (1.26.4)
-Requirement already satisfied: packaging in c:\python312\lib\site-packages (from faiss-cpu) (24.1)
-Collecting sentence-transformers
-  Using cached sentence_transformers-3.2.0-py3-none-any.whl.metadata (10 kB)
-Requirement already satisfied: transformers<5.0.0,>=4.41.0 in c:\python312\lib\site-packages (from sentence-transformers) (4.45.2)
-Requirement already satisfied: tqdm in c:\python312\lib\site-packages (from sentence-transformers) (4.66.5)
-Requirement already satisfied: torch>=1.11.0 in c:\python312\lib\site-packages (from sentence-transformers) (2.5.0)
-Requirement already satisfied: scikit-learn in c:\python312\lib\site-packages (from sentence-transformers) (1.5.2)
-Requirement already satisfied: scipy in c:\python312\lib\site-packages (from sentence-transformers) (1.14.1)
-Requirement already satisfied: huggingface-hub>=0.20.0 in c:\python312\lib\site-packages (from sentence-transformers) (0.26.0)
-Requirement already satisfied: Pillow in c:\python312\lib\site-packages (from sentence-transformers) (11.0.0)
-Requirement already satisfied: filelock in c:\python312\lib\site-packages (from huggingface-hub>=0.20.0->sentence-transformers) (3.16.1)
-Requirement already satisfied: fsspec>=2023.5.0 in c:\python312\lib\site-packages (from huggingface-hub>=0.20.0->sentence-transformers) (2024.10.0)
-Requirement already satisfied: packaging>=20.9 in c:\python312\lib\site-packages (from huggingface-hub>=0.20.0->sentence-transformers) (24.1)
-Requirement already satisfied: pyyaml>=5.1 in c:\python312\lib\site-packages (from huggingface-hub>=0.20.0->sentence-transformers) (6.0.2)
-Requirement already satisfied: requests in c:\python312\lib\site-packages (from huggingface-hub>=0.20.0->sentence-transformers) (2.32.3)
-Requirement already satisfied: typing-extensions>=3.7.4.3 in c:\python312\lib\site-packages (from huggingface-hub>=0.20.0->sentence-transformers) (4.12.2)
-Requirement already satisfied: networkx in c:\python312\lib\site-packages (from torch>=1.11.0->sentence-transformers) (3.4.1)
-Requirement already satisfied: jinja2 in c:\python312\lib\site-packages (from torch>=1.11.0->sentence-transformers) (3.1.4)
-Requirement already satisfied: setuptools in c:\python312\lib\site-packages (from torch>=1.11.0->sentence-transformers) (75.2.0)
-Requirement already satisfied: sympy==1.13.1 in c:\python312\lib\site-packages (from torch>=1.11.0->sentence-transformers) (1.13.1)
-Requirement already satisfied: mpmath<1.4,>=1.1.0 in c:\python312\lib\site-packages (from sympy==1.13.1->torch>=1.11.0->sentence-transformers) (1.3.0)
-Requirement already satisfied: colorama in c:\python312\lib\site-packages (from tqdm->sentence-transformers) (0.4.6)
-Requirement already satisfied: numpy>=1.17 in c:\python312\lib\site-packages (from transformers<5.0.0,>=4.41.0->sentence-transformers) (1.26.4)
-Requirement already satisfied: regex!=2019.12.17 in c:\python312\lib\site-packages (from transformers<5.0.0,>=4.41.0->sentence-transformers) (2024.9.11)
-Requirement already satisfied: safetensors>=0.4.1 in c:\python312\lib\site-packages (from transformers<5.0.0,>=4.41.0->sentence-transformers) (0.4.5)
-Requirement already satisfied: tokenizers<0.21,>=0.20 in c:\python312\lib\site-packages (from transformers<5.0.0,>=4.41.0->sentence-transformers) (0.20.1)
-Requirement already satisfied: joblib>=1.2.0 in c:\python312\lib\site-packages (from scikit-learn->sentence-transformers) (1.4.2)
-Requirement already satisfied: threadpoolctl>=3.1.0 in c:\python312\lib\site-packages (from scikit-learn->sentence-transformers) (3.5.0)
-Requirement already satisfied: MarkupSafe>=2.0 in c:\python312\lib\site-packages (from jinja2->torch>=1.11.0->sentence-transformers) (3.0.2)
-Requirement already satisfied: charset-normalizer<4,>=2 in c:\python312\lib\site-packages (from requests->huggingface-hub>=0.20.0->sentence-transformers) (3.4.0)
-Requirement already satisfied: idna<4,>=2.5 in c:\python312\lib\site-packages (from requests->huggingface-hub>=0.20.0->sentence-transformers) (3.10)
-Requirement already satisfied: urllib3<3,>=1.21.1 in c:\python312\lib\site-packages (from requests->huggingface-hub>=0.20.0->sentence-transformers) (2.2.3)
-Requirement already satisfied: certifi>=2017.4.17 in c:\python312\lib\site-packages (from requests->huggingface-hub>=0.20.0->sentence-transformers) (2024.8.30)
-Using cached sentence_transformers-3.2.0-py3-none-any.whl (255 kB)
-Installing collected packages: sentence-transformers
-Successfully installed sentence-transformers-3.2.0
-Collecting pinecone-client[grpc]
-  Downloading pinecone_client-5.0.1-py3-none-any.whl.metadata (19 kB)
-Requirement already satisfied: certifi>=2019.11.17 in c:\python312\lib\site-packages (from pinecone-client[grpc]) (2024.8.30)
-Collecting googleapis-common-protos>=1.53.0 (from pinecone-client[grpc])
-  Downloading googleapis_common_protos-1.65.0-py2.py3-none-any.whl.metadata (1.5 kB)
-Collecting grpcio>=1.59.0 (from pinecone-client[grpc])
-  Downloading grpcio-1.67.0-cp312-cp312-win_amd64.whl.metadata (4.0 kB)
-Collecting lz4>=3.1.3 (from pinecone-client[grpc])
-  Downloading lz4-4.3.3-cp312-cp312-win_amd64.whl.metadata (3.8 kB)
-Collecting pinecone-plugin-inference<2.0.0,>=1.0.3 (from pinecone-client[grpc])
-  Downloading pinecone_plugin_inference-1.1.0-py3-none-any.whl.metadata (2.2 kB)
-Collecting pinecone-plugin-interface<0.0.8,>=0.0.7 (from pinecone-client[grpc])
-  Downloading pinecone_plugin_interface-0.0.7-py3-none-any.whl.metadata (1.2 kB)
-Collecting protobuf<5.0,>=4.25 (from pinecone-client[grpc])
-  Downloading protobuf-4.25.5-cp310-abi3-win_amd64.whl.metadata (541 bytes)
-Collecting protoc-gen-openapiv2<0.0.2,>=0.0.1 (from pinecone-client[grpc])
-  Downloading protoc_gen_openapiv2-0.0.1-py3-none-any.whl.metadata (1.5 kB)
-Requirement already satisfied: tqdm>=4.64.1 in c:\python312\lib\site-packages (from pinecone-client[grpc]) (4.66.5)
-Requirement already satisfied: typing-extensions>=3.7.4 in c:\python312\lib\site-packages (from pinecone-client[grpc]) (4.12.2)
-Requirement already satisfied: urllib3>=1.26.5 in c:\python312\lib\site-packages (from pinecone-client[grpc]) (2.2.3)
-Requirement already satisfied: colorama in c:\python312\lib\site-packages (from tqdm>=4.64.1->pinecone-client[grpc]) (0.4.6)
-Downloading googleapis_common_protos-1.65.0-py2.py3-none-any.whl (220 kB)
-Downloading grpcio-1.67.0-cp312-cp312-win_amd64.whl (4.3 MB)
-   ---------------------------------------- 4.3/4.3 MB 2.9 MB/s eta 0:00:00
-Downloading lz4-4.3.3-cp312-cp312-win_amd64.whl (99 kB)
-Downloading pinecone_plugin_inference-1.1.0-py3-none-any.whl (85 kB)
-Downloading pinecone_plugin_interface-0.0.7-py3-none-any.whl (6.2 kB)
-Downloading protobuf-4.25.5-cp310-abi3-win_amd64.whl (413 kB)
-Downloading protoc_gen_openapiv2-0.0.1-py3-none-any.whl (7.9 kB)
-Downloading pinecone_client-5.0.1-py3-none-any.whl (244 kB)
-Installing collected packages: protobuf, pinecone-plugin-interface, lz4, grpcio, pinecone-plugin-inference, googleapis-common-protos, protoc-gen-openapiv2, pinecone-client
-Successfully installed googleapis-common-protos-1.65.0 grpcio-1.67.0 lz4-4.3.3 pinecone-client-5.0.1 pinecone-plugin-inference-1.1.0 pinecone-plugin-interface-0.0.7 protobuf-4.25.5 protoc-gen-openapiv2-0.0.1
-Collecting weaviate-client
-  Downloading weaviate_client-4.9.0-py3-none-any.whl.metadata (3.6 kB)
-Requirement already satisfied: requests<3.0.0,>=2.30.0 in c:\python312\lib\site-packages (from weaviate-client) (2.32.3)
-Collecting httpx<=0.27.0,>=0.25.0 (from weaviate-client)
-  Downloading httpx-0.27.0-py3-none-any.whl.metadata (7.2 kB)
-Collecting validators==0.34.0 (from weaviate-client)
-  Downloading validators-0.34.0-py3-none-any.whl.metadata (3.8 kB)
-Collecting authlib<1.3.2,>=1.2.1 (from weaviate-client)
-  Downloading Authlib-1.3.1-py2.py3-none-any.whl.metadata (3.8 kB)
-Requirement already satisfied: pydantic<3.0.0,>=2.5.0 in c:\python312\lib\site-packages (from weaviate-client) (2.9.2)
-Requirement already satisfied: grpcio<2.0.0,>=1.57.0 in c:\python312\lib\site-packages (from weaviate-client) (1.67.0)
-Collecting grpcio-tools<2.0.0,>=1.57.0 (from weaviate-client)
-  Downloading grpcio_tools-1.67.0-cp312-cp312-win_amd64.whl.metadata (5.5 kB)
-Collecting grpcio-health-checking<2.0.0,>=1.57.0 (from weaviate-client)
-  Downloading grpcio_health_checking-1.67.0-py3-none-any.whl.metadata (1.1 kB)
-Requirement already satisfied: cryptography in c:\python312\lib\site-packages (from authlib<1.3.2,>=1.2.1->weaviate-client) (43.0.3)
-Collecting protobuf<6.0dev,>=5.26.1 (from grpcio-health-checking<2.0.0,>=1.57.0->weaviate-client)
-  Downloading protobuf-5.28.2-cp310-abi3-win_amd64.whl.metadata (592 bytes)
-Requirement already satisfied: setuptools in c:\python312\lib\site-packages (from grpcio-tools<2.0.0,>=1.57.0->weaviate-client) (75.2.0)
-Requirement already satisfied: anyio in c:\python312\lib\site-packages (from httpx<=0.27.0,>=0.25.0->weaviate-client) (4.6.2.post1)
-Requirement already satisfied: certifi in c:\python312\lib\site-packages (from httpx<=0.27.0,>=0.25.0->weaviate-client) (2024.8.30)
-Requirement already satisfied: httpcore==1.* in c:\python312\lib\site-packages (from httpx<=0.27.0,>=0.25.0->weaviate-client) (1.0.6)
-Requirement already satisfied: idna in c:\python312\lib\site-packages (from httpx<=0.27.0,>=0.25.0->weaviate-client) (3.10)
-Requirement already satisfied: sniffio in c:\python312\lib\site-packages (from httpx<=0.27.0,>=0.25.0->weaviate-client) (1.3.1)
-Requirement already satisfied: h11<0.15,>=0.13 in c:\python312\lib\site-packages (from httpcore==1.*->httpx<=0.27.0,>=0.25.0->weaviate-client) (0.14.0)
-Requirement already satisfied: annotated-types>=0.6.0 in c:\python312\lib\site-packages (from pydantic<3.0.0,>=2.5.0->weaviate-client) (0.7.0)
-Requirement already satisfied: pydantic-core==2.23.4 in c:\python312\lib\site-packages (from pydantic<3.0.0,>=2.5.0->weaviate-client) (2.23.4)
-Requirement already satisfied: typing-extensions>=4.6.1 in c:\python312\lib\site-packages (from pydantic<3.0.0,>=2.5.0->weaviate-client) (4.12.2)
-Requirement already satisfied: charset-normalizer<4,>=2 in c:\python312\lib\site-packages (from requests<3.0.0,>=2.30.0->weaviate-client) (3.4.0)
-Requirement already satisfied: urllib3<3,>=1.21.1 in c:\python312\lib\site-packages (from requests<3.0.0,>=2.30.0->weaviate-client) (2.2.3)
-Requirement already satisfied: cffi>=1.12 in c:\python312\lib\site-packages (from cryptography->authlib<1.3.2,>=1.2.1->weaviate-client) (1.17.1)
-Requirement already satisfied: pycparser in c:\python312\lib\site-packages (from cffi>=1.12->cryptography->authlib<1.3.2,>=1.2.1->weaviate-client) (2.22)
-Downloading weaviate_client-4.9.0-py3-none-any.whl (378 kB)
-Downloading validators-0.34.0-py3-none-any.whl (43 kB)
-Downloading Authlib-1.3.1-py2.py3-none-any.whl (223 kB)
-Downloading grpcio_health_checking-1.67.0-py3-none-any.whl (18 kB)
-Downloading grpcio_tools-1.67.0-cp312-cp312-win_amd64.whl (1.1 MB)
-   ---------------------------------------- 1.1/1.1 MB 2.3 MB/s eta 0:00:00
-Downloading httpx-0.27.0-py3-none-any.whl (75 kB)
-Downloading protobuf-5.28.2-cp310-abi3-win_amd64.whl (431 kB)
-Installing collected packages: validators, protobuf, httpx, grpcio-tools, grpcio-health-checking, authlib, weaviate-client
-  Attempting uninstall: protobuf
-    Found existing installation: protobuf 4.25.5
-    Uninstalling protobuf-4.25.5:
-      Successfully uninstalled protobuf-4.25.5
-  Attempting uninstall: httpx
-    Found existing installation: httpx 0.27.2
-    Uninstalling httpx-0.27.2:
-      Successfully uninstalled httpx-0.27.2
-Successfully installed authlib-1.3.1 grpcio-health-checking-1.67.0 grpcio-tools-1.67.0 httpx-0.27.0 protobuf-5.28.2 validators-0.34.0 weaviate-client-4.9.0
-Collecting haystack-client
-  Downloading haystack_client-0.2.4-py3-none-any.whl.metadata (3.8 kB)
-Collecting opentracing<3.0,>=2.3.0 (from haystack-client)
-  Downloading opentracing-2.4.0.tar.gz (46 kB)
-  Installing build dependencies ... done
-  Getting requirements to build wheel ... done
-  Preparing metadata (pyproject.toml) ... done
-Requirement already satisfied: requests<3.0,>=2.19 in c:\python312\lib\site-packages (from haystack-client) (2.32.3)
-Collecting requests-futures<1.0,>=0.9.9 (from haystack-client)
-  Downloading requests-futures-0.9.9.tar.gz (10 kB)
-  Installing build dependencies ... done
-  Getting requirements to build wheel ... done
-  Preparing metadata (pyproject.toml) ... done
-Collecting protobuf<4.0,>=3.11.2 (from haystack-client)
-  Downloading protobuf-3.20.3-py2.py3-none-any.whl.metadata (720 bytes)
-Requirement already satisfied: grpcio<2.0,>=1.26.0 in c:\python312\lib\site-packages (from haystack-client) (1.67.0)
-Requirement already satisfied: charset-normalizer<4,>=2 in c:\python312\lib\site-packages (from requests<3.0,>=2.19->haystack-client) (3.4.0)
-Requirement already satisfied: idna<4,>=2.5 in c:\python312\lib\site-packages (from requests<3.0,>=2.19->haystack-client) (3.10)
-Requirement already satisfied: urllib3<3,>=1.21.1 in c:\python312\lib\site-packages (from requests<3.0,>=2.19->haystack-client) (2.2.3)
-Requirement already satisfied: certifi>=2017.4.17 in c:\python312\lib\site-packages (from requests<3.0,>=2.19->haystack-client) (2024.8.30)
-Downloading haystack_client-0.2.4-py3-none-any.whl (20 kB)
-Downloading protobuf-3.20.3-py2.py3-none-any.whl (162 kB)
-Building wheels for collected packages: opentracing, requests-futures
-  Building wheel for opentracing (pyproject.toml) ... done
-  Created wheel for opentracing: filename=opentracing-2.4.0-py3-none-any.whl size=51450 sha256=4d073f2c3572b10c2018b5b7cebc11cad54cf623a139868159a7c8d267744533
-  Stored in directory: c:\users\user\appdata\local\pip\cache\wheels\d2\e1\00\b5ea062dcf333dc17cf8fa4906676d6d36e47551e88bd0d7ea
-  Building wheel for requests-futures (pyproject.toml) ... done
-  Created wheel for requests-futures: filename=requests_futures-0.9.9-py3-none-any.whl size=6689 sha256=80fc7f6788e01a7e94e4ffe614d944713c5bcec224dd2d252f9e75afcf9c2cd3
-  Stored in directory: c:\users\user\appdata\local\pip\cache\wheels\50\02\84\1e24442ccd9123d9a4fa68d5f5f40d82e74392ba9f9ecd8a48
-Successfully built opentracing requests-futures
-Installing collected packages: opentracing, protobuf, requests-futures, haystack-client
-  Attempting uninstall: protobuf
-    Found existing installation: protobuf 5.28.2
-    Uninstalling protobuf-5.28.2:
-      Successfully uninstalled protobuf-5.28.2
-ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
-grpcio-health-checking 1.67.0 requires protobuf<6.0dev,>=5.26.1, but you have protobuf 3.20.3 which is incompatible.
-grpcio-tools 1.67.0 requires protobuf<6.0dev,>=5.26.1, but you have protobuf 3.20.3 which is incompatible.
-protoc-gen-openapiv2 0.0.1 requires protobuf>=4.21.0, but you have protobuf 3.20.3 which is incompatible.
-Successfully installed haystack-client-0.2.4 opentracing-2.4.0 protobuf-3.20.3 requests-futures-0.9.9
-Collecting chromadb
-  Downloading chromadb-0.5.15-py3-none-any.whl.metadata (6.8 kB)
-Collecting build>=1.0.3 (from chromadb)
-  Downloading build-1.2.2.post1-py3-none-any.whl.metadata (6.5 kB)
-Requirement already satisfied: pydantic>=1.9 in c:\python312\lib\site-packages (from chromadb) (2.9.2)
-Collecting chroma-hnswlib==0.7.6 (from chromadb)
-  Downloading chroma_hnswlib-0.7.6.tar.gz (32 kB)
-  Installing build dependencies ... done
-  Getting requirements to build wheel ... done
-  Preparing metadata (pyproject.toml) ... done
-Collecting fastapi>=0.95.2 (from chromadb)
-  Downloading fastapi-0.115.2-py3-none-any.whl.metadata (27 kB)
-Collecting uvicorn>=0.18.3 (from uvicorn[standard]>=0.18.3->chromadb)
-  Downloading uvicorn-0.32.0-py3-none-any.whl.metadata (6.6 kB)
-Requirement already satisfied: numpy>=1.22.5 in c:\python312\lib\site-packages (from chromadb) (1.26.4)
-Collecting posthog>=2.4.0 (from chromadb)
-  Downloading posthog-3.7.0-py2.py3-none-any.whl.metadata (2.0 kB)
-Requirement already satisfied: typing-extensions>=4.5.0 in c:\python312\lib\site-packages (from chromadb) (4.12.2)
-Collecting onnxruntime>=1.14.1 (from chromadb)
-  Downloading onnxruntime-1.19.2-cp312-cp312-win_amd64.whl.metadata (4.7 kB)
-Collecting opentelemetry-api>=1.2.0 (from chromadb)
-  Downloading opentelemetry_api-1.27.0-py3-none-any.whl.metadata (1.4 kB)
-Collecting opentelemetry-exporter-otlp-proto-grpc>=1.2.0 (from chromadb)
-  Downloading opentelemetry_exporter_otlp_proto_grpc-1.27.0-py3-none-any.whl.metadata (2.3 kB)
-Collecting opentelemetry-instrumentation-fastapi>=0.41b0 (from chromadb)
-  Downloading opentelemetry_instrumentation_fastapi-0.48b0-py3-none-any.whl.metadata (2.1 kB)
-Collecting opentelemetry-sdk>=1.2.0 (from chromadb)
-  Downloading opentelemetry_sdk-1.27.0-py3-none-any.whl.metadata (1.5 kB)
-Requirement already satisfied: tokenizers>=0.13.2 in c:\python312\lib\site-packages (from chromadb) (0.20.1)
-Collecting pypika>=0.48.9 (from chromadb)
-  Downloading PyPika-0.48.9.tar.gz (67 kB)
-  Installing build dependencies ... done
-  Getting requirements to build wheel ... done
-  Preparing metadata (pyproject.toml) ... done
-Requirement already satisfied: tqdm>=4.65.0 in c:\python312\lib\site-packages (from chromadb) (4.66.5)
-Collecting overrides>=7.3.1 (from chromadb)
-  Downloading overrides-7.7.0-py3-none-any.whl.metadata (5.8 kB)
-Collecting importlib-resources (from chromadb)
-  Downloading importlib_resources-6.4.5-py3-none-any.whl.metadata (4.0 kB)
-Requirement already satisfied: grpcio>=1.58.0 in c:\python312\lib\site-packages (from chromadb) (1.67.0)
-Collecting bcrypt>=4.0.1 (from chromadb)
-  Downloading bcrypt-4.2.0-cp39-abi3-win_amd64.whl.metadata (9.9 kB)
-Collecting typer>=0.9.0 (from chromadb)
-  Downloading typer-0.12.5-py3-none-any.whl.metadata (15 kB)
-Collecting kubernetes>=28.1.0 (from chromadb)
-  Downloading kubernetes-31.0.0-py2.py3-none-any.whl.metadata (1.5 kB)
-Requirement already satisfied: tenacity>=8.2.3 in c:\python312\lib\site-packages (from chromadb) (9.0.0)
-Requirement already satisfied: PyYAML>=6.0.0 in c:\python312\lib\site-packages (from chromadb) (6.0.2)
-Collecting mmh3>=4.0.1 (from chromadb)
-  Downloading mmh3-5.0.1-cp312-cp312-win_amd64.whl.metadata (14 kB)
-Requirement already satisfied: orjson>=3.9.12 in c:\python312\lib\site-packages (from chromadb) (3.10.9)
-Requirement already satisfied: httpx>=0.27.0 in c:\python312\lib\site-packages (from chromadb) (0.27.0)
-Collecting rich>=10.11.0 (from chromadb)
-  Downloading rich-13.9.2-py3-none-any.whl.metadata (18 kB)
-Requirement already satisfied: packaging>=19.1 in c:\python312\lib\site-packages (from build>=1.0.3->chromadb) (24.1)
-Collecting pyproject_hooks (from build>=1.0.3->chromadb)
-  Downloading pyproject_hooks-1.2.0-py3-none-any.whl.metadata (1.3 kB)
-Requirement already satisfied: colorama in c:\python312\lib\site-packages (from build>=1.0.3->chromadb) (0.4.6)
-Collecting starlette<0.41.0,>=0.37.2 (from fastapi>=0.95.2->chromadb)
-  Downloading starlette-0.40.0-py3-none-any.whl.metadata (6.0 kB)
-Requirement already satisfied: anyio in c:\python312\lib\site-packages (from httpx>=0.27.0->chromadb) (4.6.2.post1)
-Requirement already satisfied: certifi in c:\python312\lib\site-packages (from httpx>=0.27.0->chromadb) (2024.8.30)
-Requirement already satisfied: httpcore==1.* in c:\python312\lib\site-packages (from httpx>=0.27.0->chromadb) (1.0.6)
-Requirement already satisfied: idna in c:\python312\lib\site-packages (from httpx>=0.27.0->chromadb) (3.10)
-Requirement already satisfied: sniffio in c:\python312\lib\site-packages (from httpx>=0.27.0->chromadb) (1.3.1)
-Requirement already satisfied: h11<0.15,>=0.13 in c:\python312\lib\site-packages (from httpcore==1.*->httpx>=0.27.0->chromadb) (0.14.0)
-Requirement already satisfied: six>=1.9.0 in c:\python312\lib\site-packages (from kubernetes>=28.1.0->chromadb) (1.16.0)
-Requirement already satisfied: python-dateutil>=2.5.3 in c:\python312\lib\site-packages (from kubernetes>=28.1.0->chromadb) (2.8.2)
-Collecting google-auth>=1.0.1 (from kubernetes>=28.1.0->chromadb)
-  Downloading google_auth-2.35.0-py2.py3-none-any.whl.metadata (4.7 kB)
-Collecting websocket-client!=0.40.0,!=0.41.*,!=0.42.*,>=0.32.0 (from kubernetes>=28.1.0->chromadb)
-  Downloading websocket_client-1.8.0-py3-none-any.whl.metadata (8.0 kB)
-Requirement already satisfied: requests in c:\python312\lib\site-packages (from kubernetes>=28.1.0->chromadb) (2.32.3)
-Collecting requests-oauthlib (from kubernetes>=28.1.0->chromadb)
-  Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl.metadata (11 kB)
-Collecting oauthlib>=3.2.2 (from kubernetes>=28.1.0->chromadb)
-  Downloading oauthlib-3.2.2-py3-none-any.whl.metadata (7.5 kB)
-Requirement already satisfied: urllib3>=1.24.2 in c:\python312\lib\site-packages (from kubernetes>=28.1.0->chromadb) (2.2.3)
-Collecting durationpy>=0.7 (from kubernetes>=28.1.0->chromadb)
-  Downloading durationpy-0.9-py3-none-any.whl.metadata (338 bytes)
-Collecting coloredlogs (from onnxruntime>=1.14.1->chromadb)
-  Downloading coloredlogs-15.0.1-py2.py3-none-any.whl.metadata (12 kB)
-Collecting flatbuffers (from onnxruntime>=1.14.1->chromadb)
-  Downloading flatbuffers-24.3.25-py2.py3-none-any.whl.metadata (850 bytes)
-Requirement already satisfied: protobuf in c:\python312\lib\site-packages (from onnxruntime>=1.14.1->chromadb) (3.20.3)
-Requirement already satisfied: sympy in c:\python312\lib\site-packages (from onnxruntime>=1.14.1->chromadb) (1.13.1)
-Collecting deprecated>=1.2.6 (from opentelemetry-api>=1.2.0->chromadb)
-  Downloading Deprecated-1.2.14-py2.py3-none-any.whl.metadata (5.4 kB)
-Collecting importlib-metadata<=8.4.0,>=6.0 (from opentelemetry-api>=1.2.0->chromadb)
-  Downloading importlib_metadata-8.4.0-py3-none-any.whl.metadata (4.7 kB)
-Requirement already satisfied: googleapis-common-protos~=1.52 in c:\python312\lib\site-packages (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb) (1.65.0)
-Collecting opentelemetry-exporter-otlp-proto-common==1.27.0 (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb)
-  Downloading opentelemetry_exporter_otlp_proto_common-1.27.0-py3-none-any.whl.metadata (1.8 kB)
-Collecting opentelemetry-proto==1.27.0 (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb)
-  Downloading opentelemetry_proto-1.27.0-py3-none-any.whl.metadata (2.3 kB)
-Collecting opentelemetry-instrumentation-asgi==0.48b0 (from opentelemetry-instrumentation-fastapi>=0.41b0->chromadb)
-  Downloading opentelemetry_instrumentation_asgi-0.48b0-py3-none-any.whl.metadata (2.0 kB)
-Collecting opentelemetry-instrumentation==0.48b0 (from opentelemetry-instrumentation-fastapi>=0.41b0->chromadb)
-  Downloading opentelemetry_instrumentation-0.48b0-py3-none-any.whl.metadata (6.1 kB)
-Collecting opentelemetry-semantic-conventions==0.48b0 (from opentelemetry-instrumentation-fastapi>=0.41b0->chromadb)
-  Downloading opentelemetry_semantic_conventions-0.48b0-py3-none-any.whl.metadata (2.4 kB)
-Collecting opentelemetry-util-http==0.48b0 (from opentelemetry-instrumentation-fastapi>=0.41b0->chromadb)
-  Downloading opentelemetry_util_http-0.48b0-py3-none-any.whl.metadata (2.5 kB)
-Requirement already satisfied: setuptools>=16.0 in c:\python312\lib\site-packages (from opentelemetry-instrumentation==0.48b0->opentelemetry-instrumentation-fastapi>=0.41b0->chromadb) (75.2.0)
-Requirement already satisfied: wrapt<2.0.0,>=1.0.0 in c:\python312\lib\site-packages (from opentelemetry-instrumentation==0.48b0->opentelemetry-instrumentation-fastapi>=0.41b0->chromadb) (1.16.0)
-Collecting asgiref~=3.0 (from opentelemetry-instrumentation-asgi==0.48b0->opentelemetry-instrumentation-fastapi>=0.41b0->chromadb)
-  Downloading asgiref-3.8.1-py3-none-any.whl.metadata (9.3 kB)
-Collecting monotonic>=1.5 (from posthog>=2.4.0->chromadb)
-  Downloading monotonic-1.6-py2.py3-none-any.whl.metadata (1.5 kB)
-Requirement already satisfied: backoff>=1.10.0 in c:\python312\lib\site-packages (from posthog>=2.4.0->chromadb) (2.2.1)
-Requirement already satisfied: annotated-types>=0.6.0 in c:\python312\lib\site-packages (from pydantic>=1.9->chromadb) (0.7.0)
-Requirement already satisfied: pydantic-core==2.23.4 in c:\python312\lib\site-packages (from pydantic>=1.9->chromadb) (2.23.4)
-Collecting markdown-it-py>=2.2.0 (from rich>=10.11.0->chromadb)
-  Downloading markdown_it_py-3.0.0-py3-none-any.whl.metadata (6.9 kB)
-Collecting pygments<3.0.0,>=2.13.0 (from rich>=10.11.0->chromadb)
-  Downloading pygments-2.18.0-py3-none-any.whl.metadata (2.5 kB)
-Requirement already satisfied: huggingface-hub<1.0,>=0.16.4 in c:\python312\lib\site-packages (from tokenizers>=0.13.2->chromadb) (0.26.0)
-Requirement already satisfied: click>=8.0.0 in c:\python312\lib\site-packages (from typer>=0.9.0->chromadb) (8.1.7)
-Collecting shellingham>=1.3.0 (from typer>=0.9.0->chromadb)
-  Downloading shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)
-Collecting httptools>=0.5.0 (from uvicorn[standard]>=0.18.3->chromadb)
-  Downloading httptools-0.6.4-cp312-cp312-win_amd64.whl.metadata (3.7 kB)
-Collecting python-dotenv>=0.13 (from uvicorn[standard]>=0.18.3->chromadb)
-  Downloading python_dotenv-1.0.1-py3-none-any.whl.metadata (23 kB)
-Collecting watchfiles>=0.13 (from uvicorn[standard]>=0.18.3->chromadb)
-  Downloading watchfiles-0.24.0-cp312-none-win_amd64.whl.metadata (5.0 kB)
-Collecting websockets>=10.4 (from uvicorn[standard]>=0.18.3->chromadb)
-  Downloading websockets-13.1-cp312-cp312-win_amd64.whl.metadata (7.0 kB)
-Collecting cachetools<6.0,>=2.0.0 (from google-auth>=1.0.1->kubernetes>=28.1.0->chromadb)
-  Downloading cachetools-5.5.0-py3-none-any.whl.metadata (5.3 kB)
-Collecting pyasn1-modules>=0.2.1 (from google-auth>=1.0.1->kubernetes>=28.1.0->chromadb)
-  Downloading pyasn1_modules-0.4.1-py3-none-any.whl.metadata (3.5 kB)
-Collecting rsa<5,>=3.1.4 (from google-auth>=1.0.1->kubernetes>=28.1.0->chromadb)
-  Downloading rsa-4.9-py3-none-any.whl.metadata (4.2 kB)
-Requirement already satisfied: filelock in c:\python312\lib\site-packages (from huggingface-hub<1.0,>=0.16.4->tokenizers>=0.13.2->chromadb) (3.16.1)
-Requirement already satisfied: fsspec>=2023.5.0 in c:\python312\lib\site-packages (from huggingface-hub<1.0,>=0.16.4->tokenizers>=0.13.2->chromadb) (2024.10.0)
-Collecting zipp>=0.5 (from importlib-metadata<=8.4.0,>=6.0->opentelemetry-api>=1.2.0->chromadb)
-  Downloading zipp-3.20.2-py3-none-any.whl.metadata (3.7 kB)
-Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=10.11.0->chromadb)
-  Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
-Requirement already satisfied: charset-normalizer<4,>=2 in c:\python312\lib\site-packages (from requests->kubernetes>=28.1.0->chromadb) (3.4.0)
-Collecting humanfriendly>=9.1 (from coloredlogs->onnxruntime>=1.14.1->chromadb)
-  Downloading humanfriendly-10.0-py2.py3-none-any.whl.metadata (9.2 kB)
-Requirement already satisfied: mpmath<1.4,>=1.1.0 in c:\python312\lib\site-packages (from sympy->onnxruntime>=1.14.1->chromadb) (1.3.0)
-Collecting pyreadline3 (from humanfriendly>=9.1->coloredlogs->onnxruntime>=1.14.1->chromadb)
-  Downloading pyreadline3-3.5.4-py3-none-any.whl.metadata (4.7 kB)
-Collecting pyasn1<0.7.0,>=0.4.6 (from pyasn1-modules>=0.2.1->google-auth>=1.0.1->kubernetes>=28.1.0->chromadb)
-  Downloading pyasn1-0.6.1-py3-none-any.whl.metadata (8.4 kB)
-Downloading chromadb-0.5.15-py3-none-any.whl (607 kB)
-   ---------------------------------------- 607.0/607.0 kB 4.4 MB/s eta 0:00:00
-Downloading bcrypt-4.2.0-cp39-abi3-win_amd64.whl (151 kB)
-Downloading build-1.2.2.post1-py3-none-any.whl (22 kB)
-Downloading fastapi-0.115.2-py3-none-any.whl (94 kB)
-Downloading kubernetes-31.0.0-py2.py3-none-any.whl (1.9 MB)
-   ---------------------------------------- 1.9/1.9 MB 2.8 MB/s eta 0:00:00
-Downloading mmh3-5.0.1-cp312-cp312-win_amd64.whl (39 kB)
-Downloading onnxruntime-1.19.2-cp312-cp312-win_amd64.whl (11.1 MB)
-   ---------------------------------------- 11.1/11.1 MB 2.8 MB/s eta 0:00:00
-Downloading opentelemetry_api-1.27.0-py3-none-any.whl (63 kB)
-Downloading opentelemetry_exporter_otlp_proto_grpc-1.27.0-py3-none-any.whl (18 kB)
-Downloading opentelemetry_exporter_otlp_proto_common-1.27.0-py3-none-any.whl (17 kB)
-Downloading opentelemetry_proto-1.27.0-py3-none-any.whl (52 kB)
-Downloading opentelemetry_instrumentation_fastapi-0.48b0-py3-none-any.whl (11 kB)
-Downloading opentelemetry_instrumentation-0.48b0-py3-none-any.whl (29 kB)
-Downloading opentelemetry_instrumentation_asgi-0.48b0-py3-none-any.whl (15 kB)
-Downloading opentelemetry_semantic_conventions-0.48b0-py3-none-any.whl (149 kB)
-Downloading opentelemetry_util_http-0.48b0-py3-none-any.whl (6.9 kB)
-Downloading opentelemetry_sdk-1.27.0-py3-none-any.whl (110 kB)
-Downloading overrides-7.7.0-py3-none-any.whl (17 kB)
-Downloading posthog-3.7.0-py2.py3-none-any.whl (54 kB)
-Downloading rich-13.9.2-py3-none-any.whl (242 kB)
-Downloading typer-0.12.5-py3-none-any.whl (47 kB)
-Downloading uvicorn-0.32.0-py3-none-any.whl (63 kB)
-Downloading importlib_resources-6.4.5-py3-none-any.whl (36 kB)
-Downloading Deprecated-1.2.14-py2.py3-none-any.whl (9.6 kB)
-Downloading durationpy-0.9-py3-none-any.whl (3.5 kB)
-Downloading google_auth-2.35.0-py2.py3-none-any.whl (208 kB)
-Downloading httptools-0.6.4-cp312-cp312-win_amd64.whl (88 kB)
-Downloading importlib_metadata-8.4.0-py3-none-any.whl (26 kB)
-Downloading markdown_it_py-3.0.0-py3-none-any.whl (87 kB)
-Downloading monotonic-1.6-py2.py3-none-any.whl (8.2 kB)
-Downloading oauthlib-3.2.2-py3-none-any.whl (151 kB)
-Downloading pygments-2.18.0-py3-none-any.whl (1.2 MB)
-   ---------------------------------------- 1.2/1.2 MB 1.5 MB/s eta 0:00:00
-Downloading python_dotenv-1.0.1-py3-none-any.whl (19 kB)
-Downloading shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
-Downloading starlette-0.40.0-py3-none-any.whl (73 kB)
-Downloading watchfiles-0.24.0-cp312-none-win_amd64.whl (277 kB)
-Downloading websocket_client-1.8.0-py3-none-any.whl (58 kB)
-Downloading websockets-13.1-cp312-cp312-win_amd64.whl (159 kB)
-Downloading coloredlogs-15.0.1-py2.py3-none-any.whl (46 kB)
-Downloading flatbuffers-24.3.25-py2.py3-none-any.whl (26 kB)
-Downloading pyproject_hooks-1.2.0-py3-none-any.whl (10 kB)
-Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl (24 kB)
-Downloading asgiref-3.8.1-py3-none-any.whl (23 kB)
-Downloading cachetools-5.5.0-py3-none-any.whl (9.5 kB)
-Downloading humanfriendly-10.0-py2.py3-none-any.whl (86 kB)
-Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
-Downloading pyasn1_modules-0.4.1-py3-none-any.whl (181 kB)
-Downloading rsa-4.9-py3-none-any.whl (34 kB)
-Downloading zipp-3.20.2-py3-none-any.whl (9.2 kB)
-Downloading pyasn1-0.6.1-py3-none-any.whl (83 kB)
-Downloading pyreadline3-3.5.4-py3-none-any.whl (83 kB)
-Building wheels for collected packages: chroma-hnswlib, pypika
-  Building wheel for chroma-hnswlib (pyproject.toml) ... error
-  error: subprocess-exited-with-error
-
-  × Building wheel for chroma-hnswlib (pyproject.toml) did not run successfully.
-  │ exit code: 1
-  ╰─> [5 lines of output]
-      running bdist_wheel
-      running build
-      running build_ext
-      building 'hnswlib' extension
-      error: Microsoft Visual C++ 14.0 or greater is required. Get it with "Microsoft C++ Build Tools": https://visualstudio.microsoft.com/visual-cpp-build-tools/
-      [end of output]
-
-  note: This error originates from a subprocess, and is likely not a problem with pip.
-  ERROR: Failed building wheel for chroma-hnswlib
-  Building wheel for pypika (pyproject.toml) ... done
-  Created wheel for pypika: filename=PyPika-0.48.9-py2.py3-none-any.whl size=53836 sha256=e3e41a5b5c3b2eb0e19a5206f2a290b113ae9d56c923f28dc28c04a31a0a3ed5
-  Stored in directory: c:\users\user\appdata\local\pip\cache\wheels\d5\3d\69\8d68d249cd3de2584f226e27fd431d6344f7d70fd856ebd01b
-Successfully built pypika
-Failed to build chroma-hnswlib
-ERROR: ERROR: Failed to build installable wheels for some pyproject.toml based projects (chroma-hnswlib)
-
+pip install pypdf && pip install python-docx && pip install unstructured && pip install faiss-cpu && pip install sentence-transformers && pip install pinecone-client[grpc] && pip install weaviate-client && pip install haystack-client && pip install chromadb
+Requirement already satisfied: pypdf in c:\python312\lib\site-packages (5.0.1)
+Requirement already satisfied: python-docx in c:\python312\lib\site-packages (1.1.2)
+Requirement already satisfied: lxml>=3.1.0 in c:\python312\lib\site-packages (from python-docx) (5.3.0)
+Requirement already satisfied: typing-extensions>=4.9.0 in c:\python312\lib\site-packages (from python-docx) (4.12.2)
+Requirement already satisfied: unstructured in c:\python312\lib\site-packages (0.16.0)
+Requirement already satisfied: chardet in c:\python312\lib\site-packages (from unstructured) (5.2.0)
+Requirement already satisfied: filetype in c:\python312\lib\site-packages (from unstructured) (1.2.0)
+Requirement already satisfied: python-magic in c:\python312\lib\site-packages (from unstructured) (0.4.27)
+Requirement already satisfied: lxml in c:\python312\lib\site-packages (from unstructured) (5.3.0)
+Requirement already satisfied: nltk in c:\python312\lib\site-packages (from unstructured) (3.9.1)
+Requirement already satisfied: tabulate in c:\python312\lib\site-packages (from unstructured) (0.9.0)
+Requirement already satisfied: requests in c:\python312\lib\site-packages (from unstructured) (2.32.3)
+Requirement already satisfied: beautifulsoup4 in c:\python312\lib\site-packages (from unstructured) (4.12.3)
+Requirement already satisfied: emoji in c:\python312\lib\site-packages (from unstructured) (2.14.0)
+Requirement already satisfied: dataclasses-json in c:\python312\lib\site-packages (from unstructured) (0.6.7)
+Requirement already satisfied: python-iso639 in c:\python312\lib\site-packages (from unstructured) (2024.4.27)
+Requirement already satisfied: langdetect in c:\python312\lib\site-packages (from unstructured) (1.0.9)
+Requirement already satisfied: numpy<2 in c:\python312\lib\site-packages (from unstructured) (1.26.4)
+Requirement already satisfied: rapidfuzz in c:\python312\lib\site-packages (from unstructured) (3.10.0)
+Requirement already satisfied: backoff in c:\python312\lib\site-packages (from unstructured) (2.2.1)
+Requirement already satisfied: typing-extensions in c:\python312\lib\site-packages (from unstructured) (4.12.2)
+Requirement already satisfied: unstructured-client in c:\python312\lib\site-packages (from unstructured) (0.26.1)
+Requirement already satisfied: wrapt in c:\python312\lib\site-packages (from unstructured) (1.16.0)
+Requirement already satisfied: tqdm in c:\python312\lib\site-packages (from unstructured) (4.66.5)
+Requirement already satisfied: psutil in c:\python312\lib\site-packages (from unstructured) (6.1.0)
+Requirement already satisfied: python-oxmsg in c:\python312\lib\site-packages (from unstructured) (0.0.1)
+Requirement already satisfied: soupsieve>1.2 in c:\python312\lib\site-packages (from beautifulsoup4->unstructured) (2.6)
+Requirement already satisfied: marshmallow<4.0.0,>=3.18.0 in c:\python312\lib\site-packages (from dataclasses-json->unstructured) (3.23.0)
+Requirement already satisfied: typing-inspect<1,>=0.4.0 in c:\python312\lib\site-packages (from dataclasses-json->unstructured) (0.9.0)
+Requirement already satisfied: six in c:\python312\lib\site-packages (from langdetect->unstructured) (1.16.0)
+Requirement already satisfied: click in c:\python312\lib\site-packages (from nltk->unstructured) (8.1.7)
+Requirement already satisfied: joblib in c:\python312\lib\site-packages (from nltk->unstructured) (1.4.2)
+Requirement already satisfied: regex>=2021.8.3 in c:\python312\lib\site-packages (from nltk->unstructured) (2024.9.11)
+Requirement already satisfied: olefile in c:\python312\lib\site-packages (from python-oxmsg->unstructured) (0.47)
+Requirement already satisfied: charset-normalizer<4,>=2 in c:\python312\lib\site-packages (from requests->unstructured) (3.4.0)
+Requirement already satisfied: idna<4,>=2.5 in c:\python312\lib\site-packages (from requests->unstructured) (3.10)
+Requirement already satisfied: urllib3<3,>=1.21.1 in c:\python312\lib\site-packages (from requests->unstructured) (2.2.3)
+Requirement already satisfied: certifi>=2017.4.17 in c:\python312\lib\site-packages (from requests->unstructured) (2024.8.30)
+Requirement already satisfied: colorama in c:\python312\lib\site-packages (from tqdm->unstructured) (0.4.6)
+Requirement already satisfied: cryptography>=3.1 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (43.0.3)
+Requirement already satisfied: eval-type-backport<0.3.0,>=0.2.0 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (0.2.0)
+Requirement already satisfied: httpx>=0.27.0 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (0.27.2)
+Requirement already satisfied: jsonpath-python<2.0.0,>=1.0.6 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (1.0.6)
+Requirement already satisfied: nest-asyncio>=1.6.0 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (1.6.0)
+Requirement already satisfied: pydantic<2.10.0,>=2.9.0 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (2.9.2)
+Requirement already satisfied: pypdf>=4.0 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (5.0.1)
+Requirement already satisfied: python-dateutil==2.8.2 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (2.8.2)
+Requirement already satisfied: requests-toolbelt>=1.0.0 in c:\python312\lib\site-packages (from unstructured-client->unstructured) (1.0.0)
+Requirement already satisfied: cffi>=1.12 in c:\python312\lib\site-packages (from cryptography>=3.1->unstructured-client->unstructured) (1.17.1)
+Requirement already satisfied: anyio in c:\python312\lib\site-packages (from httpx>=0.27.0->unstructured-client->unstructured) (4.6.2.post1)
+Requirement already satisfied: httpcore==1.* in c:\python312\lib\site-packages (from httpx>=0.27.0->unstructured-client->unstructured) (1.0.6)
+Requirement already satisfied: sniffio in c:\python312\lib\site-packages (from httpx>=0.27.0->unstructured-client->unstructured) (1.3.1)
+Requirement already satisfied: h11<0.15,>=0.13 in c:\python312\lib\site-packages (from httpcore==1.*->httpx>=0.27.0->unstructured-client->unstructured) (0.14.0)
+Requirement already satisfied: packaging>=17.0 in c:\python312\lib\site-packages (from marshmallow<4.0.0,>=3.18.0->dataclasses-json->unstructured) (24.1)
+Requirement already satisfied: annotated-types>=0.6.0 in c:\python312\lib\site-packages (from pydantic<2.10.0,>=2.9.0->unstructured-client->unstructured) (0.7.0)
+Requirement already satisfied: pydantic-core==2.23.4 in c:\python312\lib\site-packages (from pydantic<2.10.0,>=2.9.0->unstructured-client->unstructured) (2.23.4)
+Requirement already satisfied: mypy-extensions>=0.3.0 in c:\python312\lib\site-packages (from typing-inspect<1,>=0.4.0->dataclasses-json->unstructured) (1.0.0)
+Requirement already satisfied: pycparser in c:\python312\lib\site-packages (from cffi>=1.12->cryptography>=3.1->unstructured-client->unstructured) (2.22)
+Requirement already satisfied: faiss-cpu in c:\python312\lib\site-packages (1.9.0)
+Requirement already satisfied: numpy<3.0,>=1.25.0 in c:\python312\lib\site-packages (from faiss-cpu) (1.26.4)
+Requirement already satisfied: packaging in c:\python312\lib\site-packages (from faiss-cpu) (24.1)
+Collecting sentence-transformers
+  Using cached sentence_transformers-3.2.0-py3-none-any.whl.metadata (10 kB)
+Requirement already satisfied: transformers<5.0.0,>=4.41.0 in c:\python312\lib\site-packages (from sentence-transformers) (4.45.2)
+Requirement already satisfied: tqdm in c:\python312\lib\site-packages (from sentence-transformers) (4.66.5)
+Requirement already satisfied: torch>=1.11.0 in c:\python312\lib\site-packages (from sentence-transformers) (2.5.0)
+Requirement already satisfied: scikit-learn in c:\python312\lib\site-packages (from sentence-transformers) (1.5.2)
+Requirement already satisfied: scipy in c:\python312\lib\site-packages (from sentence-transformers) (1.14.1)
+Requirement already satisfied: huggingface-hub>=0.20.0 in c:\python312\lib\site-packages (from sentence-transformers) (0.26.0)
+Requirement already satisfied: Pillow in c:\python312\lib\site-packages (from sentence-transformers) (11.0.0)
+Requirement already satisfied: filelock in c:\python312\lib\site-packages (from huggingface-hub>=0.20.0->sentence-transformers) (3.16.1)
+Requirement already satisfied: fsspec>=2023.5.0 in c:\python312\lib\site-packages (from huggingface-hub>=0.20.0->sentence-transformers) (2024.10.0)
+Requirement already satisfied: packaging>=20.9 in c:\python312\lib\site-packages (from huggingface-hub>=0.20.0->sentence-transformers) (24.1)
+Requirement already satisfied: pyyaml>=5.1 in c:\python312\lib\site-packages (from huggingface-hub>=0.20.0->sentence-transformers) (6.0.2)
+Requirement already satisfied: requests in c:\python312\lib\site-packages (from huggingface-hub>=0.20.0->sentence-transformers) (2.32.3)
+Requirement already satisfied: typing-extensions>=3.7.4.3 in c:\python312\lib\site-packages (from huggingface-hub>=0.20.0->sentence-transformers) (4.12.2)
+Requirement already satisfied: networkx in c:\python312\lib\site-packages (from torch>=1.11.0->sentence-transformers) (3.4.1)
+Requirement already satisfied: jinja2 in c:\python312\lib\site-packages (from torch>=1.11.0->sentence-transformers) (3.1.4)
+Requirement already satisfied: setuptools in c:\python312\lib\site-packages (from torch>=1.11.0->sentence-transformers) (75.2.0)
+Requirement already satisfied: sympy==1.13.1 in c:\python312\lib\site-packages (from torch>=1.11.0->sentence-transformers) (1.13.1)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in c:\python312\lib\site-packages (from sympy==1.13.1->torch>=1.11.0->sentence-transformers) (1.3.0)
+Requirement already satisfied: colorama in c:\python312\lib\site-packages (from tqdm->sentence-transformers) (0.4.6)
+Requirement already satisfied: numpy>=1.17 in c:\python312\lib\site-packages (from transformers<5.0.0,>=4.41.0->sentence-transformers) (1.26.4)
+Requirement already satisfied: regex!=2019.12.17 in c:\python312\lib\site-packages (from transformers<5.0.0,>=4.41.0->sentence-transformers) (2024.9.11)
+Requirement already satisfied: safetensors>=0.4.1 in c:\python312\lib\site-packages (from transformers<5.0.0,>=4.41.0->sentence-transformers) (0.4.5)
+Requirement already satisfied: tokenizers<0.21,>=0.20 in c:\python312\lib\site-packages (from transformers<5.0.0,>=4.41.0->sentence-transformers) (0.20.1)
+Requirement already satisfied: joblib>=1.2.0 in c:\python312\lib\site-packages (from scikit-learn->sentence-transformers) (1.4.2)
+Requirement already satisfied: threadpoolctl>=3.1.0 in c:\python312\lib\site-packages (from scikit-learn->sentence-transformers) (3.5.0)
+Requirement already satisfied: MarkupSafe>=2.0 in c:\python312\lib\site-packages (from jinja2->torch>=1.11.0->sentence-transformers) (3.0.2)
+Requirement already satisfied: charset-normalizer<4,>=2 in c:\python312\lib\site-packages (from requests->huggingface-hub>=0.20.0->sentence-transformers) (3.4.0)
+Requirement already satisfied: idna<4,>=2.5 in c:\python312\lib\site-packages (from requests->huggingface-hub>=0.20.0->sentence-transformers) (3.10)
+Requirement already satisfied: urllib3<3,>=1.21.1 in c:\python312\lib\site-packages (from requests->huggingface-hub>=0.20.0->sentence-transformers) (2.2.3)
+Requirement already satisfied: certifi>=2017.4.17 in c:\python312\lib\site-packages (from requests->huggingface-hub>=0.20.0->sentence-transformers) (2024.8.30)
+Using cached sentence_transformers-3.2.0-py3-none-any.whl (255 kB)
+Installing collected packages: sentence-transformers
+Successfully installed sentence-transformers-3.2.0
+Collecting pinecone-client[grpc]
+  Downloading pinecone_client-5.0.1-py3-none-any.whl.metadata (19 kB)
+Requirement already satisfied: certifi>=2019.11.17 in c:\python312\lib\site-packages (from pinecone-client[grpc]) (2024.8.30)
+Collecting googleapis-common-protos>=1.53.0 (from pinecone-client[grpc])
+  Downloading googleapis_common_protos-1.65.0-py2.py3-none-any.whl.metadata (1.5 kB)
+Collecting grpcio>=1.59.0 (from pinecone-client[grpc])
+  Downloading grpcio-1.67.0-cp312-cp312-win_amd64.whl.metadata (4.0 kB)
+Collecting lz4>=3.1.3 (from pinecone-client[grpc])
+  Downloading lz4-4.3.3-cp312-cp312-win_amd64.whl.metadata (3.8 kB)
+Collecting pinecone-plugin-inference<2.0.0,>=1.0.3 (from pinecone-client[grpc])
+  Downloading pinecone_plugin_inference-1.1.0-py3-none-any.whl.metadata (2.2 kB)
+Collecting pinecone-plugin-interface<0.0.8,>=0.0.7 (from pinecone-client[grpc])
+  Downloading pinecone_plugin_interface-0.0.7-py3-none-any.whl.metadata (1.2 kB)
+Collecting protobuf<5.0,>=4.25 (from pinecone-client[grpc])
+  Downloading protobuf-4.25.5-cp310-abi3-win_amd64.whl.metadata (541 bytes)
+Collecting protoc-gen-openapiv2<0.0.2,>=0.0.1 (from pinecone-client[grpc])
+  Downloading protoc_gen_openapiv2-0.0.1-py3-none-any.whl.metadata (1.5 kB)
+Requirement already satisfied: tqdm>=4.64.1 in c:\python312\lib\site-packages (from pinecone-client[grpc]) (4.66.5)
+Requirement already satisfied: typing-extensions>=3.7.4 in c:\python312\lib\site-packages (from pinecone-client[grpc]) (4.12.2)
+Requirement already satisfied: urllib3>=1.26.5 in c:\python312\lib\site-packages (from pinecone-client[grpc]) (2.2.3)
+Requirement already satisfied: colorama in c:\python312\lib\site-packages (from tqdm>=4.64.1->pinecone-client[grpc]) (0.4.6)
+Downloading googleapis_common_protos-1.65.0-py2.py3-none-any.whl (220 kB)
+Downloading grpcio-1.67.0-cp312-cp312-win_amd64.whl (4.3 MB)
+   ---------------------------------------- 4.3/4.3 MB 2.9 MB/s eta 0:00:00
+Downloading lz4-4.3.3-cp312-cp312-win_amd64.whl (99 kB)
+Downloading pinecone_plugin_inference-1.1.0-py3-none-any.whl (85 kB)
+Downloading pinecone_plugin_interface-0.0.7-py3-none-any.whl (6.2 kB)
+Downloading protobuf-4.25.5-cp310-abi3-win_amd64.whl (413 kB)
+Downloading protoc_gen_openapiv2-0.0.1-py3-none-any.whl (7.9 kB)
+Downloading pinecone_client-5.0.1-py3-none-any.whl (244 kB)
+Installing collected packages: protobuf, pinecone-plugin-interface, lz4, grpcio, pinecone-plugin-inference, googleapis-common-protos, protoc-gen-openapiv2, pinecone-client
+Successfully installed googleapis-common-protos-1.65.0 grpcio-1.67.0 lz4-4.3.3 pinecone-client-5.0.1 pinecone-plugin-inference-1.1.0 pinecone-plugin-interface-0.0.7 protobuf-4.25.5 protoc-gen-openapiv2-0.0.1
+Collecting weaviate-client
+  Downloading weaviate_client-4.9.0-py3-none-any.whl.metadata (3.6 kB)
+Requirement already satisfied: requests<3.0.0,>=2.30.0 in c:\python312\lib\site-packages (from weaviate-client) (2.32.3)
+Collecting httpx<=0.27.0,>=0.25.0 (from weaviate-client)
+  Downloading httpx-0.27.0-py3-none-any.whl.metadata (7.2 kB)
+Collecting validators==0.34.0 (from weaviate-client)
+  Downloading validators-0.34.0-py3-none-any.whl.metadata (3.8 kB)
+Collecting authlib<1.3.2,>=1.2.1 (from weaviate-client)
+  Downloading Authlib-1.3.1-py2.py3-none-any.whl.metadata (3.8 kB)
+Requirement already satisfied: pydantic<3.0.0,>=2.5.0 in c:\python312\lib\site-packages (from weaviate-client) (2.9.2)
+Requirement already satisfied: grpcio<2.0.0,>=1.57.0 in c:\python312\lib\site-packages (from weaviate-client) (1.67.0)
+Collecting grpcio-tools<2.0.0,>=1.57.0 (from weaviate-client)
+  Downloading grpcio_tools-1.67.0-cp312-cp312-win_amd64.whl.metadata (5.5 kB)
+Collecting grpcio-health-checking<2.0.0,>=1.57.0 (from weaviate-client)
+  Downloading grpcio_health_checking-1.67.0-py3-none-any.whl.metadata (1.1 kB)
+Requirement already satisfied: cryptography in c:\python312\lib\site-packages (from authlib<1.3.2,>=1.2.1->weaviate-client) (43.0.3)
+Collecting protobuf<6.0dev,>=5.26.1 (from grpcio-health-checking<2.0.0,>=1.57.0->weaviate-client)
+  Downloading protobuf-5.28.2-cp310-abi3-win_amd64.whl.metadata (592 bytes)
+Requirement already satisfied: setuptools in c:\python312\lib\site-packages (from grpcio-tools<2.0.0,>=1.57.0->weaviate-client) (75.2.0)
+Requirement already satisfied: anyio in c:\python312\lib\site-packages (from httpx<=0.27.0,>=0.25.0->weaviate-client) (4.6.2.post1)
+Requirement already satisfied: certifi in c:\python312\lib\site-packages (from httpx<=0.27.0,>=0.25.0->weaviate-client) (2024.8.30)
+Requirement already satisfied: httpcore==1.* in c:\python312\lib\site-packages (from httpx<=0.27.0,>=0.25.0->weaviate-client) (1.0.6)
+Requirement already satisfied: idna in c:\python312\lib\site-packages (from httpx<=0.27.0,>=0.25.0->weaviate-client) (3.10)
+Requirement already satisfied: sniffio in c:\python312\lib\site-packages (from httpx<=0.27.0,>=0.25.0->weaviate-client) (1.3.1)
+Requirement already satisfied: h11<0.15,>=0.13 in c:\python312\lib\site-packages (from httpcore==1.*->httpx<=0.27.0,>=0.25.0->weaviate-client) (0.14.0)
+Requirement already satisfied: annotated-types>=0.6.0 in c:\python312\lib\site-packages (from pydantic<3.0.0,>=2.5.0->weaviate-client) (0.7.0)
+Requirement already satisfied: pydantic-core==2.23.4 in c:\python312\lib\site-packages (from pydantic<3.0.0,>=2.5.0->weaviate-client) (2.23.4)
+Requirement already satisfied: typing-extensions>=4.6.1 in c:\python312\lib\site-packages (from pydantic<3.0.0,>=2.5.0->weaviate-client) (4.12.2)
+Requirement already satisfied: charset-normalizer<4,>=2 in c:\python312\lib\site-packages (from requests<3.0.0,>=2.30.0->weaviate-client) (3.4.0)
+Requirement already satisfied: urllib3<3,>=1.21.1 in c:\python312\lib\site-packages (from requests<3.0.0,>=2.30.0->weaviate-client) (2.2.3)
+Requirement already satisfied: cffi>=1.12 in c:\python312\lib\site-packages (from cryptography->authlib<1.3.2,>=1.2.1->weaviate-client) (1.17.1)
+Requirement already satisfied: pycparser in c:\python312\lib\site-packages (from cffi>=1.12->cryptography->authlib<1.3.2,>=1.2.1->weaviate-client) (2.22)
+Downloading weaviate_client-4.9.0-py3-none-any.whl (378 kB)
+Downloading validators-0.34.0-py3-none-any.whl (43 kB)
+Downloading Authlib-1.3.1-py2.py3-none-any.whl (223 kB)
+Downloading grpcio_health_checking-1.67.0-py3-none-any.whl (18 kB)
+Downloading grpcio_tools-1.67.0-cp312-cp312-win_amd64.whl (1.1 MB)
+   ---------------------------------------- 1.1/1.1 MB 2.3 MB/s eta 0:00:00
+Downloading httpx-0.27.0-py3-none-any.whl (75 kB)
+Downloading protobuf-5.28.2-cp310-abi3-win_amd64.whl (431 kB)
+Installing collected packages: validators, protobuf, httpx, grpcio-tools, grpcio-health-checking, authlib, weaviate-client
+  Attempting uninstall: protobuf
+    Found existing installation: protobuf 4.25.5
+    Uninstalling protobuf-4.25.5:
+      Successfully uninstalled protobuf-4.25.5
+  Attempting uninstall: httpx
+    Found existing installation: httpx 0.27.2
+    Uninstalling httpx-0.27.2:
+      Successfully uninstalled httpx-0.27.2
+Successfully installed authlib-1.3.1 grpcio-health-checking-1.67.0 grpcio-tools-1.67.0 httpx-0.27.0 protobuf-5.28.2 validators-0.34.0 weaviate-client-4.9.0
+Collecting haystack-client
+  Downloading haystack_client-0.2.4-py3-none-any.whl.metadata (3.8 kB)
+Collecting opentracing<3.0,>=2.3.0 (from haystack-client)
+  Downloading opentracing-2.4.0.tar.gz (46 kB)
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+Requirement already satisfied: requests<3.0,>=2.19 in c:\python312\lib\site-packages (from haystack-client) (2.32.3)
+Collecting requests-futures<1.0,>=0.9.9 (from haystack-client)
+  Downloading requests-futures-0.9.9.tar.gz (10 kB)
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+Collecting protobuf<4.0,>=3.11.2 (from haystack-client)
+  Downloading protobuf-3.20.3-py2.py3-none-any.whl.metadata (720 bytes)
+Requirement already satisfied: grpcio<2.0,>=1.26.0 in c:\python312\lib\site-packages (from haystack-client) (1.67.0)
+Requirement already satisfied: charset-normalizer<4,>=2 in c:\python312\lib\site-packages (from requests<3.0,>=2.19->haystack-client) (3.4.0)
+Requirement already satisfied: idna<4,>=2.5 in c:\python312\lib\site-packages (from requests<3.0,>=2.19->haystack-client) (3.10)
+Requirement already satisfied: urllib3<3,>=1.21.1 in c:\python312\lib\site-packages (from requests<3.0,>=2.19->haystack-client) (2.2.3)
+Requirement already satisfied: certifi>=2017.4.17 in c:\python312\lib\site-packages (from requests<3.0,>=2.19->haystack-client) (2024.8.30)
+Downloading haystack_client-0.2.4-py3-none-any.whl (20 kB)
+Downloading protobuf-3.20.3-py2.py3-none-any.whl (162 kB)
+Building wheels for collected packages: opentracing, requests-futures
+  Building wheel for opentracing (pyproject.toml) ... done
+  Created wheel for opentracing: filename=opentracing-2.4.0-py3-none-any.whl size=51450 sha256=4d073f2c3572b10c2018b5b7cebc11cad54cf623a139868159a7c8d267744533
+  Stored in directory: c:\users\user\appdata\local\pip\cache\wheels\d2\e1\00\b5ea062dcf333dc17cf8fa4906676d6d36e47551e88bd0d7ea
+  Building wheel for requests-futures (pyproject.toml) ... done
+  Created wheel for requests-futures: filename=requests_futures-0.9.9-py3-none-any.whl size=6689 sha256=80fc7f6788e01a7e94e4ffe614d944713c5bcec224dd2d252f9e75afcf9c2cd3
+  Stored in directory: c:\users\user\appdata\local\pip\cache\wheels\50\02\84\1e24442ccd9123d9a4fa68d5f5f40d82e74392ba9f9ecd8a48
+Successfully built opentracing requests-futures
+Installing collected packages: opentracing, protobuf, requests-futures, haystack-client
+  Attempting uninstall: protobuf
+    Found existing installation: protobuf 5.28.2
+    Uninstalling protobuf-5.28.2:
+      Successfully uninstalled protobuf-5.28.2
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+grpcio-health-checking 1.67.0 requires protobuf<6.0dev,>=5.26.1, but you have protobuf 3.20.3 which is incompatible.
+grpcio-tools 1.67.0 requires protobuf<6.0dev,>=5.26.1, but you have protobuf 3.20.3 which is incompatible.
+protoc-gen-openapiv2 0.0.1 requires protobuf>=4.21.0, but you have protobuf 3.20.3 which is incompatible.
+Successfully installed haystack-client-0.2.4 opentracing-2.4.0 protobuf-3.20.3 requests-futures-0.9.9
+Collecting chromadb
+  Downloading chromadb-0.5.15-py3-none-any.whl.metadata (6.8 kB)
+Collecting build>=1.0.3 (from chromadb)
+  Downloading build-1.2.2.post1-py3-none-any.whl.metadata (6.5 kB)
+Requirement already satisfied: pydantic>=1.9 in c:\python312\lib\site-packages (from chromadb) (2.9.2)
+Collecting chroma-hnswlib==0.7.6 (from chromadb)
+  Downloading chroma_hnswlib-0.7.6.tar.gz (32 kB)
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+Collecting fastapi>=0.95.2 (from chromadb)
+  Downloading fastapi-0.115.2-py3-none-any.whl.metadata (27 kB)
+Collecting uvicorn>=0.18.3 (from uvicorn[standard]>=0.18.3->chromadb)
+  Downloading uvicorn-0.32.0-py3-none-any.whl.metadata (6.6 kB)
+Requirement already satisfied: numpy>=1.22.5 in c:\python312\lib\site-packages (from chromadb) (1.26.4)
+Collecting posthog>=2.4.0 (from chromadb)
+  Downloading posthog-3.7.0-py2.py3-none-any.whl.metadata (2.0 kB)
+Requirement already satisfied: typing-extensions>=4.5.0 in c:\python312\lib\site-packages (from chromadb) (4.12.2)
+Collecting onnxruntime>=1.14.1 (from chromadb)
+  Downloading onnxruntime-1.19.2-cp312-cp312-win_amd64.whl.metadata (4.7 kB)
+Collecting opentelemetry-api>=1.2.0 (from chromadb)
+  Downloading opentelemetry_api-1.27.0-py3-none-any.whl.metadata (1.4 kB)
+Collecting opentelemetry-exporter-otlp-proto-grpc>=1.2.0 (from chromadb)
+  Downloading opentelemetry_exporter_otlp_proto_grpc-1.27.0-py3-none-any.whl.metadata (2.3 kB)
+Collecting opentelemetry-instrumentation-fastapi>=0.41b0 (from chromadb)
+  Downloading opentelemetry_instrumentation_fastapi-0.48b0-py3-none-any.whl.metadata (2.1 kB)
+Collecting opentelemetry-sdk>=1.2.0 (from chromadb)
+  Downloading opentelemetry_sdk-1.27.0-py3-none-any.whl.metadata (1.5 kB)
+Requirement already satisfied: tokenizers>=0.13.2 in c:\python312\lib\site-packages (from chromadb) (0.20.1)
+Collecting pypika>=0.48.9 (from chromadb)
+  Downloading PyPika-0.48.9.tar.gz (67 kB)
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+Requirement already satisfied: tqdm>=4.65.0 in c:\python312\lib\site-packages (from chromadb) (4.66.5)
+Collecting overrides>=7.3.1 (from chromadb)
+  Downloading overrides-7.7.0-py3-none-any.whl.metadata (5.8 kB)
+Collecting importlib-resources (from chromadb)
+  Downloading importlib_resources-6.4.5-py3-none-any.whl.metadata (4.0 kB)
+Requirement already satisfied: grpcio>=1.58.0 in c:\python312\lib\site-packages (from chromadb) (1.67.0)
+Collecting bcrypt>=4.0.1 (from chromadb)
+  Downloading bcrypt-4.2.0-cp39-abi3-win_amd64.whl.metadata (9.9 kB)
+Collecting typer>=0.9.0 (from chromadb)
+  Downloading typer-0.12.5-py3-none-any.whl.metadata (15 kB)
+Collecting kubernetes>=28.1.0 (from chromadb)
+  Downloading kubernetes-31.0.0-py2.py3-none-any.whl.metadata (1.5 kB)
+Requirement already satisfied: tenacity>=8.2.3 in c:\python312\lib\site-packages (from chromadb) (9.0.0)
+Requirement already satisfied: PyYAML>=6.0.0 in c:\python312\lib\site-packages (from chromadb) (6.0.2)
+Collecting mmh3>=4.0.1 (from chromadb)
+  Downloading mmh3-5.0.1-cp312-cp312-win_amd64.whl.metadata (14 kB)
+Requirement already satisfied: orjson>=3.9.12 in c:\python312\lib\site-packages (from chromadb) (3.10.9)
+Requirement already satisfied: httpx>=0.27.0 in c:\python312\lib\site-packages (from chromadb) (0.27.0)
+Collecting rich>=10.11.0 (from chromadb)
+  Downloading rich-13.9.2-py3-none-any.whl.metadata (18 kB)
+Requirement already satisfied: packaging>=19.1 in c:\python312\lib\site-packages (from build>=1.0.3->chromadb) (24.1)
+Collecting pyproject_hooks (from build>=1.0.3->chromadb)
+  Downloading pyproject_hooks-1.2.0-py3-none-any.whl.metadata (1.3 kB)
+Requirement already satisfied: colorama in c:\python312\lib\site-packages (from build>=1.0.3->chromadb) (0.4.6)
+Collecting starlette<0.41.0,>=0.37.2 (from fastapi>=0.95.2->chromadb)
+  Downloading starlette-0.40.0-py3-none-any.whl.metadata (6.0 kB)
+Requirement already satisfied: anyio in c:\python312\lib\site-packages (from httpx>=0.27.0->chromadb) (4.6.2.post1)
+Requirement already satisfied: certifi in c:\python312\lib\site-packages (from httpx>=0.27.0->chromadb) (2024.8.30)
+Requirement already satisfied: httpcore==1.* in c:\python312\lib\site-packages (from httpx>=0.27.0->chromadb) (1.0.6)
+Requirement already satisfied: idna in c:\python312\lib\site-packages (from httpx>=0.27.0->chromadb) (3.10)
+Requirement already satisfied: sniffio in c:\python312\lib\site-packages (from httpx>=0.27.0->chromadb) (1.3.1)
+Requirement already satisfied: h11<0.15,>=0.13 in c:\python312\lib\site-packages (from httpcore==1.*->httpx>=0.27.0->chromadb) (0.14.0)
+Requirement already satisfied: six>=1.9.0 in c:\python312\lib\site-packages (from kubernetes>=28.1.0->chromadb) (1.16.0)
+Requirement already satisfied: python-dateutil>=2.5.3 in c:\python312\lib\site-packages (from kubernetes>=28.1.0->chromadb) (2.8.2)
+Collecting google-auth>=1.0.1 (from kubernetes>=28.1.0->chromadb)
+  Downloading google_auth-2.35.0-py2.py3-none-any.whl.metadata (4.7 kB)
+Collecting websocket-client!=0.40.0,!=0.41.*,!=0.42.*,>=0.32.0 (from kubernetes>=28.1.0->chromadb)
+  Downloading websocket_client-1.8.0-py3-none-any.whl.metadata (8.0 kB)
+Requirement already satisfied: requests in c:\python312\lib\site-packages (from kubernetes>=28.1.0->chromadb) (2.32.3)
+Collecting requests-oauthlib (from kubernetes>=28.1.0->chromadb)
+  Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl.metadata (11 kB)
+Collecting oauthlib>=3.2.2 (from kubernetes>=28.1.0->chromadb)
+  Downloading oauthlib-3.2.2-py3-none-any.whl.metadata (7.5 kB)
+Requirement already satisfied: urllib3>=1.24.2 in c:\python312\lib\site-packages (from kubernetes>=28.1.0->chromadb) (2.2.3)
+Collecting durationpy>=0.7 (from kubernetes>=28.1.0->chromadb)
+  Downloading durationpy-0.9-py3-none-any.whl.metadata (338 bytes)
+Collecting coloredlogs (from onnxruntime>=1.14.1->chromadb)
+  Downloading coloredlogs-15.0.1-py2.py3-none-any.whl.metadata (12 kB)
+Collecting flatbuffers (from onnxruntime>=1.14.1->chromadb)
+  Downloading flatbuffers-24.3.25-py2.py3-none-any.whl.metadata (850 bytes)
+Requirement already satisfied: protobuf in c:\python312\lib\site-packages (from onnxruntime>=1.14.1->chromadb) (3.20.3)
+Requirement already satisfied: sympy in c:\python312\lib\site-packages (from onnxruntime>=1.14.1->chromadb) (1.13.1)
+Collecting deprecated>=1.2.6 (from opentelemetry-api>=1.2.0->chromadb)
+  Downloading Deprecated-1.2.14-py2.py3-none-any.whl.metadata (5.4 kB)
+Collecting importlib-metadata<=8.4.0,>=6.0 (from opentelemetry-api>=1.2.0->chromadb)
+  Downloading importlib_metadata-8.4.0-py3-none-any.whl.metadata (4.7 kB)
+Requirement already satisfied: googleapis-common-protos~=1.52 in c:\python312\lib\site-packages (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb) (1.65.0)
+Collecting opentelemetry-exporter-otlp-proto-common==1.27.0 (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb)
+  Downloading opentelemetry_exporter_otlp_proto_common-1.27.0-py3-none-any.whl.metadata (1.8 kB)
+Collecting opentelemetry-proto==1.27.0 (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb)
+  Downloading opentelemetry_proto-1.27.0-py3-none-any.whl.metadata (2.3 kB)
+Collecting opentelemetry-instrumentation-asgi==0.48b0 (from opentelemetry-instrumentation-fastapi>=0.41b0->chromadb)
+  Downloading opentelemetry_instrumentation_asgi-0.48b0-py3-none-any.whl.metadata (2.0 kB)
+Collecting opentelemetry-instrumentation==0.48b0 (from opentelemetry-instrumentation-fastapi>=0.41b0->chromadb)
+  Downloading opentelemetry_instrumentation-0.48b0-py3-none-any.whl.metadata (6.1 kB)
+Collecting opentelemetry-semantic-conventions==0.48b0 (from opentelemetry-instrumentation-fastapi>=0.41b0->chromadb)
+  Downloading opentelemetry_semantic_conventions-0.48b0-py3-none-any.whl.metadata (2.4 kB)
+Collecting opentelemetry-util-http==0.48b0 (from opentelemetry-instrumentation-fastapi>=0.41b0->chromadb)
+  Downloading opentelemetry_util_http-0.48b0-py3-none-any.whl.metadata (2.5 kB)
+Requirement already satisfied: setuptools>=16.0 in c:\python312\lib\site-packages (from opentelemetry-instrumentation==0.48b0->opentelemetry-instrumentation-fastapi>=0.41b0->chromadb) (75.2.0)
+Requirement already satisfied: wrapt<2.0.0,>=1.0.0 in c:\python312\lib\site-packages (from opentelemetry-instrumentation==0.48b0->opentelemetry-instrumentation-fastapi>=0.41b0->chromadb) (1.16.0)
+Collecting asgiref~=3.0 (from opentelemetry-instrumentation-asgi==0.48b0->opentelemetry-instrumentation-fastapi>=0.41b0->chromadb)
+  Downloading asgiref-3.8.1-py3-none-any.whl.metadata (9.3 kB)
+Collecting monotonic>=1.5 (from posthog>=2.4.0->chromadb)
+  Downloading monotonic-1.6-py2.py3-none-any.whl.metadata (1.5 kB)
+Requirement already satisfied: backoff>=1.10.0 in c:\python312\lib\site-packages (from posthog>=2.4.0->chromadb) (2.2.1)
+Requirement already satisfied: annotated-types>=0.6.0 in c:\python312\lib\site-packages (from pydantic>=1.9->chromadb) (0.7.0)
+Requirement already satisfied: pydantic-core==2.23.4 in c:\python312\lib\site-packages (from pydantic>=1.9->chromadb) (2.23.4)
+Collecting markdown-it-py>=2.2.0 (from rich>=10.11.0->chromadb)
+  Downloading markdown_it_py-3.0.0-py3-none-any.whl.metadata (6.9 kB)
+Collecting pygments<3.0.0,>=2.13.0 (from rich>=10.11.0->chromadb)
+  Downloading pygments-2.18.0-py3-none-any.whl.metadata (2.5 kB)
+Requirement already satisfied: huggingface-hub<1.0,>=0.16.4 in c:\python312\lib\site-packages (from tokenizers>=0.13.2->chromadb) (0.26.0)
+Requirement already satisfied: click>=8.0.0 in c:\python312\lib\site-packages (from typer>=0.9.0->chromadb) (8.1.7)
+Collecting shellingham>=1.3.0 (from typer>=0.9.0->chromadb)
+  Downloading shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)
+Collecting httptools>=0.5.0 (from uvicorn[standard]>=0.18.3->chromadb)
+  Downloading httptools-0.6.4-cp312-cp312-win_amd64.whl.metadata (3.7 kB)
+Collecting python-dotenv>=0.13 (from uvicorn[standard]>=0.18.3->chromadb)
+  Downloading python_dotenv-1.0.1-py3-none-any.whl.metadata (23 kB)
+Collecting watchfiles>=0.13 (from uvicorn[standard]>=0.18.3->chromadb)
+  Downloading watchfiles-0.24.0-cp312-none-win_amd64.whl.metadata (5.0 kB)
+Collecting websockets>=10.4 (from uvicorn[standard]>=0.18.3->chromadb)
+  Downloading websockets-13.1-cp312-cp312-win_amd64.whl.metadata (7.0 kB)
+Collecting cachetools<6.0,>=2.0.0 (from google-auth>=1.0.1->kubernetes>=28.1.0->chromadb)
+  Downloading cachetools-5.5.0-py3-none-any.whl.metadata (5.3 kB)
+Collecting pyasn1-modules>=0.2.1 (from google-auth>=1.0.1->kubernetes>=28.1.0->chromadb)
+  Downloading pyasn1_modules-0.4.1-py3-none-any.whl.metadata (3.5 kB)
+Collecting rsa<5,>=3.1.4 (from google-auth>=1.0.1->kubernetes>=28.1.0->chromadb)
+  Downloading rsa-4.9-py3-none-any.whl.metadata (4.2 kB)
+Requirement already satisfied: filelock in c:\python312\lib\site-packages (from huggingface-hub<1.0,>=0.16.4->tokenizers>=0.13.2->chromadb) (3.16.1)
+Requirement already satisfied: fsspec>=2023.5.0 in c:\python312\lib\site-packages (from huggingface-hub<1.0,>=0.16.4->tokenizers>=0.13.2->chromadb) (2024.10.0)
+Collecting zipp>=0.5 (from importlib-metadata<=8.4.0,>=6.0->opentelemetry-api>=1.2.0->chromadb)
+  Downloading zipp-3.20.2-py3-none-any.whl.metadata (3.7 kB)
+Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=10.11.0->chromadb)
+  Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+Requirement already satisfied: charset-normalizer<4,>=2 in c:\python312\lib\site-packages (from requests->kubernetes>=28.1.0->chromadb) (3.4.0)
+Collecting humanfriendly>=9.1 (from coloredlogs->onnxruntime>=1.14.1->chromadb)
+  Downloading humanfriendly-10.0-py2.py3-none-any.whl.metadata (9.2 kB)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in c:\python312\lib\site-packages (from sympy->onnxruntime>=1.14.1->chromadb) (1.3.0)
+Collecting pyreadline3 (from humanfriendly>=9.1->coloredlogs->onnxruntime>=1.14.1->chromadb)
+  Downloading pyreadline3-3.5.4-py3-none-any.whl.metadata (4.7 kB)
+Collecting pyasn1<0.7.0,>=0.4.6 (from pyasn1-modules>=0.2.1->google-auth>=1.0.1->kubernetes>=28.1.0->chromadb)
+  Downloading pyasn1-0.6.1-py3-none-any.whl.metadata (8.4 kB)
+Downloading chromadb-0.5.15-py3-none-any.whl (607 kB)
+   ---------------------------------------- 607.0/607.0 kB 4.4 MB/s eta 0:00:00
+Downloading bcrypt-4.2.0-cp39-abi3-win_amd64.whl (151 kB)
+Downloading build-1.2.2.post1-py3-none-any.whl (22 kB)
+Downloading fastapi-0.115.2-py3-none-any.whl (94 kB)
+Downloading kubernetes-31.0.0-py2.py3-none-any.whl (1.9 MB)
+   ---------------------------------------- 1.9/1.9 MB 2.8 MB/s eta 0:00:00
+Downloading mmh3-5.0.1-cp312-cp312-win_amd64.whl (39 kB)
+Downloading onnxruntime-1.19.2-cp312-cp312-win_amd64.whl (11.1 MB)
+   ---------------------------------------- 11.1/11.1 MB 2.8 MB/s eta 0:00:00
+Downloading opentelemetry_api-1.27.0-py3-none-any.whl (63 kB)
+Downloading opentelemetry_exporter_otlp_proto_grpc-1.27.0-py3-none-any.whl (18 kB)
+Downloading opentelemetry_exporter_otlp_proto_common-1.27.0-py3-none-any.whl (17 kB)
+Downloading opentelemetry_proto-1.27.0-py3-none-any.whl (52 kB)
+Downloading opentelemetry_instrumentation_fastapi-0.48b0-py3-none-any.whl (11 kB)
+Downloading opentelemetry_instrumentation-0.48b0-py3-none-any.whl (29 kB)
+Downloading opentelemetry_instrumentation_asgi-0.48b0-py3-none-any.whl (15 kB)
+Downloading opentelemetry_semantic_conventions-0.48b0-py3-none-any.whl (149 kB)
+Downloading opentelemetry_util_http-0.48b0-py3-none-any.whl (6.9 kB)
+Downloading opentelemetry_sdk-1.27.0-py3-none-any.whl (110 kB)
+Downloading overrides-7.7.0-py3-none-any.whl (17 kB)
+Downloading posthog-3.7.0-py2.py3-none-any.whl (54 kB)
+Downloading rich-13.9.2-py3-none-any.whl (242 kB)
+Downloading typer-0.12.5-py3-none-any.whl (47 kB)
+Downloading uvicorn-0.32.0-py3-none-any.whl (63 kB)
+Downloading importlib_resources-6.4.5-py3-none-any.whl (36 kB)
+Downloading Deprecated-1.2.14-py2.py3-none-any.whl (9.6 kB)
+Downloading durationpy-0.9-py3-none-any.whl (3.5 kB)
+Downloading google_auth-2.35.0-py2.py3-none-any.whl (208 kB)
+Downloading httptools-0.6.4-cp312-cp312-win_amd64.whl (88 kB)
+Downloading importlib_metadata-8.4.0-py3-none-any.whl (26 kB)
+Downloading markdown_it_py-3.0.0-py3-none-any.whl (87 kB)
+Downloading monotonic-1.6-py2.py3-none-any.whl (8.2 kB)
+Downloading oauthlib-3.2.2-py3-none-any.whl (151 kB)
+Downloading pygments-2.18.0-py3-none-any.whl (1.2 MB)
+   ---------------------------------------- 1.2/1.2 MB 1.5 MB/s eta 0:00:00
+Downloading python_dotenv-1.0.1-py3-none-any.whl (19 kB)
+Downloading shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
+Downloading starlette-0.40.0-py3-none-any.whl (73 kB)
+Downloading watchfiles-0.24.0-cp312-none-win_amd64.whl (277 kB)
+Downloading websocket_client-1.8.0-py3-none-any.whl (58 kB)
+Downloading websockets-13.1-cp312-cp312-win_amd64.whl (159 kB)
+Downloading coloredlogs-15.0.1-py2.py3-none-any.whl (46 kB)
+Downloading flatbuffers-24.3.25-py2.py3-none-any.whl (26 kB)
+Downloading pyproject_hooks-1.2.0-py3-none-any.whl (10 kB)
+Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl (24 kB)
+Downloading asgiref-3.8.1-py3-none-any.whl (23 kB)
+Downloading cachetools-5.5.0-py3-none-any.whl (9.5 kB)
+Downloading humanfriendly-10.0-py2.py3-none-any.whl (86 kB)
+Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+Downloading pyasn1_modules-0.4.1-py3-none-any.whl (181 kB)
+Downloading rsa-4.9-py3-none-any.whl (34 kB)
+Downloading zipp-3.20.2-py3-none-any.whl (9.2 kB)
+Downloading pyasn1-0.6.1-py3-none-any.whl (83 kB)
+Downloading pyreadline3-3.5.4-py3-none-any.whl (83 kB)
+Building wheels for collected packages: chroma-hnswlib, pypika
+  Building wheel for chroma-hnswlib (pyproject.toml) ... error
+  error: subprocess-exited-with-error
+
+  × Building wheel for chroma-hnswlib (pyproject.toml) did not run successfully.
+  │ exit code: 1
+  ╰─> [5 lines of output]
+      running bdist_wheel
+      running build
+      running build_ext
+      building 'hnswlib' extension
+      error: Microsoft Visual C++ 14.0 or greater is required. Get it with "Microsoft C++ Build Tools": https://visualstudio.microsoft.com/visual-cpp-build-tools/
+      [end of output]
+
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for chroma-hnswlib
+  Building wheel for pypika (pyproject.toml) ... done
+  Created wheel for pypika: filename=PyPika-0.48.9-py2.py3-none-any.whl size=53836 sha256=e3e41a5b5c3b2eb0e19a5206f2a290b113ae9d56c923f28dc28c04a31a0a3ed5
+  Stored in directory: c:\users\user\appdata\local\pip\cache\wheels\d5\3d\69\8d68d249cd3de2584f226e27fd431d6344f7d70fd856ebd01b
+Successfully built pypika
+Failed to build chroma-hnswlib
+ERROR: ERROR: Failed to build installable wheels for some pyproject.toml based projects (chroma-hnswlib)
+
 C:\Windows\System32>
 
 **ASSISTANT**: It looks like you've successfully installed most of the dependencies, but encountered an issue with the `chroma-hnswlib` package, which requires **Microsoft Visual C++ Build Tools** to compile certain components.
@@ -662,15 +662,15 @@ Let me know if you run into any further issues!
 
 **USER**: What about...
 
-Installing collected packages: protobuf
-  Attempting uninstall: protobuf
-    Found existing installation: protobuf 5.28.2
-    Uninstalling protobuf-5.28.2:
-      Successfully uninstalled protobuf-5.28.2
-ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
-grpcio-health-checking 1.67.0 requires protobuf<6.0dev,>=5.26.1, but you have protobuf 3.20.3 which is incompatible.
-grpcio-tools 1.67.0 requires protobuf<6.0dev,>=5.26.1, but you have protobuf 3.20.3 which is incompatible.
-protoc-gen-openapiv2 0.0.1 requires protobuf>=4.21.0, but you have protobuf 3.20.3 which is incompatible.
+Installing collected packages: protobuf
+  Attempting uninstall: protobuf
+    Found existing installation: protobuf 5.28.2
+    Uninstalling protobuf-5.28.2:
+      Successfully uninstalled protobuf-5.28.2
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+grpcio-health-checking 1.67.0 requires protobuf<6.0dev,>=5.26.1, but you have protobuf 3.20.3 which is incompatible.
+grpcio-tools 1.67.0 requires protobuf<6.0dev,>=5.26.1, but you have protobuf 3.20.3 which is incompatible.
+protoc-gen-openapiv2 0.0.1 requires protobuf>=4.21.0, but you have protobuf 3.20.3 which is incompatible.
 Successfully installed protobuf-3.20.3
 
 **ASSISTANT**: The error you're encountering is related to **version conflicts** with the `protobuf` library. Some packages (like `grpcio-tools`, `grpcio-health-checking`, and `protoc-gen-openapiv2`) require a newer version of `protobuf` (version 5.26.1 or higher), but your system is installing `protobuf 3.20.3`, which is causing incompatibility issues.
@@ -776,25 +776,25 @@ This command will perform a silent installation (no prompts) and automatically a
 - **To upgrade all packages**: Use `pip install --upgrade -r packages.txt`.
 - **To upgrade Python**: Download the latest installer and run it.
 
-**USER**: INFO: pip is looking at multiple versions of grpcio-health-checking to determine which version is compatible with other requirements. This could take a while.
-Collecting grpcio-health-checking==1.67.0 (from -r packages.txt (line 29))
-  Using cached grpcio_health_checking-1.67.0-py3-none-any.whl.metadata (1.1 kB)
-Collecting googleapis-common-protos==1.65.0 (from -r packages.txt (line 26))
-  Using cached googleapis_common_protos-1.65.0-py2.py3-none-any.whl.metadata (1.5 kB)
-ERROR: Cannot install -r packages.txt (line 26), -r packages.txt (line 29), grpcio-health-checking==1.67.0 and protobuf==3.20.3 because these package versions have conflicting dependencies.
-
-The conflict is caused by:
-    The user requested protobuf==3.20.3
-    googleapis-common-protos 1.65.0 depends on protobuf!=3.20.0, !=3.20.1, !=4.21.1, !=4.21.2, !=4.21.3, !=4.21.4, !=4.21.5, <6.0.0.dev0 and >=3.20.2
-    grpcio-health-checking 1.67.0 depends on protobuf<6.0dev and >=5.26.1
-    The user requested protobuf==3.20.3
-    googleapis-common-protos 1.65.0 depends on protobuf!=3.20.0, !=3.20.1, !=4.21.1, !=4.21.2, !=4.21.3, !=4.21.4, !=4.21.5, <6.0.0.dev0 and >=3.20.2
-    grpcio-health-checking 1.67.0 depends on protobuf<6.0dev and >=5.26.1
-
-To fix this you could try to:
-1. loosen the range of package versions you've specified
-2. remove package versions to allow pip to attempt to solve the dependency conflict
-
+**USER**: INFO: pip is looking at multiple versions of grpcio-health-checking to determine which version is compatible with other requirements. This could take a while.
+Collecting grpcio-health-checking==1.67.0 (from -r packages.txt (line 29))
+  Using cached grpcio_health_checking-1.67.0-py3-none-any.whl.metadata (1.1 kB)
+Collecting googleapis-common-protos==1.65.0 (from -r packages.txt (line 26))
+  Using cached googleapis_common_protos-1.65.0-py2.py3-none-any.whl.metadata (1.5 kB)
+ERROR: Cannot install -r packages.txt (line 26), -r packages.txt (line 29), grpcio-health-checking==1.67.0 and protobuf==3.20.3 because these package versions have conflicting dependencies.
+
+The conflict is caused by:
+    The user requested protobuf==3.20.3
+    googleapis-common-protos 1.65.0 depends on protobuf!=3.20.0, !=3.20.1, !=4.21.1, !=4.21.2, !=4.21.3, !=4.21.4, !=4.21.5, <6.0.0.dev0 and >=3.20.2
+    grpcio-health-checking 1.67.0 depends on protobuf<6.0dev and >=5.26.1
+    The user requested protobuf==3.20.3
+    googleapis-common-protos 1.65.0 depends on protobuf!=3.20.0, !=3.20.1, !=4.21.1, !=4.21.2, !=4.21.3, !=4.21.4, !=4.21.5, <6.0.0.dev0 and >=3.20.2
+    grpcio-health-checking 1.67.0 depends on protobuf<6.0dev and >=5.26.1
+
+To fix this you could try to:
+1. loosen the range of package versions you've specified
+2. remove package versions to allow pip to attempt to solve the dependency conflict
+
 ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts
 
 **ASSISTANT**: The issue you're encountering stems from conflicting dependencies between different versions of the `protobuf` library, `grpcio-health-checking`, and `googleapis-common-protos`. Specifically:
@@ -839,13 +839,13 @@ After this, retry the installation steps. This should resolve the dependency con
 
 **USER**: I can't get past the second command. 
 
-pip install protobuf>=5.26.1
-ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
-grpcio-tools 1.67.0 requires grpcio>=1.67.0, which is not installed.
-haystack-client 0.2.4 requires grpcio<2.0,>=1.26.0, which is not installed.
-protoc-gen-openapiv2 0.0.1 requires googleapis-common-protos, which is not installed.
-weaviate-client 4.9.0 requires grpcio<2.0.0,>=1.57.0, which is not installed.
-weaviate-client 4.9.0 requires grpcio-health-checking<2.0.0,>=1.57.0, which is not installed.
+pip install protobuf>=5.26.1
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+grpcio-tools 1.67.0 requires grpcio>=1.67.0, which is not installed.
+haystack-client 0.2.4 requires grpcio<2.0,>=1.26.0, which is not installed.
+protoc-gen-openapiv2 0.0.1 requires googleapis-common-protos, which is not installed.
+weaviate-client 4.9.0 requires grpcio<2.0.0,>=1.57.0, which is not installed.
+weaviate-client 4.9.0 requires grpcio-health-checking<2.0.0,>=1.57.0, which is not installed.
 haystack-client 0.2.4 requires protobuf<4.0,>=3.11.2, but you have protobuf 5.28.2 which is incompatible.
 
 **ASSISTANT**: It appears that the conflicts arise from several dependencies, including `grpcio`, `protobuf`, and `grpcio-tools`. Let's try resolving this step by step.
@@ -903,8 +903,8 @@ This process should help resolve the conflicting dependencies by uninstalling an
 
 **USER**: Second step again...
 
-pip install protobuf>=5.26.1
-ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+pip install protobuf>=5.26.1
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
 protoc-gen-openapiv2 0.0.1 requires googleapis-common-protos, which is not installed.
 
 **ASSISTANT**: It seems that `pip` is still detecting some conflicting dependencies, and the presence of `protoc-gen-openapiv2` is causing the issue. To resolve this, we will address the conflicts more carefully.
@@ -1010,17 +1010,17 @@ This should ensure a smooth and automatic uninstallation of the conflicting pack
 
 **USER**: Step 5 caused this again.
 
-Using cached protobuf-3.20.3-py2.py3-none-any.whl (162 kB)
-Downloading weaviate_client-3.26.7-py3-none-any.whl (120 kB)
-Installing collected packages: protobuf, haystack-client, weaviate-client
-  Attempting uninstall: protobuf
-    Found existing installation: protobuf 5.28.2
-    Uninstalling protobuf-5.28.2:
-      Successfully uninstalled protobuf-5.28.2
-ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
-grpcio-health-checking 1.67.0 requires protobuf<6.0dev,>=5.26.1, but you have protobuf 3.20.3 which is incompatible.
-grpcio-tools 1.67.0 requires protobuf<6.0dev,>=5.26.1, but you have protobuf 3.20.3 which is incompatible.
-protoc-gen-openapiv2 0.0.1 requires protobuf>=4.21.0, but you have protobuf 3.20.3 which is incompatible.
+Using cached protobuf-3.20.3-py2.py3-none-any.whl (162 kB)
+Downloading weaviate_client-3.26.7-py3-none-any.whl (120 kB)
+Installing collected packages: protobuf, haystack-client, weaviate-client
+  Attempting uninstall: protobuf
+    Found existing installation: protobuf 5.28.2
+    Uninstalling protobuf-5.28.2:
+      Successfully uninstalled protobuf-5.28.2
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+grpcio-health-checking 1.67.0 requires protobuf<6.0dev,>=5.26.1, but you have protobuf 3.20.3 which is incompatible.
+grpcio-tools 1.67.0 requires protobuf<6.0dev,>=5.26.1, but you have protobuf 3.20.3 which is incompatible.
+protoc-gen-openapiv2 0.0.1 requires protobuf>=4.21.0, but you have protobuf 3.20.3 which is incompatible.
 Successfully installed haystack-client-0.2.4 protobuf-3.20.3 weaviate-client-3.26.7
 
 **ASSISTANT**: The problem persists because `weaviate-client` and `haystack-client` are reinstalling `protobuf` version `3.20.3`, which is incompatible with other packages like `grpcio-health-checking`, `grpcio-tools`, and `protoc-gen-openapiv2`, which require `protobuf >=5.26.1`.
@@ -1755,33 +1755,33 @@ This GUI application provides a user-friendly way to load PDFs, process them usi
 
 Feel free to ask if you need clarification on any part or assistance with additional features!
 
-**USER**: Building wheels for collected packages: chroma-hnswlib
-  Building wheel for chroma-hnswlib (pyproject.toml) ... error
-  error: subprocess-exited-with-error
-
-  × Building wheel for chroma-hnswlib (pyproject.toml) did not run successfully.
-  │ exit code: 1
-  ╰─> [5 lines of output]
-      running bdist_wheel
-      running build
-      running build_ext
-      building 'hnswlib' extension
-      error: Microsoft Visual C++ 14.0 or greater is required. Get it with "Microsoft C++ Build Tools": https://visualstudio.microsoft.com/visual-cpp-build-tools/
-      [end of output]
-
-  note: This error originates from a subprocess, and is likely not a problem with pip.
-  ERROR: Failed building wheel for chroma-hnswlib
-Failed to build chroma-hnswlib
-ERROR: ERROR: Failed to build installable wheels for some pyproject.toml based projects (chroma-hnswlib)
-
-C:\Windows\System32>pip install tiktoken
-Requirement already satisfied: tiktoken in c:\python312\lib\site-packages (0.8.0)
-Requirement already satisfied: regex>=2022.1.18 in c:\python312\lib\site-packages (from tiktoken) (2024.9.11)
-Requirement already satisfied: requests>=2.26.0 in c:\python312\lib\site-packages (from tiktoken) (2.32.3)
-Requirement already satisfied: charset-normalizer<4,>=2 in c:\python312\lib\site-packages (from requests>=2.26.0->tiktoken) (3.4.0)
-Requirement already satisfied: idna<4,>=2.5 in c:\python312\lib\site-packages (from requests>=2.26.0->tiktoken) (3.10)
-Requirement already satisfied: urllib3<3,>=1.21.1 in c:\python312\lib\site-packages (from requests>=2.26.0->tiktoken) (2.2.3)
-Requirement already satisfied: certifi>=2017.4.17 in c:\python312\lib\site-packages (from requests>=2.26.0->tiktoken) (2024.8.30)
+**USER**: Building wheels for collected packages: chroma-hnswlib
+  Building wheel for chroma-hnswlib (pyproject.toml) ... error
+  error: subprocess-exited-with-error
+
+  × Building wheel for chroma-hnswlib (pyproject.toml) did not run successfully.
+  │ exit code: 1
+  ╰─> [5 lines of output]
+      running bdist_wheel
+      running build
+      running build_ext
+      building 'hnswlib' extension
+      error: Microsoft Visual C++ 14.0 or greater is required. Get it with "Microsoft C++ Build Tools": https://visualstudio.microsoft.com/visual-cpp-build-tools/
+      [end of output]
+
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for chroma-hnswlib
+Failed to build chroma-hnswlib
+ERROR: ERROR: Failed to build installable wheels for some pyproject.toml based projects (chroma-hnswlib)
+
+C:\Windows\System32>pip install tiktoken
+Requirement already satisfied: tiktoken in c:\python312\lib\site-packages (0.8.0)
+Requirement already satisfied: regex>=2022.1.18 in c:\python312\lib\site-packages (from tiktoken) (2024.9.11)
+Requirement already satisfied: requests>=2.26.0 in c:\python312\lib\site-packages (from tiktoken) (2.32.3)
+Requirement already satisfied: charset-normalizer<4,>=2 in c:\python312\lib\site-packages (from requests>=2.26.0->tiktoken) (3.4.0)
+Requirement already satisfied: idna<4,>=2.5 in c:\python312\lib\site-packages (from requests>=2.26.0->tiktoken) (3.10)
+Requirement already satisfied: urllib3<3,>=1.21.1 in c:\python312\lib\site-packages (from requests>=2.26.0->tiktoken) (2.2.3)
+Requirement already satisfied: certifi>=2017.4.17 in c:\python312\lib\site-packages (from requests>=2.26.0->tiktoken) (2024.8.30)
 
 We dealth with ChromaDB deps earlier with --deps argument
 
@@ -3032,22 +3032,22 @@ This will silently install or upgrade Python without needing user interaction.
 After completing these steps, your Python version should be up to date, and all your packages should be compatible with the new version. Let me know if you run into any issues or need more help!
 
 **USER**: Hmm....
-C:\Windows\System32>python install update
-python: can't open file 'C:\\Windows\\System32\\install': [Errno 2] No such file or directory
-
-C:\Windows\System32>python update
-python: can't open file 'C:\\Windows\\System32\\update': [Errno 2] No such file or directory
-
-C:\Windows\System32>python
-Python 3.12.6 (tags/v3.12.6:a4a2d2b, Sep  6 2024, 20:11:23) [MSC v.1940 64 bit (AMD64)] on win32
-Type "help", "copyright", "credits" or "license" for more information.
->>>
-KeyboardInterrupt
->>> python -m pip install --upgrade pip
-  File "<stdin>", line 1
-    python -m pip install --upgrade pip
-              ^^^
-SyntaxError: invalid syntax
+C:\Windows\System32>python install update
+python: can't open file 'C:\\Windows\\System32\\install': [Errno 2] No such file or directory
+
+C:\Windows\System32>python update
+python: can't open file 'C:\\Windows\\System32\\update': [Errno 2] No such file or directory
+
+C:\Windows\System32>python
+Python 3.12.6 (tags/v3.12.6:a4a2d2b, Sep  6 2024, 20:11:23) [MSC v.1940 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+KeyboardInterrupt
+>>> python -m pip install --upgrade pip
+  File "<stdin>", line 1
+    python -m pip install --upgrade pip
+              ^^^
+SyntaxError: invalid syntax
 >>>
 
 **ASSISTANT**: The error you're encountering happens because you're typing the pip installation command inside the Python interactive shell, instead of the Command Prompt.

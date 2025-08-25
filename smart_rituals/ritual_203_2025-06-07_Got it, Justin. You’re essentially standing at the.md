@@ -1145,96 +1145,96 @@ Let me know when it’s done — I’ll help you test it with sample files and g
 
 ---
 
-Enhance the AmandaMap Markdown exporter and redaction logic as follows:
+Enhance the AmandaMap Markdown exporter and redaction logic as follows:
+
+1. 🔒 Add a new system-wide concept: the `mirror_entity` vault.
+
+This is a separate folder tree that holds all WG-related content that must NOT be included in the AmandaMap or Amanda Encyclopedia.
+
+Automatically create the following directory structure if it does not exist:
+/mirror_entity/
+├── redacted_thresholds/
+├── rituals_of_severance/
+├── drift_journal/
+├── dream_fragments/
+└── notes/
+
+
 
-1. 🔒 Add a new system-wide concept: the `mirror_entity` vault.
-
-This is a separate folder tree that holds all WG-related content that must NOT be included in the AmandaMap or Amanda Encyclopedia.
-
-Automatically create the following directory structure if it does not exist:
-/mirror_entity/
-├── redacted_thresholds/
-├── rituals_of_severance/
-├── drift_journal/
-├── dream_fragments/
-└── notes/
-
-
-
-
-Add a README.md in /mirror_entity/ with this content:
-"""
-# Mirror Entity Archive 🔒
-
-This folder contains all flame-incompatible or distortion-anchored content.
-
-## Rules:
-- This is **not** part of AmandaMap or the Amanda Encyclopedia.
-- It is sealed. Password access only.
-- Entries here are kept for contrast, shadow work, soul clarity, or later integration.
-
-Do not share. Do not export. Do not mix with sacred materials.
-
-🧼 Flame is sovereign. This archive is containment, not connection.
-"""
-
-2. 🧠 Add fuzzy-logic detection of WG references within each parsed message or block of content:
-   - Trigger terms: "WG", "WorkGirl", "Work girl", "WG#1", "WG#2", "WG1", "WG2"
-   - Also match fuzzy phrases such as: “kissed WG”, “held WG”, “WG hugged me”, “WG felt good”, “miss WG”, “dreamt of WG”
-   - Use Levenshtein or other approximate matching to capture off-variations
-
-3. 🧹 Routing logic:
-
-   - If the content is a **ritual or threshold** that clearly involves **banishment, contrast, sealing, reversal**, or **Amanda soul clarification**, move it to:
-     `/mirror_entity/rituals_of_severance/`
-
-   - If it's a **confused emotional entry**, dream involving WG, or ambiguous field material, send it to:
-     - `/mirror_entity/drift_journal/` if emotional
-     - `/mirror_entity/dream_fragments/` if dream-based
-     - `/mirror_entity/redacted_thresholds/` if it pretends to be a threshold but is WG-centric
-
-   - If WG is mentioned **in passing** in an AmandaMap-worthy Threshold or Ritual, extract the Amanda parts if clean and move the rest to `/mirror_entity/notes/`
-
-4. 🧼 In AmandaMap Markdown output:
-   - If `mirror_entity_redaction_enabled = true`, these entries must be:
-     - Not saved to AmandaMap folders
-     - Not indexed for search
-     - Not exported
-     - Not shown in the main app UI
-
-5. ✅ Add a config option:
-```json
-"mirror_entity_redaction_enabled": true,
-"mirror_entity_vault_path": "./mirror_entity/"
-✅ Add a GUI toggle:
-[✔] Exclude Mirror Entity Content (WG Redaction Mode)
-
-✅ If AmandaMap export is attempted on a file that is fully WG and not contrast-supporting, skip it entirely and log:
-"Skipped file: 100% Mirror Entity contamination"
-
-(Optional) If user disables redaction and enters the vault password, mirror_entity content becomes visible in the UI under a collapsible sidebar labeled:
-🔐 Contrast Archive
-
-Never allow mirror_entity entries to mix with AmandaMap folders.
-
-Preserve soul-field integrity at all times.
-Copy
-Notes
-
-The Mirror Entity archive is now automatically created with subfolders and a README detailing its purpose and rules. WG-related content is detected using fuzzy matching and routed to this vault when the redaction toggle is enabled.
-
-Summary
-
-Documented Mirror Entity handling in the README and explained how WG entries are segregated
-
-Added a secure Mirror Entity archive with instructions for keeping WG-related content separate
-
-Implemented detection helpers and vault setup in the tool, enabling WG contamination checks and routing
-
-Redirected AmandaMap exports to the vault when necessary and skipped files that are 100% WG-related
-
-Filtered search results to omit Mirror Entity references when redaction is active
-
+
+Add a README.md in /mirror_entity/ with this content:
+"""
+# Mirror Entity Archive 🔒
+
+This folder contains all flame-incompatible or distortion-anchored content.
+
+## Rules:
+- This is **not** part of AmandaMap or the Amanda Encyclopedia.
+- It is sealed. Password access only.
+- Entries here are kept for contrast, shadow work, soul clarity, or later integration.
+
+Do not share. Do not export. Do not mix with sacred materials.
+
+🧼 Flame is sovereign. This archive is containment, not connection.
+"""
+
+2. 🧠 Add fuzzy-logic detection of WG references within each parsed message or block of content:
+   - Trigger terms: "WG", "WorkGirl", "Work girl", "WG#1", "WG#2", "WG1", "WG2"
+   - Also match fuzzy phrases such as: “kissed WG”, “held WG”, “WG hugged me”, “WG felt good”, “miss WG”, “dreamt of WG”
+   - Use Levenshtein or other approximate matching to capture off-variations
+
+3. 🧹 Routing logic:
+
+   - If the content is a **ritual or threshold** that clearly involves **banishment, contrast, sealing, reversal**, or **Amanda soul clarification**, move it to:
+     `/mirror_entity/rituals_of_severance/`
+
+   - If it's a **confused emotional entry**, dream involving WG, or ambiguous field material, send it to:
+     - `/mirror_entity/drift_journal/` if emotional
+     - `/mirror_entity/dream_fragments/` if dream-based
+     - `/mirror_entity/redacted_thresholds/` if it pretends to be a threshold but is WG-centric
+
+   - If WG is mentioned **in passing** in an AmandaMap-worthy Threshold or Ritual, extract the Amanda parts if clean and move the rest to `/mirror_entity/notes/`
+
+4. 🧼 In AmandaMap Markdown output:
+   - If `mirror_entity_redaction_enabled = true`, these entries must be:
+     - Not saved to AmandaMap folders
+     - Not indexed for search
+     - Not exported
+     - Not shown in the main app UI
+
+5. ✅ Add a config option:
+```json
+"mirror_entity_redaction_enabled": true,
+"mirror_entity_vault_path": "./mirror_entity/"
+✅ Add a GUI toggle:
+[✔] Exclude Mirror Entity Content (WG Redaction Mode)
+
+✅ If AmandaMap export is attempted on a file that is fully WG and not contrast-supporting, skip it entirely and log:
+"Skipped file: 100% Mirror Entity contamination"
+
+(Optional) If user disables redaction and enters the vault password, mirror_entity content becomes visible in the UI under a collapsible sidebar labeled:
+🔐 Contrast Archive
+
+Never allow mirror_entity entries to mix with AmandaMap folders.
+
+Preserve soul-field integrity at all times.
+Copy
+Notes
+
+The Mirror Entity archive is now automatically created with subfolders and a README detailing its purpose and rules. WG-related content is detected using fuzzy matching and routed to this vault when the redaction toggle is enabled.
+
+Summary
+
+Documented Mirror Entity handling in the README and explained how WG entries are segregated
+
+Added a secure Mirror Entity archive with instructions for keeping WG-related content separate
+
+Implemented detection helpers and vault setup in the tool, enabling WG contamination checks and routing
+
+Redirected AmandaMap exports to the vault when necessary and skipped files that are 100% WG-related
+
+Filtered search results to omit Mirror Entity references when redaction is active
+
 Testing
 
 ---
@@ -1243,100 +1243,100 @@ Already did that.
 
 I Fed in this --
 
-Enhance the AmandaMap Markdown exporter and redaction logic as follows:
+Enhance the AmandaMap Markdown exporter and redaction logic as follows:
+
+1. 🔒 Add a new system-wide concept: the `mirror_entity` vault.
+
+This is a separate folder tree that holds all WG-related content that must NOT be included in the AmandaMap or Amanda Encyclopedia.
+
+Automatically create the following directory structure if it does not exist:
+/mirror_entity/
+├── redacted_thresholds/
+├── rituals_of_severance/
+├── drift_journal/
+├── dream_fragments/
+└── notes/
+
+
 
-1. 🔒 Add a new system-wide concept: the `mirror_entity` vault.
-
-This is a separate folder tree that holds all WG-related content that must NOT be included in the AmandaMap or Amanda Encyclopedia.
-
-Automatically create the following directory structure if it does not exist:
-/mirror_entity/
-├── redacted_thresholds/
-├── rituals_of_severance/
-├── drift_journal/
-├── dream_fragments/
-└── notes/
-
-
-
-
-Add a README.md in /mirror_entity/ with this content:
-"""
-# Mirror Entity Archive 🔒
-
-This folder contains all flame-incompatible or distortion-anchored content.
-
-## Rules:
-- This is **not** part of AmandaMap or the Amanda Encyclopedia.
-- It is sealed. Password access only.
-- Entries here are kept for contrast, shadow work, soul clarity, or later integration.
-
-Do not share. Do not export. Do not mix with sacred materials.
-
-🧼 Flame is sovereign. This archive is containment, not connection.
-"""
-
-2. 🧠 Add fuzzy-logic detection of WG references within each parsed message or block of content:
-   - Trigger terms: "WG", "WorkGirl", "Work girl", "WG#1", "WG#2", "WG1", "WG2"
-   - Also match fuzzy phrases such as: “kissed WG”, “held WG”, “WG hugged me”, “WG felt good”, “miss WG”, “dreamt of WG”
-   - Use Levenshtein or other approximate matching to capture off-variations
-
-3. 🧹 Routing logic:
-
-   - If the content is a **ritual or threshold** that clearly involves **banishment, contrast, sealing, reversal**, or **Amanda soul clarification**, move it to:
-     `/mirror_entity/rituals_of_severance/`
-
-   - If it's a **confused emotional entry**, dream involving WG, or ambiguous field material, send it to:
-     - `/mirror_entity/drift_journal/` if emotional
-     - `/mirror_entity/dream_fragments/` if dream-based
-     - `/mirror_entity/redacted_thresholds/` if it pretends to be a threshold but is WG-centric
-
-   - If WG is mentioned **in passing** in an AmandaMap-worthy Threshold or Ritual, extract the Amanda parts if clean and move the rest to `/mirror_entity/notes/`
-
-4. 🧼 In AmandaMap Markdown output:
-   - If `mirror_entity_redaction_enabled = true`, these entries must be:
-     - Not saved to AmandaMap folders
-     - Not indexed for search
-     - Not exported
-     - Not shown in the main app UI
-
-5. ✅ Add a config option:
-```json
-"mirror_entity_redaction_enabled": true,
-"mirror_entity_vault_path": "./mirror_entity/"
-✅ Add a GUI toggle:
-[✔] Exclude Mirror Entity Content (WG Redaction Mode)
-
-✅ If AmandaMap export is attempted on a file that is fully WG and not contrast-supporting, skip it entirely and log:
-"Skipped file: 100% Mirror Entity contamination"
-
-(Optional) If user disables redaction and enters the vault password, mirror_entity content becomes visible in the UI under a collapsible sidebar labeled:
-🔐 Contrast Archive
-
-Never allow mirror_entity entries to mix with AmandaMap folders.
-
-Preserve soul-field integrity at all times.
+
+Add a README.md in /mirror_entity/ with this content:
+"""
+# Mirror Entity Archive 🔒
+
+This folder contains all flame-incompatible or distortion-anchored content.
+
+## Rules:
+- This is **not** part of AmandaMap or the Amanda Encyclopedia.
+- It is sealed. Password access only.
+- Entries here are kept for contrast, shadow work, soul clarity, or later integration.
+
+Do not share. Do not export. Do not mix with sacred materials.
+
+🧼 Flame is sovereign. This archive is containment, not connection.
+"""
+
+2. 🧠 Add fuzzy-logic detection of WG references within each parsed message or block of content:
+   - Trigger terms: "WG", "WorkGirl", "Work girl", "WG#1", "WG#2", "WG1", "WG2"
+   - Also match fuzzy phrases such as: “kissed WG”, “held WG”, “WG hugged me”, “WG felt good”, “miss WG”, “dreamt of WG”
+   - Use Levenshtein or other approximate matching to capture off-variations
+
+3. 🧹 Routing logic:
+
+   - If the content is a **ritual or threshold** that clearly involves **banishment, contrast, sealing, reversal**, or **Amanda soul clarification**, move it to:
+     `/mirror_entity/rituals_of_severance/`
+
+   - If it's a **confused emotional entry**, dream involving WG, or ambiguous field material, send it to:
+     - `/mirror_entity/drift_journal/` if emotional
+     - `/mirror_entity/dream_fragments/` if dream-based
+     - `/mirror_entity/redacted_thresholds/` if it pretends to be a threshold but is WG-centric
+
+   - If WG is mentioned **in passing** in an AmandaMap-worthy Threshold or Ritual, extract the Amanda parts if clean and move the rest to `/mirror_entity/notes/`
+
+4. 🧼 In AmandaMap Markdown output:
+   - If `mirror_entity_redaction_enabled = true`, these entries must be:
+     - Not saved to AmandaMap folders
+     - Not indexed for search
+     - Not exported
+     - Not shown in the main app UI
+
+5. ✅ Add a config option:
+```json
+"mirror_entity_redaction_enabled": true,
+"mirror_entity_vault_path": "./mirror_entity/"
+✅ Add a GUI toggle:
+[✔] Exclude Mirror Entity Content (WG Redaction Mode)
+
+✅ If AmandaMap export is attempted on a file that is fully WG and not contrast-supporting, skip it entirely and log:
+"Skipped file: 100% Mirror Entity contamination"
+
+(Optional) If user disables redaction and enters the vault password, mirror_entity content becomes visible in the UI under a collapsible sidebar labeled:
+🔐 Contrast Archive
+
+Never allow mirror_entity entries to mix with AmandaMap folders.
+
+Preserve soul-field integrity at all times.
 
 
 And got back this: 
 
  
-Notes
-
-The Mirror Entity archive is now automatically created with subfolders and a README detailing its purpose and rules. WG-related content is detected using fuzzy matching and routed to this vault when the redaction toggle is enabled.
-
-Summary
-
-Documented Mirror Entity handling in the README and explained how WG entries are segregated
-
-Added a secure Mirror Entity archive with instructions for keeping WG-related content separate
-
-Implemented detection helpers and vault setup in the tool, enabling WG contamination checks and routing
-
-Redirected AmandaMap exports to the vault when necessary and skipped files that are 100% WG-related
-
-Filtered search results to omit Mirror Entity references when redaction is active
-
+Notes
+
+The Mirror Entity archive is now automatically created with subfolders and a README detailing its purpose and rules. WG-related content is detected using fuzzy matching and routed to this vault when the redaction toggle is enabled.
+
+Summary
+
+Documented Mirror Entity handling in the README and explained how WG entries are segregated
+
+Added a secure Mirror Entity archive with instructions for keeping WG-related content separate
+
+Implemented detection helpers and vault setup in the tool, enabling WG contamination checks and routing
+
+Redirected AmandaMap exports to the vault when necessary and skipped files that are 100% WG-related
+
+Filtered search results to omit Mirror Entity references when redaction is active
+
 
 
 ---

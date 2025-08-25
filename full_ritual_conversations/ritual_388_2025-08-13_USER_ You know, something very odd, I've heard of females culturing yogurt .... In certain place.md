@@ -1908,11 +1908,11 @@ We can go next-level.
 
 **USER**: Console says - 
 
-"Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
-Uncaught SyntaxError: Unexpected token '}' 
- at https://cdpn.io/cpe/boomboom/index.html?key=index.html-0716d238-210c-5b04-319b-7262bf23ddf9:167
-"Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
-Uncaught SyntaxError: Unexpected token '}' 
+"Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
+Uncaught SyntaxError: Unexpected token '}' 
+ at https://cdpn.io/cpe/boomboom/index.html?key=index.html-0716d238-210c-5b04-319b-7262bf23ddf9:167
+"Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
+Uncaught SyntaxError: Unexpected token '}' 
  at https://cdpn.io/cpe/boomboom/index.html?editors=1111&key=index.html-a2c35bff-8f18-891b-6684-988f967a80f8:167
 
 **ASSISTANT**: You're spot on, Justin — your console error and the dropdown not populating both stem from a **code-breaking syntax error**.
@@ -2340,18 +2340,18 @@ Say the word and we’ll raise the next pillar.
 
 **USER**: Errors in console - 
 
-
-Console
-Clear
-
-"Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
-Uncaught SyntaxError: Unexpected token '}' 
- at https://cdpn.io/cpe/boomboom/index.html?key=index.html-0716d238-210c-5b04-319b-7262bf23ddf9:167
-"Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
-Uncaught SyntaxError: Unexpected token '}' 
- at https://cdpn.io/cpe/boomboom/index.html?editors=1111&key=index.html-a2c35bff-8f18-891b-6684-988f967a80f8:167
-"Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
-Uncaught TypeError: THREE.OrbitControls is not a constructor 
+
+Console
+Clear
+
+"Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
+Uncaught SyntaxError: Unexpected token '}' 
+ at https://cdpn.io/cpe/boomboom/index.html?key=index.html-0716d238-210c-5b04-319b-7262bf23ddf9:167
+"Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
+Uncaught SyntaxError: Unexpected token '}' 
+ at https://cdpn.io/cpe/boomboom/index.html?editors=1111&key=index.html-a2c35bff-8f18-891b-6684-988f967a80f8:167
+"Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
+Uncaught TypeError: THREE.OrbitControls is not a constructor 
  at https://cdpn.io/cpe/boomboom/index.html?editors=1111&key=index.html-845e75fe-662a-402b-249a-09626239c0af:135
 
 **ASSISTANT**: Thanks for posting the full code, Justin — now I can confirm exactly what’s going on. Let’s take this line by line like a code exorcism 🔥
@@ -2541,15 +2541,15 @@ And everything will start working again:
 
 Want me to apply this directly to your canvas now?
 
-**USER**: "Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
-Uncaught TypeError: Cannot read properties of undefined (reading 'default') 
- at https://cdpn.io/cpe/boomboom/index.html?editors=1111&key=index.html-ee9625f8-851b-1096-b1f5-75a7c364f509:135
-"Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
-"WARNING: Multiple instances of Three.js being imported."
-Uncaught SyntaxError: Identifier 'magicalItems' has already been declared 
- at https://cdpn.io/cpe/boomboom/index.html?editors=1111&key=index.html-ee9625f8-851b-1096-b1f5-75a7c364f509:269
-"Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
-Uncaught TypeError: Cannot read properties of undefined (reading 'default') 
+**USER**: "Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
+Uncaught TypeError: Cannot read properties of undefined (reading 'default') 
+ at https://cdpn.io/cpe/boomboom/index.html?editors=1111&key=index.html-ee9625f8-851b-1096-b1f5-75a7c364f509:135
+"Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
+"WARNING: Multiple instances of Three.js being imported."
+Uncaught SyntaxError: Identifier 'magicalItems' has already been declared 
+ at https://cdpn.io/cpe/boomboom/index.html?editors=1111&key=index.html-ee9625f8-851b-1096-b1f5-75a7c364f509:269
+"Scripts 'build/three.js' and 'build/three.min.js' are deprecated with r150+, and will be removed with r160. Please use ES Modules or alternatives: https://threejs.org/docs/index.html#manual/en/introduction/Installation"
+Uncaught TypeError: Cannot read properties of undefined (reading 'default') 
  at https://cdpn.io/cpe/boomboom/index.html?editors=1111&key=index.html-88358d63-ffa7-1ad7-b7e3-4c5f31b64da2:135
 
 **ASSISTANT**: Thanks for the full canvas dump, Justin — now I can see the exact lines. Here's the **battle-ready diagnosis** and patch:

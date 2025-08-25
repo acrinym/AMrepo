@@ -12,83 +12,83 @@
 **NO SUMMARIZATION - ALL PARTS COMBINED BELOW**
 
 
-
----
-
-# 📜 **Summary of Current Chat (April 28–29)**
-
-## 🎯 **Original Purpose:**
-You started this conversation to **improve BMC Helix Remedy's Knowledge Article (KBA) view** because:
-- The KBA content area was **too narrow**.
-- The **toolbar** (Use / Relate / Email / Feedback) was **sunk at the bottom** of the page and **hard to access without scrolling**.
-
-You wanted:
-- To **expand the KBA reading width** to fit the full browser window.
-- To **make the toolbar float** at the bottom so it’s **always visible** while reading the KBA.
-- To **improve Remedy’s extremely outdated, 1990s web structure** without replacing the system.
-
----
-
-## 🛠️ **What We Discovered and Did:**
-
-| Discovery | Action Taken |
-|:---|:---|
-| KBA Question field (header) could be easily expanded | We expanded it to full page width ✅ |
-| KBA Answer field (RTF blob) was locked by bad inline margins | We partially expanded containers but **RTF content has hardcoded limits** ❌ |
-| Toolbar floated correctly when KBAs opened from Knowledge Console | But *NOT* when KBAs were opened from an Incident Ticket |
-| Remedy uses **different CSS inheritance** depending on view context | Solution: Dynamically adjust float/fix depending on context |
-| Static IDs break after Remedy refreshes | Solution: Move to **dynamic element matching** by `ardbn` attribute or label text ✅ |
-
----
-
-## 📜 **Scripts We Built:**
-
-| Script | Purpose | Status |
-|:---|:---|:---|
-| **KBA Expander + Toolbar Floater** | Expand width + float toolbar on all KBAs | ✅ Working, needs polish |
-| **Dynamic Copy Resolution to Work Info** | Copy resolution to worknotes, set public/unlocked, dynamic IDs | ✅ Working V7, ready for polish |
-
----
-
-## 🚀 **Why It Matters:**
-- You are **turning Remedy's broken, clunky UI** into a **usable, efficient, modern workspace** — **without touching the server**.
-- You **automate** slow manual steps agents hate.
-- You **futureproof** scripts against Helix reloading issues (dynamic matching).
-- You **fully dominate** your KBA viewing, worknote creating, and toolbar access.
-
----
-
-# 🛡 **Current State:**
-
-✅ KBA page expands wide (mostly — RTFs are still semi-locked by Word formatting).  
-✅ Toolbar floats properly in Knowledge Console view.  
-✅ Scripts dynamically adapt to changing Remedy IDs.  
-✅ Copy Resolution to Work Info script now properly unlocks worknotes and makes them public even after session refreshes.
-
----
-
-# 📦 **Where You Stand Now:**
-- You have full control over **KBA layout** and **worknote creation** with scripts.
-- Only optional next steps would be **polishing UX**, like adding smooth scrolls, light fade-ins, or custom notifications.
-
----
-
-# ⚡ In One Sentence:
-> Justin launched this project to modernize and automate Remedy's terrible KBA workflow for himself, achieved it through dynamic scripts, and now holds complete front-end power over BMC Helix without server-side changes.
-
----
-
-# 🧙‍♂️
-✅ Ready to **move cleanly** to a new chat now.  
-✅ Ready to **carry this summary forward** to continue work cleanly.
-
----
-
-**Would you like me to also prebuild a starter message for you to paste into the next chat to save time?**  
-(It’ll set the stage perfectly for continuing.) 🚀
-
-If yes, just say:  
-> "**Yes, Onyx, give me the starter paste.**"  
+
+---
+
+# 📜 **Summary of Current Chat (April 28–29)**
+
+## 🎯 **Original Purpose:**
+You started this conversation to **improve BMC Helix Remedy's Knowledge Article (KBA) view** because:
+- The KBA content area was **too narrow**.
+- The **toolbar** (Use / Relate / Email / Feedback) was **sunk at the bottom** of the page and **hard to access without scrolling**.
+
+You wanted:
+- To **expand the KBA reading width** to fit the full browser window.
+- To **make the toolbar float** at the bottom so it’s **always visible** while reading the KBA.
+- To **improve Remedy’s extremely outdated, 1990s web structure** without replacing the system.
+
+---
+
+## 🛠️ **What We Discovered and Did:**
+
+| Discovery | Action Taken |
+|:---|:---|
+| KBA Question field (header) could be easily expanded | We expanded it to full page width ✅ |
+| KBA Answer field (RTF blob) was locked by bad inline margins | We partially expanded containers but **RTF content has hardcoded limits** ❌ |
+| Toolbar floated correctly when KBAs opened from Knowledge Console | But *NOT* when KBAs were opened from an Incident Ticket |
+| Remedy uses **different CSS inheritance** depending on view context | Solution: Dynamically adjust float/fix depending on context |
+| Static IDs break after Remedy refreshes | Solution: Move to **dynamic element matching** by `ardbn` attribute or label text ✅ |
+
+---
+
+## 📜 **Scripts We Built:**
+
+| Script | Purpose | Status |
+|:---|:---|:---|
+| **KBA Expander + Toolbar Floater** | Expand width + float toolbar on all KBAs | ✅ Working, needs polish |
+| **Dynamic Copy Resolution to Work Info** | Copy resolution to worknotes, set public/unlocked, dynamic IDs | ✅ Working V7, ready for polish |
+
+---
+
+## 🚀 **Why It Matters:**
+- You are **turning Remedy's broken, clunky UI** into a **usable, efficient, modern workspace** — **without touching the server**.
+- You **automate** slow manual steps agents hate.
+- You **futureproof** scripts against Helix reloading issues (dynamic matching).
+- You **fully dominate** your KBA viewing, worknote creating, and toolbar access.
+
+---
+
+# 🛡 **Current State:**
+
+✅ KBA page expands wide (mostly — RTFs are still semi-locked by Word formatting).  
+✅ Toolbar floats properly in Knowledge Console view.  
+✅ Scripts dynamically adapt to changing Remedy IDs.  
+✅ Copy Resolution to Work Info script now properly unlocks worknotes and makes them public even after session refreshes.
+
+---
+
+# 📦 **Where You Stand Now:**
+- You have full control over **KBA layout** and **worknote creation** with scripts.
+- Only optional next steps would be **polishing UX**, like adding smooth scrolls, light fade-ins, or custom notifications.
+
+---
+
+# ⚡ In One Sentence:
+> Justin launched this project to modernize and automate Remedy's terrible KBA workflow for himself, achieved it through dynamic scripts, and now holds complete front-end power over BMC Helix without server-side changes.
+
+---
+
+# 🧙‍♂️
+✅ Ready to **move cleanly** to a new chat now.  
+✅ Ready to **carry this summary forward** to continue work cleanly.
+
+---
+
+**Would you like me to also prebuild a starter message for you to paste into the next chat to save time?**  
+(It’ll set the stage perfectly for continuing.) 🚀
+
+If yes, just say:  
+> "**Yes, Onyx, give me the starter paste.**"  
 and I’ll shoot it over! ⚡🛡️
 
 ---

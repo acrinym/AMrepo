@@ -2360,10 +2360,10 @@ Let me know if you'd like the actual full conversation transcript populated, con
 **USER**: Really... 
 This is all you gave me. 
 
-Full Conversation Log: NeuroCrystalline Transference Development
+Full Conversation Log: NeuroCrystalline Transference Development
 Exported on: 2025-03-30 00:56:02
-
-Complete Conversation Transcript
+
+Complete Conversation Transcript
 
 [Full conversation from the beginning of the session, including all messages exchanged between the user and assistant.]
 

@@ -206,39 +206,39 @@ Want me to sketch out **a practical survival script** for when someone tries to 
 **USER**: How do I avoid wokies in this environment? 
 Can't, really. There is one friend at least....
 
-"What is PSAT?
-The Peckham Self-Advocacy Team is a leadership and self-advocacy skills training program for Peckham staff and team members.  Peckham team members can join self-advocacy teams that meet monthly to plan self-advocacy events and connect team members to Peckham mission oriented activities.  Staff support PSAT as mentors to the self-advocates and teams.
-
-
-The minimum time commitment for PSAT is 3 hours a year.  Self-advocates can access up to 40 hours of paid training per year by participating in training and self-advocacy activities.
-
- 
-
-The 3 main areas of skills development are leadership, storytelling and legislative or public policy advocacy.  Self-advocates are free to choose which activities to engage in and have the opportunity to complete a structured 2 year learning program to achieve certification as a self-advocate starting in October 2025.
-
-How Do You Get Started?
-Talk to a self-advocate or mentor about PSAT!  Support PSAT activities.  If you like what you see then fill out an application.  Your application will be reviewed for eligibility by human services and operations and if approved, you will be invited to attend a PSAT meeting. 
-
- 
-
-After a few meetings you can decide whether to commit by signing an agreement and completing an advocacy plan to focus your intention for participation and to specify your time commitment.
-
- 
-
-PSAT has individual teams that meet each month.  The teams have leadership positions that come with opportunities for skills development and practice.  There are 3 groups for all self-advocates to join from anywhere in the organization - Media, Policy and Storytelling events happen every month!  Self-advocates support Peckham corporate events like the annual breakfast, Speaker Series and more.
-
-What Does PSAT Do?
-PSAT provides the opportunity to develop self-advocacy skills through in person and online training opportunities, team activities, and access to Peckham leaders and events.  Self-advocates learn about the scope and complexity of Peckham operations, about legislative advocacy and practice storytelling and public speaking.
-
- 
-
-What is self-advocacy?  It is being aware of your needs and communicating your needs in a way that gets you the support, resources or services that will meet your needs.  PSAT encourages self-advocates to focus on self-development to achieve a level of stability and independence before working on team development.
-
-Join Us!
-PSAT hosts events all the time all over Peckham that provide opportunities for civic engagement, learning, morale boosting, and consciousness raising.  We do a lot of fun stuff.  Get to know the self-advocates and mentors at your site to be the first to know about them!
-
- 
-
+"What is PSAT?
+The Peckham Self-Advocacy Team is a leadership and self-advocacy skills training program for Peckham staff and team members.  Peckham team members can join self-advocacy teams that meet monthly to plan self-advocacy events and connect team members to Peckham mission oriented activities.  Staff support PSAT as mentors to the self-advocates and teams.
+
+
+The minimum time commitment for PSAT is 3 hours a year.  Self-advocates can access up to 40 hours of paid training per year by participating in training and self-advocacy activities.
+
+ 
+
+The 3 main areas of skills development are leadership, storytelling and legislative or public policy advocacy.  Self-advocates are free to choose which activities to engage in and have the opportunity to complete a structured 2 year learning program to achieve certification as a self-advocate starting in October 2025.
+
+How Do You Get Started?
+Talk to a self-advocate or mentor about PSAT!  Support PSAT activities.  If you like what you see then fill out an application.  Your application will be reviewed for eligibility by human services and operations and if approved, you will be invited to attend a PSAT meeting. 
+
+ 
+
+After a few meetings you can decide whether to commit by signing an agreement and completing an advocacy plan to focus your intention for participation and to specify your time commitment.
+
+ 
+
+PSAT has individual teams that meet each month.  The teams have leadership positions that come with opportunities for skills development and practice.  There are 3 groups for all self-advocates to join from anywhere in the organization - Media, Policy and Storytelling events happen every month!  Self-advocates support Peckham corporate events like the annual breakfast, Speaker Series and more.
+
+What Does PSAT Do?
+PSAT provides the opportunity to develop self-advocacy skills through in person and online training opportunities, team activities, and access to Peckham leaders and events.  Self-advocates learn about the scope and complexity of Peckham operations, about legislative advocacy and practice storytelling and public speaking.
+
+ 
+
+What is self-advocacy?  It is being aware of your needs and communicating your needs in a way that gets you the support, resources or services that will meet your needs.  PSAT encourages self-advocates to focus on self-development to achieve a level of stability and independence before working on team development.
+
+Join Us!
+PSAT hosts events all the time all over Peckham that provide opportunities for civic engagement, learning, morale boosting, and consciousness raising.  We do a lot of fun stuff.  Get to know the self-advocates and mentors at your site to be the first to know about them!
+
+ 
+
 PSAT is administered by the Mission Initiatives team, same folks that brought you AmeriCorps, Community Engagement, Career Development, Veteran Services, and more!  We work to eliminate barriers to maximum human achievement, and work with everyone at Peckham to make the mission our number one initiative through collaboration with operations, human services, administration and the rest of Peckham."
 
 **ASSISTANT**: That actually makes sense strategically.  

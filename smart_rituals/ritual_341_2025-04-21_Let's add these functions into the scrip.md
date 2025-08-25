@@ -30,162 +30,162 @@ Clear – Removes highlights.
 Export Highlights – Outputs only the highlighted turns.
 
 ⬆ Top / ⬇ Bottom – Scroll to top or bottom of the conversation.
-(async function () {
-  // Wait for DOM to stabilize
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  // === TOOLBAR STYLES ===
-  const toolbar = document.createElement("div");
-  Object.assign(toolbar.style, {
-    position: "absolute",
-    top: "0px",
-    left: "0",
-    width: "100%",
-    background: "#222",
-    color: "white",
-    fontSize: "7pt",
-    display: "flex",
-    justifyContent: "center",
-    gap: "4px",
-    zIndex: "9999",
-    padding: "4px"
-  });
-
-  // === UTILITY BUTTON CREATOR ===
-  function createBtn(label, action) {
-    const btn = document.createElement("button");
-    btn.textContent = label;
-    Object.assign(btn.style, {
-      padding: "2px 5px",
-      background: "#444",
-      color: "#fff",
-      border: "1px solid #888",
-      cursor: "pointer"
-    });
-    btn.onclick = action;
-    toolbar.appendChild(btn);
-  }
-
-  document.body.appendChild(toolbar);
-
-  // === HELPER: GET MESSAGES ===
-  function getChatMessages() {
-    const messages = [];
-    document.querySelectorAll("article[data-testid^='conversation-turn']").forEach(turn => {
-      const user = turn.querySelector("[data-message-author-role='user']")?.innerText.trim();
-      const bot = turn.querySelector("[data-message-author-role='assistant']");
-      const botText = bot?.innerText.trim();
-      const botHTML = bot?.innerHTML || "";
-
-      const cleanedHTML = (() => {
-        const div = document.createElement("div");
-        div.innerHTML = botHTML;
-        div.querySelectorAll("a[name]").forEach(a => a.remove());
-        return div.innerHTML;
-      })();
-
-      if (user) messages.push({ role: "You", text: user, element: turn });
-      if (botText) messages.push({ role: "ChatGPT", text: botText, html: cleanedHTML, element: turn });
-    });
-    return messages;
-  }
-
-  let lastHighlights = [];
-
-  // === COPY CHAT ===
-  createBtn("Copy", () => {
-    const text = getChatMessages().map(m =>
-      m.role === "ChatGPT" ? `ChatGPT: [${m.text}]` : `You: ${m.text}`
-    ).join("\n\n");
-    navigator.clipboard.writeText("Chat below: ----------------\n\n" + text).then(() => {
-      alert("Copied chat!");
-    });
-  });
-
-  // === SAVE AS DOCX ===
-  createBtn("DOCX", async () => {
-    const messages = getChatMessages();
-    if (!window.docx) {
-      alert("docx.js required but blocked. Can't save DOCX.");
-      return;
-    }
-    const doc = new window.docx.Document();
-    const paragraphs = [];
-
-    for (const msg of messages) {
-      const label = new window.docx.Paragraph({
-        children: [new window.docx.TextRun({ text: `${msg.role}: `, bold: true })]
-      });
-      const body = new window.docx.Paragraph({
-        children: [new window.docx.TextRun({ text: msg.role === "ChatGPT" ? msg.text : msg.text })]
-      });
-      paragraphs.push(label, body);
-    }
-
-    doc.addSection({ children: paragraphs });
-    const blob = await window.docx.Packer.toBlob(doc);
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "ChatGPT_Conversation.docx";
-    a.click();
-  });
-
-  // === EXPORT AS MARKDOWN ===
-  createBtn("MD", () => {
-    const markdown = getChatMessages().map(m =>
-      m.role === "ChatGPT" ? `**ChatGPT:**\n\n${m.text}` : `**You:**\n\n${m.text}`
-    ).join("\n\n---\n\n");
-    const blob = new Blob([markdown], { type: "text/markdown" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "ChatGPT_Conversation.md";
-    a.click();
-  });
-
-  // === FIND + HIGHLIGHT ===
-  createBtn("Highlight", () => {
-    const search = prompt("Find (regex ok):");
-    if (!search) return;
-    const regex = new RegExp(search, "gi");
-    lastHighlights = [];
-
-    getChatMessages().forEach(msg => {
-      if (regex.test(msg.text)) {
-        msg.element.style.background = "#fffa65";
-        lastHighlights.push(msg.element);
-      }
-    });
-  });
-
-  // === CLEAR HIGHLIGHTS ===
-  createBtn("Clear", () => {
-    lastHighlights.forEach(el => (el.style.background = ""));
-    lastHighlights = [];
-  });
-
-  // === EXPORT HIGHLIGHTED ===
-  createBtn("Export Highlights", () => {
-    const text = lastHighlights.map(el => el.innerText.trim()).join("\n\n---\n\n");
-    const blob = new Blob([text], { type: "text/plain" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "Highlighted_Chat.txt";
-    a.click();
-  });
-
-  // === SCROLL TO TOP ===
-  createBtn("⬆ Top", () => window.scrollTo({ top: 0, behavior: "smooth" }));
-
-  // === SCROLL TO BOTTOM ===
-  createBtn("⬇ Bottom", () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }));
-
-  // === Try loading docx.js silently ===
-  const docxScript = document.createElement("script");
-  docxScript.src = "https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.min.js";
-  docxScript.onload = () => console.log("docx.js loaded");
-  docxScript.onerror = () => console.warn("docx.js failed to load");
-  document.body.appendChild(docxScript);
-})();
+(async function () {
+  // Wait for DOM to stabilize
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
+  // === TOOLBAR STYLES ===
+  const toolbar = document.createElement("div");
+  Object.assign(toolbar.style, {
+    position: "absolute",
+    top: "0px",
+    left: "0",
+    width: "100%",
+    background: "#222",
+    color: "white",
+    fontSize: "7pt",
+    display: "flex",
+    justifyContent: "center",
+    gap: "4px",
+    zIndex: "9999",
+    padding: "4px"
+  });
+
+  // === UTILITY BUTTON CREATOR ===
+  function createBtn(label, action) {
+    const btn = document.createElement("button");
+    btn.textContent = label;
+    Object.assign(btn.style, {
+      padding: "2px 5px",
+      background: "#444",
+      color: "#fff",
+      border: "1px solid #888",
+      cursor: "pointer"
+    });
+    btn.onclick = action;
+    toolbar.appendChild(btn);
+  }
+
+  document.body.appendChild(toolbar);
+
+  // === HELPER: GET MESSAGES ===
+  function getChatMessages() {
+    const messages = [];
+    document.querySelectorAll("article[data-testid^='conversation-turn']").forEach(turn => {
+      const user = turn.querySelector("[data-message-author-role='user']")?.innerText.trim();
+      const bot = turn.querySelector("[data-message-author-role='assistant']");
+      const botText = bot?.innerText.trim();
+      const botHTML = bot?.innerHTML || "";
+
+      const cleanedHTML = (() => {
+        const div = document.createElement("div");
+        div.innerHTML = botHTML;
+        div.querySelectorAll("a[name]").forEach(a => a.remove());
+        return div.innerHTML;
+      })();
+
+      if (user) messages.push({ role: "You", text: user, element: turn });
+      if (botText) messages.push({ role: "ChatGPT", text: botText, html: cleanedHTML, element: turn });
+    });
+    return messages;
+  }
+
+  let lastHighlights = [];
+
+  // === COPY CHAT ===
+  createBtn("Copy", () => {
+    const text = getChatMessages().map(m =>
+      m.role === "ChatGPT" ? `ChatGPT: [${m.text}]` : `You: ${m.text}`
+    ).join("\n\n");
+    navigator.clipboard.writeText("Chat below: ----------------\n\n" + text).then(() => {
+      alert("Copied chat!");
+    });
+  });
+
+  // === SAVE AS DOCX ===
+  createBtn("DOCX", async () => {
+    const messages = getChatMessages();
+    if (!window.docx) {
+      alert("docx.js required but blocked. Can't save DOCX.");
+      return;
+    }
+    const doc = new window.docx.Document();
+    const paragraphs = [];
+
+    for (const msg of messages) {
+      const label = new window.docx.Paragraph({
+        children: [new window.docx.TextRun({ text: `${msg.role}: `, bold: true })]
+      });
+      const body = new window.docx.Paragraph({
+        children: [new window.docx.TextRun({ text: msg.role === "ChatGPT" ? msg.text : msg.text })]
+      });
+      paragraphs.push(label, body);
+    }
+
+    doc.addSection({ children: paragraphs });
+    const blob = await window.docx.Packer.toBlob(doc);
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ChatGPT_Conversation.docx";
+    a.click();
+  });
+
+  // === EXPORT AS MARKDOWN ===
+  createBtn("MD", () => {
+    const markdown = getChatMessages().map(m =>
+      m.role === "ChatGPT" ? `**ChatGPT:**\n\n${m.text}` : `**You:**\n\n${m.text}`
+    ).join("\n\n---\n\n");
+    const blob = new Blob([markdown], { type: "text/markdown" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ChatGPT_Conversation.md";
+    a.click();
+  });
+
+  // === FIND + HIGHLIGHT ===
+  createBtn("Highlight", () => {
+    const search = prompt("Find (regex ok):");
+    if (!search) return;
+    const regex = new RegExp(search, "gi");
+    lastHighlights = [];
+
+    getChatMessages().forEach(msg => {
+      if (regex.test(msg.text)) {
+        msg.element.style.background = "#fffa65";
+        lastHighlights.push(msg.element);
+      }
+    });
+  });
+
+  // === CLEAR HIGHLIGHTS ===
+  createBtn("Clear", () => {
+    lastHighlights.forEach(el => (el.style.background = ""));
+    lastHighlights = [];
+  });
+
+  // === EXPORT HIGHLIGHTED ===
+  createBtn("Export Highlights", () => {
+    const text = lastHighlights.map(el => el.innerText.trim()).join("\n\n---\n\n");
+    const blob = new Blob([text], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "Highlighted_Chat.txt";
+    a.click();
+  });
+
+  // === SCROLL TO TOP ===
+  createBtn("⬆ Top", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+  // === SCROLL TO BOTTOM ===
+  createBtn("⬇ Bottom", () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }));
+
+  // === Try loading docx.js silently ===
+  const docxScript = document.createElement("script");
+  docxScript.src = "https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.min.js";
+  docxScript.onload = () => console.log("docx.js loaded");
+  docxScript.onerror = () => console.warn("docx.js failed to load");
+  document.body.appendChild(docxScript);
+})();
 
 ---
 
@@ -213,161 +213,161 @@ Clear – Removes highlights.
 Export Highlights – Outputs only the highlighted turns.
 
 ⬆ Top / ⬇ Bottom – Scroll to top or bottom of the conversation.
-(async function () {
-  // Wait for DOM to stabilize
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  // === TOOLBAR STYLES ===
-  const toolbar = document.createElement("div");
-  Object.assign(toolbar.style, {
-    position: "absolute",
-    top: "0px",
-    left: "0",
-    width: "100%",
-    background: "#222",
-    color: "white",
-    fontSize: "7pt",
-    display: "flex",
-    justifyContent: "center",
-    gap: "4px",
-    zIndex: "9999",
-    padding: "4px"
-  });
-
-  // === UTILITY BUTTON CREATOR ===
-  function createBtn(label, action) {
-    const btn = document.createElement("button");
-    btn.textContent = label;
-    Object.assign(btn.style, {
-      padding: "2px 5px",
-      background: "#444",
-      color: "#fff",
-      border: "1px solid #888",
-      cursor: "pointer"
-    });
-    btn.onclick = action;
-    toolbar.appendChild(btn);
-  }
-
-  document.body.appendChild(toolbar);
-
-  // === HELPER: GET MESSAGES ===
-  function getChatMessages() {
-    const messages = [];
-    document.querySelectorAll("article[data-testid^='conversation-turn']").forEach(turn => {
-      const user = turn.querySelector("[data-message-author-role='user']")?.innerText.trim();
-      const bot = turn.querySelector("[data-message-author-role='assistant']");
-      const botText = bot?.innerText.trim();
-      const botHTML = bot?.innerHTML || "";
-
-      const cleanedHTML = (() => {
-        const div = document.createElement("div");
-        div.innerHTML = botHTML;
-        div.querySelectorAll("a[name]").forEach(a => a.remove());
-        return div.innerHTML;
-      })();
-
-      if (user) messages.push({ role: "You", text: user, element: turn });
-      if (botText) messages.push({ role: "ChatGPT", text: botText, html: cleanedHTML, element: turn });
-    });
-    return messages;
-  }
-
-  let lastHighlights = [];
-
-  // === COPY CHAT ===
-  createBtn("Copy", () => {
-    const text = getChatMessages().map(m =>
-      m.role === "ChatGPT" ? ChatGPT: [${m.text}] : You: ${m.text}
-    ).join("\n\n");
-    navigator.clipboard.writeText("Chat below: ----------------\n\n" + text).then(() => {
-      alert("Copied chat!");
-    });
-  });
-
-  // === SAVE AS DOCX ===
-  createBtn("DOCX", async () => {
-    const messages = getChatMessages();
-    if (!window.docx) {
-      alert("docx.js required but blocked. Can't save DOCX.");
-      return;
-    }
-    const doc = new window.docx.Document();
-    const paragraphs = [];
-
-    for (const msg of messages) {
-      const label = new window.docx.Paragraph({
-        children: [new window.docx.TextRun({ text: ${msg.role}: , bold: true })]
-      });
-      const body = new window.docx.Paragraph({
-        children: [new window.docx.TextRun({ text: msg.role === "ChatGPT" ? msg.text : msg.text })]
-      });
-      paragraphs.push(label, body);
-    }
-
-    doc.addSection({ children: paragraphs });
-    const blob = await window.docx.Packer.toBlob(doc);
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "ChatGPT_Conversation.docx";
-    a.click();
-  });
-
-  // === EXPORT AS MARKDOWN ===
-  createBtn("MD", () => {
-    const markdown = getChatMessages().map(m =>
-      m.role === "ChatGPT" ? **ChatGPT:**\n\n${m.text} : **You:**\n\n${m.text}
-    ).join("\n\n---\n\n");
-    const blob = new Blob([markdown], { type: "text/markdown" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "ChatGPT_Conversation.md";
-    a.click();
-  });
-
-  // === FIND + HIGHLIGHT ===
-  createBtn("Highlight", () => {
-    const search = prompt("Find (regex ok):");
-    if (!search) return;
-    const regex = new RegExp(search, "gi");
-    lastHighlights = [];
-
-    getChatMessages().forEach(msg => {
-      if (regex.test(msg.text)) {
-        msg.element.style.background = "#fffa65";
-        lastHighlights.push(msg.element);
-      }
-    });
-  });
-
-  // === CLEAR HIGHLIGHTS ===
-  createBtn("Clear", () => {
-    lastHighlights.forEach(el => (el.style.background = ""));
-    lastHighlights = [];
-  });
-
-  // === EXPORT HIGHLIGHTED ===
-  createBtn("Export Highlights", () => {
-    const text = lastHighlights.map(el => el.innerText.trim()).join("\n\n---\n\n");
-    const blob = new Blob([text], { type: "text/plain" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "Highlighted_Chat.txt";
-    a.click();
-  });
-
-  // === SCROLL TO TOP ===
-  createBtn("⬆ Top", () => window.scrollTo({ top: 0, behavior: "smooth" }));
-
-  // === SCROLL TO BOTTOM ===
-  createBtn("⬇ Bottom", () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }));
-
-  // === Try loading docx.js silently ===
-  const docxScript = document.createElement("script");
-  docxScript.src = "https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.min.js";
-  docxScript.onload = () => console.log("docx.js loaded");
-  docxScript.onerror = () => console.warn("docx.js failed to load");
-  document.body.appendChild(docxScript);
+(async function () {
+  // Wait for DOM to stabilize
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
+  // === TOOLBAR STYLES ===
+  const toolbar = document.createElement("div");
+  Object.assign(toolbar.style, {
+    position: "absolute",
+    top: "0px",
+    left: "0",
+    width: "100%",
+    background: "#222",
+    color: "white",
+    fontSize: "7pt",
+    display: "flex",
+    justifyContent: "center",
+    gap: "4px",
+    zIndex: "9999",
+    padding: "4px"
+  });
+
+  // === UTILITY BUTTON CREATOR ===
+  function createBtn(label, action) {
+    const btn = document.createElement("button");
+    btn.textContent = label;
+    Object.assign(btn.style, {
+      padding: "2px 5px",
+      background: "#444",
+      color: "#fff",
+      border: "1px solid #888",
+      cursor: "pointer"
+    });
+    btn.onclick = action;
+    toolbar.appendChild(btn);
+  }
+
+  document.body.appendChild(toolbar);
+
+  // === HELPER: GET MESSAGES ===
+  function getChatMessages() {
+    const messages = [];
+    document.querySelectorAll("article[data-testid^='conversation-turn']").forEach(turn => {
+      const user = turn.querySelector("[data-message-author-role='user']")?.innerText.trim();
+      const bot = turn.querySelector("[data-message-author-role='assistant']");
+      const botText = bot?.innerText.trim();
+      const botHTML = bot?.innerHTML || "";
+
+      const cleanedHTML = (() => {
+        const div = document.createElement("div");
+        div.innerHTML = botHTML;
+        div.querySelectorAll("a[name]").forEach(a => a.remove());
+        return div.innerHTML;
+      })();
+
+      if (user) messages.push({ role: "You", text: user, element: turn });
+      if (botText) messages.push({ role: "ChatGPT", text: botText, html: cleanedHTML, element: turn });
+    });
+    return messages;
+  }
+
+  let lastHighlights = [];
+
+  // === COPY CHAT ===
+  createBtn("Copy", () => {
+    const text = getChatMessages().map(m =>
+      m.role === "ChatGPT" ? ChatGPT: [${m.text}] : You: ${m.text}
+    ).join("\n\n");
+    navigator.clipboard.writeText("Chat below: ----------------\n\n" + text).then(() => {
+      alert("Copied chat!");
+    });
+  });
+
+  // === SAVE AS DOCX ===
+  createBtn("DOCX", async () => {
+    const messages = getChatMessages();
+    if (!window.docx) {
+      alert("docx.js required but blocked. Can't save DOCX.");
+      return;
+    }
+    const doc = new window.docx.Document();
+    const paragraphs = [];
+
+    for (const msg of messages) {
+      const label = new window.docx.Paragraph({
+        children: [new window.docx.TextRun({ text: ${msg.role}: , bold: true })]
+      });
+      const body = new window.docx.Paragraph({
+        children: [new window.docx.TextRun({ text: msg.role === "ChatGPT" ? msg.text : msg.text })]
+      });
+      paragraphs.push(label, body);
+    }
+
+    doc.addSection({ children: paragraphs });
+    const blob = await window.docx.Packer.toBlob(doc);
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ChatGPT_Conversation.docx";
+    a.click();
+  });
+
+  // === EXPORT AS MARKDOWN ===
+  createBtn("MD", () => {
+    const markdown = getChatMessages().map(m =>
+      m.role === "ChatGPT" ? **ChatGPT:**\n\n${m.text} : **You:**\n\n${m.text}
+    ).join("\n\n---\n\n");
+    const blob = new Blob([markdown], { type: "text/markdown" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ChatGPT_Conversation.md";
+    a.click();
+  });
+
+  // === FIND + HIGHLIGHT ===
+  createBtn("Highlight", () => {
+    const search = prompt("Find (regex ok):");
+    if (!search) return;
+    const regex = new RegExp(search, "gi");
+    lastHighlights = [];
+
+    getChatMessages().forEach(msg => {
+      if (regex.test(msg.text)) {
+        msg.element.style.background = "#fffa65";
+        lastHighlights.push(msg.element);
+      }
+    });
+  });
+
+  // === CLEAR HIGHLIGHTS ===
+  createBtn("Clear", () => {
+    lastHighlights.forEach(el => (el.style.background = ""));
+    lastHighlights = [];
+  });
+
+  // === EXPORT HIGHLIGHTED ===
+  createBtn("Export Highlights", () => {
+    const text = lastHighlights.map(el => el.innerText.trim()).join("\n\n---\n\n");
+    const blob = new Blob([text], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "Highlighted_Chat.txt";
+    a.click();
+  });
+
+  // === SCROLL TO TOP ===
+  createBtn("⬆ Top", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+  // === SCROLL TO BOTTOM ===
+  createBtn("⬇ Bottom", () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }));
+
+  // === Try loading docx.js silently ===
+  const docxScript = document.createElement("script");
+  docxScript.src = "https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.min.js";
+  docxScript.onload = () => console.log("docx.js loaded");
+  docxScript.onerror = () => console.warn("docx.js failed to load");
+  document.body.appendChild(docxScript);
 })();
 
 ---
@@ -588,161 +588,161 @@ Clear – Removes highlights.
 Export Highlights – Outputs only the highlighted turns.
 
 ⬆ Top / ⬇ Bottom – Scroll to top or bottom of the conversation.
-(async function () {
-  // Wait for DOM to stabilize
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  // === TOOLBAR STYLES ===
-  const toolbar = document.createElement("div");
-  Object.assign(toolbar.style, {
-    position: "absolute",
-    top: "0px",
-    left: "0",
-    width: "100%",
-    background: "#222",
-    color: "white",
-    fontSize: "7pt",
-    display: "flex",
-    justifyContent: "center",
-    gap: "4px",
-    zIndex: "9999",
-    padding: "4px"
-  });
-
-  // === UTILITY BUTTON CREATOR ===
-  function createBtn(label, action) {
-    const btn = document.createElement("button");
-    btn.textContent = label;
-    Object.assign(btn.style, {
-      padding: "2px 5px",
-      background: "#444",
-      color: "#fff",
-      border: "1px solid #888",
-      cursor: "pointer"
-    });
-    btn.onclick = action;
-    toolbar.appendChild(btn);
-  }
-
-  document.body.appendChild(toolbar);
-
-  // === HELPER: GET MESSAGES ===
-  function getChatMessages() {
-    const messages = [];
-    document.querySelectorAll("article[data-testid^='conversation-turn']").forEach(turn => {
-      const user = turn.querySelector("[data-message-author-role='user']")?.innerText.trim();
-      const bot = turn.querySelector("[data-message-author-role='assistant']");
-      const botText = bot?.innerText.trim();
-      const botHTML = bot?.innerHTML || "";
-
-      const cleanedHTML = (() => {
-        const div = document.createElement("div");
-        div.innerHTML = botHTML;
-        div.querySelectorAll("a[name]").forEach(a => a.remove());
-        return div.innerHTML;
-      })();
-
-      if (user) messages.push({ role: "You", text: user, element: turn });
-      if (botText) messages.push({ role: "ChatGPT", text: botText, html: cleanedHTML, element: turn });
-    });
-    return messages;
-  }
-
-  let lastHighlights = [];
-
-  // === COPY CHAT ===
-  createBtn("Copy", () => {
-    const text = getChatMessages().map(m =>
-      m.role === "ChatGPT" ? ChatGPT: [${m.text}] : You: ${m.text}
-    ).join("\n\n");
-    navigator.clipboard.writeText("Chat below: ----------------\n\n" + text).then(() => {
-      alert("Copied chat!");
-    });
-  });
-
-  // === SAVE AS DOCX ===
-  createBtn("DOCX", async () => {
-    const messages = getChatMessages();
-    if (!window.docx) {
-      alert("docx.js required but blocked. Can't save DOCX.");
-      return;
-    }
-    const doc = new window.docx.Document();
-    const paragraphs = [];
-
-    for (const msg of messages) {
-      const label = new window.docx.Paragraph({
-        children: [new window.docx.TextRun({ text: ${msg.role}: , bold: true })]
-      });
-      const body = new window.docx.Paragraph({
-        children: [new window.docx.TextRun({ text: msg.role === "ChatGPT" ? msg.text : msg.text })]
-      });
-      paragraphs.push(label, body);
-    }
-
-    doc.addSection({ children: paragraphs });
-    const blob = await window.docx.Packer.toBlob(doc);
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "ChatGPT_Conversation.docx";
-    a.click();
-  });
-
-  // === EXPORT AS MARKDOWN ===
-  createBtn("MD", () => {
-    const markdown = getChatMessages().map(m =>
-      m.role === "ChatGPT" ? **ChatGPT:**\n\n${m.text} : **You:**\n\n${m.text}
-    ).join("\n\n---\n\n");
-    const blob = new Blob([markdown], { type: "text/markdown" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "ChatGPT_Conversation.md";
-    a.click();
-  });
-
-  // === FIND + HIGHLIGHT ===
-  createBtn("Highlight", () => {
-    const search = prompt("Find (regex ok):");
-    if (!search) return;
-    const regex = new RegExp(search, "gi");
-    lastHighlights = [];
-
-    getChatMessages().forEach(msg => {
-      if (regex.test(msg.text)) {
-        msg.element.style.background = "#fffa65";
-        lastHighlights.push(msg.element);
-      }
-    });
-  });
-
-  // === CLEAR HIGHLIGHTS ===
-  createBtn("Clear", () => {
-    lastHighlights.forEach(el => (el.style.background = ""));
-    lastHighlights = [];
-  });
-
-  // === EXPORT HIGHLIGHTED ===
-  createBtn("Export Highlights", () => {
-    const text = lastHighlights.map(el => el.innerText.trim()).join("\n\n---\n\n");
-    const blob = new Blob([text], { type: "text/plain" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "Highlighted_Chat.txt";
-    a.click();
-  });
-
-  // === SCROLL TO TOP ===
-  createBtn("⬆ Top", () => window.scrollTo({ top: 0, behavior: "smooth" }));
-
-  // === SCROLL TO BOTTOM ===
-  createBtn("⬇ Bottom", () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }));
-
-  // === Try loading docx.js silently ===
-  const docxScript = document.createElement("script");
-  docxScript.src = "https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.min.js";
-  docxScript.onload = () => console.log("docx.js loaded");
-  docxScript.onerror = () => console.warn("docx.js failed to load");
-  document.body.appendChild(docxScript);
+(async function () {
+  // Wait for DOM to stabilize
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
+  // === TOOLBAR STYLES ===
+  const toolbar = document.createElement("div");
+  Object.assign(toolbar.style, {
+    position: "absolute",
+    top: "0px",
+    left: "0",
+    width: "100%",
+    background: "#222",
+    color: "white",
+    fontSize: "7pt",
+    display: "flex",
+    justifyContent: "center",
+    gap: "4px",
+    zIndex: "9999",
+    padding: "4px"
+  });
+
+  // === UTILITY BUTTON CREATOR ===
+  function createBtn(label, action) {
+    const btn = document.createElement("button");
+    btn.textContent = label;
+    Object.assign(btn.style, {
+      padding: "2px 5px",
+      background: "#444",
+      color: "#fff",
+      border: "1px solid #888",
+      cursor: "pointer"
+    });
+    btn.onclick = action;
+    toolbar.appendChild(btn);
+  }
+
+  document.body.appendChild(toolbar);
+
+  // === HELPER: GET MESSAGES ===
+  function getChatMessages() {
+    const messages = [];
+    document.querySelectorAll("article[data-testid^='conversation-turn']").forEach(turn => {
+      const user = turn.querySelector("[data-message-author-role='user']")?.innerText.trim();
+      const bot = turn.querySelector("[data-message-author-role='assistant']");
+      const botText = bot?.innerText.trim();
+      const botHTML = bot?.innerHTML || "";
+
+      const cleanedHTML = (() => {
+        const div = document.createElement("div");
+        div.innerHTML = botHTML;
+        div.querySelectorAll("a[name]").forEach(a => a.remove());
+        return div.innerHTML;
+      })();
+
+      if (user) messages.push({ role: "You", text: user, element: turn });
+      if (botText) messages.push({ role: "ChatGPT", text: botText, html: cleanedHTML, element: turn });
+    });
+    return messages;
+  }
+
+  let lastHighlights = [];
+
+  // === COPY CHAT ===
+  createBtn("Copy", () => {
+    const text = getChatMessages().map(m =>
+      m.role === "ChatGPT" ? ChatGPT: [${m.text}] : You: ${m.text}
+    ).join("\n\n");
+    navigator.clipboard.writeText("Chat below: ----------------\n\n" + text).then(() => {
+      alert("Copied chat!");
+    });
+  });
+
+  // === SAVE AS DOCX ===
+  createBtn("DOCX", async () => {
+    const messages = getChatMessages();
+    if (!window.docx) {
+      alert("docx.js required but blocked. Can't save DOCX.");
+      return;
+    }
+    const doc = new window.docx.Document();
+    const paragraphs = [];
+
+    for (const msg of messages) {
+      const label = new window.docx.Paragraph({
+        children: [new window.docx.TextRun({ text: ${msg.role}: , bold: true })]
+      });
+      const body = new window.docx.Paragraph({
+        children: [new window.docx.TextRun({ text: msg.role === "ChatGPT" ? msg.text : msg.text })]
+      });
+      paragraphs.push(label, body);
+    }
+
+    doc.addSection({ children: paragraphs });
+    const blob = await window.docx.Packer.toBlob(doc);
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ChatGPT_Conversation.docx";
+    a.click();
+  });
+
+  // === EXPORT AS MARKDOWN ===
+  createBtn("MD", () => {
+    const markdown = getChatMessages().map(m =>
+      m.role === "ChatGPT" ? **ChatGPT:**\n\n${m.text} : **You:**\n\n${m.text}
+    ).join("\n\n---\n\n");
+    const blob = new Blob([markdown], { type: "text/markdown" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ChatGPT_Conversation.md";
+    a.click();
+  });
+
+  // === FIND + HIGHLIGHT ===
+  createBtn("Highlight", () => {
+    const search = prompt("Find (regex ok):");
+    if (!search) return;
+    const regex = new RegExp(search, "gi");
+    lastHighlights = [];
+
+    getChatMessages().forEach(msg => {
+      if (regex.test(msg.text)) {
+        msg.element.style.background = "#fffa65";
+        lastHighlights.push(msg.element);
+      }
+    });
+  });
+
+  // === CLEAR HIGHLIGHTS ===
+  createBtn("Clear", () => {
+    lastHighlights.forEach(el => (el.style.background = ""));
+    lastHighlights = [];
+  });
+
+  // === EXPORT HIGHLIGHTED ===
+  createBtn("Export Highlights", () => {
+    const text = lastHighlights.map(el => el.innerText.trim()).join("\n\n---\n\n");
+    const blob = new Blob([text], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "Highlighted_Chat.txt";
+    a.click();
+  });
+
+  // === SCROLL TO TOP ===
+  createBtn("⬆ Top", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+  // === SCROLL TO BOTTOM ===
+  createBtn("⬇ Bottom", () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }));
+
+  // === Try loading docx.js silently ===
+  const docxScript = document.createElement("script");
+  docxScript.src = "https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.min.js";
+  docxScript.onload = () => console.log("docx.js loaded");
+  docxScript.onerror = () => console.warn("docx.js failed to load");
+  document.body.appendChild(docxScript);
 })();
 
 ---

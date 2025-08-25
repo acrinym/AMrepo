@@ -390,31 +390,31 @@ What about one of those yellow ceramic toroid coils with copper wire wrapped aro
 
 Specs and descrip[tion page from ebay: 
 
-7.83HZ Schumann Wave Ultra-Low Frequency Pulse Generator Electromagnetic Wave
-
-Product features：
-1. Using high quality materials, quality is guaranteed
-2. Schumann wave itself is not directly applied to audio or video products to improve the quality of sound and picture, but to the spatial environment, the human body's perception of sound and image, the feedback of nature and life to improve
-3. For use in audio-visual spaces, bedrooms, offices, creative spaces, tea ceremonies, meditation spaces, etc.
-4. With USB cable
-5. Built-in 1000MHA battery, 1 charge lasts about 1 month
- 
-Product Description：
-This product is the role of electromagnetic waves in the mind feeling, the human body's sensitivity to the environment is different, that is to say, also in the mind and feelings, so the use of the product and the feeling of non-intuitive embodiment, physicists pointed out: the Earth's surface and the ionosphere constitute a resonant cavity at a very low frequency, resonant frequency of 7.83HZ.
-The wavelength of the Schumann wave resonance frequency is just equivalent to the circumference of the earth, which translates into a frequency of about eight to ten hertz, the human brain nervous system will also produce a coordinated response to the frequency of the electromagnetic pulse of the Schumann wave, in order to replenish the energy of the human body cells, human health depends on natural energy and physical and mental balance, try the product on the speaker.
-Product parameters.
-Name: Schumann Wave Very Low Frequency Generator
-Frequency: 7.83HZ
-Power: 0.5W
-Output waveform: square wave
-Product description.
-Blue light flashing, normal emission status (normal work)
-Red light on, charging in progress
-Green light on, fully charged.
-If about working switch, all the lights are not on, it means the battery is low voltage and needs to be charged, it is recommended to charge it diligently, once a month.
- 
-Shipping list：
-Schumann Wave Very Low Frequency Generator X1
+7.83HZ Schumann Wave Ultra-Low Frequency Pulse Generator Electromagnetic Wave
+
+Product features：
+1. Using high quality materials, quality is guaranteed
+2. Schumann wave itself is not directly applied to audio or video products to improve the quality of sound and picture, but to the spatial environment, the human body's perception of sound and image, the feedback of nature and life to improve
+3. For use in audio-visual spaces, bedrooms, offices, creative spaces, tea ceremonies, meditation spaces, etc.
+4. With USB cable
+5. Built-in 1000MHA battery, 1 charge lasts about 1 month
+ 
+Product Description：
+This product is the role of electromagnetic waves in the mind feeling, the human body's sensitivity to the environment is different, that is to say, also in the mind and feelings, so the use of the product and the feeling of non-intuitive embodiment, physicists pointed out: the Earth's surface and the ionosphere constitute a resonant cavity at a very low frequency, resonant frequency of 7.83HZ.
+The wavelength of the Schumann wave resonance frequency is just equivalent to the circumference of the earth, which translates into a frequency of about eight to ten hertz, the human brain nervous system will also produce a coordinated response to the frequency of the electromagnetic pulse of the Schumann wave, in order to replenish the energy of the human body cells, human health depends on natural energy and physical and mental balance, try the product on the speaker.
+Product parameters.
+Name: Schumann Wave Very Low Frequency Generator
+Frequency: 7.83HZ
+Power: 0.5W
+Output waveform: square wave
+Product description.
+Blue light flashing, normal emission status (normal work)
+Red light on, charging in progress
+Green light on, fully charged.
+If about working switch, all the lights are not on, it means the battery is low voltage and needs to be charged, it is recommended to charge it diligently, once a month.
+ 
+Shipping list：
+Schumann Wave Very Low Frequency Generator X1
 USB cable X1
 
 ---

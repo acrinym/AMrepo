@@ -95,103 +95,103 @@
 
 If you provide more details about which specific Llama implementation you are working with (for instance, `llama.cpp` or another library), I can provide a more detailed guide.
 
-**USER**: PowerShell 7.4.5
-PS C:\Users\User\AppData\Local\Programs\Python\Python313\Llama> python -m ensurepip --upgrade
-Looking in links: c:\Users\User\AppData\Local\Temp\tmp_cf1tvjl
-Requirement already satisfied: pip in c:\users\user\appdata\local\programs\python\python313\lib\site-packages (24.2)
-PS C:\Users\User\AppData\Local\Programs\Python\Python313\Llama> python -m pip install --upgrade pip
-Requirement already satisfied: pip in c:\users\user\appdata\local\programs\python\python313\lib\site-packages (24.2)
-PS C:\Users\User\AppData\Local\Programs\Python\Python313\Llama> pip install llama
-Collecting llama
-  Downloading llama-0.1.1.tar.gz (387 kB)
-  Installing build dependencies ... done
-  Getting requirements to build wheel ... error
-  error: subprocess-exited-with-error
-
-  × Getting requirements to build wheel did not run successfully.
-  │ exit code: 1
-  ╰─> [23 lines of output]
-      Traceback (most recent call last):
-        File "C:\Users\User\AppData\Local\Programs\Python\Python313\Lib\site-packages\pip\_vendor\pyproject_hooks\_in_process\_in_process.py", line 353, in <module>
-          main()
-          ~~~~^^
-        File "C:\Users\User\AppData\Local\Programs\Python\Python313\Lib\site-packages\pip\_vendor\pyproject_hooks\_in_process\_in_process.py", line 335, in main
-          json_out['return_val'] = hook(**hook_input['kwargs'])
-                                   ~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-        File "C:\Users\User\AppData\Local\Programs\Python\Python313\Lib\site-packages\pip\_vendor\pyproject_hooks\_in_process\_in_process.py", line 118, in get_requires_for_build_wheel
-          return hook(config_settings)
-        File "C:\Users\User\AppData\Local\Temp\pip-build-env-gnrmz7nk\overlay\Lib\site-packages\setuptools\build_meta.py", line 332, in get_requires_for_build_wheel
-          return self._get_build_requires(config_settings, requirements=[])
-                 ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        File "C:\Users\User\AppData\Local\Temp\pip-build-env-gnrmz7nk\overlay\Lib\site-packages\setuptools\build_meta.py", line 302, in _get_build_requires
-          self.run_setup()
-          ~~~~~~~~~~~~~~^^
-        File "C:\Users\User\AppData\Local\Temp\pip-build-env-gnrmz7nk\overlay\Lib\site-packages\setuptools\build_meta.py", line 503, in run_setup
-          super().run_setup(setup_script=setup_script)
-          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        File "C:\Users\User\AppData\Local\Temp\pip-build-env-gnrmz7nk\overlay\Lib\site-packages\setuptools\build_meta.py", line 318, in run_setup
-          exec(code, locals())
-          ~~~~^^^^^^^^^^^^^^^^
-        File "<string>", line 6, in <module>
-      NameError: name 'execfile' is not defined
-      [end of output]
-
-  note: This error originates from a subprocess, and is likely not a problem with pip.
-error: subprocess-exited-with-error
-
-× Getting requirements to build wheel did not run successfully.
-│ exit code: 1
-╰─> See above for output.
-
-note: This error originates from a subprocess, and is likely not a problem with pip.
-PS C:\Users\User\AppData\Local\Programs\Python\Python313\Llama> pip install transformers torch
-Collecting transformers
-  Downloading transformers-4.45.2-py3-none-any.whl.metadata (44 kB)
-ERROR: Could not find a version that satisfies the requirement torch (from versions: none)
-ERROR: No matching distribution found for torch
-PS C:\Users\User\AppData\Local\Programs\Python\Python313\Llama> pip install transformers
-Collecting transformers
-  Using cached transformers-4.45.2-py3-none-any.whl.metadata (44 kB)
-Collecting filelock (from transformers)
-  Downloading filelock-3.16.1-py3-none-any.whl.metadata (2.9 kB)
-Collecting huggingface-hub<1.0,>=0.23.2 (from transformers)
-  Downloading huggingface_hub-0.25.2-py3-none-any.whl.metadata (13 kB)
-Collecting numpy>=1.17 (from transformers)
-  Downloading numpy-2.1.2-cp313-cp313-win_amd64.whl.metadata (59 kB)
-Collecting packaging>=20.0 (from transformers)
-  Downloading packaging-24.1-py3-none-any.whl.metadata (3.2 kB)
-Collecting pyyaml>=5.1 (from transformers)
-  Downloading PyYAML-6.0.2-cp313-cp313-win_amd64.whl.metadata (2.1 kB)
-Collecting regex!=2019.12.17 (from transformers)
-  Downloading regex-2024.9.11-cp313-cp313-win_amd64.whl.metadata (41 kB)
-Collecting requests (from transformers)
-  Downloading requests-2.32.3-py3-none-any.whl.metadata (4.6 kB)
-Collecting safetensors>=0.4.1 (from transformers)
-  Downloading safetensors-0.4.5.tar.gz (65 kB)
-  Installing build dependencies ... done
-  Getting requirements to build wheel ... done
-  Preparing metadata (pyproject.toml) ... error
-  error: subprocess-exited-with-error
-
-  × Preparing metadata (pyproject.toml) did not run successfully.
-  │ exit code: 1
-  ╰─> [6 lines of output]
-
-      Cargo, the Rust package manager, is not installed or is not on PATH.
-      This package requires Rust and Cargo to compile extensions. Install it through
-      the system's package manager or via https://rustup.rs/
-
-      Checking for Rust toolchain....
-      [end of output]
-
-  note: This error originates from a subprocess, and is likely not a problem with pip.
-error: metadata-generation-failed
-
-× Encountered error while generating package metadata.
-╰─> See above for output.
-
-note: This is an issue with the package mentioned above, not pip.
-hint: See above for details.
+**USER**: PowerShell 7.4.5
+PS C:\Users\User\AppData\Local\Programs\Python\Python313\Llama> python -m ensurepip --upgrade
+Looking in links: c:\Users\User\AppData\Local\Temp\tmp_cf1tvjl
+Requirement already satisfied: pip in c:\users\user\appdata\local\programs\python\python313\lib\site-packages (24.2)
+PS C:\Users\User\AppData\Local\Programs\Python\Python313\Llama> python -m pip install --upgrade pip
+Requirement already satisfied: pip in c:\users\user\appdata\local\programs\python\python313\lib\site-packages (24.2)
+PS C:\Users\User\AppData\Local\Programs\Python\Python313\Llama> pip install llama
+Collecting llama
+  Downloading llama-0.1.1.tar.gz (387 kB)
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... error
+  error: subprocess-exited-with-error
+
+  × Getting requirements to build wheel did not run successfully.
+  │ exit code: 1
+  ╰─> [23 lines of output]
+      Traceback (most recent call last):
+        File "C:\Users\User\AppData\Local\Programs\Python\Python313\Lib\site-packages\pip\_vendor\pyproject_hooks\_in_process\_in_process.py", line 353, in <module>
+          main()
+          ~~~~^^
+        File "C:\Users\User\AppData\Local\Programs\Python\Python313\Lib\site-packages\pip\_vendor\pyproject_hooks\_in_process\_in_process.py", line 335, in main
+          json_out['return_val'] = hook(**hook_input['kwargs'])
+                                   ~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+        File "C:\Users\User\AppData\Local\Programs\Python\Python313\Lib\site-packages\pip\_vendor\pyproject_hooks\_in_process\_in_process.py", line 118, in get_requires_for_build_wheel
+          return hook(config_settings)
+        File "C:\Users\User\AppData\Local\Temp\pip-build-env-gnrmz7nk\overlay\Lib\site-packages\setuptools\build_meta.py", line 332, in get_requires_for_build_wheel
+          return self._get_build_requires(config_settings, requirements=[])
+                 ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "C:\Users\User\AppData\Local\Temp\pip-build-env-gnrmz7nk\overlay\Lib\site-packages\setuptools\build_meta.py", line 302, in _get_build_requires
+          self.run_setup()
+          ~~~~~~~~~~~~~~^^
+        File "C:\Users\User\AppData\Local\Temp\pip-build-env-gnrmz7nk\overlay\Lib\site-packages\setuptools\build_meta.py", line 503, in run_setup
+          super().run_setup(setup_script=setup_script)
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "C:\Users\User\AppData\Local\Temp\pip-build-env-gnrmz7nk\overlay\Lib\site-packages\setuptools\build_meta.py", line 318, in run_setup
+          exec(code, locals())
+          ~~~~^^^^^^^^^^^^^^^^
+        File "<string>", line 6, in <module>
+      NameError: name 'execfile' is not defined
+      [end of output]
+
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+PS C:\Users\User\AppData\Local\Programs\Python\Python313\Llama> pip install transformers torch
+Collecting transformers
+  Downloading transformers-4.45.2-py3-none-any.whl.metadata (44 kB)
+ERROR: Could not find a version that satisfies the requirement torch (from versions: none)
+ERROR: No matching distribution found for torch
+PS C:\Users\User\AppData\Local\Programs\Python\Python313\Llama> pip install transformers
+Collecting transformers
+  Using cached transformers-4.45.2-py3-none-any.whl.metadata (44 kB)
+Collecting filelock (from transformers)
+  Downloading filelock-3.16.1-py3-none-any.whl.metadata (2.9 kB)
+Collecting huggingface-hub<1.0,>=0.23.2 (from transformers)
+  Downloading huggingface_hub-0.25.2-py3-none-any.whl.metadata (13 kB)
+Collecting numpy>=1.17 (from transformers)
+  Downloading numpy-2.1.2-cp313-cp313-win_amd64.whl.metadata (59 kB)
+Collecting packaging>=20.0 (from transformers)
+  Downloading packaging-24.1-py3-none-any.whl.metadata (3.2 kB)
+Collecting pyyaml>=5.1 (from transformers)
+  Downloading PyYAML-6.0.2-cp313-cp313-win_amd64.whl.metadata (2.1 kB)
+Collecting regex!=2019.12.17 (from transformers)
+  Downloading regex-2024.9.11-cp313-cp313-win_amd64.whl.metadata (41 kB)
+Collecting requests (from transformers)
+  Downloading requests-2.32.3-py3-none-any.whl.metadata (4.6 kB)
+Collecting safetensors>=0.4.1 (from transformers)
+  Downloading safetensors-0.4.5.tar.gz (65 kB)
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... error
+  error: subprocess-exited-with-error
+
+  × Preparing metadata (pyproject.toml) did not run successfully.
+  │ exit code: 1
+  ╰─> [6 lines of output]
+
+      Cargo, the Rust package manager, is not installed or is not on PATH.
+      This package requires Rust and Cargo to compile extensions. Install it through
+      the system's package manager or via https://rustup.rs/
+
+      Checking for Rust toolchain....
+      [end of output]
+
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
 PS C:\Users\User\AppData\Local\Programs\Python\Python313\Llama>
 
 **ASSISTANT**: The issues you're encountering are related to building the `llama` package and some other dependencies (such as `safetensors`), specifically due to missing system dependencies, like Rust for some Python packages.

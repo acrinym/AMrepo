@@ -2865,49 +2865,49 @@ Do you want me to switch gears and draft the **full GPT-5 optimized plan** for c
 
 **USER**: Okay, the auditor... 
 
-PS C:\Users\User> C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1
-At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:60 char:72
-+ ... Join-Path $env:WINDIR "System32\WindowsPowerShell\v1.0\profile.ps1"),
-+                                                                          ~
-Missing expression after ','.
-At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:61 char:3
-+   Join-Path $env:WINDIR "System32\WindowsPowerShell\v1.0\Microsoft.Po ...
-+   ~~~~~~~~~
-Unexpected token 'Join-Path' in expression or statement.
-At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:61 char:91
-+ ...  "System32\WindowsPowerShell\v1.0\Microsoft.PowerShell_profile.ps1"),
-+                                                                        ~
-Unexpected token ')' in expression or statement.
-At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:61 char:93
-+ ...  "System32\WindowsPowerShell\v1.0\Microsoft.PowerShell_profile.ps1"),
-+                                                                          ~
-Missing expression after unary operator ','.
-At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:62 char:3
-+   Join-Path $env:USERPROFILE "Documents\WindowsPowerShell\Profile.ps1 ...
-+   ~~~~~~~~~
-Unexpected token 'Join-Path' in expression or statement.
-At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:62 char:71
-+ ... oin-Path $env:USERPROFILE "Documents\WindowsPowerShell\Profile.ps1"),
-+                                                                        ~
-Unexpected token ')' in expression or statement.
-At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:62 char:73
-+ ... oin-Path $env:USERPROFILE "Documents\WindowsPowerShell\Profile.ps1"),
-+                                                                          ~
-Missing expression after unary operator ','.
-At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:63 char:3
-+   Join-Path $env:USERPROFILE "Documents\WindowsPowerShell\Microsoft.P ...
-+   ~~~~~~~~~
-Unexpected token 'Join-Path' in expression or statement.
-At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:63 char:92
-+ ... FILE "Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"),
-+                                                                        ~
-Unexpected token ')' in expression or statement.
-At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:63 char:94
-+ ... FILE "Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"),
-+                                                                          ~
-Missing expression after unary operator ','.
-Not all parse errors were reported.  Correct the reported errors and try again.
-    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+PS C:\Users\User> C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1
+At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:60 char:72
++ ... Join-Path $env:WINDIR "System32\WindowsPowerShell\v1.0\profile.ps1"),
++                                                                          ~
+Missing expression after ','.
+At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:61 char:3
++   Join-Path $env:WINDIR "System32\WindowsPowerShell\v1.0\Microsoft.Po ...
++   ~~~~~~~~~
+Unexpected token 'Join-Path' in expression or statement.
+At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:61 char:91
++ ...  "System32\WindowsPowerShell\v1.0\Microsoft.PowerShell_profile.ps1"),
++                                                                        ~
+Unexpected token ')' in expression or statement.
+At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:61 char:93
++ ...  "System32\WindowsPowerShell\v1.0\Microsoft.PowerShell_profile.ps1"),
++                                                                          ~
+Missing expression after unary operator ','.
+At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:62 char:3
++   Join-Path $env:USERPROFILE "Documents\WindowsPowerShell\Profile.ps1 ...
++   ~~~~~~~~~
+Unexpected token 'Join-Path' in expression or statement.
+At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:62 char:71
++ ... oin-Path $env:USERPROFILE "Documents\WindowsPowerShell\Profile.ps1"),
++                                                                        ~
+Unexpected token ')' in expression or statement.
+At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:62 char:73
++ ... oin-Path $env:USERPROFILE "Documents\WindowsPowerShell\Profile.ps1"),
++                                                                          ~
+Missing expression after unary operator ','.
+At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:63 char:3
++   Join-Path $env:USERPROFILE "Documents\WindowsPowerShell\Microsoft.P ...
++   ~~~~~~~~~
+Unexpected token 'Join-Path' in expression or statement.
+At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:63 char:92
++ ... FILE "Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"),
++                                                                        ~
+Unexpected token ')' in expression or statement.
+At C:\Users\User\OneDrive\Desktop\Powershellauditor.ps1:63 char:94
++ ... FILE "Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"),
++                                                                          ~
+Missing expression after unary operator ','.
+Not all parse errors were reported.  Correct the reported errors and try again.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
     + FullyQualifiedErrorId : MissingExpressionAfterToken
 
 **ASSISTANT**: Yep — this error’s happening because of a **malformed list of expressions**, most likely inside an array that’s missing the `@()` wrapper or a bad comma placement. The PowerShell parser is choking on a list of `Join-Path` expressions that aren’t formatted correctly.
@@ -2994,11 +2994,11 @@ Let me know if you want the full script cleaned up or just this section reintegr
 
 **USER**: Well then. 
 
-=== PowerShell Profiles ===
-Profile not found: C:\WINDOWS\System32\WindowsPowerShell\v1.0\profile.ps1
-Profile not found: C:\WINDOWS\System32\WindowsPowerShell\v1.0\Microsoft.PowerShell_profile.ps1
-Profile not found: C:\Users\User\Documents\WindowsPowerShell\Profile.ps1
-Profile not found: C:\Users\User\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1
+=== PowerShell Profiles ===
+Profile not found: C:\WINDOWS\System32\WindowsPowerShell\v1.0\profile.ps1
+Profile not found: C:\WINDOWS\System32\WindowsPowerShell\v1.0\Microsoft.PowerShell_profile.ps1
+Profile not found: C:\Users\User\Documents\WindowsPowerShell\Profile.ps1
+Profile not found: C:\Users\User\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1
 PS C:\Users\User>
 
 **ASSISTANT**: Here is your **fully corrected PowerShell System Auditor script**:

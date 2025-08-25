@@ -1323,1883 +1323,1883 @@ license
 package.json
 readme.md
 
-**TOOL**: ﻿==== Avalonia App Source Export ====
------ FILE: D:\github\ritualos\src\Behaviors\ListBoxReorderBehavior.cs -----
-using System.Collections;
-using System.Linq;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-
-namespace RitualOS.Behaviors;
-
-/// <summary>
-/// Enables simple drag-and-drop reordering of ListBox items. Attach with
-/// <c>behaviors:ListBoxReorderBehavior.Enabled="True"</c> in XAML.
-/// </summary>
-public static class ListBoxReorderBehavior
-{
-    public static readonly AttachedProperty<bool> EnabledProperty =
-        AvaloniaProperty.RegisterAttached<ListBox, bool>("Enabled", typeof(ListBoxReorderBehavior));
-
-    static ListBoxReorderBehavior()
-    {
-        EnabledProperty.Changed.AddClassHandler<ListBox>((lb, e) =>
-        {
-            var enabled = (bool)e.NewValue!;
-            if (enabled)
-                Attach(lb);
-            else
-                Detach(lb);
-        });
-    }
-
-    public static bool GetEnabled(ListBox element) => element.GetValue(EnabledProperty);
-    public static void SetEnabled(ListBox element, bool value) => element.SetValue(EnabledProperty, value);
-
-    private static void Attach(ListBox listBox)
-    {
-        listBox.AddHandler(InputElement.PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel);
-        listBox.AddHandler(DragDrop.DragOverEvent, OnDragOver);
-        listBox.AddHandler(DragDrop.DropEvent, OnDrop);
-    }
-
-    private static void Detach(ListBox listBox)
-    {
-        listBox.RemoveHandler(InputElement.PointerPressedEvent, OnPointerPressed);
-        listBox.RemoveHandler(DragDrop.DragOverEvent, OnDragOver);
-        listBox.RemoveHandler(DragDrop.DropEvent, OnDrop);
-    }
-
-    private static async void OnPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (sender is not ListBox lb) return;
-        if (lb.SelectedItem == null) return;
-        var data = new DataObject();
-        data.Set("ritual-step", lb.SelectedItem);
-        await DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
-    }
-
-    private static void OnDragOver(object? sender, DragEventArgs e)
-    {
-        if (!e.Data.Contains("ritual-step")) return;
-        e.DragEffects = DragDropEffects.Move;
-        e.Handled = true;
-    }
-
-    private static void OnDrop(object? sender, DragEventArgs e)
-    {
-        if (sender is not ListBox lb) return;
-        if (!e.Data.Contains("ritual-step")) return;
-        var source = e.Data.Get("ritual-step");
-        var target = (e.Source as Control)?.DataContext;
-        if (source == null || target == null || ReferenceEquals(source, target)) return;
-        if (lb.Items is IList items)
-        {
-            var sourceIndex = items.IndexOf(source);
-            var targetIndex = items.IndexOf(target);
-            if (sourceIndex >= 0 && targetIndex >= 0 && sourceIndex != targetIndex)
-            {
-                items.RemoveAt(sourceIndex);
-                items.Insert(targetIndex, source);
-                lb.SelectedItem = source;
-            }
-        }
-        e.Handled = true;
-    }
-}
+**TOOL**: ﻿==== Avalonia App Source Export ====
+----- FILE: D:\github\ritualos\src\Behaviors\ListBoxReorderBehavior.cs -----
+using System.Collections;
+using System.Linq;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+
+namespace RitualOS.Behaviors;
+
+/// <summary>
+/// Enables simple drag-and-drop reordering of ListBox items. Attach with
+/// <c>behaviors:ListBoxReorderBehavior.Enabled="True"</c> in XAML.
+/// </summary>
+public static class ListBoxReorderBehavior
+{
+    public static readonly AttachedProperty<bool> EnabledProperty =
+        AvaloniaProperty.RegisterAttached<ListBox, bool>("Enabled", typeof(ListBoxReorderBehavior));
+
+    static ListBoxReorderBehavior()
+    {
+        EnabledProperty.Changed.AddClassHandler<ListBox>((lb, e) =>
+        {
+            var enabled = (bool)e.NewValue!;
+            if (enabled)
+                Attach(lb);
+            else
+                Detach(lb);
+        });
+    }
+
+    public static bool GetEnabled(ListBox element) => element.GetValue(EnabledProperty);
+    public static void SetEnabled(ListBox element, bool value) => element.SetValue(EnabledProperty, value);
+
+    private static void Attach(ListBox listBox)
+    {
+        listBox.AddHandler(InputElement.PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel);
+        listBox.AddHandler(DragDrop.DragOverEvent, OnDragOver);
+        listBox.AddHandler(DragDrop.DropEvent, OnDrop);
+    }
+
+    private static void Detach(ListBox listBox)
+    {
+        listBox.RemoveHandler(InputElement.PointerPressedEvent, OnPointerPressed);
+        listBox.RemoveHandler(DragDrop.DragOverEvent, OnDragOver);
+        listBox.RemoveHandler(DragDrop.DropEvent, OnDrop);
+    }
+
+    private static async void OnPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (sender is not ListBox lb) return;
+        if (lb.SelectedItem == null) return;
+        var data = new DataObject();
+        data.Set("ritual-step", lb.SelectedItem);
+        await DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
+    }
+
+    private static void OnDragOver(object? sender, DragEventArgs e)
+    {
+        if (!e.Data.Contains("ritual-step")) return;
+        e.DragEffects = DragDropEffects.Move;
+        e.Handled = true;
+    }
+
+    private static void OnDrop(object? sender, DragEventArgs e)
+    {
+        if (sender is not ListBox lb) return;
+        if (!e.Data.Contains("ritual-step")) return;
+        var source = e.Data.Get("ritual-step");
+        var target = (e.Source as Control)?.DataContext;
+        if (source == null || target == null || ReferenceEquals(source, target)) return;
+        if (lb.Items is IList items)
+        {
+            var sourceIndex = items.IndexOf(source);
+            var targetIndex = items.IndexOf(target);
+            if (sourceIndex >= 0 && targetIndex >= 0 && sourceIndex != targetIndex)
+            {
+                items.RemoveAt(sourceIndex);
+                items.Insert(targetIndex, source);
+                lb.SelectedItem = source;
+            }
+        }
+        e.Handled = true;
+    }
+}
 
 
-
------ FILE: D:\github\ritualos\src\Converters\BooleanToVisibilityConverter.cs -----
-using System;
-using System.Globalization;
-using Avalonia;
-using Avalonia.Data.Converters;
-using Avalonia.Controls;
-
-namespace RitualOS.Converters
-{
-    /// <summary>
-    /// Converts a boolean result from SigilLock or bindings into a Visibility value.
-    /// </summary>
-    public class BooleanToVisibilityConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            bool visible = value as bool? ?? false;
-            return visible ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is Visibility visibility)
-            {
-                return visibility == Visibility.Visible;
-            }
-            return false;
-        }
-    }
-}
+
+----- FILE: D:\github\ritualos\src\Converters\BooleanToVisibilityConverter.cs -----
+using System;
+using System.Globalization;
+using Avalonia;
+using Avalonia.Data.Converters;
+using Avalonia.Controls;
+
+namespace RitualOS.Converters
+{
+    /// <summary>
+    /// Converts a boolean result from SigilLock or bindings into a Visibility value.
+    /// </summary>
+    public class BooleanToVisibilityConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            bool visible = value as bool? ?? false;
+            return visible ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            if (value is Visibility visibility)
+            {
+                return visibility == Visibility.Visible;
+            }
+            return false;
+        }
+    }
+}
 
 
-
------ FILE: D:\github\ritualos\src\Converters\BoolToBrushConverter.cs -----
-using Avalonia.Data.Converters;
-using Avalonia.Media;
-using System;
-using System.Globalization;
-
-namespace RitualOS.Converters
-{
-    public class BoolToBrushConverter : IValueConverter
-    {
-        public IBrush TrueBrush { get; set; } = Brushes.White;
-        public IBrush FalseBrush { get; set; } = Brushes.LightGray;
-
-        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
-        {
-            if (value is bool b && b)
-                return new Avalonia.Media.SolidColorBrush(Avalonia.Media.Colors.Green);
-            return new Avalonia.Media.SolidColorBrush(Avalonia.Media.Colors.Red);
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-} 
+
+----- FILE: D:\github\ritualos\src\Converters\BoolToBrushConverter.cs -----
+using Avalonia.Data.Converters;
+using Avalonia.Media;
+using System;
+using System.Globalization;
+
+namespace RitualOS.Converters
+{
+    public class BoolToBrushConverter : IValueConverter
+    {
+        public IBrush TrueBrush { get; set; } = Brushes.White;
+        public IBrush FalseBrush { get; set; } = Brushes.LightGray;
+
+        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is bool b && b)
+                return new Avalonia.Media.SolidColorBrush(Avalonia.Media.Colors.Green);
+            return new Avalonia.Media.SolidColorBrush(Avalonia.Media.Colors.Red);
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+} 
 
 
-
------ FILE: D:\github\ritualos\src\Converters\BoolToFontWeightConverter.cs -----
-using Avalonia.Data.Converters;
-using Avalonia.Media;
-using System;
-using System.Globalization;
-
-namespace RitualOS.Converters
-{
-    public class BoolToFontWeightConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
-        {
-            if (value is bool b && b)
-                return Avalonia.Media.FontWeight.Bold;
-            return Avalonia.Media.FontWeight.Normal;
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-} 
+
+----- FILE: D:\github\ritualos\src\Converters\BoolToFontWeightConverter.cs -----
+using Avalonia.Data.Converters;
+using Avalonia.Media;
+using System;
+using System.Globalization;
+
+namespace RitualOS.Converters
+{
+    public class BoolToFontWeightConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is bool b && b)
+                return Avalonia.Media.FontWeight.Bold;
+            return Avalonia.Media.FontWeight.Normal;
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+} 
 
 
-
------ FILE: D:\github\ritualos\src\Converters\ChakraCheckConverter.cs -----
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Avalonia.Data.Converters;
-using RitualOS.Models;
-
-namespace RitualOS.Converters
-{
-    public class ChakraCheckConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is List<Chakra> chakraTags && parameter is Chakra chakra)
-            {
-                return chakraTags.Contains(chakra);
-            }
-            return false;
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
+
+----- FILE: D:\github\ritualos\src\Converters\ChakraCheckConverter.cs -----
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using Avalonia.Data.Converters;
+using RitualOS.Models;
+
+namespace RitualOS.Converters
+{
+    public class ChakraCheckConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            if (value is List<Chakra> chakraTags && parameter is Chakra chakra)
+            {
+                return chakraTags.Contains(chakra);
+            }
+            return false;
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
             if (value is bool isChecked && parameter is Chakra chakra && targetType == typeof(List<Chakra>))
 
-**TOOL**: if (value is bool isChecked && parameter is Chakra chakra && targetType == typeof(List<Chakra>))
-            {
-                var list = new List<Chakra>();
-                if (isChecked)
-                {
-                    list.Add(chakra);
-                }
-                return list;
-            }
-            return new List<Chakra>();
-        }
-    }
-}
+**TOOL**: if (value is bool isChecked && parameter is Chakra chakra && targetType == typeof(List<Chakra>))
+            {
+                var list = new List<Chakra>();
+                if (isChecked)
+                {
+                    list.Add(chakra);
+                }
+                return list;
+            }
+            return new List<Chakra>();
+        }
+    }
+}
 
 
-
------ FILE: D:\github\ritualos\src\Converters\ChakraToEmojiConverter.cs -----
-using System;
-using System.Globalization;
-using Avalonia.Data.Converters;
-using RitualOS.Helpers;
-using RitualOS.Models;
-
-namespace RitualOS.Converters
-{
-    public class ChakraToEmojiConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is Chakra chakra)
-            {
-                return $"{ChakraHelper.GetEmoji(chakra)} {ChakraHelper.GetDisplayName(chakra)}";
-            }
-            return string.Empty;
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
-    }
-}
+
+----- FILE: D:\github\ritualos\src\Converters\ChakraToEmojiConverter.cs -----
+using System;
+using System.Globalization;
+using Avalonia.Data.Converters;
+using RitualOS.Helpers;
+using RitualOS.Models;
+
+namespace RitualOS.Converters
+{
+    public class ChakraToEmojiConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            if (value is Chakra chakra)
+            {
+                return $"{ChakraHelper.GetEmoji(chakra)} {ChakraHelper.GetDisplayName(chakra)}";
+            }
+            return string.Empty;
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+    }
+}
 
 
-
------ FILE: D:\github\ritualos\src\Converters\ElementCheckConverter.cs -----
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Avalonia.Data.Converters;
-using RitualOS.Models;
-
-namespace RitualOS.Converters
-{
-    /// <summary>
-    /// Converter for binding element checkboxes to a collection. ðŸ§°
-    /// </summary>
-    public class ElementCheckConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is List<Element> tags && parameter is Element element)
-            {
-                return tags.Contains(element);
-            }
-            return false;
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is bool isChecked && parameter is Element element && targetType == typeof(List<Element>))
-            {
-                var list = new List<Element>();
-                if (isChecked)
-                    list.Add(element);
-                return list;
-            }
-            return new List<Element>();
-        }
-    }
-}
+
+----- FILE: D:\github\ritualos\src\Converters\ElementCheckConverter.cs -----
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using Avalonia.Data.Converters;
+using RitualOS.Models;
+
+namespace RitualOS.Converters
+{
+    /// <summary>
+    /// Converter for binding element checkboxes to a collection. ðŸ§°
+    /// </summary>
+    public class ElementCheckConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            if (value is List<Element> tags && parameter is Element element)
+            {
+                return tags.Contains(element);
+            }
+            return false;
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            if (value is bool isChecked && parameter is Element element && targetType == typeof(List<Element>))
+            {
+                var list = new List<Element>();
+                if (isChecked)
+                    list.Add(element);
+                return list;
+            }
+            return new List<Element>();
+        }
+    }
+}
 
 
-
------ FILE: D:\github\ritualos\src\Converters\ElementToEmojiConverter.cs -----
-using System;
-using System.Globalization;
-using Avalonia.Data.Converters;
-using RitualOS.Helpers;
-using RitualOS.Models;
-
-namespace RitualOS.Converters
-{
-    /// <summary>
-    /// Converts <see cref="Element"/> values to emoji labels. ðŸ˜„
-    /// </summary>
-    public class ElementToEmojiConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is Element element)
-            {
-                return $"{ElementHelper.GetEmoji(element)} {ElementHelper.GetDisplayName(element)}";
-            }
-            return string.Empty;
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
-    }
-}
+
+----- FILE: D:\github\ritualos\src\Converters\ElementToEmojiConverter.cs -----
+using System;
+using System.Globalization;
+using Avalonia.Data.Converters;
+using RitualOS.Helpers;
+using RitualOS.Models;
+
+namespace RitualOS.Converters
+{
+    /// <summary>
+    /// Converts <see cref="Element"/> values to emoji labels. ðŸ˜„
+    /// </summary>
+    public class ElementToEmojiConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            if (value is Element element)
+            {
+                return $"{ElementHelper.GetEmoji(element)} {ElementHelper.GetDisplayName(element)}";
+            }
+            return string.Empty;
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+    }
+}
 
 
-
------ FILE: D:\github\ritualos\src\Converters\InverseBooleanConverter.cs -----
-using System;
-using System.Globalization;
-using Avalonia.Data.Converters;
-
-namespace RitualOS.Converters
-{
-    public class InverseBooleanConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is bool b)
-                return !b;
-            return false;
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is bool b)
-                return !b;
-            return false;
-        }
-    }
-} 
 
-
-
------ FILE: D:\github\ritualos\src\Converters\LowQuantityConverter.cs -----
-using System;
-using System.Globalization;
-using Avalonia.Data.Converters;
-
-namespace RitualOS.Converters
-{
-    public class LowQuantityConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is int quantity && quantity < 5)
-            {
-                return "Bold";
-            }
-            return "Normal";
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
-    }
-}
-
-
-
------ FILE: D:\github\ritualos\src\Converters\MessageColorConverter.cs -----
-using System;
-using System.Globalization;
-using Avalonia.Data.Converters;
-
-namespace RitualOS.Converters
-{
-    public class MessageColorConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is string message)
-            {
-                return message.StartsWith("Error", StringComparison.OrdinalIgnoreCase) ? "Red" : "Green";
-            }
-            return "Black";
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
-    }
-}
-
-
-
------ FILE: D:\github\ritualos\src\Converters\NullToBoolConverter.cs -----
-using System;
-using System.Globalization;
+----- FILE: D:\github\ritualos\src\Converters\InverseBooleanConverter.cs -----
+using System;
+using System.Globalization;
 using Avalonia.Data.Converters;
 
-**TOOL**: using Avalonia.Data.Converters;
-
-namespace RitualOS.Converters
-{
-} 
+namespace RitualOS.Converters
+{
+    public class InverseBooleanConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            if (value is bool b)
+                return !b;
+            return false;
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            if (value is bool b)
+                return !b;
+            return false;
+        }
+    }
+} 
 
 
-
------ FILE: D:\github\ritualos\src\Converters\StringListConverter.cs -----
-using System;
-using System.Linq;
-using Avalonia.Data.Converters;
-using System.Collections.Generic;
-
-namespace RitualOS.Converters
-{
-    public class StringListConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
-        {
-            if (value is string s)
-                return s.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToList();
-            return new List<string>();
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
-        {
-            if (value is IEnumerable<string> list)
-                return string.Join(", ", list);
-            return string.Empty;
-        }
-    }
-}
+
+----- FILE: D:\github\ritualos\src\Converters\LowQuantityConverter.cs -----
+using System;
+using System.Globalization;
+using Avalonia.Data.Converters;
+
+namespace RitualOS.Converters
+{
+    public class LowQuantityConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            if (value is int quantity && quantity < 5)
+            {
+                return "Bold";
+            }
+            return "Normal";
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+    }
+}
 
 
-
------ FILE: D:\github\ritualos\src\Helpers\ChakraHelper.cs -----
-using System.Collections.Generic;
-using RitualOS.Models;
-
-namespace RitualOS.Helpers
-{
-    public static class ChakraHelper
-    {
-        public static string GetEmoji(Chakra chakra) => chakra switch
-        {
-            Chakra.Root => "ðŸ”´",
-            Chakra.Sacral => "ðŸŸ ",
-            Chakra.SolarPlexus => "ðŸŸ¡",
-            Chakra.Heart => "ðŸ’š",
-            Chakra.Throat => "ðŸ”µ",
-            Chakra.ThirdEye => "ðŸŸ£",
-            Chakra.Crown => "âšª",
-            _ => string.Empty
-        };
-
-        public static string GetDisplayName(Chakra chakra) => chakra switch
-        {
-            Chakra.SolarPlexus => "Solar Plexus",
-            _ => chakra.ToString()
-        };
-    }
-}
+
+----- FILE: D:\github\ritualos\src\Converters\MessageColorConverter.cs -----
+using System;
+using System.Globalization;
+using Avalonia.Data.Converters;
+
+namespace RitualOS.Converters
+{
+    public class MessageColorConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            if (value is string message)
+            {
+                return message.StartsWith("Error", StringComparison.OrdinalIgnoreCase) ? "Red" : "Green";
+            }
+            return "Black";
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+    }
+}
 
 
-
------ FILE: D:\github\ritualos\src\Helpers\ElementHelper.cs -----
-using RitualOS.Models;
-
-namespace RitualOS.Helpers
-{
-    /// <summary>
-    /// Provides emoji helpers for ritual elements. ðŸ˜„
-    /// </summary>
-    public static class ElementHelper
-    {
-        public static string GetEmoji(Element element) => element switch
-        {
-            Element.Air => "ðŸŒ¬ï¸",
-            Element.Water => "ðŸ’§",
-            Element.Fire => "ðŸ”¥",
-            Element.Earth => "ðŸŒ±",
-            Element.Ether => "âœ¨",
-            _ => string.Empty
-        };
-
-        public static string GetDisplayName(Element element) => element.ToString();
-    }
-}
+
+----- FILE: D:\github\ritualos\src\Converters\NullToBoolConverter.cs -----
+using System;
+using System.Globalization;
+using Avalonia.Data.Converters;
+
+**TOOL**: using Avalonia.Data.Converters;
+
+namespace RitualOS.Converters
+{
+} 
 
 
-
------ FILE: D:\github\ritualos\src\Helpers\Extensions.cs -----
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-
-namespace RitualOS.Helpers
-{
-    public static class Extensions
-    {
-        public static void AddRange<T>(this ObservableCollection<T> collection, IEnumerable<T> items)
-        {
-            foreach (var item in items)
-            {
-                collection.Add(item);
-            }
-        }
-    }
-} 
+
+----- FILE: D:\github\ritualos\src\Converters\StringListConverter.cs -----
+using System;
+using System.Linq;
+using Avalonia.Data.Converters;
+using System.Collections.Generic;
+
+namespace RitualOS.Converters
+{
+    public class StringListConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is string s)
+                return s.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToList();
+            return new List<string>();
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is IEnumerable<string> list)
+                return string.Join(", ", list);
+            return string.Empty;
+        }
+    }
+}
 
 
-
------ FILE: D:\github\ritualos\src\Helpers\NullToBoolConverter.cs -----
-using System;
-using Avalonia.Data.Converters;
-
-namespace RitualOS.Helpers
-{
-    public class NullToBoolConverter : IValueConverter
-    {
-        public static readonly NullToBoolConverter Instance = new();
-
-        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
-        {
-            return value != null;
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-}
+
+----- FILE: D:\github\ritualos\src\Helpers\ChakraHelper.cs -----
+using System.Collections.Generic;
+using RitualOS.Models;
+
+namespace RitualOS.Helpers
+{
+    public static class ChakraHelper
+    {
+        public static string GetEmoji(Chakra chakra) => chakra switch
+        {
+            Chakra.Root => "ðŸ”´",
+            Chakra.Sacral => "ðŸŸ ",
+            Chakra.SolarPlexus => "ðŸŸ¡",
+            Chakra.Heart => "ðŸ’š",
+            Chakra.Throat => "ðŸ”µ",
+            Chakra.ThirdEye => "ðŸŸ£",
+            Chakra.Crown => "âšª",
+            _ => string.Empty
+        };
+
+        public static string GetDisplayName(Chakra chakra) => chakra switch
+        {
+            Chakra.SolarPlexus => "Solar Plexus",
+            _ => chakra.ToString()
+        };
+    }
+}
 
 
-
------ FILE: D:\github\ritualos\src\Helpers\RelayCommand.cs -----
-using System;
-using System.Windows.Input;
-
-namespace RitualOS.Helpers
-{
-    /// <summary>
-    /// Basic ICommand implementation for simple relay commands.
-    /// </summary>
-    public class RelayCommand : ICommand
-    {
-        private readonly Action<object?> _execute;
-        private readonly Func<object?, bool>? _canExecute;
-
-        public RelayCommand(Action execute, Func<bool>? canExecute = null)
-        {
-            _execute = _ => execute();
-            if (canExecute != null)
-                _canExecute = _ => canExecute();
-        }
-
-        public RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null)
-        {
-            _execute = execute;
-            _canExecute = canExecute;
-        }
-
-        public event EventHandler? CanExecuteChanged;
-
-        public bool CanExecute(object? parameter) => _canExecute?.Invoke(parameter) ?? true;
-
-        public void Execute(object? parameter) => _execute(parameter);
-
-        public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-    }
-}
+
+----- FILE: D:\github\ritualos\src\Helpers\ElementHelper.cs -----
+using RitualOS.Models;
+
+namespace RitualOS.Helpers
+{
+    /// <summary>
+    /// Provides emoji helpers for ritual elements. ðŸ˜„
+    /// </summary>
+    public static class ElementHelper
+    {
+        public static string GetEmoji(Element element) => element switch
+        {
+            Element.Air => "ðŸŒ¬ï¸",
+            Element.Water => "ðŸ’§",
+            Element.Fire => "ðŸ”¥",
+            Element.Earth => "ðŸŒ±",
+            Element.Ether => "âœ¨",
+            _ => string.Empty
+        };
+
+        public static string GetDisplayName(Element element) => element.ToString();
+    }
+}
 
 
-
------ FILE: D:\github\ritualos\src\Models\BoSPage.cs -----
-using System;
-using System.Collections.Generic;
-
-namespace RitualOS.Models
-{
-    public class BoSPage
-    {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public Guid? ParentId { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public string Content { get; set; } = string.Empty;
-        public string Category { get; set; } = string.Empty;
-        public DateTime DateCreated { get; set; } = DateTime.Now;
-        public DateTime LastModified { get; set; } = DateTime.Now;
-        public List<string> Tags { get; set; } = new();
-        public List<BoSAttachment> Attachments { get; set; } = new();
-        public List<BoSPage> Children { get; set; } = new();
-    }
-
-    public class BoSAttachment
-    {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string FilePath { get; set; } = string.Empty;
-        public string Type { get; set; } = string.Empty; // image, audio, journal, etc.
+
+----- FILE: D:\github\ritualos\src\Helpers\Extensions.cs -----
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+namespace RitualOS.Helpers
+{
+    public static class Extensions
+    {
+        public static void AddRange<T>(this ObservableCollection<T> collection, IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                collection.Add(item);
+            }
+        }
+    }
+} 
+
+
+
+----- FILE: D:\github\ritualos\src\Helpers\NullToBoolConverter.cs -----
+using System;
+using Avalonia.Data.Converters;
+
+namespace RitualOS.Helpers
+{
+    public class NullToBoolConverter : IValueConverter
+    {
+        public static readonly NullToBoolConverter Instance = new();
+
+        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
+        {
+            return value != null;
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+
+
+
+----- FILE: D:\github\ritualos\src\Helpers\RelayCommand.cs -----
+using System;
+using System.Windows.Input;
+
+namespace RitualOS.Helpers
+{
+    /// <summary>
+    /// Basic ICommand implementation for simple relay commands.
+    /// </summary>
+    public class RelayCommand : ICommand
+    {
+        private readonly Action<object?> _execute;
+        private readonly Func<object?, bool>? _canExecute;
+
+        public RelayCommand(Action execute, Func<bool>? canExecute = null)
+        {
+            _execute = _ => execute();
+            if (canExecute != null)
+                _canExecute = _ => canExecute();
+        }
+
+        public RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null)
+        {
+            _execute = execute;
+            _canExecute = canExecute;
+        }
+
+        public event EventHandler? CanExecuteChanged;
+
+        public bool CanExecute(object? parameter) => _canExecute?.Invoke(parameter) ?? true;
+
+        public void Execute(object? parameter) => _execute(parameter);
+
+        public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+    }
+}
+
+
+
+----- FILE: D:\github\ritualos\src\Models\BoSPage.cs -----
+using System;
+using System.Collections.Generic;
+
+namespace RitualOS.Models
+{
+    public class BoSPage
+    {
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid? ParentId { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+        public DateTime DateCreated { get; set; } = DateTime.Now;
+        public DateTime LastModified { get; set; } = DateTime.Now;
+        public List<string> Tags { get; set; } = new();
+        public List<BoSAttachment> Attachments { get; set; } = new();
+        public List<BoSPage> Children { get; set; } = new();
+    }
+
+    public class BoSAttachment
+    {
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string FilePath { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty; // image, audio, journal, etc.
         public string? Description { get; set; }
 
-**TOOL**: 50:    private static async void OnPointerPressed(object? sender, PointerPressedEventArgs e)
-3048:            ImportCommand = new RelayCommand(async () => await ImportAsync(), () => !string.IsNullOrWhiteSpace(ImportPath));
-3049:            ExportCommand = new RelayCommand(async () => await ExportAsync(), () => !string.IsNullOrWhiteSpace(ExportPath));
-3075:        private async Task ImportAsync()
-3087:        private async Task ExportAsync()
-3100:        /// Call this method after constructing the ViewModel to perform async initialization if needed.
-3102:        public async Task InitializeAsync()
-3104:            // No async initialization needed currently, but method provided for consistency.
-3287:            SaveTemplateCommand = new RelayCommand(async _ => await SaveTemplateAsync());
-3288:            LoadTemplateCommand = new RelayCommand(async _ => await LoadTemplateAsync());
-3435:        private async Task SaveTemplateAsync()
-3469:        private async Task ExportTemplateAsync()
-3505:        private async Task<string?> PickSaveFilePathAsync(string fileName, string title)
-3693:        private async Task LoadTemplateAsync()
-3869:            RefreshCommand = new RelayCommand(async () => await LoadAnalyticsAsync());
-3870:            ExportCommand = new RelayCommand(async () => await ExportAnalyticsAsync(), () => CanExport());
-3888:        public async Task InitializeAsync()
-3952:        private async Task LoadAnalyticsAsync()
-4066:        private async Task ExportAnalyticsAsync()
+**TOOL**: 50:    private static async void OnPointerPressed(object? sender, PointerPressedEventArgs e)
+3048:            ImportCommand = new RelayCommand(async () => await ImportAsync(), () => !string.IsNullOrWhiteSpace(ImportPath));
+3049:            ExportCommand = new RelayCommand(async () => await ExportAsync(), () => !string.IsNullOrWhiteSpace(ExportPath));
+3075:        private async Task ImportAsync()
+3087:        private async Task ExportAsync()
+3100:        /// Call this method after constructing the ViewModel to perform async initialization if needed.
+3102:        public async Task InitializeAsync()
+3104:            // No async initialization needed currently, but method provided for consistency.
+3287:            SaveTemplateCommand = new RelayCommand(async _ => await SaveTemplateAsync());
+3288:            LoadTemplateCommand = new RelayCommand(async _ => await LoadTemplateAsync());
+3435:        private async Task SaveTemplateAsync()
+3469:        private async Task ExportTemplateAsync()
+3505:        private async Task<string?> PickSaveFilePathAsync(string fileName, string title)
+3693:        private async Task LoadTemplateAsync()
+3869:            RefreshCommand = new RelayCommand(async () => await LoadAnalyticsAsync());
+3870:            ExportCommand = new RelayCommand(async () => await ExportAnalyticsAsync(), () => CanExport());
+3888:        public async Task InitializeAsync()
+3952:        private async Task LoadAnalyticsAsync()
+4066:        private async Task ExportAnalyticsAsync()
 4264:            SaveEntryCommand = new RelayCommand(async _ => await SaveEntryAsync(), _ => CanSaveEntry);
 
-**TOOL**: var existing = symbols.FirstOrDefault(s => s.Name == Symbol.Name);
-                if (existing != null)
-                {
-                    symbols.Remove(existing);
-                }
-                symbols.Add(Symbol);
-                SymbolIndexService.Save(symbols);
-            }
-            catch
-            {
-                // We should add user-facing error handling here later.
-            }
-        }
-
-        private void Export()
-        {
-            if (Symbol == null)
-                return;
-
-            var fileName = $"{Symbol.Name}_rewritten.md";
-            CodexRewriteEngine.ExportMarkdown(new[] { Symbol }, fileName);
-        }
-    }
-}
+**TOOL**: var existing = symbols.FirstOrDefault(s => s.Name == Symbol.Name);
+                if (existing != null)
+                {
+                    symbols.Remove(existing);
+                }
+                symbols.Add(Symbol);
+                SymbolIndexService.Save(symbols);
+            }
+            catch
+            {
+                // We should add user-facing error handling here later.
+            }
+        }
+
+        private void Export()
+        {
+            if (Symbol == null)
+                return;
+
+            var fileName = $"{Symbol.Name}_rewritten.md";
+            CodexRewriteEngine.ExportMarkdown(new[] { Symbol }, fileName);
+        }
+    }
+}
 
 
-
------ FILE: D:\github\ritualos\src\ViewModels\Wizards\ImportExportWizardViewModel.cs -----
-using System.Threading.Tasks;
-using RitualOS.Services;
-using RitualOS.Helpers;
-using System;
-
-namespace RitualOS.ViewModels.Wizards
-{
-    public class ImportExportWizardViewModel : ViewModelBase
-    {
-        private readonly IDataImportExportService _service;
-        private string _importPath = string.Empty;
-        private string _exportPath = string.Empty;
-
-        public ImportExportWizardViewModel() : this(new DataImportExportService())
-        {
-        }
-
-        public ImportExportWizardViewModel(IDataImportExportService service)
-        {
-            _service = service;
-            ImportCommand = new RelayCommand(async () => await ImportAsync(), () => !string.IsNullOrWhiteSpace(ImportPath));
-            ExportCommand = new RelayCommand(async () => await ExportAsync(), () => !string.IsNullOrWhiteSpace(ExportPath));
-        }
-
-        public string ImportPath
-        {
-            get => _importPath;
-            set
-            {
-                SetProperty(ref _importPath, value);
-                ImportCommand.RaiseCanExecuteChanged();
-            }
-        }
-
-        public string ExportPath
-        {
-            get => _exportPath;
-            set
-            {
-                SetProperty(ref _exportPath, value);
-                ExportCommand.RaiseCanExecuteChanged();
-            }
-        }
-
-        public RelayCommand ImportCommand { get; }
-        public RelayCommand ExportCommand { get; }
-
-        private async Task ImportAsync()
-        {
-            try
-            {
-                await _service.ImportRitualLogsAsync(ImportPath);
-            }
-            catch (Exception ex)
-            {
-                LoggingService.LogError(ex, $"Error importing ritual logs from {ImportPath}");
-            }
-        }
-
-        private async Task ExportAsync()
-        {
-            try
-            {
-                await _service.ExportAllDataAsync(ExportPath);
-            }
-            catch (Exception ex)
-            {
-                LoggingService.LogError(ex, $"Error exporting data to {ExportPath}");
-            }
-        }
-
-        /// <summary>
-        /// Call this method after constructing the ViewModel to perform async initialization if needed.
-        /// </summary>
-        public async Task InitializeAsync()
-        {
-            // No async initialization needed currently, but method provided for consistency.
-            await Task.CompletedTask;
-        }
-    }
-}
+
+----- FILE: D:\github\ritualos\src\ViewModels\Wizards\ImportExportWizardViewModel.cs -----
+using System.Threading.Tasks;
+using RitualOS.Services;
+using RitualOS.Helpers;
+using System;
+
+namespace RitualOS.ViewModels.Wizards
+{
+    public class ImportExportWizardViewModel : ViewModelBase
+    {
+        private readonly IDataImportExportService _service;
+        private string _importPath = string.Empty;
+        private string _exportPath = string.Empty;
+
+        public ImportExportWizardViewModel() : this(new DataImportExportService())
+        {
+        }
+
+        public ImportExportWizardViewModel(IDataImportExportService service)
+        {
+            _service = service;
+            ImportCommand = new RelayCommand(async () => await ImportAsync(), () => !string.IsNullOrWhiteSpace(ImportPath));
+            ExportCommand = new RelayCommand(async () => await ExportAsync(), () => !string.IsNullOrWhiteSpace(ExportPath));
+        }
+
+        public string ImportPath
+        {
+            get => _importPath;
+            set
+            {
+                SetProperty(ref _importPath, value);
+                ImportCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public string ExportPath
+        {
+            get => _exportPath;
+            set
+            {
+                SetProperty(ref _exportPath, value);
+                ExportCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public RelayCommand ImportCommand { get; }
+        public RelayCommand ExportCommand { get; }
+
+        private async Task ImportAsync()
+        {
+            try
+            {
+                await _service.ImportRitualLogsAsync(ImportPath);
+            }
+            catch (Exception ex)
+            {
+                LoggingService.LogError(ex, $"Error importing ritual logs from {ImportPath}");
+            }
+        }
+
+        private async Task ExportAsync()
+        {
+            try
+            {
+                await _service.ExportAllDataAsync(ExportPath);
+            }
+            catch (Exception ex)
+            {
+                LoggingService.LogError(ex, $"Error exporting data to {ExportPath}");
+            }
+        }
+
+        /// <summary>
+        /// Call this method after constructing the ViewModel to perform async initialization if needed.
+        /// </summary>
+        public async Task InitializeAsync()
+        {
+            // No async initialization needed currently, but method provided for consistency.
+            await Task.CompletedTask;
+        }
+    }
+}
 
 
-
------ FILE: D:\github\ritualos\src\ViewModels\Wizards\RitualTemplateBuilderViewModel.cs -----
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Platform.Storage;
-using Avalonia.Interactivity;
-using Avalonia.Controls.ApplicationLifetimes;
-using RitualOS.Helpers;
-using RitualOS.Models;
-using RitualOS.Services;
-
-
-namespace RitualOS.ViewModels.Wizards
-{
-    public class RitualTemplateBuilderViewModel : ViewModelBase, INotifyDataErrorInfo
-    {
-        private readonly Dictionary<string, List<string>> _errors = new();
-        private RitualTemplate _template = new();
-        private int _selectedStepIndex = -1;
-        private string _preview = string.Empty;
-        private bool _showRawMarkdown = false;
-        private readonly IUserSettingsService _settingsService;
-        private readonly RitualTemplateSerializer _serializer;
-        private readonly ExportService _exportService;
-
-        public RitualTemplate Template
-        {
-            get => _template;
+
+----- FILE: D:\github\ritualos\src\ViewModels\Wizards\RitualTemplateBuilderViewModel.cs -----
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Platform.Storage;
+using Avalonia.Interactivity;
+using Avalonia.Controls.ApplicationLifetimes;
+using RitualOS.Helpers;
+using RitualOS.Models;
+using RitualOS.Services;
+
+
+namespace RitualOS.ViewModels.Wizards
+{
+    public class RitualTemplateBuilderViewModel : ViewModelBase, INotifyDataErrorInfo
+    {
+        private readonly Dictionary<string, List<string>> _errors = new();
+        private RitualTemplate _template = new();
+        private int _selectedStepIndex = -1;
+        private string _preview = string.Empty;
+        private bool _showRawMarkdown = false;
+        private readonly IUserSettingsService _settingsService;
+        private readonly RitualTemplateSerializer _serializer;
+        private readonly ExportService _exportService;
+
+        public RitualTemplate Template
+        {
+            get => _template;
             set
 
-**TOOL**: public ObservableCollection<string> Tags { get; } = new();
-        public ObservableCollection<string> MoonPhases { get; } = new();
-        public ObservableCollection<string> PlanetaryInfluences { get; } = new();
-        public ObservableCollection<Element> ElementalCorrespondences { get; } = new();
-        public ObservableCollection<Chakra> ChakraFocus { get; } = new();
-        public ObservableCollection<string> Warnings { get; } = new();
-
-        // Options for dropdowns
-        public Array ChakraOptions { get; } = Enum.GetValues(typeof(Chakra));
-        public Array ElementOptions { get; } = Enum.GetValues(typeof(Element));
-        public Array RitualTypeOptions { get; } = Enum.GetValues(typeof(RitualType));
-        public Array DifficultyOptions { get; } = Enum.GetValues(typeof(RitualDifficulty));
-        public string[] MoonPhaseOptions { get; } = { "New Moon", "Waxing Crescent", "First Quarter", "Waxing Gibbous", "Full Moon", "Waning Gibbous", "Last Quarter", "Waning Crescent" };
-        public string[] EnergyLevelOptions { get; } = { "Low", "Medium", "High", "Very High" };
-        public string[] SafetyLevelOptions { get; } = { "Safe", "Caution", "Dangerous", "Expert Only" };
-
-        // Commands
-        public ICommand AddStepCommand { get; }
-        public ICommand RemoveStepCommand { get; }
-        public ICommand MoveStepUpCommand { get; }
-        public ICommand MoveStepDownCommand { get; }
-        public ICommand SaveTemplateCommand { get; }
-        public ICommand LoadTemplateCommand { get; }
-        public ICommand ClearTemplateCommand { get; }
-
-        // Status properties
-        private bool _isSaving = false;
-        public bool IsSaving
-        {
-            get => _isSaving;
-            set
-            {
-                _isSaving = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _isExporting = false;
-        public bool IsExporting
-        {
-            get => _isExporting;
-            set
-            {
-                _isExporting = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _statusMessage = string.Empty;
-        public string StatusMessage
-        {
-            get => _statusMessage;
-            set
-            {
-                _statusMessage = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _templateName = string.Empty;
-        public string TemplateName
-        {
-            get => _templateName;
-            set
-            {
-                _templateName = value;
-                OnPropertyChanged();
-            }
-        }
-
-        // Validation
-        public bool HasErrors => _errors.Any();
-        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-
-        public RitualTemplateBuilderViewModel() : this(new UserSettingsService())
-        {
-        }
-
-        public RitualTemplateBuilderViewModel(IUserSettingsService settingsService)
-        {
-            _settingsService = settingsService;
-            _serializer = new RitualTemplateSerializer();
-            _exportService = new ExportService(settingsService);
-            AddStepCommand = new RelayCommand(AddStep);
-            RemoveStepCommand = new RelayCommand(RemoveStep, () => CanRemoveStep);
-            MoveStepUpCommand = new RelayCommand(MoveStepUp, () => CanMoveStepUp);
-            MoveStepDownCommand = new RelayCommand(MoveStepDown, () => CanMoveStepDown);
-            SaveTemplateCommand = new RelayCommand(async _ => await SaveTemplateAsync());
-            LoadTemplateCommand = new RelayCommand(async _ => await LoadTemplateAsync());
-            ClearTemplateCommand = new RelayCommand(ClearTemplate);
-            SetupPropertyChangedHandlers();
-            UpdatePreview();
-        }
-
-        private void SetupPropertyChangedHandlers()
-        {
-            PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == nameof(Template))
-                {
-                    UpdatePreview();
-                }
-            };
-        }
-
-        // Step Management
-        private void AddStep()
-        {
-            var newStep = new RitualStep
-            {
-                Order = RitualSteps.Count + 1,
-                Title = $"Step {RitualSteps.Count + 1}",
-                Description = "Enter step description here",
-                Duration = TimeSpan.FromMinutes(5)
-            };
-            RitualSteps.Add(newStep);
-            UpdateTemplateSteps();
-        }
-
-        private void RemoveStep()
-        {
-            if (SelectedStepIndex >= 0 && SelectedStepIndex < RitualSteps.Count)
-            {
-                RitualSteps.RemoveAt(SelectedStepIndex);
-                ReorderSteps();
-                UpdateTemplateSteps();
-            }
-        }
-
-        private void MoveStepUp()
-        {
-            if (SelectedStepIndex > 0)
-            {
-                var step = RitualSteps[SelectedStepIndex];
-                RitualSteps.RemoveAt(SelectedStepIndex);
-                RitualSteps.Insert(SelectedStepIndex - 1, step);
-                SelectedStepIndex--;
-                ReorderSteps();
-                UpdateTemplateSteps();
-            }
-        }
-
-        private void MoveStepDown()
-        {
-            if (SelectedStepIndex >= 0 && SelectedStepIndex < RitualSteps.Count - 1)
-            {
-                var step = RitualSteps[SelectedStepIndex];
-                RitualSteps.RemoveAt(SelectedStepIndex);
-                RitualSteps.Insert(SelectedStepIndex + 1, step);
-                SelectedStepIndex++;
-                ReorderSteps();
-                UpdateTemplateSteps();
-            }
-        }
-
-        private void ReorderSteps()
-        {
-            for (int i = 0; i < RitualSteps.Count; i++)
-            {
-                RitualSteps[i].Order = i + 1;
-            }
-        }
-
-        public bool CanRemoveStep => SelectedStepIndex >= 0 && SelectedStepIndex < RitualSteps.Count;
-        public bool CanMoveStepUp => SelectedStepIndex > 0;
-        public bool CanMoveStepDown => SelectedStepIndex >= 0 && SelectedStepIndex < RitualSteps.Count - 1;
-
-        // Template Updates
-        private void UpdateTemplateSteps()
-        {
-            Template.Steps = RitualSteps.ToList();
-            UpdatePreview();
-        }
-
-        private void UpdateTemplateRequiredItems()
-        {
-            Template.RequiredItems = RequiredItems.ToList();
-            UpdatePreview();
-        }
-
+**TOOL**: public ObservableCollection<string> Tags { get; } = new();
+        public ObservableCollection<string> MoonPhases { get; } = new();
+        public ObservableCollection<string> PlanetaryInfluences { get; } = new();
+        public ObservableCollection<Element> ElementalCorrespondences { get; } = new();
+        public ObservableCollection<Chakra> ChakraFocus { get; } = new();
+        public ObservableCollection<string> Warnings { get; } = new();
+
+        // Options for dropdowns
+        public Array ChakraOptions { get; } = Enum.GetValues(typeof(Chakra));
+        public Array ElementOptions { get; } = Enum.GetValues(typeof(Element));
+        public Array RitualTypeOptions { get; } = Enum.GetValues(typeof(RitualType));
+        public Array DifficultyOptions { get; } = Enum.GetValues(typeof(RitualDifficulty));
+        public string[] MoonPhaseOptions { get; } = { "New Moon", "Waxing Crescent", "First Quarter", "Waxing Gibbous", "Full Moon", "Waning Gibbous", "Last Quarter", "Waning Crescent" };
+        public string[] EnergyLevelOptions { get; } = { "Low", "Medium", "High", "Very High" };
+        public string[] SafetyLevelOptions { get; } = { "Safe", "Caution", "Dangerous", "Expert Only" };
+
+        // Commands
+        public ICommand AddStepCommand { get; }
+        public ICommand RemoveStepCommand { get; }
+        public ICommand MoveStepUpCommand { get; }
+        public ICommand MoveStepDownCommand { get; }
+        public ICommand SaveTemplateCommand { get; }
+        public ICommand LoadTemplateCommand { get; }
+        public ICommand ClearTemplateCommand { get; }
+
+        // Status properties
+        private bool _isSaving = false;
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set
+            {
+                _isSaving = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isExporting = false;
+        public bool IsExporting
+        {
+            get => _isExporting;
+            set
+            {
+                _isExporting = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _statusMessage = string.Empty;
+        public string StatusMessage
+        {
+            get => _statusMessage;
+            set
+            {
+                _statusMessage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _templateName = string.Empty;
+        public string TemplateName
+        {
+            get => _templateName;
+            set
+            {
+                _templateName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Validation
+        public bool HasErrors => _errors.Any();
+        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+
+        public RitualTemplateBuilderViewModel() : this(new UserSettingsService())
+        {
+        }
+
+        public RitualTemplateBuilderViewModel(IUserSettingsService settingsService)
+        {
+            _settingsService = settingsService;
+            _serializer = new RitualTemplateSerializer();
+            _exportService = new ExportService(settingsService);
+            AddStepCommand = new RelayCommand(AddStep);
+            RemoveStepCommand = new RelayCommand(RemoveStep, () => CanRemoveStep);
+            MoveStepUpCommand = new RelayCommand(MoveStepUp, () => CanMoveStepUp);
+            MoveStepDownCommand = new RelayCommand(MoveStepDown, () => CanMoveStepDown);
+            SaveTemplateCommand = new RelayCommand(async _ => await SaveTemplateAsync());
+            LoadTemplateCommand = new RelayCommand(async _ => await LoadTemplateAsync());
+            ClearTemplateCommand = new RelayCommand(ClearTemplate);
+            SetupPropertyChangedHandlers();
+            UpdatePreview();
+        }
+
+        private void SetupPropertyChangedHandlers()
+        {
+            PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(Template))
+                {
+                    UpdatePreview();
+                }
+            };
+        }
+
+        // Step Management
+        private void AddStep()
+        {
+            var newStep = new RitualStep
+            {
+                Order = RitualSteps.Count + 1,
+                Title = $"Step {RitualSteps.Count + 1}",
+                Description = "Enter step description here",
+                Duration = TimeSpan.FromMinutes(5)
+            };
+            RitualSteps.Add(newStep);
+            UpdateTemplateSteps();
+        }
+
+        private void RemoveStep()
+        {
+            if (SelectedStepIndex >= 0 && SelectedStepIndex < RitualSteps.Count)
+            {
+                RitualSteps.RemoveAt(SelectedStepIndex);
+                ReorderSteps();
+                UpdateTemplateSteps();
+            }
+        }
+
+        private void MoveStepUp()
+        {
+            if (SelectedStepIndex > 0)
+            {
+                var step = RitualSteps[SelectedStepIndex];
+                RitualSteps.RemoveAt(SelectedStepIndex);
+                RitualSteps.Insert(SelectedStepIndex - 1, step);
+                SelectedStepIndex--;
+                ReorderSteps();
+                UpdateTemplateSteps();
+            }
+        }
+
+        private void MoveStepDown()
+        {
+            if (SelectedStepIndex >= 0 && SelectedStepIndex < RitualSteps.Count - 1)
+            {
+                var step = RitualSteps[SelectedStepIndex];
+                RitualSteps.RemoveAt(SelectedStepIndex);
+                RitualSteps.Insert(SelectedStepIndex + 1, step);
+                SelectedStepIndex++;
+                ReorderSteps();
+                UpdateTemplateSteps();
+            }
+        }
+
+        private void ReorderSteps()
+        {
+            for (int i = 0; i < RitualSteps.Count; i++)
+            {
+                RitualSteps[i].Order = i + 1;
+            }
+        }
+
+        public bool CanRemoveStep => SelectedStepIndex >= 0 && SelectedStepIndex < RitualSteps.Count;
+        public bool CanMoveStepUp => SelectedStepIndex > 0;
+        public bool CanMoveStepDown => SelectedStepIndex >= 0 && SelectedStepIndex < RitualSteps.Count - 1;
+
+        // Template Updates
+        private void UpdateTemplateSteps()
+        {
+            Template.Steps = RitualSteps.ToList();
+            UpdatePreview();
+        }
+
+        private void UpdateTemplateRequiredItems()
+        {
+            Template.RequiredItems = RequiredItems.ToList();
+            UpdatePreview();
+        }
+
         private void UpdateTemplateOptionalItems()
 
-**TOOL**: private void UpdateTemplateOptionalItems()
-        {
-            Template.OptionalItems = OptionalItems.ToList();
-            UpdatePreview();
-        }
-
-        private void UpdateTemplatePrerequisites()
-        {
-            Template.Prerequisites = Prerequisites.ToList();
-            UpdatePreview();
-        }
-
-        private void UpdateTemplateOutcomes()
-        {
-            Template.Outcomes = Outcomes.ToList();
-            UpdatePreview();
-        }
-
-        private void UpdateTemplateTags()
-        {
-            Template.Tags = Tags.ToList();
-            UpdatePreview();
-        }
-
-        private void UpdateTemplateMoonPhases()
-        {
-            Template.MoonPhases = MoonPhases.ToList();
-            UpdatePreview();
-        }
-
-        private void UpdateTemplatePlanetaryInfluences()
-        {
-            Template.PlanetaryInfluences = PlanetaryInfluences.ToList();
-            UpdatePreview();
-        }
-
-        private void UpdateTemplateElementalCorrespondences()
-        {
-            Template.ElementalCorrespondences = ElementalCorrespondences.ToList();
-            UpdatePreview();
-        }
-
-        private void UpdateTemplateChakraFocus()
-        {
-            Template.ChakraFocus = ChakraFocus.ToList();
-            UpdatePreview();
-        }
-
-        private void UpdateTemplateWarnings()
-        {
-            Template.Warnings = Warnings.ToList();
-            UpdatePreview();
-        }
-
-        // File Operations
-        private async Task SaveTemplateAsync()
-        {
-            LoggingService.LogDebug("RitualTemplateBuilderViewModel.SaveTemplateAsync called");
-            if (IsSaving) return;
-            
-            IsSaving = true;
-            StatusMessage = "Saving template...";
-            
-            try
-            {
-                var template = CreateTemplateFromForm();
-                var json = JsonSerializer.Serialize(template, new JsonSerializerOptions { WriteIndented = true });
-                
-                var result = await PickSaveFilePathAsync(TemplateName, "Save Ritual Template");
-                if (!string.IsNullOrEmpty(result))
-                {
-                    await File.WriteAllTextAsync(result, json);
-                    StatusMessage = "Template saved successfully!";
-                    await ShowSuccessDialogAsync("Success", "Template saved successfully!");
-                    ResetForm();
-                }
-            }
-            catch (Exception ex)
-            {
-                LoggingService.LogError(ex, "Error saving template in RitualTemplateBuilderViewModel");
+**TOOL**: private void UpdateTemplateOptionalItems()
+        {
+            Template.OptionalItems = OptionalItems.ToList();
+            UpdatePreview();
+        }
+
+        private void UpdateTemplatePrerequisites()
+        {
+            Template.Prerequisites = Prerequisites.ToList();
+            UpdatePreview();
+        }
+
+        private void UpdateTemplateOutcomes()
+        {
+            Template.Outcomes = Outcomes.ToList();
+            UpdatePreview();
+        }
+
+        private void UpdateTemplateTags()
+        {
+            Template.Tags = Tags.ToList();
+            UpdatePreview();
+        }
+
+        private void UpdateTemplateMoonPhases()
+        {
+            Template.MoonPhases = MoonPhases.ToList();
+            UpdatePreview();
+        }
+
+        private void UpdateTemplatePlanetaryInfluences()
+        {
+            Template.PlanetaryInfluences = PlanetaryInfluences.ToList();
+            UpdatePreview();
+        }
+
+        private void UpdateTemplateElementalCorrespondences()
+        {
+            Template.ElementalCorrespondences = ElementalCorrespondences.ToList();
+            UpdatePreview();
+        }
+
+        private void UpdateTemplateChakraFocus()
+        {
+            Template.ChakraFocus = ChakraFocus.ToList();
+            UpdatePreview();
+        }
+
+        private void UpdateTemplateWarnings()
+        {
+            Template.Warnings = Warnings.ToList();
+            UpdatePreview();
+        }
+
+        // File Operations
+        private async Task SaveTemplateAsync()
+        {
+            LoggingService.LogDebug("RitualTemplateBuilderViewModel.SaveTemplateAsync called");
+            if (IsSaving) return;
+            
+            IsSaving = true;
+            StatusMessage = "Saving template...";
+            
+            try
+            {
+                var template = CreateTemplateFromForm();
+                var json = JsonSerializer.Serialize(template, new JsonSerializerOptions { WriteIndented = true });
+                
+                var result = await PickSaveFilePathAsync(TemplateName, "Save Ritual Template");
+                if (!string.IsNullOrEmpty(result))
+                {
+                    await File.WriteAllTextAsync(result, json);
+                    StatusMessage = "Template saved successfully!";
+                    await ShowSuccessDialogAsync("Success", "Template saved successfully!");
+                    ResetForm();
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingService.LogError(ex, "Error saving template in RitualTemplateBuilderViewModel");
                 StatusMessage = $"Error saving template: {ex.Message}";
 
-**TOOL**: StatusMessage = $"Error saving template: {ex.Message}";
-                await ShowErrorDialogAsync("Error", $"Failed to save template: {ex.Message}");
-            }
-            finally
-            {
-                IsSaving = false;
-            }
-        }
-
-        private async Task ExportTemplateAsync()
-        {
-            if (!ValidateTemplate())
-            {
-                await ShowErrorDialogAsync("Validation Error", "Please complete all required fields before exporting.");
-                return;
-            }
-
-            try
-            {
-                IsExporting = true;
-                StatusMessage = "Exporting template...";
-
-                var template = CreateTemplateFromForm();
-                var exportPath = await PickSaveFilePathAsync($"{TemplateName}_{DateTime.Now:yyyyMMdd}.json", "Export Ritual Template");
-                
-                if (!string.IsNullOrEmpty(exportPath))
-                {
-                    await _exportService.ExportToJsonAsync(template);
-                    await File.WriteAllTextAsync(exportPath, await _exportService.ExportToJsonAsync(template));
-                    
-                    StatusMessage = "Template exported successfully!";
-                    await ShowSuccessDialogAsync("Export Complete", $"Ritual template has been exported to: {exportPath}");
-                }
-            }
-            catch (Exception ex)
-            {
-                StatusMessage = $"Export failed: {ex.Message}";
-                await ShowErrorDialogAsync("Export Error", $"Failed to export template: {ex.Message}");
-            }
-            finally
+**TOOL**: StatusMessage = $"Error saving template: {ex.Message}";
+                await ShowErrorDialogAsync("Error", $"Failed to save template: {ex.Message}");
+            }
+            finally
+            {
+                IsSaving = false;
+            }
+        }
+
+        private async Task ExportTemplateAsync()
+        {
+            if (!ValidateTemplate())
+            {
+                await ShowErrorDialogAsync("Validation Error", "Please complete all required fields before exporting.");
+                return;
+            }
+
+            try
+            {
+                IsExporting = true;
+                StatusMessage = "Exporting template...";
+
+                var template = CreateTemplateFromForm();
+                var exportPath = await PickSaveFilePathAsync($"{TemplateName}_{DateTime.Now:yyyyMMdd}.json", "Export Ritual Template");
+                
+                if (!string.IsNullOrEmpty(exportPath))
+                {
+                    await _exportService.ExportToJsonAsync(template);
+                    await File.WriteAllTextAsync(exportPath, await _exportService.ExportToJsonAsync(template));
+                    
+                    StatusMessage = "Template exported successfully!";
+                    await ShowSuccessDialogAsync("Export Complete", $"Ritual template has been exported to: {exportPath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Export failed: {ex.Message}";
+                await ShowErrorDialogAsync("Export Error", $"Failed to export template: {ex.Message}");
+            }
+            finally
             {
 
-**TOOL**: {
-                IsExporting = false;
-            }
-        }
-
-        private async Task<string?> PickSaveFilePathAsync(string fileName, string title)
-        {
-            var options = new FilePickerSaveOptions
-            {
-                Title = title,
-                SuggestedFileName = fileName,
-                FileTypeChoices = new FilePickerFileType[]
-                {
-                    new("JSON Files") { Patterns = new[] { "*.json" } },
-                    new("All Files") { Patterns = new[] { "*.*" } }
-                }
-            };
-
-            IStorageFile? file = null;
-            if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                var topLevel = TopLevel.GetTopLevel(desktop.MainWindow);
-                if (topLevel?.StorageProvider != null)
-                {
-                    file = await topLevel.StorageProvider.SaveFilePickerAsync(options);
-                }
-            }
-
-            return file?.Path.LocalPath;
-        }
-
-        private Task ShowErrorDialogAsync(string title, string message)
-        {
-            // Simple console output instead of MessageBox
-            Console.WriteLine($"ERROR - {title}: {message}");
-            StatusMessage = $"Error: {message}";
-            return Task.CompletedTask;
-        }
-
-        private Task ShowSuccessDialogAsync(string title, string message)
-        {
-            // Simple console output instead of MessageBox
-            Console.WriteLine($"SUCCESS - {title}: {message}");
-            StatusMessage = message;
-            return Task.CompletedTask;
-        }
-
-        private Task<bool> ShowConfirmationDialogAsync(string title, string message)
-        {
-            // Simple console output instead of MessageBox
-            Console.WriteLine($"CONFIRMATION - {title}: {message}");
-            StatusMessage = $"Confirmation: {message}";
-            // For now, always return true - in a real app, you'd show a proper dialog
-            return Task.FromResult(true);
-        }
-
-        private void LoadTemplateIntoUI(RitualTemplate template)
-        {
-            Template = template;
-            
+**TOOL**: {
+                IsExporting = false;
+            }
+        }
+
+        private async Task<string?> PickSaveFilePathAsync(string fileName, string title)
+        {
+            var options = new FilePickerSaveOptions
+            {
+                Title = title,
+                SuggestedFileName = fileName,
+                FileTypeChoices = new FilePickerFileType[]
+                {
+                    new("JSON Files") { Patterns = new[] { "*.json" } },
+                    new("All Files") { Patterns = new[] { "*.*" } }
+                }
+            };
+
+            IStorageFile? file = null;
+            if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                var topLevel = TopLevel.GetTopLevel(desktop.MainWindow);
+                if (topLevel?.StorageProvider != null)
+                {
+                    file = await topLevel.StorageProvider.SaveFilePickerAsync(options);
+                }
+            }
+
+            return file?.Path.LocalPath;
+        }
+
+        private Task ShowErrorDialogAsync(string title, string message)
+        {
+            // Simple console output instead of MessageBox
+            Console.WriteLine($"ERROR - {title}: {message}");
+            StatusMessage = $"Error: {message}";
+            return Task.CompletedTask;
+        }
+
+        private Task ShowSuccessDialogAsync(string title, string message)
+        {
+            // Simple console output instead of MessageBox
+            Console.WriteLine($"SUCCESS - {title}: {message}");
+            StatusMessage = message;
+            return Task.CompletedTask;
+        }
+
+        private Task<bool> ShowConfirmationDialogAsync(string title, string message)
+        {
+            // Simple console output instead of MessageBox
+            Console.WriteLine($"CONFIRMATION - {title}: {message}");
+            StatusMessage = $"Confirmation: {message}";
+            // For now, always return true - in a real app, you'd show a proper dialog
+            return Task.FromResult(true);
+        }
+
+        private void LoadTemplateIntoUI(RitualTemplate template)
+        {
+            Template = template;
+            
             RequiredItems.Clear();
 
-**TOOL**: RequiredItems.Clear();
-            foreach (var item in template.RequiredItems)
-                RequiredItems.Add(item);
-
-            OptionalItems.Clear();
-            foreach (var item in template.OptionalItems)
-                OptionalItems.Add(item);
-
-            Prerequisites.Clear();
-            foreach (var prereq in template.Prerequisites)
-                Prerequisites.Add(prereq);
-
-            Outcomes.Clear();
-            foreach (var outcome in template.Outcomes)
-                Outcomes.Add(outcome);
-
-            Tags.Clear();
-            foreach (var tag in template.Tags)
-                Tags.Add(tag);
-
-            MoonPhases.Clear();
-            foreach (var phase in template.MoonPhases)
-                MoonPhases.Add(phase);
-
-            PlanetaryInfluences.Clear();
-            foreach (var influence in template.PlanetaryInfluences)
-                PlanetaryInfluences.Add(influence);
-
-            ElementalCorrespondences.Clear();
-            foreach (var element in template.ElementalCorrespondences)
-                ElementalCorrespondences.Add(element);
-
-            ChakraFocus.Clear();
-            foreach (var chakra in template.ChakraFocus)
-                ChakraFocus.Add(chakra);
-
-            Warnings.Clear();
-            foreach (var warning in template.Warnings)
-                Warnings.Add(warning);
-
-            RitualSteps.Clear();
-            foreach (var step in template.Steps.OrderBy(s => s.Order))
-                RitualSteps.Add(step);
-
-            UpdatePreview();
-        }
-
-        private void ClearTemplate()
-        {
-            Template = new RitualTemplate();
-            RequiredItems.Clear();
-            OptionalItems.Clear();
-            Prerequisites.Clear();
-            Outcomes.Clear();
-            Tags.Clear();
-            MoonPhases.Clear();
-            PlanetaryInfluences.Clear();
-            ElementalCorrespondences.Clear();
-            ChakraFocus.Clear();
-            Warnings.Clear();
+**TOOL**: RequiredItems.Clear();
+            foreach (var item in template.RequiredItems)
+                RequiredItems.Add(item);
+
+            OptionalItems.Clear();
+            foreach (var item in template.OptionalItems)
+                OptionalItems.Add(item);
+
+            Prerequisites.Clear();
+            foreach (var prereq in template.Prerequisites)
+                Prerequisites.Add(prereq);
+
+            Outcomes.Clear();
+            foreach (var outcome in template.Outcomes)
+                Outcomes.Add(outcome);
+
+            Tags.Clear();
+            foreach (var tag in template.Tags)
+                Tags.Add(tag);
+
+            MoonPhases.Clear();
+            foreach (var phase in template.MoonPhases)
+                MoonPhases.Add(phase);
+
+            PlanetaryInfluences.Clear();
+            foreach (var influence in template.PlanetaryInfluences)
+                PlanetaryInfluences.Add(influence);
+
+            ElementalCorrespondences.Clear();
+            foreach (var element in template.ElementalCorrespondences)
+                ElementalCorrespondences.Add(element);
+
+            ChakraFocus.Clear();
+            foreach (var chakra in template.ChakraFocus)
+                ChakraFocus.Add(chakra);
+
+            Warnings.Clear();
+            foreach (var warning in template.Warnings)
+                Warnings.Add(warning);
+
+            RitualSteps.Clear();
+            foreach (var step in template.Steps.OrderBy(s => s.Order))
+                RitualSteps.Add(step);
+
+            UpdatePreview();
+        }
+
+        private void ClearTemplate()
+        {
+            Template = new RitualTemplate();
+            RequiredItems.Clear();
+            OptionalItems.Clear();
+            Prerequisites.Clear();
+            Outcomes.Clear();
+            Tags.Clear();
+            MoonPhases.Clear();
+            PlanetaryInfluences.Clear();
+            ElementalCorrespondences.Clear();
+            ChakraFocus.Clear();
+            Warnings.Clear();
             RitualSteps.Clear();
 
-**TOOL**: RitualSteps.Clear();
-            SelectedStepIndex = -1;
-            UpdatePreview();
-        }
-
-        // Validation
-        private bool ValidateTemplate()
-        {
-            _errors.Clear();
-
-            if (string.IsNullOrWhiteSpace(Template.Name))
-                AddError(nameof(Template.Name), "Name is required");
-
-            if (string.IsNullOrWhiteSpace(Template.Description))
-                AddError(nameof(Template.Description), "Description is required");
-
-            if (RitualSteps.Count == 0)
-                AddError("Steps", "At least one ritual step is required");
-
-            OnErrorsChanged(nameof(Template));
-            return !HasErrors;
-        }
-
-        private void AddError(string propertyName, string error)
-        {
-            if (!_errors.ContainsKey(propertyName))
-                _errors[propertyName] = new List<string>();
-
-            if (!_errors[propertyName].Contains(error))
-            {
-                _errors[propertyName].Add(error);
-                OnErrorsChanged(propertyName);
-            }
-        }
-
-        private void OnErrorsChanged(string propertyName)
-        {
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-            OnPropertyChanged(nameof(HasErrors));
-        }
-
-        public System.Collections.IEnumerable GetErrors(string? propertyName)
-        {
-            if (string.IsNullOrEmpty(propertyName))
-                return _errors.Values.SelectMany(x => x);
-
-            return _errors.ContainsKey(propertyName) ? _errors[propertyName] : Enumerable.Empty<string>();
-        }
-
-        // Preview Generation
-        private void UpdatePreview()
-        {
-            if (ShowRawMarkdown)
-            {
-                Preview = GenerateMarkdownPreview();
-            }
-            else
-            {
-                var options = new JsonSerializerOptions 
-                { 
+**TOOL**: RitualSteps.Clear();
+            SelectedStepIndex = -1;
+            UpdatePreview();
+        }
+
+        // Validation
+        private bool ValidateTemplate()
+        {
+            _errors.Clear();
+
+            if (string.IsNullOrWhiteSpace(Template.Name))
+                AddError(nameof(Template.Name), "Name is required");
+
+            if (string.IsNullOrWhiteSpace(Template.Description))
+                AddError(nameof(Template.Description), "Description is required");
+
+            if (RitualSteps.Count == 0)
+                AddError("Steps", "At least one ritual step is required");
+
+            OnErrorsChanged(nameof(Template));
+            return !HasErrors;
+        }
+
+        private void AddError(string propertyName, string error)
+        {
+            if (!_errors.ContainsKey(propertyName))
+                _errors[propertyName] = new List<string>();
+
+            if (!_errors[propertyName].Contains(error))
+            {
+                _errors[propertyName].Add(error);
+                OnErrorsChanged(propertyName);
+            }
+        }
+
+        private void OnErrorsChanged(string propertyName)
+        {
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+            OnPropertyChanged(nameof(HasErrors));
+        }
+
+        public System.Collections.IEnumerable GetErrors(string? propertyName)
+        {
+            if (string.IsNullOrEmpty(propertyName))
+                return _errors.Values.SelectMany(x => x);
+
+            return _errors.ContainsKey(propertyName) ? _errors[propertyName] : Enumerable.Empty<string>();
+        }
+
+        // Preview Generation
+        private void UpdatePreview()
+        {
+            if (ShowRawMarkdown)
+            {
+                Preview = GenerateMarkdownPreview();
+            }
+            else
+            {
+                var options = new JsonSerializerOptions 
+                { 
                     WriteIndented = true
 
-**TOOL**: WriteIndented = true 
-                };
-                options.Converters.Add(new JsonStringEnumConverter());
-                Preview = JsonSerializer.Serialize(Template, options);
-            }
-        }
-
-        private string GenerateMarkdownPreview()
-        {
-            return _serializer.ExportToMarkdown(Template);
-        }
-
-        // Template operations
-        private async Task LoadTemplateAsync()
-        {
-            if (IsSaving) return;
-            
-            IsSaving = true;
-            StatusMessage = "Loading template...";
-            
+**TOOL**: WriteIndented = true 
+                };
+                options.Converters.Add(new JsonStringEnumConverter());
+                Preview = JsonSerializer.Serialize(Template, options);
+            }
+        }
+
+        private string GenerateMarkdownPreview()
+        {
+            return _serializer.ExportToMarkdown(Template);
+        }
+
+        // Template operations
+        private async Task LoadTemplateAsync()
+        {
+            if (IsSaving) return;
+            
+            IsSaving = true;
+            StatusMessage = "Loading template...";
+            
             try
 
-**TOOL**: try
-            {
-                // TODO: Fix file dialog implementation
-                StatusMessage = "File dialog not implemented yet";
-                /*
-                var openDialog = new OpenFileDialog
-                {
-                    Title = "Load Ritual Template",
-                    Filters = new List<FileDialogFilter>
-                    {
-                        new FileDialogFilter { Name = "JSON Files", Extensions = { "json" } },
-                        new FileDialogFilter { Name = "All Files", Extensions = { "*" } }
-                    }
-                };
-
-                var result = await openDialog.ShowAsync(null);
-                if (!string.IsNullOrEmpty(result) && File.Exists(result))
-                {
-                    var json = await File.ReadAllTextAsync(result);
-                    var template = JsonSerializer.Deserialize<RitualTemplate>(json);
-                    if (template != null)
-                    {
-                        LoadTemplateIntoUI(template);
-                        StatusMessage = "Template loaded successfully!";
-                    }
-                }
-                */
-            }
-            catch (Exception ex)
-            {
-                StatusMessage = $"Error loading template: {ex.Message}";
-                await ShowErrorDialogAsync("Error", $"Failed to load template: {ex.Message}");
-            }
-            finally
-            {
-                IsSaving = false;
-            }
-        }
-
-        private RitualTemplate CreateTemplateFromForm()
-        {
-            return new RitualTemplate
-            {
-                Name = TemplateName,
-                Description = Template.Description,
-                Category = Template.Category,
-                Difficulty = Template.Difficulty,
-                Duration = Template.Duration,
-                Steps = RitualSteps.ToList(),
-                RequiredItems = RequiredItems.ToList(),
-                OptionalItems = OptionalItems.ToList(),
-                Prerequisites = Prerequisites.ToList(),
-                Outcomes = Outcomes.ToList(),
-                Tags = Tags.ToList(),
-                MoonPhases = MoonPhases.ToList(),
-                PlanetaryInfluences = PlanetaryInfluences.ToList(),
-                ElementalCorrespondences = ElementalCorrespondences.ToList(),
-                ChakraFocus = ChakraFocus.ToList(),
-                Warnings = Warnings.ToList(),
-                CreatedBy = "Template Builder",
-                IsPublic = false
-            };
-        }
-
-        private void ResetForm()
-        {
-            Template = new RitualTemplate();
-            TemplateName = string.Empty;
-            RitualSteps.Clear();
-            RequiredItems.Clear();
-            OptionalItems.Clear();
-            Prerequisites.Clear();
-            Outcomes.Clear();
-            Tags.Clear();
-            MoonPhases.Clear();
-            PlanetaryInfluences.Clear();
-            ElementalCorrespondences.Clear();
-            ChakraFocus.Clear();
-            Warnings.Clear();
-            SelectedStepIndex = -1;
+**TOOL**: try
+            {
+                // TODO: Fix file dialog implementation
+                StatusMessage = "File dialog not implemented yet";
+                /*
+                var openDialog = new OpenFileDialog
+                {
+                    Title = "Load Ritual Template",
+                    Filters = new List<FileDialogFilter>
+                    {
+                        new FileDialogFilter { Name = "JSON Files", Extensions = { "json" } },
+                        new FileDialogFilter { Name = "All Files", Extensions = { "*" } }
+                    }
+                };
+
+                var result = await openDialog.ShowAsync(null);
+                if (!string.IsNullOrEmpty(result) && File.Exists(result))
+                {
+                    var json = await File.ReadAllTextAsync(result);
+                    var template = JsonSerializer.Deserialize<RitualTemplate>(json);
+                    if (template != null)
+                    {
+                        LoadTemplateIntoUI(template);
+                        StatusMessage = "Template loaded successfully!";
+                    }
+                }
+                */
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Error loading template: {ex.Message}";
+                await ShowErrorDialogAsync("Error", $"Failed to load template: {ex.Message}");
+            }
+            finally
+            {
+                IsSaving = false;
+            }
+        }
+
+        private RitualTemplate CreateTemplateFromForm()
+        {
+            return new RitualTemplate
+            {
+                Name = TemplateName,
+                Description = Template.Description,
+                Category = Template.Category,
+                Difficulty = Template.Difficulty,
+                Duration = Template.Duration,
+                Steps = RitualSteps.ToList(),
+                RequiredItems = RequiredItems.ToList(),
+                OptionalItems = OptionalItems.ToList(),
+                Prerequisites = Prerequisites.ToList(),
+                Outcomes = Outcomes.ToList(),
+                Tags = Tags.ToList(),
+                MoonPhases = MoonPhases.ToList(),
+                PlanetaryInfluences = PlanetaryInfluences.ToList(),
+                ElementalCorrespondences = ElementalCorrespondences.ToList(),
+                ChakraFocus = ChakraFocus.ToList(),
+                Warnings = Warnings.ToList(),
+                CreatedBy = "Template Builder",
+                IsPublic = false
+            };
+        }
+
+        private void ResetForm()
+        {
+            Template = new RitualTemplate();
+            TemplateName = string.Empty;
+            RitualSteps.Clear();
+            RequiredItems.Clear();
+            OptionalItems.Clear();
+            Prerequisites.Clear();
+            Outcomes.Clear();
+            Tags.Clear();
+            MoonPhases.Clear();
+            PlanetaryInfluences.Clear();
+            ElementalCorrespondences.Clear();
+            ChakraFocus.Clear();
+            Warnings.Clear();
+            SelectedStepIndex = -1;
             StatusMessage = "Form reset";
 
-**TOOL**: StatusMessage = "Form reset";
-        }
-    }
-}
+**TOOL**: StatusMessage = "Form reset";
+        }
+    }
+}
 
 
-
------ FILE: D:\github\ritualos\src\ViewModels\Wizards\SymbolIndexBuilderViewModel.cs -----
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
-using RitualOS.Helpers;
-using RitualOS.Models;
-using RitualOS.Services;
-
-namespace RitualOS.ViewModels.Wizards
-{
-    /// <summary>
-    /// View model for editing SymbolIndex.json.
-    /// </summary>
-    public class SymbolIndexBuilderViewModel : ViewModelBase
-    {
-        public ObservableCollection<Symbol> Symbols { get; } = new();
-
-        public ICommand SaveCommand { get; }
-        public ICommand AddCommand { get; }
-
-        public SymbolIndexBuilderViewModel()
-        {
-            SaveCommand = new RelayCommand(_ => Save());
-            AddCommand = new RelayCommand(_ => AddSymbol());
-
-            // Load existing symbols from disk when the editor opens
-            foreach (var symbol in SymbolIndexService.Load())
-            {
-                Symbols.Add(symbol);
-            }
-        }
-
-        private void Save()
+
+----- FILE: D:\github\ritualos\src\ViewModels\Wizards\SymbolIndexBuilderViewModel.cs -----
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using RitualOS.Helpers;
+using RitualOS.Models;
+using RitualOS.Services;
+
+namespace RitualOS.ViewModels.Wizards
+{
+    /// <summary>
+    /// View model for editing SymbolIndex.json.
+    /// </summary>
+    public class SymbolIndexBuilderViewModel : ViewModelBase
+    {
+        public ObservableCollection<Symbol> Symbols { get; } = new();
+
+        public ICommand SaveCommand { get; }
+        public ICommand AddCommand { get; }
+
+        public SymbolIndexBuilderViewModel()
+        {
+            SaveCommand = new RelayCommand(_ => Save());
+            AddCommand = new RelayCommand(_ => AddSymbol());
+
+            // Load existing symbols from disk when the editor opens
+            foreach (var symbol in SymbolIndexService.Load())
+            {
+                Symbols.Add(symbol);
+            }
+        }
+
+        private void Save()
         {
 
-**TOOL**: namespace RitualOS.ViewModels
-{
-    public class AnalyticsViewModel : ViewModelBase
-    {
-        private readonly IAnalyticsService _analyticsService;
-        private readonly IUserSettingsService _settingsService;
-
-        private AnalyticsData? _analyticsData;
-        private bool _isLoading;
-        private string _statusMessage = string.Empty;
-        private string _selectedExportFormat = "html";
-        private string _exportPath = string.Empty;
-
-        public AnalyticsViewModel(IAnalyticsService analyticsService, IUserSettingsService settingsService)
-        {
-            _analyticsService = analyticsService;
-            _settingsService = settingsService;
-
-            RefreshCommand = new RelayCommand(async () => await LoadAnalyticsAsync());
-            ExportCommand = new RelayCommand(async () => await ExportAnalyticsAsync(), () => CanExport());
-            BrowseExportPathCommand = new RelayCommand(BrowseExportPath);
-
-            AvailableExportFormats = new ObservableCollection<string>
-            {
-                "html",
-                "markdown",
-                "csv",
-                "json"
-            };
-
-            // IMPORTANT: Call InitializeAsync() after constructing this ViewModel.
-            // Example: await analyticsViewModel.InitializeAsync();
-        }
-
-        /// <summary>
-        /// Call this method after constructing the ViewModel to load analytics asynchronously.
-        /// </summary>
-        public async Task InitializeAsync()
-        {
-            await LoadAnalyticsAsync();
-        }
-
-        public ObservableCollection<string> AvailableExportFormats { get; }
-
-        public AnalyticsData? AnalyticsData
-        {
-            get => _analyticsData;
-            set => SetProperty(ref _analyticsData, value);
-        }
-
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set
-            {
-                SetProperty(ref _isLoading, value);
-                RefreshCommand.RaiseCanExecuteChanged();
-                ExportCommand.RaiseCanExecuteChanged();
-            }
-        }
-
-        public string StatusMessage
-        {
-            get => _statusMessage;
-            set => SetProperty(ref _statusMessage, value);
-        }
-
-        public string SelectedExportFormat
-        {
-            get => _selectedExportFormat;
-            set => SetProperty(ref _selectedExportFormat, value);
-        }
-
-        public string ExportPath
-        {
-            get => _exportPath;
-            set
-            {
-                SetProperty(ref _exportPath, value);
-                ExportCommand.RaiseCanExecuteChanged();
-            }
-        }
-
-        public RelayCommand RefreshCommand { get; }
-        public RelayCommand ExportCommand { get; }
-        public RelayCommand BrowseExportPathCommand { get; }
-
-        // Computed properties for UI binding
-        public string TotalRitualsText => AnalyticsData?.TotalRituals.ToString() ?? "0";
-        public string TotalSessionsText => AnalyticsData?.TotalSessions.ToString() ?? "0";
-        public string TotalUsageTimeText => AnalyticsData?.TotalUsageTime.TotalHours.ToString("F1") ?? "0.0";
-        public string GeneratedDateText => AnalyticsData?.Generated.ToString("yyyy-MM-dd HH:mm") ?? "Never";
-
-        public ObservableCollection<KeyValuePair<string, int>> MostUsedRituals { get; } = new();
-        public ObservableCollection<KeyValuePair<string, int>> ElementUsage { get; } = new();
-        public ObservableCollection<KeyValuePair<string, int>> ChakraUsage { get; } = new();
-        public ObservableCollection<KeyValuePair<string, int>> ThemePreferences { get; } = new();
-        public ObservableCollection<KeyValuePair<string, int>> FeatureUsage { get; } = new();
-        public ObservableCollection<KeyValuePair<string, int>> MoonPhaseFrequency { get; } = new();
+**TOOL**: namespace RitualOS.ViewModels
+{
+    public class AnalyticsViewModel : ViewModelBase
+    {
+        private readonly IAnalyticsService _analyticsService;
+        private readonly IUserSettingsService _settingsService;
+
+        private AnalyticsData? _analyticsData;
+        private bool _isLoading;
+        private string _statusMessage = string.Empty;
+        private string _selectedExportFormat = "html";
+        private string _exportPath = string.Empty;
+
+        public AnalyticsViewModel(IAnalyticsService analyticsService, IUserSettingsService settingsService)
+        {
+            _analyticsService = analyticsService;
+            _settingsService = settingsService;
+
+            RefreshCommand = new RelayCommand(async () => await LoadAnalyticsAsync());
+            ExportCommand = new RelayCommand(async () => await ExportAnalyticsAsync(), () => CanExport());
+            BrowseExportPathCommand = new RelayCommand(BrowseExportPath);
+
+            AvailableExportFormats = new ObservableCollection<string>
+            {
+                "html",
+                "markdown",
+                "csv",
+                "json"
+            };
+
+            // IMPORTANT: Call InitializeAsync() after constructing this ViewModel.
+            // Example: await analyticsViewModel.InitializeAsync();
+        }
+
+        /// <summary>
+        /// Call this method after constructing the ViewModel to load analytics asynchronously.
+        /// </summary>
+        public async Task InitializeAsync()
+        {
+            await LoadAnalyticsAsync();
+        }
+
+        public ObservableCollection<string> AvailableExportFormats { get; }
+
+        public AnalyticsData? AnalyticsData
+        {
+            get => _analyticsData;
+            set => SetProperty(ref _analyticsData, value);
+        }
+
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                SetProperty(ref _isLoading, value);
+                RefreshCommand.RaiseCanExecuteChanged();
+                ExportCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public string StatusMessage
+        {
+            get => _statusMessage;
+            set => SetProperty(ref _statusMessage, value);
+        }
+
+        public string SelectedExportFormat
+        {
+            get => _selectedExportFormat;
+            set => SetProperty(ref _selectedExportFormat, value);
+        }
+
+        public string ExportPath
+        {
+            get => _exportPath;
+            set
+            {
+                SetProperty(ref _exportPath, value);
+                ExportCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public RelayCommand RefreshCommand { get; }
+        public RelayCommand ExportCommand { get; }
+        public RelayCommand BrowseExportPathCommand { get; }
+
+        // Computed properties for UI binding
+        public string TotalRitualsText => AnalyticsData?.TotalRituals.ToString() ?? "0";
+        public string TotalSessionsText => AnalyticsData?.TotalSessions.ToString() ?? "0";
+        public string TotalUsageTimeText => AnalyticsData?.TotalUsageTime.TotalHours.ToString("F1") ?? "0.0";
+        public string GeneratedDateText => AnalyticsData?.Generated.ToString("yyyy-MM-dd HH:mm") ?? "Never";
+
+        public ObservableCollection<KeyValuePair<string, int>> MostUsedRituals { get; } = new();
+        public ObservableCollection<KeyValuePair<string, int>> ElementUsage { get; } = new();
+        public ObservableCollection<KeyValuePair<string, int>> ChakraUsage { get; } = new();
+        public ObservableCollection<KeyValuePair<string, int>> ThemePreferences { get; } = new();
+        public ObservableCollection<KeyValuePair<string, int>> FeatureUsage { get; } = new();
+        public ObservableCollection<KeyValuePair<string, int>> MoonPhaseFrequency { get; } = new();
         public ObservableCollection<KeyValuePair<string, int>> IngredientUsage { get; } = new();
 
-**TOOL**: 50:    private static async void OnPointerPressed(object? sender, PointerPressedEventArgs e)
-16328:        private async void OnInitializeGrimoireFS(object sender, RoutedEventArgs e)
-16437:        private async void OnCreateEntry(object sender, RoutedEventArgs e)
-16455:        private async void OnEditEntry(object sender, RoutedEventArgs e)
-16473:        private async void OnDeleteEntry(object sender, RoutedEventArgs e)
-16491:        private async void OnCreateBackup(object sender, RoutedEventArgs e)
-16509:        private async void OnRestoreBackup(object sender, RoutedEventArgs e)
+**TOOL**: 50:    private static async void OnPointerPressed(object? sender, PointerPressedEventArgs e)
+16328:        private async void OnInitializeGrimoireFS(object sender, RoutedEventArgs e)
+16437:        private async void OnCreateEntry(object sender, RoutedEventArgs e)
+16455:        private async void OnEditEntry(object sender, RoutedEventArgs e)
+16473:        private async void OnDeleteEntry(object sender, RoutedEventArgs e)
+16491:        private async void OnCreateBackup(object sender, RoutedEventArgs e)
+16509:        private async void OnRestoreBackup(object sender, RoutedEventArgs e)
 16527:        private async void OnExportData(object sender, RoutedEventArgs e)
 
-**TOOL**: <Grid Margin="16,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" 
-                                   Text="{Binding FilteredEntries.Count, StringFormat='Showing {0} entries'}" 
-                                   Foreground="#CCC" VerticalAlignment="Center"/>
-
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
-                            <Button Content="âœï¸ Edit" Classes="secondary" Command="{Binding EditEntryCommand}"/>
-                            <Button Content="ðŸ—‘ï¸ Delete" Classes="secondary" Command="{Binding DeleteEntryCommand}"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-            </Grid>
-        </Grid>
-    </Grid>
-</Window> 
+**TOOL**: <Grid Margin="16,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" 
+                                   Text="{Binding FilteredEntries.Count, StringFormat='Showing {0} entries'}" 
+                                   Foreground="#CCC" VerticalAlignment="Center"/>
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                            <Button Content="âœï¸ Edit" Classes="secondary" Command="{Binding EditEntryCommand}"/>
+                            <Button Content="ðŸ—‘ï¸ Delete" Classes="secondary" Command="{Binding DeleteEntryCommand}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window> 
 
 
-
------ FILE: D:\github\ritualos\src\Views\GrimoireFSView.axaml.cs -----
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using RitualOS.ViewModels;
-using RitualOS.Services;
-using System;
-using System.Threading.Tasks;
-using Avalonia.Platform.Storage;
-using System.Security.Cryptography;
-using System.Text;
-
-namespace RitualOS.Views
-{
-    public partial class GrimoireFSView : UserControl
-    {
-        private GrimoireFSViewModel _viewModel = null!;
-        private string? _secureMasterKey;
-
-        public GrimoireFSView()
-        {
-            InitializeComponent();
-            _viewModel = new GrimoireFSViewModel();
-            DataContext = _viewModel;
-        }
-
-        private async void OnInitializeGrimoireFS(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                // Prompt for secure master key
-                var masterKey = await GetSecureMasterKeyAsync();
-                if (string.IsNullOrEmpty(masterKey))
-                {
-                    return; // User cancelled
-                }
-
-                _secureMasterKey = masterKey;
-                await _viewModel.InitializeAsync(masterKey);
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialogAsync("Initialization Error", $"Failed to initialize GrimoireFS: {ex.Message}");
-            }
-        }
-
-        private async Task<string?> GetSecureMasterKeyAsync()
-        {
-            // Create a secure password input dialog
-            var dialog = new Window
-            {
-                Title = "Enter Master Key",
-                Width = 400,
-                Height = 200,
-                CanResize = false,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
-            };
-
-            var panel = new StackPanel
-            {
-                Margin = new Avalonia.Thickness(20),
-                Spacing = 10
-            };
-
-            var label = new TextBlock
-            {
-                Text = "Enter your secure master key for GrimoireFS:",
-                TextWrapping = Avalonia.Media.TextWrapping.Wrap
-            };
-
-            var passwordBox = new TextBox
-            {
-                PasswordChar = 'â—',
-                Width = 300,
-                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left
-            };
-
-            var buttonPanel = new StackPanel
-            {
-                Orientation = Avalonia.Layout.Orientation.Horizontal,
-                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Right,
-                Spacing = 10
-            };
-
-            var okButton = new Button { Content = "OK", Width = 80 };
-            var cancelButton = new Button { Content = "Cancel", Width = 80 };
-
-            okButton.Click += (s, e) => 
-            {
-                dialog.Close(passwordBox.Text);
-            };
-
-            cancelButton.Click += (s, e) => 
-            {
-                dialog.Close(null);
-            };
-
-            buttonPanel.Children.Add(okButton);
-            buttonPanel.Children.Add(cancelButton);
-
-            panel.Children.Add(label);
-            panel.Children.Add(passwordBox);
-            panel.Children.Add(buttonPanel);
-
-            dialog.Content = panel;
-
-            // Focus on password box
-            passwordBox.Focus();
-
-            // Handle Enter key
-            passwordBox.KeyDown += (s, e) =>
-            {
-                if (e.Key == Avalonia.Input.Key.Enter)
-                {
-                    okButton.Command?.Execute(null);
-                }
-            };
-
-            var result = await dialog.ShowDialog<string?>(this.FindAncestorOfType<Window>());
-            return result;
-        }
-
-        private async Task ShowErrorDialogAsync(string title, string message)
-        {
-            var dialog = new MessageBoxStandard
-            {
-                Title = title,
-                Content = message,
-                Icon = MessageBoxIcon.Error,
-                ButtonDefinitions = ButtonEnum.Ok
-            };
-
-            await dialog.ShowAsync();
-        }
-
-        private async void OnCreateEntry(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(_secureMasterKey))
-            {
-                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
-                return;
-            }
-
-            try
-            {
-                await _viewModel.CreateEntryAsync(_secureMasterKey);
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialogAsync("Create Entry Error", $"Failed to create entry: {ex.Message}");
-            }
-        }
-
-        private async void OnEditEntry(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(_secureMasterKey))
-            {
-                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
-                return;
-            }
-
-            try
-            {
-                await _viewModel.EditEntryAsync(_secureMasterKey);
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialogAsync("Edit Entry Error", $"Failed to edit entry: {ex.Message}");
-            }
-        }
-
-        private async void OnDeleteEntry(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(_secureMasterKey))
-            {
-                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
-                return;
-            }
-
-            try
-            {
-                await _viewModel.DeleteEntryAsync(_secureMasterKey);
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialogAsync("Delete Entry Error", $"Failed to delete entry: {ex.Message}");
-            }
-        }
-
-        private async void OnCreateBackup(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(_secureMasterKey))
-            {
-                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
-                return;
-            }
-
-            try
-            {
-                await _viewModel.CreateBackupAsync(_secureMasterKey);
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialogAsync("Backup Error", $"Failed to create backup: {ex.Message}");
-            }
-        }
-
-        private async void OnRestoreBackup(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(_secureMasterKey))
-            {
-                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
-                return;
-            }
-
-            try
-            {
-                await _viewModel.RestoreBackupAsync(_secureMasterKey);
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialogAsync("Restore Error", $"Failed to restore backup: {ex.Message}");
-            }
-        }
-
-        private async void OnExportData(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(_secureMasterKey))
-            {
-                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
-                return;
-            }
-
-            try
-            {
-                await _viewModel.ExportDataAsync(_secureMasterKey);
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialogAsync("Export Error", $"Failed to export data: {ex.Message}");
-            }
-        }
-    }
-} 
+
+----- FILE: D:\github\ritualos\src\Views\GrimoireFSView.axaml.cs -----
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using RitualOS.ViewModels;
+using RitualOS.Services;
+using System;
+using System.Threading.Tasks;
+using Avalonia.Platform.Storage;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace RitualOS.Views
+{
+    public partial class GrimoireFSView : UserControl
+    {
+        private GrimoireFSViewModel _viewModel = null!;
+        private string? _secureMasterKey;
+
+        public GrimoireFSView()
+        {
+            InitializeComponent();
+            _viewModel = new GrimoireFSViewModel();
+            DataContext = _viewModel;
+        }
+
+        private async void OnInitializeGrimoireFS(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Prompt for secure master key
+                var masterKey = await GetSecureMasterKeyAsync();
+                if (string.IsNullOrEmpty(masterKey))
+                {
+                    return; // User cancelled
+                }
+
+                _secureMasterKey = masterKey;
+                await _viewModel.InitializeAsync(masterKey);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorDialogAsync("Initialization Error", $"Failed to initialize GrimoireFS: {ex.Message}");
+            }
+        }
+
+        private async Task<string?> GetSecureMasterKeyAsync()
+        {
+            // Create a secure password input dialog
+            var dialog = new Window
+            {
+                Title = "Enter Master Key",
+                Width = 400,
+                Height = 200,
+                CanResize = false,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+
+            var panel = new StackPanel
+            {
+                Margin = new Avalonia.Thickness(20),
+                Spacing = 10
+            };
+
+            var label = new TextBlock
+            {
+                Text = "Enter your secure master key for GrimoireFS:",
+                TextWrapping = Avalonia.Media.TextWrapping.Wrap
+            };
+
+            var passwordBox = new TextBox
+            {
+                PasswordChar = 'â—',
+                Width = 300,
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left
+            };
+
+            var buttonPanel = new StackPanel
+            {
+                Orientation = Avalonia.Layout.Orientation.Horizontal,
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Right,
+                Spacing = 10
+            };
+
+            var okButton = new Button { Content = "OK", Width = 80 };
+            var cancelButton = new Button { Content = "Cancel", Width = 80 };
+
+            okButton.Click += (s, e) => 
+            {
+                dialog.Close(passwordBox.Text);
+            };
+
+            cancelButton.Click += (s, e) => 
+            {
+                dialog.Close(null);
+            };
+
+            buttonPanel.Children.Add(okButton);
+            buttonPanel.Children.Add(cancelButton);
+
+            panel.Children.Add(label);
+            panel.Children.Add(passwordBox);
+            panel.Children.Add(buttonPanel);
+
+            dialog.Content = panel;
+
+            // Focus on password box
+            passwordBox.Focus();
+
+            // Handle Enter key
+            passwordBox.KeyDown += (s, e) =>
+            {
+                if (e.Key == Avalonia.Input.Key.Enter)
+                {
+                    okButton.Command?.Execute(null);
+                }
+            };
+
+            var result = await dialog.ShowDialog<string?>(this.FindAncestorOfType<Window>());
+            return result;
+        }
+
+        private async Task ShowErrorDialogAsync(string title, string message)
+        {
+            var dialog = new MessageBoxStandard
+            {
+                Title = title,
+                Content = message,
+                Icon = MessageBoxIcon.Error,
+                ButtonDefinitions = ButtonEnum.Ok
+            };
+
+            await dialog.ShowAsync();
+        }
+
+        private async void OnCreateEntry(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_secureMasterKey))
+            {
+                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
+                return;
+            }
+
+            try
+            {
+                await _viewModel.CreateEntryAsync(_secureMasterKey);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorDialogAsync("Create Entry Error", $"Failed to create entry: {ex.Message}");
+            }
+        }
+
+        private async void OnEditEntry(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_secureMasterKey))
+            {
+                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
+                return;
+            }
+
+            try
+            {
+                await _viewModel.EditEntryAsync(_secureMasterKey);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorDialogAsync("Edit Entry Error", $"Failed to edit entry: {ex.Message}");
+            }
+        }
+
+        private async void OnDeleteEntry(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_secureMasterKey))
+            {
+                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
+                return;
+            }
+
+            try
+            {
+                await _viewModel.DeleteEntryAsync(_secureMasterKey);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorDialogAsync("Delete Entry Error", $"Failed to delete entry: {ex.Message}");
+            }
+        }
+
+        private async void OnCreateBackup(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_secureMasterKey))
+            {
+                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
+                return;
+            }
+
+            try
+            {
+                await _viewModel.CreateBackupAsync(_secureMasterKey);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorDialogAsync("Backup Error", $"Failed to create backup: {ex.Message}");
+            }
+        }
+
+        private async void OnRestoreBackup(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_secureMasterKey))
+            {
+                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
+                return;
+            }
+
+            try
+            {
+                await _viewModel.RestoreBackupAsync(_secureMasterKey);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorDialogAsync("Restore Error", $"Failed to restore backup: {ex.Message}");
+            }
+        }
+
+        private async void OnExportData(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_secureMasterKey))
+            {
+                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
+                return;
+            }
+
+            try
+            {
+                await _viewModel.ExportDataAsync(_secureMasterKey);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorDialogAsync("Export Error", $"Failed to export data: {ex.Message}");
+            }
+        }
+    }
+} 
 
 
-
------ FILE: D:\github\ritualos\src\Views\InventoryView.axaml -----
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:RitualOS.ViewModels"
-             xmlns:views="clr-namespace:RitualOS.Views"
-             xmlns:conv="clr-namespace:RitualOS.Converters"
-             x:Class="RitualOS.Views.InventoryView">
-    <UserControl.DataContext>
-        <vm:InventoryViewModel />
-    </UserControl.DataContext>
-    <UserControl.Resources>
-        <conv:ChakraToEmojiConverter x:Key="ChakraToEmoji" />
-        <conv:MessageColorConverter x:Key="MessageColorConverter" />
-        <conv:LowQuantityConverter x:Key="LowQuantityConverter" />
-    </UserControl.Resources>
-    <UserControl.Styles>
-        <Style Selector="TabControl">
-            <Setter Property="Background" Value="#1E1B2E"/> <!-- Deep indigo -->
-        </Style>
-        <Style Selector="TabItem">
-            <Setter Property="Background" Value="#2A1B3D"/> <!-- Moonlit indigo -->
-            <Setter Property="Foreground" Value="#C0C0C0"/> <!-- Silver -->
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="FontSize" Value="14"/>
-        </Style>
-        <Style Selector="TabItem:selected">
-            <Setter Property="Background" Value="#4A3F5E"/> <!-- Lighter indigo for selected -->
-            <Setter Property="Foreground" Value="#FFFFFF"/>
-        </Style>
-        <Style Selector="TextBlock">
-            <Setter Property="Foreground" Value="#C0C0C0"/> <!-- Silver -->
+
+----- FILE: D:\github\ritualos\src\Views\InventoryView.axaml -----
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:RitualOS.ViewModels"
+             xmlns:views="clr-namespace:RitualOS.Views"
+             xmlns:conv="clr-namespace:RitualOS.Converters"
+             x:Class="RitualOS.Views.InventoryView">
+    <UserControl.DataContext>
+        <vm:InventoryViewModel />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <conv:ChakraToEmojiConverter x:Key="ChakraToEmoji" />
+        <conv:MessageColorConverter x:Key="MessageColorConverter" />
+        <conv:LowQuantityConverter x:Key="LowQuantityConverter" />
+    </UserControl.Resources>
+    <UserControl.Styles>
+        <Style Selector="TabControl">
+            <Setter Property="Background" Value="#1E1B2E"/> <!-- Deep indigo -->
+        </Style>
+        <Style Selector="TabItem">
+            <Setter Property="Background" Value="#2A1B3D"/> <!-- Moonlit indigo -->
+            <Setter Property="Foreground" Value="#C0C0C0"/> <!-- Silver -->
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style Selector="TabItem:selected">
+            <Setter Property="Background" Value="#4A3F5E"/> <!-- Lighter indigo for selected -->
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+        </Style>
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="#C0C0C0"/> <!-- Silver -->
         </Style>
 
-**TOOL**: 3075:        private async Task ImportAsync()
-3087:        private async Task ExportAsync()
-3102:        public async Task InitializeAsync()
-3435:        private async Task SaveTemplateAsync()
-3469:        private async Task ExportTemplateAsync()
-3505:        private async Task<string?> PickSaveFilePathAsync(string fileName, string title)
-3693:        private async Task LoadTemplateAsync()
-3888:        public async Task InitializeAsync()
-3952:        private async Task LoadAnalyticsAsync()
-4066:        private async Task ExportAnalyticsAsync()
-4298:        private async Task SaveEntryAsync()
-4338:        private async Task DeleteEntryAsync()
-4354:        private async Task EditEntryAsync()
-4370:        private async Task ExportEntriesAsync()
-4391:        private async Task ImportEntriesAsync()
-4469:        private async Task SaveEntriesToFile()
-5188:        public async Task InitializeAsync()
-5272:        private async Task BrowseForFile()
-5309:        private async Task LoadDocumentAsync()
-5504:        public async Task InitializeAsync()
-5686:        public async Task InitializeAsync()
-5756:        private async Task AnalyzeDreamAsync()
-5790:        private async Task SaveAnalysisAsync()
-5818:        private async Task LoadDreamHistoryAsync()
-6039:        public async Task InitializeAsync()
-6108:        private async Task LoadRitualsAsync()
-6135:        private async Task ExportRitualAsync()
-6197:        private async Task ExportLibraryAsync()
-6454:        public async Task InitializeAsync()
-6468:        private async Task LoadAllDataAsync()
-6485:        private async Task LoadAvailableFiltersAsync()
-6575:        private async Task DeleteSelectedEntryAsync()
-6586:        private async Task CreateBackupAsync()
-6599:        private async Task RestoreBackupAsync()
-6625:        private async Task RefreshDataAsync()
-6641:        public async Task<GrimoireFS.GrimoireMetadata> GetMetadataAsync()
-6646:        public async Task<List<string>> GetBackupListAsync()
-7494:        private async Task LoadThemeAsync()
-7916:        public async Task InitializeAsync()
-7934:        private async Task LoadAllDataAsync()
-7952:        private async Task LoadAvailableFiltersAsync()
-8042:        private async Task UploadMediaAsync()
-8057:        private async Task UploadSingleFileAsync(string filePath)
-8092:        private async Task DeleteSelectedMedia()
-8098:        private async Task DownloadSelectedMedia()
-8167:        private async Task CreateBackupAsync()
-8198:        private async Task BatchUploadAsync()
-8213:        private async Task RefreshDataAsync()
-8287:        public async Task<MediaStorageService.MediaMetadata> GetMetadataAsync()
+**TOOL**: 3075:        private async Task ImportAsync()
+3087:        private async Task ExportAsync()
+3102:        public async Task InitializeAsync()
+3435:        private async Task SaveTemplateAsync()
+3469:        private async Task ExportTemplateAsync()
+3505:        private async Task<string?> PickSaveFilePathAsync(string fileName, string title)
+3693:        private async Task LoadTemplateAsync()
+3888:        public async Task InitializeAsync()
+3952:        private async Task LoadAnalyticsAsync()
+4066:        private async Task ExportAnalyticsAsync()
+4298:        private async Task SaveEntryAsync()
+4338:        private async Task DeleteEntryAsync()
+4354:        private async Task EditEntryAsync()
+4370:        private async Task ExportEntriesAsync()
+4391:        private async Task ImportEntriesAsync()
+4469:        private async Task SaveEntriesToFile()
+5188:        public async Task InitializeAsync()
+5272:        private async Task BrowseForFile()
+5309:        private async Task LoadDocumentAsync()
+5504:        public async Task InitializeAsync()
+5686:        public async Task InitializeAsync()
+5756:        private async Task AnalyzeDreamAsync()
+5790:        private async Task SaveAnalysisAsync()
+5818:        private async Task LoadDreamHistoryAsync()
+6039:        public async Task InitializeAsync()
+6108:        private async Task LoadRitualsAsync()
+6135:        private async Task ExportRitualAsync()
+6197:        private async Task ExportLibraryAsync()
+6454:        public async Task InitializeAsync()
+6468:        private async Task LoadAllDataAsync()
+6485:        private async Task LoadAvailableFiltersAsync()
+6575:        private async Task DeleteSelectedEntryAsync()
+6586:        private async Task CreateBackupAsync()
+6599:        private async Task RestoreBackupAsync()
+6625:        private async Task RefreshDataAsync()
+6641:        public async Task<GrimoireFS.GrimoireMetadata> GetMetadataAsync()
+6646:        public async Task<List<string>> GetBackupListAsync()
+7494:        private async Task LoadThemeAsync()
+7916:        public async Task InitializeAsync()
+7934:        private async Task LoadAllDataAsync()
+7952:        private async Task LoadAvailableFiltersAsync()
+8042:        private async Task UploadMediaAsync()
+8057:        private async Task UploadSingleFileAsync(string filePath)
+8092:        private async Task DeleteSelectedMedia()
+8098:        private async Task DownloadSelectedMedia()
+8167:        private async Task CreateBackupAsync()
+8198:        private async Task BatchUploadAsync()
+8213:        private async Task RefreshDataAsync()
+8287:        public async Task<MediaStorageService.MediaMetadata> GetMetadataAsync()
 8292:        public async Task<MediaStorageService.MediaIndex> GetIndexAsync()
 
 **TOOL**: AvaloniaApp_Export.txt
@@ -3214,770 +3214,770 @@ slides_template.js
 
 **TOOL**: Async Task methods with no await:
 
-**TOOL**: 3048:            ImportCommand = new RelayCommand(async () => await ImportAsync(), () => !string.IsNullOrWhiteSpace(ImportPath));
-3049:            ExportCommand = new RelayCommand(async () => await ExportAsync(), () => !string.IsNullOrWhiteSpace(ExportPath));
-3869:            RefreshCommand = new RelayCommand(async () => await LoadAnalyticsAsync());
-3870:            ExportCommand = new RelayCommand(async () => await ExportAnalyticsAsync(), () => CanExport());
-5669:            AnalyzeDreamCommand = new RelayCommand(async () => await AnalyzeDreamAsync(), () => CanAnalyzeDream());
-5670:            SaveAnalysisCommand = new RelayCommand(async () => await SaveAnalysisAsync(), () => CanSaveAnalysis());
-5672:            LoadDreamHistoryCommand = new RelayCommand(async () => await LoadDreamHistoryAsync());
-6017:            ExportRitualCommand = new RelayCommand(async () => await ExportRitualAsync(), () => CanExportRitual());
-6018:            ExportLibraryCommand = new RelayCommand(async () => await ExportLibraryAsync(), () => CanExportLibrary());
-6020:            LoadRitualsCommand = new RelayCommand(async () => await LoadRitualsAsync());
-8865:            SaveSettingsCommand = new RelayCommand(async () => await SaveSettingsAsync(), () => HasUnsavedChanges);
+**TOOL**: 3048:            ImportCommand = new RelayCommand(async () => await ImportAsync(), () => !string.IsNullOrWhiteSpace(ImportPath));
+3049:            ExportCommand = new RelayCommand(async () => await ExportAsync(), () => !string.IsNullOrWhiteSpace(ExportPath));
+3869:            RefreshCommand = new RelayCommand(async () => await LoadAnalyticsAsync());
+3870:            ExportCommand = new RelayCommand(async () => await ExportAnalyticsAsync(), () => CanExport());
+5669:            AnalyzeDreamCommand = new RelayCommand(async () => await AnalyzeDreamAsync(), () => CanAnalyzeDream());
+5670:            SaveAnalysisCommand = new RelayCommand(async () => await SaveAnalysisAsync(), () => CanSaveAnalysis());
+5672:            LoadDreamHistoryCommand = new RelayCommand(async () => await LoadDreamHistoryAsync());
+6017:            ExportRitualCommand = new RelayCommand(async () => await ExportRitualAsync(), () => CanExportRitual());
+6018:            ExportLibraryCommand = new RelayCommand(async () => await ExportLibraryAsync(), () => CanExportLibrary());
+6020:            LoadRitualsCommand = new RelayCommand(async () => await LoadRitualsAsync());
+8865:            SaveSettingsCommand = new RelayCommand(async () => await SaveSettingsAsync(), () => HasUnsavedChanges);
 8941:            SaveSettingsCommand = new RelayCommand(async () => await SaveSettingsAsync(), () => HasUnsavedChanges);
 
-**TOOL**: namespace RitualOS.ViewModels
-{
-    public class DreamParserViewModel : ViewModelBase
-    {
-        private readonly IDreamParserService _dreamParserService;
-        private readonly IUserSettingsService _settingsService;
-
-        private string _dreamContent = string.Empty;
-        private DreamAnalysis? _currentAnalysis;
-        private bool _isAnalyzing;
-        private string _statusMessage = string.Empty;
-        private bool _analysisComplete;
-        private RitualSuggestion? _selectedSuggestion;
-
-        public DreamParserViewModel(IDreamParserService dreamParserService, IUserSettingsService settingsService)
-        {
-            _dreamParserService = dreamParserService;
-            _settingsService = settingsService;
-
-            AnalyzeDreamCommand = new RelayCommand(async () => await AnalyzeDreamAsync(), () => CanAnalyzeDream());
-            SaveAnalysisCommand = new RelayCommand(async () => await SaveAnalysisAsync(), () => CanSaveAnalysis());
-            ClearAnalysisCommand = new RelayCommand(ClearAnalysis);
-            LoadDreamHistoryCommand = new RelayCommand(async () => await LoadDreamHistoryAsync());
-
-            DreamHistory = new ObservableCollection<DreamAnalysis>();
-            SuggestedRituals = new ObservableCollection<RitualSuggestion>();
-            ExtractedSymbols = new ObservableCollection<string>();
-            ExtractedEmotions = new ObservableCollection<string>();
-
-            // IMPORTANT: Call InitializeAsync() after constructing this ViewModel.
-            // Example: await dreamParserViewModel.InitializeAsync();
-        }
-
-        /// <summary>
-        /// Call this method after constructing the ViewModel to load dream history asynchronously.
-        /// </summary>
-        public async Task InitializeAsync()
-        {
-            await LoadDreamHistoryAsync();
+**TOOL**: namespace RitualOS.ViewModels
+{
+    public class DreamParserViewModel : ViewModelBase
+    {
+        private readonly IDreamParserService _dreamParserService;
+        private readonly IUserSettingsService _settingsService;
+
+        private string _dreamContent = string.Empty;
+        private DreamAnalysis? _currentAnalysis;
+        private bool _isAnalyzing;
+        private string _statusMessage = string.Empty;
+        private bool _analysisComplete;
+        private RitualSuggestion? _selectedSuggestion;
+
+        public DreamParserViewModel(IDreamParserService dreamParserService, IUserSettingsService settingsService)
+        {
+            _dreamParserService = dreamParserService;
+            _settingsService = settingsService;
+
+            AnalyzeDreamCommand = new RelayCommand(async () => await AnalyzeDreamAsync(), () => CanAnalyzeDream());
+            SaveAnalysisCommand = new RelayCommand(async () => await SaveAnalysisAsync(), () => CanSaveAnalysis());
+            ClearAnalysisCommand = new RelayCommand(ClearAnalysis);
+            LoadDreamHistoryCommand = new RelayCommand(async () => await LoadDreamHistoryAsync());
+
+            DreamHistory = new ObservableCollection<DreamAnalysis>();
+            SuggestedRituals = new ObservableCollection<RitualSuggestion>();
+            ExtractedSymbols = new ObservableCollection<string>();
+            ExtractedEmotions = new ObservableCollection<string>();
+
+            // IMPORTANT: Call InitializeAsync() after constructing this ViewModel.
+            // Example: await dreamParserViewModel.InitializeAsync();
         }
 
-**TOOL**: 50:    private static async void OnPointerPressed(object? sender, PointerPressedEventArgs e)
-16328:        private async void OnInitializeGrimoireFS(object sender, RoutedEventArgs e)
-16437:        private async void OnCreateEntry(object sender, RoutedEventArgs e)
-16455:        private async void OnEditEntry(object sender, RoutedEventArgs e)
-16473:        private async void OnDeleteEntry(object sender, RoutedEventArgs e)
-16491:        private async void OnCreateBackup(object sender, RoutedEventArgs e)
-16509:        private async void OnRestoreBackup(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Call this method after constructing the ViewModel to load dream history asynchronously.
+        /// </summary>
+        public async Task InitializeAsync()
+        {
+            await LoadDreamHistoryAsync();
+        }
+
+**TOOL**: 50:    private static async void OnPointerPressed(object? sender, PointerPressedEventArgs e)
+16328:        private async void OnInitializeGrimoireFS(object sender, RoutedEventArgs e)
+16437:        private async void OnCreateEntry(object sender, RoutedEventArgs e)
+16455:        private async void OnEditEntry(object sender, RoutedEventArgs e)
+16473:        private async void OnDeleteEntry(object sender, RoutedEventArgs e)
+16491:        private async void OnCreateBackup(object sender, RoutedEventArgs e)
+16509:        private async void OnRestoreBackup(object sender, RoutedEventArgs e)
 16527:        private async void OnExportData(object sender, RoutedEventArgs e)
 
-**TOOL**: public bool CanSaveEntry => !string.IsNullOrWhiteSpace(NewEntryTitle) && !string.IsNullOrWhiteSpace(NewEntryContent);
-
-        // Commands
-        public ICommand SaveEntryCommand { get; }
-        public ICommand DeleteEntryCommand { get; }
-        public ICommand EditEntryCommand { get; }
-        public ICommand ExportEntriesCommand { get; }
-        public ICommand ImportEntriesCommand { get; }
-        public ICommand ClearFormCommand { get; }
-
-        public BookOfShadowsViewModel()
-        {
-            LoggingService.ComponentDebug("BookOfShadows", "Initializing BookOfShadowsViewModel");
-            
-            SaveEntryCommand = new RelayCommand(async _ => await SaveEntryAsync(), _ => CanSaveEntry);
-            DeleteEntryCommand = new RelayCommand(async _ => await DeleteEntryAsync());
-            EditEntryCommand = new RelayCommand(async _ => await EditEntryAsync());
-            ExportEntriesCommand = new RelayCommand(async _ => await ExportEntriesAsync());
-            ImportEntriesCommand = new RelayCommand(async _ => await ImportEntriesAsync());
-            ClearFormCommand = new RelayCommand(_ => ClearForm());
-
-            LoggingService.ComponentDebug("BookOfShadows", "Commands initialized");
-
-            InitializeCategories();
-            LoggingService.ComponentDebug("BookOfShadows", "Categories initialized");
-            
-            LoadEntries();
-            LoggingService.ComponentDebug("BookOfShadows", "Entries loaded");
-            
-            LoggingService.ComponentDebug("BookOfShadows", "BookOfShadowsViewModel initialization complete");
-        }
-
-        private void InitializeCategories()
-        {
-            Categories.Clear();
-            Categories.Add("Spells");
-            Categories.Add("Rituals");
-            Categories.Add("Dreams");
-            Categories.Add("Meditation");
-            Categories.Add("Divination");
-            Categories.Add("Herbs");
-            Categories.Add("Crystals");
-            Categories.Add("Moon Phases");
-            Categories.Add("Personal Notes");
-            Categories.Add("Research");
-            Categories.Add("Other");
-        }
-
-        private async Task SaveEntryAsync()
-        {
-            if (!CanSaveEntry) return;
-
-            try
-            {
-                IsSaving = true;
-                StatusMessage = "Saving entry...";
-                
-                LoggingService.ComponentDebug("BookOfShadows", $"Saving new entry: {NewEntryTitle}");
-
-                var entry = new BoSPage
-                {
-                    Id = Guid.NewGuid(),
-                    Title = NewEntryTitle,
-                    Content = NewEntryContent,
-                    Category = NewEntryCategory,
-                    DateCreated = SelectedDate,
-                    LastModified = DateTime.Now
-                };
-
-                Entries.Add(entry);
-                await SaveEntriesToFile();
-                
-                ClearForm();
-                StatusMessage = "Entry saved successfully!";
-                
-                LoggingService.ComponentDebug("BookOfShadows", $"Entry saved successfully: {entry.Id}");
-            }
-            catch (Exception ex)
-            {
-                StatusMessage = $"Error saving entry: {ex.Message}";
-                LoggingService.Error($"Failed to save Book of Shadows entry: {ex.Message}", ex);
-            }
-            finally
-            {
-                IsSaving = false;
-            }
-        }
-
-        private async Task DeleteEntryAsync()
-        {
-            try
-            {
-                // TODO: Implement delete functionality
-                StatusMessage = "Delete functionality coming soon";
-                LoggingService.ComponentDebug("BookOfShadows", "Delete entry requested");
-                await Task.CompletedTask; // Fix CS1998 warning
-            }
-            catch (Exception ex)
-            {
-                StatusMessage = $"Error deleting entry: {ex.Message}";
-                LoggingService.Error($"Failed to delete Book of Shadows entry: {ex.Message}", ex);
-            }
-        }
-
-        private async Task EditEntryAsync()
-        {
-            try
-            {
-                // TODO: Implement edit functionality
-                StatusMessage = "Edit functionality coming soon";
-                LoggingService.ComponentDebug("BookOfShadows", "Edit entry requested");
-                await Task.CompletedTask; // Fix CS1998 warning
-            }
-            catch (Exception ex)
-            {
-                StatusMessage = $"Error editing entry: {ex.Message}";
-                LoggingService.Error($"Failed to edit Book of Shadows entry: {ex.Message}", ex);
-            }
-        }
-
-        private async Task ExportEntriesAsync()
-        {
-            try
-            {
-                StatusMessage = "Exporting entries...";
-                LoggingService.ComponentDebug("BookOfShadows", "Exporting entries");
-                
-                var exportPath = Path.Combine(AppContext.BaseDirectory, "book_of_shadows_export.json");
-                var json = JsonSerializer.Serialize(Entries, new JsonSerializerOptions { WriteIndented = true });
-                await File.WriteAllTextAsync(exportPath, json);
-                
-                StatusMessage = $"Exported {Entries.Count} entries to {exportPath}";
-                LoggingService.ComponentDebug("BookOfShadows", $"Exported {Entries.Count} entries");
-            }
-            catch (Exception ex)
-            {
-                StatusMessage = $"Export failed: {ex.Message}";
-                LoggingService.Error($"Failed to export Book of Shadows entries: {ex.Message}", ex);
-            }
-        }
-
-        private async Task ImportEntriesAsync()
-        {
-            try
-            {
-                StatusMessage = "Importing entries...";
-                LoggingService.ComponentDebug("BookOfShadows", "Importing entries");
-                
-                var importPath = Path.Combine(AppContext.BaseDirectory, "book_of_shadows_export.json");
-                if (File.Exists(importPath))
+**TOOL**: public bool CanSaveEntry => !string.IsNullOrWhiteSpace(NewEntryTitle) && !string.IsNullOrWhiteSpace(NewEntryContent);
+
+        // Commands
+        public ICommand SaveEntryCommand { get; }
+        public ICommand DeleteEntryCommand { get; }
+        public ICommand EditEntryCommand { get; }
+        public ICommand ExportEntriesCommand { get; }
+        public ICommand ImportEntriesCommand { get; }
+        public ICommand ClearFormCommand { get; }
+
+        public BookOfShadowsViewModel()
+        {
+            LoggingService.ComponentDebug("BookOfShadows", "Initializing BookOfShadowsViewModel");
+            
+            SaveEntryCommand = new RelayCommand(async _ => await SaveEntryAsync(), _ => CanSaveEntry);
+            DeleteEntryCommand = new RelayCommand(async _ => await DeleteEntryAsync());
+            EditEntryCommand = new RelayCommand(async _ => await EditEntryAsync());
+            ExportEntriesCommand = new RelayCommand(async _ => await ExportEntriesAsync());
+            ImportEntriesCommand = new RelayCommand(async _ => await ImportEntriesAsync());
+            ClearFormCommand = new RelayCommand(_ => ClearForm());
+
+            LoggingService.ComponentDebug("BookOfShadows", "Commands initialized");
+
+            InitializeCategories();
+            LoggingService.ComponentDebug("BookOfShadows", "Categories initialized");
+            
+            LoadEntries();
+            LoggingService.ComponentDebug("BookOfShadows", "Entries loaded");
+            
+            LoggingService.ComponentDebug("BookOfShadows", "BookOfShadowsViewModel initialization complete");
+        }
+
+        private void InitializeCategories()
+        {
+            Categories.Clear();
+            Categories.Add("Spells");
+            Categories.Add("Rituals");
+            Categories.Add("Dreams");
+            Categories.Add("Meditation");
+            Categories.Add("Divination");
+            Categories.Add("Herbs");
+            Categories.Add("Crystals");
+            Categories.Add("Moon Phases");
+            Categories.Add("Personal Notes");
+            Categories.Add("Research");
+            Categories.Add("Other");
+        }
+
+        private async Task SaveEntryAsync()
+        {
+            if (!CanSaveEntry) return;
+
+            try
+            {
+                IsSaving = true;
+                StatusMessage = "Saving entry...";
+                
+                LoggingService.ComponentDebug("BookOfShadows", $"Saving new entry: {NewEntryTitle}");
+
+                var entry = new BoSPage
+                {
+                    Id = Guid.NewGuid(),
+                    Title = NewEntryTitle,
+                    Content = NewEntryContent,
+                    Category = NewEntryCategory,
+                    DateCreated = SelectedDate,
+                    LastModified = DateTime.Now
+                };
+
+                Entries.Add(entry);
+                await SaveEntriesToFile();
+                
+                ClearForm();
+                StatusMessage = "Entry saved successfully!";
+                
+                LoggingService.ComponentDebug("BookOfShadows", $"Entry saved successfully: {entry.Id}");
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Error saving entry: {ex.Message}";
+                LoggingService.Error($"Failed to save Book of Shadows entry: {ex.Message}", ex);
+            }
+            finally
+            {
+                IsSaving = false;
+            }
+        }
+
+        private async Task DeleteEntryAsync()
+        {
+            try
+            {
+                // TODO: Implement delete functionality
+                StatusMessage = "Delete functionality coming soon";
+                LoggingService.ComponentDebug("BookOfShadows", "Delete entry requested");
+                await Task.CompletedTask; // Fix CS1998 warning
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Error deleting entry: {ex.Message}";
+                LoggingService.Error($"Failed to delete Book of Shadows entry: {ex.Message}", ex);
+            }
+        }
+
+        private async Task EditEntryAsync()
+        {
+            try
+            {
+                // TODO: Implement edit functionality
+                StatusMessage = "Edit functionality coming soon";
+                LoggingService.ComponentDebug("BookOfShadows", "Edit entry requested");
+                await Task.CompletedTask; // Fix CS1998 warning
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Error editing entry: {ex.Message}";
+                LoggingService.Error($"Failed to edit Book of Shadows entry: {ex.Message}", ex);
+            }
+        }
+
+        private async Task ExportEntriesAsync()
+        {
+            try
+            {
+                StatusMessage = "Exporting entries...";
+                LoggingService.ComponentDebug("BookOfShadows", "Exporting entries");
+                
+                var exportPath = Path.Combine(AppContext.BaseDirectory, "book_of_shadows_export.json");
+                var json = JsonSerializer.Serialize(Entries, new JsonSerializerOptions { WriteIndented = true });
+                await File.WriteAllTextAsync(exportPath, json);
+                
+                StatusMessage = $"Exported {Entries.Count} entries to {exportPath}";
+                LoggingService.ComponentDebug("BookOfShadows", $"Exported {Entries.Count} entries");
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Export failed: {ex.Message}";
+                LoggingService.Error($"Failed to export Book of Shadows entries: {ex.Message}", ex);
+            }
+        }
+
+        private async Task ImportEntriesAsync()
+        {
+            try
+            {
+                StatusMessage = "Importing entries...";
+                LoggingService.ComponentDebug("BookOfShadows", "Importing entries");
+                
+                var importPath = Path.Combine(AppContext.BaseDirectory, "book_of_shadows_export.json");
+                if (File.Exists(importPath))
                 {
 
-**TOOL**: {
-                    var json = await File.ReadAllTextAsync(importPath);
-                    var importedEntries = JsonSerializer.Deserialize<ObservableCollection<BoSPage>>(json);
-                    if (importedEntries != null)
-                    {
-                        Entries.Clear();
-                        foreach (var entry in importedEntries)
-                        {
-                            Entries.Add(entry);
-                        }
-                        await SaveEntriesToFile();
-                        StatusMessage = $"Imported {importedEntries.Count} entries successfully";
-                        LoggingService.ComponentDebug("BookOfShadows", $"Imported {importedEntries.Count} entries");
-                    }
-                }
-                else
-                {
-                    StatusMessage = "No export file found to import";
-                }
-            }
-            catch (Exception ex)
-            {
-                StatusMessage = $"Import failed: {ex.Message}";
-                LoggingService.Error($"Failed to import Book of Shadows entries: {ex.Message}", ex);
-            }
-        }
-
-        private void ClearForm()
-        {
-            NewEntryTitle = string.Empty;
-            NewEntryContent = string.Empty;
-            NewEntryCategory = string.Empty;
-            LoggingService.ComponentDebug("BookOfShadows", "Form cleared");
-        }
-
-        private void LoadEntries()
-        {
-            try
-            {
-                LoggingService.ComponentDebug("BookOfShadows", "Loading entries from file");
-                
-                var filePath = Path.Combine(AppContext.BaseDirectory, "book_of_shadows.json");
-                if (File.Exists(filePath))
-                {
-                    var json = File.ReadAllText(filePath);
-                    var entries = JsonSerializer.Deserialize<ObservableCollection<BoSPage>>(json);
-                    if (entries != null)
-                    {
-                        Entries.Clear();
-                        foreach (var entry in entries)
-                        {
-                            Entries.Add(entry);
-                        }
-                        LoggingService.ComponentDebug("BookOfShadows", $"Loaded {entries.Count} entries");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                LoggingService.Error($"Failed to load Book of Shadows entries: {ex.Message}", ex);
-            }
-        }
-
-        private void LoadEntriesForDate()
-        {
-            LoggingService.ComponentDebug("BookOfShadows", $"Loading entries for date: {SelectedDate:yyyy-MM-dd}");
-            // TODO: Implement date filtering
-        }
-
-        private async Task SaveEntriesToFile()
+**TOOL**: {
+                    var json = await File.ReadAllTextAsync(importPath);
+                    var importedEntries = JsonSerializer.Deserialize<ObservableCollection<BoSPage>>(json);
+                    if (importedEntries != null)
+                    {
+                        Entries.Clear();
+                        foreach (var entry in importedEntries)
+                        {
+                            Entries.Add(entry);
+                        }
+                        await SaveEntriesToFile();
+                        StatusMessage = $"Imported {importedEntries.Count} entries successfully";
+                        LoggingService.ComponentDebug("BookOfShadows", $"Imported {importedEntries.Count} entries");
+                    }
+                }
+                else
+                {
+                    StatusMessage = "No export file found to import";
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Import failed: {ex.Message}";
+                LoggingService.Error($"Failed to import Book of Shadows entries: {ex.Message}", ex);
+            }
+        }
+
+        private void ClearForm()
+        {
+            NewEntryTitle = string.Empty;
+            NewEntryContent = string.Empty;
+            NewEntryCategory = string.Empty;
+            LoggingService.ComponentDebug("BookOfShadows", "Form cleared");
+        }
+
+        private void LoadEntries()
+        {
+            try
+            {
+                LoggingService.ComponentDebug("BookOfShadows", "Loading entries from file");
+                
+                var filePath = Path.Combine(AppContext.BaseDirectory, "book_of_shadows.json");
+                if (File.Exists(filePath))
+                {
+                    var json = File.ReadAllText(filePath);
+                    var entries = JsonSerializer.Deserialize<ObservableCollection<BoSPage>>(json);
+                    if (entries != null)
+                    {
+                        Entries.Clear();
+                        foreach (var entry in entries)
+                        {
+                            Entries.Add(entry);
+                        }
+                        LoggingService.ComponentDebug("BookOfShadows", $"Loaded {entries.Count} entries");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggingService.Error($"Failed to load Book of Shadows entries: {ex.Message}", ex);
+            }
+        }
+
+        private void LoadEntriesForDate()
+        {
+            LoggingService.ComponentDebug("BookOfShadows", $"Loading entries for date: {SelectedDate:yyyy-MM-dd}");
+            // TODO: Implement date filtering
+        }
+
+        private async Task SaveEntriesToFile()
         {
 
-**TOOL**: {
-            try
-            {
-                var filePath = Path.Combine(AppContext.BaseDirectory, "book_of_shadows.json");
-                var json = JsonSerializer.Serialize(Entries, new JsonSerializerOptions { WriteIndented = true });
-                await File.WriteAllTextAsync(filePath, json);
-                LoggingService.ComponentDebug("BookOfShadows", $"Saved {Entries.Count} entries to file");
-            }
-            catch (Exception ex)
-            {
-                LoggingService.Error($"Failed to save Book of Shadows entries: {ex.Message}", ex);
-            }
-        }
-    }
-} 
+**TOOL**: {
+            try
+            {
+                var filePath = Path.Combine(AppContext.BaseDirectory, "book_of_shadows.json");
+                var json = JsonSerializer.Serialize(Entries, new JsonSerializerOptions { WriteIndented = true });
+                await File.WriteAllTextAsync(filePath, json);
+                LoggingService.ComponentDebug("BookOfShadows", $"Saved {Entries.Count} entries to file");
+            }
+            catch (Exception ex)
+            {
+                LoggingService.Error($"Failed to save Book of Shadows entries: {ex.Message}", ex);
+            }
+        }
+    }
+} 
 
 
-
------ FILE: D:\github\ritualos\src\ViewModels\CalendarViewModel.cs -----
-using System;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using RitualOS.Models;
-using System.Linq;
-
-namespace RitualOS.ViewModels
-{
-    public class CalendarViewModel : ViewModelBase
-    {
-        public ObservableCollection<CalendarEvent> Events { get; } = new();
-        public ObservableCollection<DateTime> Sabbats { get; } = new();
-        public ObservableCollection<CalendarDayViewModel> Days { get; } = new();
-
-        private DateTime _displayMonth;
-        public DateTime DisplayMonth
-        {
-            get => _displayMonth;
-            set
-            {
-                if (_displayMonth != value)
+
+----- FILE: D:\github\ritualos\src\ViewModels\CalendarViewModel.cs -----
+using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using RitualOS.Models;
+using System.Linq;
+
+namespace RitualOS.ViewModels
+{
+    public class CalendarViewModel : ViewModelBase
+    {
+        public ObservableCollection<CalendarEvent> Events { get; } = new();
+        public ObservableCollection<DateTime> Sabbats { get; } = new();
+        public ObservableCollection<CalendarDayViewModel> Days { get; } = new();
+
+        private DateTime _displayMonth;
+        public DateTime DisplayMonth
+        {
+            get => _displayMonth;
+            set
+            {
+                if (_displayMonth != value)
                 {
 
-**TOOL**: 3487:                    await _exportService.ExportToJsonAsync(template);
-3488:                    await File.WriteAllTextAsync(exportPath, await _exportService.ExportToJsonAsync(template));
+**TOOL**: 3487:                    await _exportService.ExportToJsonAsync(template);
+3488:                    await File.WriteAllTextAsync(exportPath, await _exportService.ExportToJsonAsync(template));
 6154:                        result = await _exportService.ExportToJsonAsync(SelectedRitual);
 
-**TOOL**: set => SetProperty(ref _statusMessage, value);
-        }
-
-        public RelayCommand ExportRitualCommand { get; }
-        public RelayCommand ExportLibraryCommand { get; }
-        public RelayCommand BrowseOutputPathCommand { get; }
-        public RelayCommand LoadRitualsCommand { get; }
-
-        private async Task LoadRitualsAsync()
-        {
-            try
-            {
-                IsExporting = true;
-                ExportStatus = "Loading rituals...";
-
-                var rituals = await _ritualDataLoader.LoadRitualTemplatesAsync();
-                AvailableRituals.Clear();
-                
-                foreach (var ritual in rituals)
-                {
-                    AvailableRituals.Add(ritual);
-                }
-
-                ExportStatus = $"Loaded {AvailableRituals.Count} rituals";
-            }
-            catch (Exception ex)
-            {
-                ExportStatus = $"Error loading rituals: {ex.Message}";
-            }
-            finally
-            {
-                IsExporting = false;
-            }
-        }
-
-        private async Task ExportRitualAsync()
-        {
-            if (SelectedRitual == null) return;
-            try
-            {
-                IsExporting = true;
-                ExportSuccess = false;
-                ExportStatus = $"Exporting {SelectedRitual.Name} to {SelectedFormat}...";
-                StatusMessage = ExportStatus;
-                string result = string.Empty;
-                switch (SelectedFormat.ToLower())
-                {
-                    case "markdown":
-                        result = await _exportService.ExportToMarkdownAsync(SelectedRitual);
-                        break;
-                    case "html":
-                        result = await _exportService.ExportToHtmlAsync(SelectedRitual);
-                        break;
-                    case "json":
-                        result = await _exportService.ExportToJsonAsync(SelectedRitual);
-                        break;
-                    case "pdf":
-                        await _exportService.ExportToPdfAsync(SelectedRitual, OutputPath);
-                        ExportStatus = $"Successfully exported to {OutputPath}";
-                        StatusMessage = ExportStatus;
-                        ExportSuccess = File.Exists(OutputPath);
-                        return;
-                    case "epub":
-                        await _exportService.ExportToEpubAsync(SelectedRitual, OutputPath);
-                        ExportStatus = $"Successfully exported to {OutputPath}";
-                        StatusMessage = ExportStatus;
-                        ExportSuccess = File.Exists(OutputPath);
-                        return;
-                    default:
-                        throw new ArgumentException($"Unsupported format: {SelectedFormat}");
-                }
-                if (!string.IsNullOrEmpty(OutputPath))
-                {
-                    await System.IO.File.WriteAllTextAsync(OutputPath, result);
-                    ExportStatus = $"Successfully exported to {OutputPath}";
-                    StatusMessage = ExportStatus;
-                    ExportSuccess = File.Exists(OutputPath);
-                }
-                else
-                {
-                    ExportStatus = "No output path specified. Export failed.";
-                    StatusMessage = ExportStatus;
-                    ExportSuccess = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                ExportStatus = $"Export failed: {ex.Message}";
-                StatusMessage = ExportStatus;
-                ExportSuccess = false;
-            }
-            finally
-            {
-                IsExporting = false;
-            }
-        }
-
-        private async Task ExportLibraryAsync()
-        {
-            try
+**TOOL**: set => SetProperty(ref _statusMessage, value);
+        }
+
+        public RelayCommand ExportRitualCommand { get; }
+        public RelayCommand ExportLibraryCommand { get; }
+        public RelayCommand BrowseOutputPathCommand { get; }
+        public RelayCommand LoadRitualsCommand { get; }
+
+        private async Task LoadRitualsAsync()
+        {
+            try
+            {
+                IsExporting = true;
+                ExportStatus = "Loading rituals...";
+
+                var rituals = await _ritualDataLoader.LoadRitualTemplatesAsync();
+                AvailableRituals.Clear();
+                
+                foreach (var ritual in rituals)
+                {
+                    AvailableRituals.Add(ritual);
+                }
+
+                ExportStatus = $"Loaded {AvailableRituals.Count} rituals";
+            }
+            catch (Exception ex)
+            {
+                ExportStatus = $"Error loading rituals: {ex.Message}";
+            }
+            finally
+            {
+                IsExporting = false;
+            }
+        }
+
+        private async Task ExportRitualAsync()
+        {
+            if (SelectedRitual == null) return;
+            try
+            {
+                IsExporting = true;
+                ExportSuccess = false;
+                ExportStatus = $"Exporting {SelectedRitual.Name} to {SelectedFormat}...";
+                StatusMessage = ExportStatus;
+                string result = string.Empty;
+                switch (SelectedFormat.ToLower())
+                {
+                    case "markdown":
+                        result = await _exportService.ExportToMarkdownAsync(SelectedRitual);
+                        break;
+                    case "html":
+                        result = await _exportService.ExportToHtmlAsync(SelectedRitual);
+                        break;
+                    case "json":
+                        result = await _exportService.ExportToJsonAsync(SelectedRitual);
+                        break;
+                    case "pdf":
+                        await _exportService.ExportToPdfAsync(SelectedRitual, OutputPath);
+                        ExportStatus = $"Successfully exported to {OutputPath}";
+                        StatusMessage = ExportStatus;
+                        ExportSuccess = File.Exists(OutputPath);
+                        return;
+                    case "epub":
+                        await _exportService.ExportToEpubAsync(SelectedRitual, OutputPath);
+                        ExportStatus = $"Successfully exported to {OutputPath}";
+                        StatusMessage = ExportStatus;
+                        ExportSuccess = File.Exists(OutputPath);
+                        return;
+                    default:
+                        throw new ArgumentException($"Unsupported format: {SelectedFormat}");
+                }
+                if (!string.IsNullOrEmpty(OutputPath))
+                {
+                    await System.IO.File.WriteAllTextAsync(OutputPath, result);
+                    ExportStatus = $"Successfully exported to {OutputPath}";
+                    StatusMessage = ExportStatus;
+                    ExportSuccess = File.Exists(OutputPath);
+                }
+                else
+                {
+                    ExportStatus = "No output path specified. Export failed.";
+                    StatusMessage = ExportStatus;
+                    ExportSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                ExportStatus = $"Export failed: {ex.Message}";
+                StatusMessage = ExportStatus;
+                ExportSuccess = false;
+            }
+            finally
+            {
+                IsExporting = false;
+            }
+        }
+
+        private async Task ExportLibraryAsync()
+        {
+            try
             {
 
-**TOOL**: {
-                IsExporting = true;
-                ExportSuccess = false;
-                ExportStatus = $"Exporting library to {SelectedFormat}...";
-                StatusMessage = ExportStatus;
-                await _exportService.ExportRitualLibraryAsync(AvailableRituals, SelectedFormat, OutputPath);
-                ExportStatus = $"Successfully exported library to {OutputPath}";
-                StatusMessage = ExportStatus;
-                ExportSuccess = File.Exists(OutputPath);
-            }
-            catch (Exception ex)
-            {
-                ExportStatus = $"Library export failed: {ex.Message}";
-                StatusMessage = ExportStatus;
-                ExportSuccess = false;
-            }
-            finally
-            {
-                IsExporting = false;
-            }
-        }
-
-        private void BrowseOutputPath()
-        {
-            // In a real implementation, this would open a file dialog
-            // For now, we'll set a default path
-            var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            OutputPath = $"export_{SelectedFormat}_{timestamp}.{GetFileExtension(SelectedFormat)}";
-        }
-
-        private string GetFileExtension(string format)
-        {
-            return format.ToLower() switch
-            {
-                "markdown" => "md",
-                "html" => "html",
-                "json" => "json",
-                "pdf" => "pdf",
-                "epub" => "epub",
-                "website" => "site",
-                _ => "txt"
-            };
-        }
-
-        private bool CanExportRitual()
-        {
-            return SelectedRitual != null && !IsExporting;
-        }
-
-        private bool CanExportLibrary()
+**TOOL**: {
+                IsExporting = true;
+                ExportSuccess = false;
+                ExportStatus = $"Exporting library to {SelectedFormat}...";
+                StatusMessage = ExportStatus;
+                await _exportService.ExportRitualLibraryAsync(AvailableRituals, SelectedFormat, OutputPath);
+                ExportStatus = $"Successfully exported library to {OutputPath}";
+                StatusMessage = ExportStatus;
+                ExportSuccess = File.Exists(OutputPath);
+            }
+            catch (Exception ex)
+            {
+                ExportStatus = $"Library export failed: {ex.Message}";
+                StatusMessage = ExportStatus;
+                ExportSuccess = false;
+            }
+            finally
+            {
+                IsExporting = false;
+            }
+        }
+
+        private void BrowseOutputPath()
+        {
+            // In a real implementation, this would open a file dialog
+            // For now, we'll set a default path
+            var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            OutputPath = $"export_{SelectedFormat}_{timestamp}.{GetFileExtension(SelectedFormat)}";
+        }
+
+        private string GetFileExtension(string format)
+        {
+            return format.ToLower() switch
+            {
+                "markdown" => "md",
+                "html" => "html",
+                "json" => "json",
+                "pdf" => "pdf",
+                "epub" => "epub",
+                "website" => "site",
+                _ => "txt"
+            };
+        }
+
+        private bool CanExportRitual()
+        {
+            return SelectedRitual != null && !IsExporting;
+        }
+
+        private bool CanExportLibrary()
         {
 
-**TOOL**: private static void Attach(ListBox listBox)
-    {
-        listBox.AddHandler(InputElement.PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel);
-        listBox.AddHandler(DragDrop.DragOverEvent, OnDragOver);
-        listBox.AddHandler(DragDrop.DropEvent, OnDrop);
-    }
-
-    private static void Detach(ListBox listBox)
-    {
-        listBox.RemoveHandler(InputElement.PointerPressedEvent, OnPointerPressed);
-        listBox.RemoveHandler(DragDrop.DragOverEvent, OnDragOver);
-        listBox.RemoveHandler(DragDrop.DropEvent, OnDrop);
-    }
-
-    private static async void OnPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (sender is not ListBox lb) return;
-        if (lb.SelectedItem == null) return;
-        var data = new DataObject();
-        data.Set("ritual-step", lb.SelectedItem);
-        await DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
-    }
-
-    private static void OnDragOver(object? sender, DragEventArgs e)
-    {
-        if (!e.Data.Contains("ritual-step")) return;
-        e.DragEffects = DragDropEffects.Move;
-        e.Handled = true;
-    }
-
-    private static void OnDrop(object? sender, DragEventArgs e)
-    {
-        if (sender is not ListBox lb) return;
-        if (!e.Data.Contains("ritual-step")) return;
-        var source = e.Data.Get("ritual-step");
-        var target = (e.Source as Control)?.DataContext;
+**TOOL**: private static void Attach(ListBox listBox)
+    {
+        listBox.AddHandler(InputElement.PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel);
+        listBox.AddHandler(DragDrop.DragOverEvent, OnDragOver);
+        listBox.AddHandler(DragDrop.DropEvent, OnDrop);
+    }
+
+    private static void Detach(ListBox listBox)
+    {
+        listBox.RemoveHandler(InputElement.PointerPressedEvent, OnPointerPressed);
+        listBox.RemoveHandler(DragDrop.DragOverEvent, OnDragOver);
+        listBox.RemoveHandler(DragDrop.DropEvent, OnDrop);
+    }
+
+    private static async void OnPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (sender is not ListBox lb) return;
+        if (lb.SelectedItem == null) return;
+        var data = new DataObject();
+        data.Set("ritual-step", lb.SelectedItem);
+        await DragDrop.DoDragDrop(e, data, DragDropEffects.Move);
+    }
+
+    private static void OnDragOver(object? sender, DragEventArgs e)
+    {
+        if (!e.Data.Contains("ritual-step")) return;
+        e.DragEffects = DragDropEffects.Move;
+        e.Handled = true;
+    }
+
+    private static void OnDrop(object? sender, DragEventArgs e)
+    {
+        if (sender is not ListBox lb) return;
+        if (!e.Data.Contains("ritual-step")) return;
+        var source = e.Data.Get("ritual-step");
+        var target = (e.Source as Control)?.DataContext;
         if (source == null || target == null || ReferenceEquals(source, target)) return;
 
-**TOOL**: public GrimoireFSView()
-        {
-            InitializeComponent();
-            _viewModel = new GrimoireFSViewModel();
-            DataContext = _viewModel;
-        }
-
-        private async void OnInitializeGrimoireFS(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                // Prompt for secure master key
-                var masterKey = await GetSecureMasterKeyAsync();
-                if (string.IsNullOrEmpty(masterKey))
-                {
-                    return; // User cancelled
-                }
-
-                _secureMasterKey = masterKey;
-                await _viewModel.InitializeAsync(masterKey);
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialogAsync("Initialization Error", $"Failed to initialize GrimoireFS: {ex.Message}");
-            }
-        }
-
-        private async Task<string?> GetSecureMasterKeyAsync()
-        {
-            // Create a secure password input dialog
-            var dialog = new Window
-            {
-                Title = "Enter Master Key",
-                Width = 400,
-                Height = 200,
-                CanResize = false,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
-            };
-
-            var panel = new StackPanel
-            {
-                Margin = new Avalonia.Thickness(20),
-                Spacing = 10
-            };
-
-            var label = new TextBlock
-            {
-                Text = "Enter your secure master key for GrimoireFS:",
-                TextWrapping = Avalonia.Media.TextWrapping.Wrap
-            };
-
-            var passwordBox = new TextBox
-            {
-                PasswordChar = 'â—',
-                Width = 300,
-                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left
-            };
-
-            var buttonPanel = new StackPanel
-            {
-                Orientation = Avalonia.Layout.Orientation.Horizontal,
-                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Right,
-                Spacing = 10
-            };
-
-            var okButton = new Button { Content = "OK", Width = 80 };
-            var cancelButton = new Button { Content = "Cancel", Width = 80 };
-
-            okButton.Click += (s, e) => 
-            {
-                dialog.Close(passwordBox.Text);
-            };
-
-            cancelButton.Click += (s, e) => 
-            {
-                dialog.Close(null);
-            };
-
-            buttonPanel.Children.Add(okButton);
-            buttonPanel.Children.Add(cancelButton);
-
-            panel.Children.Add(label);
-            panel.Children.Add(passwordBox);
-            panel.Children.Add(buttonPanel);
-
-            dialog.Content = panel;
-
-            // Focus on password box
-            passwordBox.Focus();
-
-            // Handle Enter key
-            passwordBox.KeyDown += (s, e) =>
-            {
-                if (e.Key == Avalonia.Input.Key.Enter)
-                {
-                    okButton.Command?.Execute(null);
-                }
-            };
-
-            var result = await dialog.ShowDialog<string?>(this.FindAncestorOfType<Window>());
-            return result;
-        }
-
-        private async Task ShowErrorDialogAsync(string title, string message)
-        {
-            var dialog = new MessageBoxStandard
-            {
-                Title = title,
-                Content = message,
-                Icon = MessageBoxIcon.Error,
-                ButtonDefinitions = ButtonEnum.Ok
-            };
-
-            await dialog.ShowAsync();
-        }
-
-        private async void OnCreateEntry(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(_secureMasterKey))
-            {
-                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
-                return;
-            }
-
-            try
-            {
-                await _viewModel.CreateEntryAsync(_secureMasterKey);
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialogAsync("Create Entry Error", $"Failed to create entry: {ex.Message}");
-            }
-        }
-
-        private async void OnEditEntry(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(_secureMasterKey))
-            {
-                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
-                return;
-            }
-
-            try
-            {
-                await _viewModel.EditEntryAsync(_secureMasterKey);
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialogAsync("Edit Entry Error", $"Failed to edit entry: {ex.Message}");
-            }
-        }
-
-        private async void OnDeleteEntry(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(_secureMasterKey))
-            {
-                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
-                return;
-            }
-
-            try
-            {
-                await _viewModel.DeleteEntryAsync(_secureMasterKey);
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialogAsync("Delete Entry Error", $"Failed to delete entry: {ex.Message}");
-            }
-        }
-
-        private async void OnCreateBackup(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(_secureMasterKey))
-            {
-                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
-                return;
-            }
-
-            try
-            {
-                await _viewModel.CreateBackupAsync(_secureMasterKey);
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialogAsync("Backup Error", $"Failed to create backup: {ex.Message}");
-            }
-        }
-
-        private async void OnRestoreBackup(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(_secureMasterKey))
-            {
-                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
-                return;
-            }
-
-            try
-            {
-                await _viewModel.RestoreBackupAsync(_secureMasterKey);
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialogAsync("Restore Error", $"Failed to restore backup: {ex.Message}");
-            }
-        }
-
-        private async void OnExportData(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(_secureMasterKey))
-            {
-                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
-                return;
-            }
-
-            try
-            {
-                await _viewModel.ExportDataAsync(_secureMasterKey);
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialogAsync("Export Error", $"Failed to export data: {ex.Message}");
-            }
-        }
-    }
-} 
+**TOOL**: public GrimoireFSView()
+        {
+            InitializeComponent();
+            _viewModel = new GrimoireFSViewModel();
+            DataContext = _viewModel;
+        }
+
+        private async void OnInitializeGrimoireFS(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Prompt for secure master key
+                var masterKey = await GetSecureMasterKeyAsync();
+                if (string.IsNullOrEmpty(masterKey))
+                {
+                    return; // User cancelled
+                }
+
+                _secureMasterKey = masterKey;
+                await _viewModel.InitializeAsync(masterKey);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorDialogAsync("Initialization Error", $"Failed to initialize GrimoireFS: {ex.Message}");
+            }
+        }
+
+        private async Task<string?> GetSecureMasterKeyAsync()
+        {
+            // Create a secure password input dialog
+            var dialog = new Window
+            {
+                Title = "Enter Master Key",
+                Width = 400,
+                Height = 200,
+                CanResize = false,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+
+            var panel = new StackPanel
+            {
+                Margin = new Avalonia.Thickness(20),
+                Spacing = 10
+            };
+
+            var label = new TextBlock
+            {
+                Text = "Enter your secure master key for GrimoireFS:",
+                TextWrapping = Avalonia.Media.TextWrapping.Wrap
+            };
+
+            var passwordBox = new TextBox
+            {
+                PasswordChar = 'â—',
+                Width = 300,
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left
+            };
+
+            var buttonPanel = new StackPanel
+            {
+                Orientation = Avalonia.Layout.Orientation.Horizontal,
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Right,
+                Spacing = 10
+            };
+
+            var okButton = new Button { Content = "OK", Width = 80 };
+            var cancelButton = new Button { Content = "Cancel", Width = 80 };
+
+            okButton.Click += (s, e) => 
+            {
+                dialog.Close(passwordBox.Text);
+            };
+
+            cancelButton.Click += (s, e) => 
+            {
+                dialog.Close(null);
+            };
+
+            buttonPanel.Children.Add(okButton);
+            buttonPanel.Children.Add(cancelButton);
+
+            panel.Children.Add(label);
+            panel.Children.Add(passwordBox);
+            panel.Children.Add(buttonPanel);
+
+            dialog.Content = panel;
+
+            // Focus on password box
+            passwordBox.Focus();
+
+            // Handle Enter key
+            passwordBox.KeyDown += (s, e) =>
+            {
+                if (e.Key == Avalonia.Input.Key.Enter)
+                {
+                    okButton.Command?.Execute(null);
+                }
+            };
+
+            var result = await dialog.ShowDialog<string?>(this.FindAncestorOfType<Window>());
+            return result;
+        }
+
+        private async Task ShowErrorDialogAsync(string title, string message)
+        {
+            var dialog = new MessageBoxStandard
+            {
+                Title = title,
+                Content = message,
+                Icon = MessageBoxIcon.Error,
+                ButtonDefinitions = ButtonEnum.Ok
+            };
+
+            await dialog.ShowAsync();
+        }
+
+        private async void OnCreateEntry(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_secureMasterKey))
+            {
+                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
+                return;
+            }
+
+            try
+            {
+                await _viewModel.CreateEntryAsync(_secureMasterKey);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorDialogAsync("Create Entry Error", $"Failed to create entry: {ex.Message}");
+            }
+        }
+
+        private async void OnEditEntry(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_secureMasterKey))
+            {
+                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
+                return;
+            }
+
+            try
+            {
+                await _viewModel.EditEntryAsync(_secureMasterKey);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorDialogAsync("Edit Entry Error", $"Failed to edit entry: {ex.Message}");
+            }
+        }
+
+        private async void OnDeleteEntry(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_secureMasterKey))
+            {
+                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
+                return;
+            }
+
+            try
+            {
+                await _viewModel.DeleteEntryAsync(_secureMasterKey);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorDialogAsync("Delete Entry Error", $"Failed to delete entry: {ex.Message}");
+            }
+        }
+
+        private async void OnCreateBackup(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_secureMasterKey))
+            {
+                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
+                return;
+            }
+
+            try
+            {
+                await _viewModel.CreateBackupAsync(_secureMasterKey);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorDialogAsync("Backup Error", $"Failed to create backup: {ex.Message}");
+            }
+        }
+
+        private async void OnRestoreBackup(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_secureMasterKey))
+            {
+                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
+                return;
+            }
+
+            try
+            {
+                await _viewModel.RestoreBackupAsync(_secureMasterKey);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorDialogAsync("Restore Error", $"Failed to restore backup: {ex.Message}");
+            }
+        }
+
+        private async void OnExportData(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_secureMasterKey))
+            {
+                await ShowErrorDialogAsync("Security Error", "Please initialize GrimoireFS with your master key first.");
+                return;
+            }
+
+            try
+            {
+                await _viewModel.ExportDataAsync(_secureMasterKey);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorDialogAsync("Export Error", $"Failed to export data: {ex.Message}");
+            }
+        }
+    }
+} 
 
 
-
------ FILE: D:\github\ritualos\src\Views\InventoryView.axaml -----
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:RitualOS.ViewModels"
-             xmlns:views="clr-namespace:RitualOS.Views"
-             xmlns:conv="clr-namespace:RitualOS.Converters"
-             x:Class="RitualOS.Views.InventoryView">
-    <UserControl.DataContext>
-        <vm:InventoryViewModel />
-    </UserControl.DataContext>
-    <UserControl.Resources>
+
+----- FILE: D:\github\ritualos\src\Views\InventoryView.axaml -----
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:RitualOS.ViewModels"
+             xmlns:views="clr-namespace:RitualOS.Views"
+             xmlns:conv="clr-namespace:RitualOS.Converters"
+             x:Class="RitualOS.Views.InventoryView">
+    <UserControl.DataContext>
+        <vm:InventoryViewModel />
+    </UserControl.DataContext>
+    <UserControl.Resources>
         <conv:ChakraToEmojiConverter x:Key="ChakraToEmoji" />
 
 **TOOL**: Done!

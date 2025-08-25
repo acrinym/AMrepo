@@ -270,22 +270,22 @@ Want me to bake in a **No-GUI “Audit-only” fallback** that always runs and p
 
 **USER**: Debugger gave this. 
 
-Launching with -STA and keeping console open...
-At C:\Users\User\Downloads\AIO_Windows_Cleanup_UI_v0.3.2_SINGLE.ps1:167 char:76
-+ ... Hibernate { $path="C:\hiberfil.sys"; $size=(Test-Path $path)?(Get-Ite ...
-+                                                                 ~
-Unexpected token '?' in expression or statement.
-At C:\Users\User\Downloads\AIO_Windows_Cleanup_UI_v0.3.2_SINGLE.ps1:295 char:391
-+ ...  --unregister $n } catch { Log-Line "Failed to unregister $n: $($_.Ex ...
-+                                                               ~~~
-Variable reference is not valid. ':' was not followed by a valid variable name character. Consider using ${} to
-delimit the name.
-    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
-    + FullyQualifiedErrorId : UnexpectedToken
-
-Exit code: 1
-
-Logs are written to: %ProgramData%\AIO-Cleanup\YYYYMMDD-HHMMSS
+Launching with -STA and keeping console open...
+At C:\Users\User\Downloads\AIO_Windows_Cleanup_UI_v0.3.2_SINGLE.ps1:167 char:76
++ ... Hibernate { $path="C:\hiberfil.sys"; $size=(Test-Path $path)?(Get-Ite ...
++                                                                 ~
+Unexpected token '?' in expression or statement.
+At C:\Users\User\Downloads\AIO_Windows_Cleanup_UI_v0.3.2_SINGLE.ps1:295 char:391
++ ...  --unregister $n } catch { Log-Line "Failed to unregister $n: $($_.Ex ...
++                                                               ~~~
+Variable reference is not valid. ':' was not followed by a valid variable name character. Consider using ${} to
+delimit the name.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : UnexpectedToken
+
+Exit code: 1
+
+Logs are written to: %ProgramData%\AIO-Cleanup\YYYYMMDD-HHMMSS
 Press any key to continue . . .
 
 **ASSISTANT**: Ahh nice catch — that error tells me exactly what broke:
@@ -319,22 +319,22 @@ All fixed in a new single-file build.
 
 If it still hiccups, paste the last ~30 lines of `bootstrap.log` or `run.log` and I’ll smash the next bug fast.
 
-**USER**: Launching with -STA and keeping console open...
-At C:\Users\User\Downloads\AIO_Windows_Cleanup_UI_v0.3.2_SINGLE.ps1:167 char:76
-+ ... Hibernate { $path="C:\hiberfil.sys"; $size=(Test-Path $path)?(Get-Ite ...
-+                                                                 ~
-Unexpected token '?' in expression or statement.
-At C:\Users\User\Downloads\AIO_Windows_Cleanup_UI_v0.3.2_SINGLE.ps1:295 char:391
-+ ...  --unregister $n } catch { Log-Line "Failed to unregister $n: $($_.Ex ...
-+                                                               ~~~
-Variable reference is not valid. ':' was not followed by a valid variable name character. Consider using ${} to
-delimit the name.
-    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
-    + FullyQualifiedErrorId : UnexpectedToken
-
-Exit code: 1
-
-Logs are written to: %ProgramData%\AIO-Cleanup\YYYYMMDD-HHMMSS
+**USER**: Launching with -STA and keeping console open...
+At C:\Users\User\Downloads\AIO_Windows_Cleanup_UI_v0.3.2_SINGLE.ps1:167 char:76
++ ... Hibernate { $path="C:\hiberfil.sys"; $size=(Test-Path $path)?(Get-Ite ...
++                                                                 ~
+Unexpected token '?' in expression or statement.
+At C:\Users\User\Downloads\AIO_Windows_Cleanup_UI_v0.3.2_SINGLE.ps1:295 char:391
++ ...  --unregister $n } catch { Log-Line "Failed to unregister $n: $($_.Ex ...
++                                                               ~~~
+Variable reference is not valid. ':' was not followed by a valid variable name character. Consider using ${} to
+delimit the name.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : UnexpectedToken
+
+Exit code: 1
+
+Logs are written to: %ProgramData%\AIO-Cleanup\YYYYMMDD-HHMMSS
 Press any key to continue . . .
 
 **ASSISTANT**: Ah—that error is from the **old file**. You’re launching:

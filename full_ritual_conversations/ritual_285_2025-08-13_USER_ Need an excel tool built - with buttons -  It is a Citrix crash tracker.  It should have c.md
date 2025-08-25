@@ -299,23 +299,23 @@ I can extend it as needed.
 
 **USER**: Isn't this the code? 
 
-Sub TrackCrash()
-
-    Dim ws As Worksheet
-    Set ws = ThisWorkbook.Sheets("Citrix Crash Tracker")
-
-    Dim lastRow As Long
-    lastRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row + 1
-
-    ws.Cells(lastRow, 1).Value = InputBox("Enter Agent Name / Number:")
-    ws.Cells(lastRow, 2).Value = InputBox("Enter Workstation Serial / Name:")
-    ws.Cells(lastRow, 3).Value = InputBox("Domain? (cloud.peckham.org / workspace.usda.gov / Both):")
-    ws.Cells(lastRow, 4).Value = InputBox("Any Avaya glitches?")
-    ws.Cells(lastRow, 5).Value = InputBox("PeckhamIT Ticket #:")
-    ws.Cells(lastRow, 6).Value = InputBox("Known issues or outages?")
-
-    MsgBox "Crash successfully logged!", vbInformation
-
+Sub TrackCrash()
+
+    Dim ws As Worksheet
+    Set ws = ThisWorkbook.Sheets("Citrix Crash Tracker")
+
+    Dim lastRow As Long
+    lastRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row + 1
+
+    ws.Cells(lastRow, 1).Value = InputBox("Enter Agent Name / Number:")
+    ws.Cells(lastRow, 2).Value = InputBox("Enter Workstation Serial / Name:")
+    ws.Cells(lastRow, 3).Value = InputBox("Domain? (cloud.peckham.org / workspace.usda.gov / Both):")
+    ws.Cells(lastRow, 4).Value = InputBox("Any Avaya glitches?")
+    ws.Cells(lastRow, 5).Value = InputBox("PeckhamIT Ticket #:")
+    ws.Cells(lastRow, 6).Value = InputBox("Known issues or outages?")
+
+    MsgBox "Crash successfully logged!", vbInformation
+
 End Sub
 
 **USER**: So, how does this even "run"? Clicking the button puts it in edit mode. Is there a "view xl file" like powerpoint has a "view presentation? ]

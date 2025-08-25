@@ -85,61 +85,61 @@ drwxr-sr-x  2 oai oai_shared   4096 Aug  7 18:26 test
 -rw-r--r--  1 oai oai_shared    498 Aug  7 18:26 tsconfig.json
 -rw-r--r--  1 oai oai_shared   2773 Aug  7 18:26 webpack.config.cjs
 
-**TOOL**: {
-  "manifest_version": 3,
-  "name": "Hermes System Extension",
-  "version": "4.0.0",
-  "description": "Enterprise-grade form automation with macro scheduling, task management, quick notes, and productivity tools. Advanced form filler, macro recorder, and heuristic trainer with comprehensive theming, draggable UI, effects, and detailed settings.",
-  "icons": {
-    "16": "icon16.png",
-    "32": "icon32.png",
-    "48": "icon48.png",
-    "128": "icon128.png"
-  },
-  "permissions": [
-    "storage",
-    "tabs",
-    "scripting",
-    "activeTab",
-    "identity",
-    "contextMenus"
-  ],
-  "host_permissions": [
-    "*://*/*",
-    "https://www.googleapis.com/*"
-  ],
-  "background": {
-    "service_worker": "dist/background.js"
-  },
-  "content_scripts": [
-    {
-      "matches": ["*://*/*"],
-      "js": ["dist/content.js"],
-      "run_at": "document_idle"
-    }
-  ],
-  "web_accessible_resources": [
-    { "resources": ["configs/*"], "matches": ["<all_urls>"] }
-  ],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "hermes@example.com",
-      "strict_min_version": "109.0"
-    }
-  },
-  "action": {
-    "default_title": "Hermes System",
-    "default_icon": {
-      "16": "icon16.png",
-      "32": "icon32.png",
-      "48": "icon48.png",
-      "128": "icon128.png"
-    }
-  },
-  "options_ui": {
-    "page": "options.html",
-    "open_in_tab": true
-  }
+**TOOL**: {
+  "manifest_version": 3,
+  "name": "Hermes System Extension",
+  "version": "4.0.0",
+  "description": "Enterprise-grade form automation with macro scheduling, task management, quick notes, and productivity tools. Advanced form filler, macro recorder, and heuristic trainer with comprehensive theming, draggable UI, effects, and detailed settings.",
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "permissions": [
+    "storage",
+    "tabs",
+    "scripting",
+    "activeTab",
+    "identity",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "*://*/*",
+    "https://www.googleapis.com/*"
+  ],
+  "background": {
+    "service_worker": "dist/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["dist/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    { "resources": ["configs/*"], "matches": ["<all_urls>"] }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "hermes@example.com",
+      "strict_min_version": "109.0"
+    }
+  },
+  "action": {
+    "default_title": "Hermes System",
+    "default_icon": {
+      "16": "icon16.png",
+      "32": "icon32.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  }
 }
 
 **TOOL**: npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.

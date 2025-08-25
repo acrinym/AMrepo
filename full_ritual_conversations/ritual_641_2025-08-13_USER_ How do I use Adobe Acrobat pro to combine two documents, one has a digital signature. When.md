@@ -298,14 +298,14 @@ By using one of these methods, you can quickly determine the version of any app 
 
 **USER**: I need a summary of this for my resolution: What was the resolution of the call? 
 
-"User got a new phone carrier and therefore a new phone number and phone, so her number in login.gov was incorrect. 
-
-She couldn't get logged into login.gov so I had her do a logn.gov password reset, which was successful, but then it brought her to the OTP onetime passcode screen, sending a passcode to the wrong number again. 
-
-She then had the ability to delete the account so she could start over, which I instructed her to do so she can set it up again and create a new one. 
-
-She did so and it will be done in 24 hours.She will then create a new login.gov account for accessing GUS, linking it to her eauth with the new number. , 
-
+"User got a new phone carrier and therefore a new phone number and phone, so her number in login.gov was incorrect. 
+
+She couldn't get logged into login.gov so I had her do a logn.gov password reset, which was successful, but then it brought her to the OTP onetime passcode screen, sending a passcode to the wrong number again. 
+
+She then had the ability to delete the account so she could start over, which I instructed her to do so she can set it up again and create a new one. 
+
+She did so and it will be done in 24 hours.She will then create a new login.gov account for accessing GUS, linking it to her eauth with the new number. , 
+
 She'll call back if having anymore trouble. "
 
 **ASSISTANT**: **Resolution Summary:**

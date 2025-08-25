@@ -187,47 +187,47 @@ Let me know how these go—if the issue persists, I can walk you through a targe
 
 **USER**: I need to give codex specific instructions to fix these build errors, because "fix build errors isn't making it do so" 
 
-Build FAILED.
-
-D:\GitHub\RitualOS\RitualOS.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1.4) but QuestPDF 2024.1.4 w
-as not found. An approximate best match of QuestPDF 2024.3.0 was resolved. [D:\GitHub\RitualOS\RitualOS.sln]
-D:\GitHub\RitualOS\tests\RitualOS.Tests\RitualOS.Tests.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1
-.4) but QuestPDF 2024.1.4 was not found. An approximate best match of QuestPDF 2024.3.0 was resolved. [D:\GitHub\Ritual
-OS\RitualOS.sln]
-D:\GitHub\RitualOS\tests\RitualOS.Tests\RitualOS.Tests.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1
-.4) but QuestPDF 2024.1.4 was not found. An approximate best match of QuestPDF 2024.3.0 was resolved.
-D:\GitHub\RitualOS\RitualOS.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1.4) but QuestPDF 2024.1.4 w
-as not found. An approximate best match of QuestPDF 2024.3.0 was resolved.
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001: File doesn't contain valid XAML: Sys
-tem.Xml.XmlException: An error occurred while parsing EntityName. Line 134, position 52. [D:\GitHub\RitualOS\RitualOS.c
-sproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.T
-hrow(Exception e) [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.T
-hrow(String res, Int32 lineNo, Int32 linePos) [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.H
-andleEntityReference(Boolean isInAttributeValue, EntityExpandType expandType, Int32& charRefEndPos) [D:\GitHub\RitualOS
-\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
-arseAttributeValueSlow(Int32 curPos, Char quoteChar, NodeData attr) [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
-arseAttributes() [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
-arseElement() [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
-arseElementContent() [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.Linq.XContainer.Rea
-dContentFrom(XmlReader r) [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.Linq.XDocument.Load
-(XmlReader reader, LoadOptions options) [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.Linq.XDocument.Pars
-e(String text, LoadOptions options) [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at Avalonia.Build.Tasks.XamlFileI
-nfo.Parse(String data) in /_/src/Avalonia.Build.Tasks/XamlFileInfo.cs:line 11 [D:\GitHub\RitualOS\RitualOS.csproj]
-D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at Avalonia.Build.Tasks.GenerateA
-valoniaResourcesTask.PreProcessXamlFiles(List`1 sources) in /_/src/Avalonia.Build.Tasks/GenerateAvaloniaResourcesTask.c
-s:line 96 [D:\GitHub\RitualOS\RitualOS.csproj]
-    4 Warning(s)
+Build FAILED.
+
+D:\GitHub\RitualOS\RitualOS.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1.4) but QuestPDF 2024.1.4 w
+as not found. An approximate best match of QuestPDF 2024.3.0 was resolved. [D:\GitHub\RitualOS\RitualOS.sln]
+D:\GitHub\RitualOS\tests\RitualOS.Tests\RitualOS.Tests.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1
+.4) but QuestPDF 2024.1.4 was not found. An approximate best match of QuestPDF 2024.3.0 was resolved. [D:\GitHub\Ritual
+OS\RitualOS.sln]
+D:\GitHub\RitualOS\tests\RitualOS.Tests\RitualOS.Tests.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1
+.4) but QuestPDF 2024.1.4 was not found. An approximate best match of QuestPDF 2024.3.0 was resolved.
+D:\GitHub\RitualOS\RitualOS.csproj : warning NU1603: RitualOS depends on QuestPDF (>= 2024.1.4) but QuestPDF 2024.1.4 w
+as not found. An approximate best match of QuestPDF 2024.3.0 was resolved.
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001: File doesn't contain valid XAML: Sys
+tem.Xml.XmlException: An error occurred while parsing EntityName. Line 134, position 52. [D:\GitHub\RitualOS\RitualOS.c
+sproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.T
+hrow(Exception e) [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.T
+hrow(String res, Int32 lineNo, Int32 linePos) [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.H
+andleEntityReference(Boolean isInAttributeValue, EntityExpandType expandType, Int32& charRefEndPos) [D:\GitHub\RitualOS
+\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
+arseAttributeValueSlow(Int32 curPos, Char quoteChar, NodeData attr) [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
+arseAttributes() [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
+arseElement() [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.XmlTextReaderImpl.P
+arseElementContent() [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.Linq.XContainer.Rea
+dContentFrom(XmlReader r) [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.Linq.XDocument.Load
+(XmlReader reader, LoadOptions options) [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at System.Xml.Linq.XDocument.Pars
+e(String text, LoadOptions options) [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at Avalonia.Build.Tasks.XamlFileI
+nfo.Parse(String data) in /_/src/Avalonia.Build.Tasks/XamlFileInfo.cs:line 11 [D:\GitHub\RitualOS\RitualOS.csproj]
+D:\GitHub\RitualOS\src\Views\GrimoireEntryEditor.axaml : Avalonia error AVLN:0001:    at Avalonia.Build.Tasks.GenerateA
+valoniaResourcesTask.PreProcessXamlFiles(List`1 sources) in /_/src/Avalonia.Build.Tasks/GenerateAvaloniaResourcesTask.c
+s:line 96 [D:\GitHub\RitualOS\RitualOS.csproj]
+    4 Warning(s)
     1 Error(s)
 
 **ASSISTANT**: Got it, Justin. You’re dealing with **two separate issues** in this build failure: a **NuGet version mismatch** and a **bad character in your XAML**. Let’s break it down and then I’ll give you precise Codex instructions you can use in your build tool.
@@ -311,31 +311,31 @@ Want me to scan the file content if you paste it in or want me to auto-fix that 
 
 **USER**: So....
 
-Microsoft Windows [Version 10.0.22635.5305]
-(c) Microsoft Corporation. All rights reserved.
-
-C:\Windows\System32>SFC /scannow
-
-Beginning system scan.  This process will take some time.
-
-Beginning verification phase of system scan.
-Verification 100% complete.
-
-Windows Resource Protection found corrupt files and successfully repaired them.
-For online repairs, details are included in the CBS log file located at
-windir\Logs\CBS\CBS.log. For example C:\Windows\Logs\CBS\CBS.log. For offline
-repairs, details are included in the log file provided by the /OFFLOGFILE flag.
-
-C:\Windows\System32>DISM /Online /Cleanup-Image /RestoreHealth
-
-Deployment Image Servicing and Management tool
-Version: 10.0.22621.2706
-
-Image Version: 10.0.22635.5305
-
-[==========================100.0%==========================] The restore operation completed successfully.
-The operation completed successfully.
-
+Microsoft Windows [Version 10.0.22635.5305]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Windows\System32>SFC /scannow
+
+Beginning system scan.  This process will take some time.
+
+Beginning verification phase of system scan.
+Verification 100% complete.
+
+Windows Resource Protection found corrupt files and successfully repaired them.
+For online repairs, details are included in the CBS log file located at
+windir\Logs\CBS\CBS.log. For example C:\Windows\Logs\CBS\CBS.log. For offline
+repairs, details are included in the log file provided by the /OFFLOGFILE flag.
+
+C:\Windows\System32>DISM /Online /Cleanup-Image /RestoreHealth
+
+Deployment Image Servicing and Management tool
+Version: 10.0.22621.2706
+
+Image Version: 10.0.22635.5305
+
+[==========================100.0%==========================] The restore operation completed successfully.
+The operation completed successfully.
+
 C:\Windows\System32>
 
 **USER**: Yep, I type two characters in and it removes focus from start and there's NOTHING I CAN DO ABOUT IT.
@@ -562,25 +562,25 @@ Let me know if you want a custom `.bat` or `.ps1` that signs you out and reappli
 
 **USER**: Can you make this a generic template, not magic template? 
 
-PR #XXX – Fix QuestPDF version warning
-Author: Codex
-Feature/Component Affected: RitualOS.Tests.csproj
-
-🔧 Actions Taken:
- Added [functionality or class]
- Refactored [logic/component]
- Fixed [bug or regression]
- Updated [layout/UX/text/symbol handling/etc.]
-📜 Intention Behind Changes:
-The solution threw a NU1603 warning complaining about an unresolved QuestPDF dependency when building the tests project. Adding an explicit QuestPDF reference ensures the same 2024.3.0 package is used everywhere and silences the warning.
-
-🧠 Notes for Future You:
-This was a straightforward fix—no rituals required. Just keeping versions in sync so the build stays happy.
-
-🧪 Testing Summary:
- Built and compiled successfully (yes)
- Manual UI tested (n/a)
- Edge cases validated (n/a)
+PR #XXX – Fix QuestPDF version warning
+Author: Codex
+Feature/Component Affected: RitualOS.Tests.csproj
+
+🔧 Actions Taken:
+ Added [functionality or class]
+ Refactored [logic/component]
+ Fixed [bug or regression]
+ Updated [layout/UX/text/symbol handling/etc.]
+📜 Intention Behind Changes:
+The solution threw a NU1603 warning complaining about an unresolved QuestPDF dependency when building the tests project. Adding an explicit QuestPDF reference ensures the same 2024.3.0 package is used everywhere and silences the warning.
+
+🧠 Notes for Future You:
+This was a straightforward fix—no rituals required. Just keeping versions in sync so the build stays happy.
+
+🧪 Testing Summary:
+ Built and compiled successfully (yes)
+ Manual UI tested (n/a)
+ Edge cases validated (n/a)
 Known issues: none
 
 **USER**: I said generic, not hashing the same issues or projects.

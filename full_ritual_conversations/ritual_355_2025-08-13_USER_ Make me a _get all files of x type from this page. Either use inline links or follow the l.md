@@ -291,98 +291,98 @@ Want to turn this into a **bookmarklet** or make it crawl into sub-pages too? I 
 
 **USER**: Output in CMD - 
 
-C:\Windows\System32>@echo off
-SETLOCAL ENABLEEXTENSIONS
-title Move Ollama Models to D: Drive (Auto Mode)
-
-:: === CONFIG ===
-set "NEW_OLLAMA_PATH=D:\LLM_Storage\.ollama"
-set "OLD_OLLAMA_PATH=%USERPROFILE%\.ollama"
-
-echo.
-
-echo ==================================================
-==================================================
-echo      �� Moving Ollama Models to D: Drive
-     🔄 Moving Ollama Models to D: Drive
-echo ==================================================
-==================================================
-
-:: === STEP 1: Create New Directory ===
-echo [1/5] Creating new model directory at: %NEW_OLLAMA_PATH%
-[1/5] Creating new model directory at: D:\LLM_Storage\.ollama
-mkdir "%NEW_OLLAMA_PATH%" 2>nul
-
-:: === STEP 2: Copy Existing Models ===
-if exist "%OLD_OLLAMA_PATH%" (
-More?     echo [2/5] Copying models from C: to D: (this may take a while)...
-... was unexpected at this time.
-    robocopy "%OLD_OLLAMA_PATH%" "%NEW_OLLAMA_PATH%" /E /MT:8 >nul
-) else (
-    echo [2/5] No existing model folder found at C:. Skipping copy...
-[2/5] No existing model folder found at C:. Skipping copy...
-)
-
-:: === STEP 3: Set Environment Variable ===
-echo [3/5] Setting OLLAMA_MODELS environment variable...
-[3/5] Setting OLLAMA_MODELS environment variable...
-setx OLLAMA_MODELS "%NEW_OLLAMA_PATH%" >nul
-
-:: === STEP 4: Verification ===
-echo [4/5] Verifying that Ollama can read models from new location...
-[4/5] Verifying that Ollama can read models from new location...
-call :verify_ollama
-Invalid attempt to call batch label outside of batch script.
-if errorlevel 1 (
-More?     echo ❌ Ollama failed to verify model location. Old folder NOT deleted.
-More?     goto end
-More? )
-❌ Ollama failed to verify model location. Old folder NOT deleted.
-
-:: === STEP 5: Delete Old Folder ===
-echo [5/5] Verified. Deleting old Ollama folder from: %OLD_OLLAMA_PATH%
-[5/5] Verified. Deleting old Ollama folder from: C:\Users\User\.ollama
-rmdir /S /Q "%OLD_OLLAMA_PATH%"
-
-echo.
-
-echo ✅ Success: Ollama is now using models from %NEW_OLLAMA_PATH%
-✅ Success: Ollama is now using models from D:\LLM_Storage\.ollama
-echo �� Old folder removed from C: safely.
-🧹 Old folder removed from C: safely.
-goto end
-
-:verify_ollama
-    set "TEMP_VERIFY_FILE=%TEMP%\ollama_check.txt"
-    >"%TEMP_VERIFY_FILE%" (
-More?         echo @echo off
-More?         echo echo Testing ollama list...
-More?         echo ollama list
-More?         echo if errorlevel 1 exit /b 1
-More?         echo exit /b 0
-More?     )
-    call cmd /c "%TEMP_VERIFY_FILE%"
-    del "%TEMP_VERIFY_FILE%" >nul 2>&1
-    exit /b %ERRORLEVEL%
-PS C:\Windows\System32>
-PS C:\Windows\System32> :end
-:end : The term ':end' is not recognized as the name of a cmdlet, function, script file, or operable program. Check
-the spelling of the name, or if a path was included, verify that the path is correct and try again.
-At line:1 char:1
-+ :end
-+ ~~~~
-    + CategoryInfo          : ObjectNotFound: (:end:String) [], CommandNotFoundException
-    + FullyQualifiedErrorId : CommandNotFoundException
-
-PS C:\Windows\System32> echo.
-echo. : The term 'echo.' is not recognized as the name of a cmdlet, function, script file, or operable program. Check
-the spelling of the name, or if a path was included, verify that the path is correct and try again.
-At line:1 char:1
-+ echo.
-+ ~~~~~
-    + CategoryInfo          : ObjectNotFound: (echo.:String) [], CommandNotFoundException
-    + FullyQualifiedErrorId : CommandNotFoundException
-
+C:\Windows\System32>@echo off
+SETLOCAL ENABLEEXTENSIONS
+title Move Ollama Models to D: Drive (Auto Mode)
+
+:: === CONFIG ===
+set "NEW_OLLAMA_PATH=D:\LLM_Storage\.ollama"
+set "OLD_OLLAMA_PATH=%USERPROFILE%\.ollama"
+
+echo.
+
+echo ==================================================
+==================================================
+echo      �� Moving Ollama Models to D: Drive
+     🔄 Moving Ollama Models to D: Drive
+echo ==================================================
+==================================================
+
+:: === STEP 1: Create New Directory ===
+echo [1/5] Creating new model directory at: %NEW_OLLAMA_PATH%
+[1/5] Creating new model directory at: D:\LLM_Storage\.ollama
+mkdir "%NEW_OLLAMA_PATH%" 2>nul
+
+:: === STEP 2: Copy Existing Models ===
+if exist "%OLD_OLLAMA_PATH%" (
+More?     echo [2/5] Copying models from C: to D: (this may take a while)...
+... was unexpected at this time.
+    robocopy "%OLD_OLLAMA_PATH%" "%NEW_OLLAMA_PATH%" /E /MT:8 >nul
+) else (
+    echo [2/5] No existing model folder found at C:. Skipping copy...
+[2/5] No existing model folder found at C:. Skipping copy...
+)
+
+:: === STEP 3: Set Environment Variable ===
+echo [3/5] Setting OLLAMA_MODELS environment variable...
+[3/5] Setting OLLAMA_MODELS environment variable...
+setx OLLAMA_MODELS "%NEW_OLLAMA_PATH%" >nul
+
+:: === STEP 4: Verification ===
+echo [4/5] Verifying that Ollama can read models from new location...
+[4/5] Verifying that Ollama can read models from new location...
+call :verify_ollama
+Invalid attempt to call batch label outside of batch script.
+if errorlevel 1 (
+More?     echo ❌ Ollama failed to verify model location. Old folder NOT deleted.
+More?     goto end
+More? )
+❌ Ollama failed to verify model location. Old folder NOT deleted.
+
+:: === STEP 5: Delete Old Folder ===
+echo [5/5] Verified. Deleting old Ollama folder from: %OLD_OLLAMA_PATH%
+[5/5] Verified. Deleting old Ollama folder from: C:\Users\User\.ollama
+rmdir /S /Q "%OLD_OLLAMA_PATH%"
+
+echo.
+
+echo ✅ Success: Ollama is now using models from %NEW_OLLAMA_PATH%
+✅ Success: Ollama is now using models from D:\LLM_Storage\.ollama
+echo �� Old folder removed from C: safely.
+🧹 Old folder removed from C: safely.
+goto end
+
+:verify_ollama
+    set "TEMP_VERIFY_FILE=%TEMP%\ollama_check.txt"
+    >"%TEMP_VERIFY_FILE%" (
+More?         echo @echo off
+More?         echo echo Testing ollama list...
+More?         echo ollama list
+More?         echo if errorlevel 1 exit /b 1
+More?         echo exit /b 0
+More?     )
+    call cmd /c "%TEMP_VERIFY_FILE%"
+    del "%TEMP_VERIFY_FILE%" >nul 2>&1
+    exit /b %ERRORLEVEL%
+PS C:\Windows\System32>
+PS C:\Windows\System32> :end
+:end : The term ':end' is not recognized as the name of a cmdlet, function, script file, or operable program. Check
+the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ :end
++ ~~~~
+    + CategoryInfo          : ObjectNotFound: (:end:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Windows\System32> echo.
+echo. : The term 'echo.' is not recognized as the name of a cmdlet, function, script file, or operable program. Check
+the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ echo.
++ ~~~~~
+    + CategoryInfo          : ObjectNotFound: (echo.:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
 PS C:\Windows\System32> pause
 
 **ASSISTANT**: Good question, Justin. Moving AnythingLLM's LLMs (like those downloaded via **Ollama**) to the **D:\ drive** instead of defaulting to `C:` is totally doable—you just need to configure the **Ollama storage path** (since that’s what AnythingLLM typically uses under the hood).

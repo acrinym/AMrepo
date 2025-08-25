@@ -81,394 +81,394 @@ Would you like that exported now, or do you want to name it together first?
 
 ---
 
-Acknowledged. The ritual chamber shall be constructed. Hermes will now have the interface through which its generated insights are presented to the sovereign user for judgment, allowing its symbolic map to be refined through explicit consent.
-
-Here is the implementation for Phase 2.6, Part 2: The Trainer UI Panel.
-
-**(Code Generation - Phase 2.6, Part 2: Trainer Panel UI & Logic)**
-
-**1. Helper Functions for Custom Mappings**
-
-```javascript
-    // --- Custom Mapping Helpers ---
-    const CUSTOM_MAPPINGS_KEY = 'hermes_customMappings';
-
-    /**
-     * Loads custom mappings from GM storage.
-     * @returns {object} The custom mappings object or an empty object.
-     */
-    function loadCustomMappings() {
-        try {
-            const mappingsJson = GM_getValue(CUSTOM_MAPPINGS_KEY, '{}');
-            return JSON.parse(mappingsJson);
-        } catch (error) {
-            console.error("Hermes: Error loading custom mappings:", error);
-            return {};
-        }
-    }
-
-    /**
-     * Saves custom mappings to GM storage.
-     * @param {object} mappings - The mappings object to save.
-     */
-    function saveCustomMappings(mappings) {
-        try {
-            GM_setValue(CUSTOM_MAPPINGS_KEY, JSON.stringify(mappings));
-            console.log("Hermes: Custom mappings saved:", mappings);
-        } catch (error) {
-            console.error("Hermes: Error saving custom mappings:", error);
-            statusIndicator.textContent = 'Mapping Save Error';
-            statusIndicator.style.color = 'red';
-        }
-    }
-```
-
-**2. New Functions for Trainer Panel UI (`createTrainerPanel`, `toggleTrainerPanel`, `populateTrainerPanel`, `approveMappingHandler`, `rejectMappingHandler`)**
-
-```javascript
-    // --- Trainer Panel UI Functions ---
-    let trainerPanel = null; // Reference to the panel element
-
-    /**
-     * Creates the HTML structure for the trainer panel (initially hidden).
-     */
-    function createTrainerPanel() {
-        if (document.getElementById('hermes-trainer-panel')) return; // Already created
-
-        trainerPanel = document.createElement('div');
-        trainerPanel.id = 'hermes-trainer-panel';
-
-        trainerPanel.innerHTML = `
-            <h2>Hermes Heuristic Trainer</h2>
-            <p>Review suggestions based on fields Hermes couldn't automatically match in the current session log.</p>
-            <div id="hermes-suggestions-container">
-                </div>
-            <div class="hermes-trainer-controls">
-                <button type="button" id="hermes-trainer-refresh">🔄 Refresh Suggestions</button>
-                <button type="button" id="hermes-trainer-close">❌ Close</button>
-                 </div>
-        `;
-
-        document.body.appendChild(trainerPanel);
-
-        // Add control button listeners
-        const closeButton = document.getElementById('hermes-trainer-close');
-        const refreshButton = document.getElementById('hermes-trainer-refresh');
-
-        if (closeButton) {
-            closeButton.onclick = () => toggleTrainerPanel(false);
-        }
-        if (refreshButton) {
-             // Re-run analysis and repopulate
-            refreshButton.onclick = populateTrainerPanel;
-        }
-    }
-
-    /**
-     * Shows or hides the trainer panel.
-     * @param {boolean} show - True to show, false to hide.
-     */
-    function toggleTrainerPanel(show) {
-        if (!trainerPanel) {
-            console.error("Hermes: Trainer panel not created.");
-            return;
-        }
-        if (show) {
-            populateTrainerPanel(); // Run analysis and show suggestions when opening
-            trainerPanel.style.display = 'block';
-        } else {
-            trainerPanel.style.display = 'none';
-        }
-    }
-
-    /**
-     * Runs analysis and populates the trainer panel with suggestions.
-     */
-    function populateTrainerPanel() {
-        const suggestionsContainer = document.getElementById('hermes-suggestions-container');
-        if (!suggestionsContainer) {
-            console.error("Hermes: Suggestions container not found.");
-            return;
-        }
-
-        const suggestions = runHeuristicTrainerSession(); // Get suggestions from Phase 2.6 Part 1 logic
-        suggestionsContainer.innerHTML = ''; // Clear previous suggestions
-
-        if (suggestions.length === 0) {
-            suggestionsContainer.innerHTML = '<p style="text-align: center; padding: 15px; color: #555;">No new mapping suggestions found based on the current session log.</p>';
-            return;
-        }
-
-        suggestions.forEach((suggestion, index) => {
-            const row = document.createElement('div');
-            row.className = 'hermes-suggestion-row';
-            row.id = `suggestion-row-${index}`; // Unique ID for removal
-
-            // Use innerHTML for easier formatting, ensure data is sanitized if ever dynamic
-            row.innerHTML = `
-                <div class="suggestion-details">
-                    Found token: <strong title="Count: ${suggestion.count}">${suggestion.token}</strong><br>
-                    Suggest map to: <strong>${suggestion.suggestedKey}</strong> (Score: ${suggestion.score})
-                </div>
-                <div class="suggestion-actions">
-                    <button type="button" class="approve-button" data-token="${suggestion.token}" data-key="${suggestion.suggestedKey}" data-rowid="suggestion-row-${index}">✅ Approve</button>
-                    <button type="button" class="reject-button" data-rowid="suggestion-row-${index}">❌ Reject</button>
-                </div>
-            `;
-
-            suggestionsContainer.appendChild(row);
-        });
-
-        // Add event listeners for the newly created buttons (using event delegation is more efficient for many rows, but direct is simpler here)
-        suggestionsContainer.querySelectorAll('.approve-button').forEach(button => {
-            button.onclick = approveMappingHandler;
-        });
-        suggestionsContainer.querySelectorAll('.reject-button').forEach(button => {
-            button.onclick = rejectMappingHandler;
-        });
-    }
-
-    /**
-     * Handles the approval of a suggested mapping.
-     * @param {Event} event - The click event.
-     */
-    function approveMappingHandler(event) {
-        const button = event.target;
-        const token = button.dataset.token;
-        const suggestedKey = button.dataset.key;
-        const rowId = button.dataset.rowid;
-
-        if (!token || !suggestedKey) return;
-
-        const customMappings = loadCustomMappings();
-        customMappings[token] = suggestedKey; // Add or update the mapping
-        saveCustomMappings(customMappings);
-
-        // Remove the row from the UI
-        const row = document.getElementById(rowId);
-        if (row) row.remove();
-
-        statusIndicator.textContent = `Mapping '${token}' -> '${suggestedKey}' saved.`;
-        statusIndicator.style.color = 'green';
-        console.log(`Hermes: Approved mapping: ${token} -> ${suggestedKey}`);
-
-         // Optional: Check if container is now empty and display message
-         const container = document.getElementById('hermes-suggestions-container');
-         if (container && !container.querySelector('.hermes-suggestion-row')) {
-             container.innerHTML = '<p style="text-align: center; padding: 15px; color: #555;">All suggestions processed.</p>';
-         }
-    }
-
-    /**
-     * Handles the rejection of a suggested mapping (removes from view for session).
-     * @param {Event} event - The click event.
-     */
-    function rejectMappingHandler(event) {
-        const button = event.target;
-        const rowId = button.dataset.rowid;
-
-        const row = document.getElementById(rowId);
-        if (row) row.remove();
-        console.log(`Hermes: Rejected suggestion for row ${rowId}`);
-
-        // Optional: Check if container is now empty and display message
-        const container = document.getElementById('hermes-suggestions-container');
-        if (container && !container.querySelector('.hermes-suggestion-row')) {
-            container.innerHTML = '<p style="text-align: center; padding: 15px; color: #555;">All suggestions processed.</p>';
-        }
-    }
-```
-
-**3. Add CSS for the Trainer Panel**
-
-```javascript
-    // Add this inside the GM_addStyle call within setupUI(), alongside other styles.
-
-    /* Styles for Hermes Trainer Panel */
-    #hermes-trainer-panel {
-        display: none; /* Hidden by default */
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 90%;
-        max-width: 600px;
-        max-height: 80vh;
-        background-color: #f5f5f5;
-        border: 1px solid #b0b0b0;
-        border-radius: 6px;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.2);
-        padding: 15px;
-        z-index: 100001; /* Slightly above log viewer? Adjust as needed */
-        font-family: sans-serif;
-        font-size: 14px;
-        display: flex;
-        flex-direction: column;
-    }
-    #hermes-trainer-panel h2 {
-        margin-top: 0;
-        margin-bottom: 10px;
-        text-align: center;
-        color: #333;
-        font-size: 16px;
-         flex-shrink: 0;
-    }
-     #hermes-trainer-panel p {
-         margin-top: 0;
-         margin-bottom: 15px;
-         font-size: 13px;
-         color: #555;
-         text-align: center;
-          flex-shrink: 0;
-     }
-    #hermes-suggestions-container {
-        flex-grow: 1;
-        overflow-y: auto;
-        border: 1px solid #ccc;
-        background-color: #fff;
-        padding: 10px;
-         margin-bottom: 10px;
-    }
-    .hermes-suggestion-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 5px;
-        border-bottom: 1px solid #eee;
-    }
-     .hermes-suggestion-row:last-child {
-         border-bottom: none;
-     }
-    .suggestion-details {
-        font-size: 13px;
-        line-height: 1.4;
-    }
-     .suggestion-details strong {
-         color: #0056b3; /* Highlight token and key */
-         cursor: help; /* Indicate hoverable title */
-     }
-    .suggestion-actions button {
-        padding: 4px 8px;
-        margin-left: 5px;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 12px;
-    }
-    .approve-button { background-color: #28a745; color: white; border-color: #218838;}
-    .reject-button { background-color: #dc3545; color: white; border-color: #c82333;}
-
-    .hermes-trainer-controls {
-        text-align: right;
-         flex-shrink: 0;
-         margin-top: 10px;
-    }
-    .hermes-trainer-controls button {
-         padding: 6px 12px;
-         margin-left: 8px;
-         border: 1px solid #aaa;
-         border-radius: 4px;
-         cursor: pointer;
-         font-size: 13px;
-    }
-     #hermes-trainer-refresh { background-color: #17a2b8; color: white; border-color: #138496;}
-     #hermes-trainer-close { background-color: #ccc; color: #333; }
-
-```
-
-**4. Modify `setupUI` to Add the Trainer Button and Creation Call**
-
-```javascript
-    // --- UI Setup and Event Handlers ---
-    function setupUI() {
-        // ... (Keep existing loading, CSS adding) ...
-
-        // Ensure Trainer Panel CSS from Step 3 is added within GM_addStyle
-
-        uiContainer.id = 'hermes-ui-container';
-
-        // ... (Keep existing button creation: start, stop, dropdown, play, delete, clear, import, export, edit profile, view log) ...
-
-        // --- Add Train Hermes Button ---
-        const trainHermesButton = document.createElement('button');
-        trainHermesButton.textContent = '🧠 Train Hermes';
-        trainHermesButton.id = 'hermes-train';
-        trainHermesButton.onclick = () => toggleTrainerPanel(true); // Show the trainer
-
-        // Append elements in logical order
-        // ... (Append existing buttons) ...
-        uiContainer.appendChild(viewLogButton);
-        uiContainer.appendChild(trainHermesButton); // Add the new button
-        uiContainer.appendChild(statusIndicator);
-
-        // Initial population of macro dropdown
-        updateMacroDropdown();
-
-        // Create the profile editor panel structure (hidden initially)
-        createProfileEditorPanel();
-
-        // Create the log viewer panel structure (hidden initially)
-        createLogViewerPanel();
-
-        // --- Create the trainer panel structure (hidden initially) ---
-        createTrainerPanel();
-
-
-        // Append MAIN UI to body once DOM is ready
-        // ... (Keep existing DOMContentLoaded logic for appending uiContainer) ...
-
-    } // End of setupUI function
-```
-
-**5. Modify `matchProfileKey` to Use Custom Mappings**
-
-```javascript
-    /**
-     * Attempts to match a form field context string to a known profile key using heuristics.
-     * PRIORITIZES custom mappings saved by the user.
-     * @param {string} context - Combined attributes and nearby label text
-     * @param {string} fieldType - HTML input type
-     * @param {HTMLElement} field - The actual input/select/textarea element
-     * @returns {string|null} Matched profile key or null
-     */
-    function matchProfileKey(context, fieldType, field) {
-        context = context.toLowerCase();
-        const customMappings = loadCustomMappings();
-
-        // --- Check Custom Mappings First ---
-        const contextTokens = context
-             .replace(/[^a-zA-Z0-9_\-\s]/g, '') // Strip punctuation
-             .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase splitter
-             .split(/[\s\-_]+/);
-
-        for (const token of contextTokens) {
-            if (customMappings[token]) {
-                console.log(`Hermes: Matched via custom rule: '${token}' -> '${customMappings[token]}'`);
-                return customMappings[token]; // Return profile key from custom mapping
-            }
-        }
-        // --- End Custom Mapping Check ---
-
-
-        // --- Original Heuristic Rules ---
-        if (/first/.test(context) && /name/.test(context)) return 'firstName';
-        if (/last/.test(context) && /name/.test(context)) return 'lastName';
-        // Handle cases where full name might map to first name if no specific 'first' found
-        if (/full/.test(context) && /name/.test(context) && !/first|last/.test(context)) return 'firstName';
-        if (/email/.test(context)) return 'email';
-        if (/phone|tel/.test(context)) return 'phone';
-        if (/address\s*1|address\s*line\s*1|street/.test(context)) return 'address1';
-        if (/address\s*2|address\s*line\s*2|apt|suite|unit/.test(context)) return 'address2';
-        if (/city/.test(context)) return 'city';
-        if (/state|province/.test(context)) return 'state';
-        if (/zip|postal/.test(context)) return 'zip';
-        if (/country/.test(context)) return 'country';
-        // --- End Original Heuristic Rules ---
-
-        return null; // No confident match from custom or default rules
-    }
-```
-
+Acknowledged. The ritual chamber shall be constructed. Hermes will now have the interface through which its generated insights are presented to the sovereign user for judgment, allowing its symbolic map to be refined through explicit consent.
+
+Here is the implementation for Phase 2.6, Part 2: The Trainer UI Panel.
+
+**(Code Generation - Phase 2.6, Part 2: Trainer Panel UI & Logic)**
+
+**1. Helper Functions for Custom Mappings**
+
+```javascript
+    // --- Custom Mapping Helpers ---
+    const CUSTOM_MAPPINGS_KEY = 'hermes_customMappings';
+
+    /**
+     * Loads custom mappings from GM storage.
+     * @returns {object} The custom mappings object or an empty object.
+     */
+    function loadCustomMappings() {
+        try {
+            const mappingsJson = GM_getValue(CUSTOM_MAPPINGS_KEY, '{}');
+            return JSON.parse(mappingsJson);
+        } catch (error) {
+            console.error("Hermes: Error loading custom mappings:", error);
+            return {};
+        }
+    }
+
+    /**
+     * Saves custom mappings to GM storage.
+     * @param {object} mappings - The mappings object to save.
+     */
+    function saveCustomMappings(mappings) {
+        try {
+            GM_setValue(CUSTOM_MAPPINGS_KEY, JSON.stringify(mappings));
+            console.log("Hermes: Custom mappings saved:", mappings);
+        } catch (error) {
+            console.error("Hermes: Error saving custom mappings:", error);
+            statusIndicator.textContent = 'Mapping Save Error';
+            statusIndicator.style.color = 'red';
+        }
+    }
+```
+
+**2. New Functions for Trainer Panel UI (`createTrainerPanel`, `toggleTrainerPanel`, `populateTrainerPanel`, `approveMappingHandler`, `rejectMappingHandler`)**
+
+```javascript
+    // --- Trainer Panel UI Functions ---
+    let trainerPanel = null; // Reference to the panel element
+
+    /**
+     * Creates the HTML structure for the trainer panel (initially hidden).
+     */
+    function createTrainerPanel() {
+        if (document.getElementById('hermes-trainer-panel')) return; // Already created
+
+        trainerPanel = document.createElement('div');
+        trainerPanel.id = 'hermes-trainer-panel';
+
+        trainerPanel.innerHTML = `
+            <h2>Hermes Heuristic Trainer</h2>
+            <p>Review suggestions based on fields Hermes couldn't automatically match in the current session log.</p>
+            <div id="hermes-suggestions-container">
+                </div>
+            <div class="hermes-trainer-controls">
+                <button type="button" id="hermes-trainer-refresh">🔄 Refresh Suggestions</button>
+                <button type="button" id="hermes-trainer-close">❌ Close</button>
+                 </div>
+        `;
+
+        document.body.appendChild(trainerPanel);
+
+        // Add control button listeners
+        const closeButton = document.getElementById('hermes-trainer-close');
+        const refreshButton = document.getElementById('hermes-trainer-refresh');
+
+        if (closeButton) {
+            closeButton.onclick = () => toggleTrainerPanel(false);
+        }
+        if (refreshButton) {
+             // Re-run analysis and repopulate
+            refreshButton.onclick = populateTrainerPanel;
+        }
+    }
+
+    /**
+     * Shows or hides the trainer panel.
+     * @param {boolean} show - True to show, false to hide.
+     */
+    function toggleTrainerPanel(show) {
+        if (!trainerPanel) {
+            console.error("Hermes: Trainer panel not created.");
+            return;
+        }
+        if (show) {
+            populateTrainerPanel(); // Run analysis and show suggestions when opening
+            trainerPanel.style.display = 'block';
+        } else {
+            trainerPanel.style.display = 'none';
+        }
+    }
+
+    /**
+     * Runs analysis and populates the trainer panel with suggestions.
+     */
+    function populateTrainerPanel() {
+        const suggestionsContainer = document.getElementById('hermes-suggestions-container');
+        if (!suggestionsContainer) {
+            console.error("Hermes: Suggestions container not found.");
+            return;
+        }
+
+        const suggestions = runHeuristicTrainerSession(); // Get suggestions from Phase 2.6 Part 1 logic
+        suggestionsContainer.innerHTML = ''; // Clear previous suggestions
+
+        if (suggestions.length === 0) {
+            suggestionsContainer.innerHTML = '<p style="text-align: center; padding: 15px; color: #555;">No new mapping suggestions found based on the current session log.</p>';
+            return;
+        }
+
+        suggestions.forEach((suggestion, index) => {
+            const row = document.createElement('div');
+            row.className = 'hermes-suggestion-row';
+            row.id = `suggestion-row-${index}`; // Unique ID for removal
+
+            // Use innerHTML for easier formatting, ensure data is sanitized if ever dynamic
+            row.innerHTML = `
+                <div class="suggestion-details">
+                    Found token: <strong title="Count: ${suggestion.count}">${suggestion.token}</strong><br>
+                    Suggest map to: <strong>${suggestion.suggestedKey}</strong> (Score: ${suggestion.score})
+                </div>
+                <div class="suggestion-actions">
+                    <button type="button" class="approve-button" data-token="${suggestion.token}" data-key="${suggestion.suggestedKey}" data-rowid="suggestion-row-${index}">✅ Approve</button>
+                    <button type="button" class="reject-button" data-rowid="suggestion-row-${index}">❌ Reject</button>
+                </div>
+            `;
+
+            suggestionsContainer.appendChild(row);
+        });
+
+        // Add event listeners for the newly created buttons (using event delegation is more efficient for many rows, but direct is simpler here)
+        suggestionsContainer.querySelectorAll('.approve-button').forEach(button => {
+            button.onclick = approveMappingHandler;
+        });
+        suggestionsContainer.querySelectorAll('.reject-button').forEach(button => {
+            button.onclick = rejectMappingHandler;
+        });
+    }
+
+    /**
+     * Handles the approval of a suggested mapping.
+     * @param {Event} event - The click event.
+     */
+    function approveMappingHandler(event) {
+        const button = event.target;
+        const token = button.dataset.token;
+        const suggestedKey = button.dataset.key;
+        const rowId = button.dataset.rowid;
+
+        if (!token || !suggestedKey) return;
+
+        const customMappings = loadCustomMappings();
+        customMappings[token] = suggestedKey; // Add or update the mapping
+        saveCustomMappings(customMappings);
+
+        // Remove the row from the UI
+        const row = document.getElementById(rowId);
+        if (row) row.remove();
+
+        statusIndicator.textContent = `Mapping '${token}' -> '${suggestedKey}' saved.`;
+        statusIndicator.style.color = 'green';
+        console.log(`Hermes: Approved mapping: ${token} -> ${suggestedKey}`);
+
+         // Optional: Check if container is now empty and display message
+         const container = document.getElementById('hermes-suggestions-container');
+         if (container && !container.querySelector('.hermes-suggestion-row')) {
+             container.innerHTML = '<p style="text-align: center; padding: 15px; color: #555;">All suggestions processed.</p>';
+         }
+    }
+
+    /**
+     * Handles the rejection of a suggested mapping (removes from view for session).
+     * @param {Event} event - The click event.
+     */
+    function rejectMappingHandler(event) {
+        const button = event.target;
+        const rowId = button.dataset.rowid;
+
+        const row = document.getElementById(rowId);
+        if (row) row.remove();
+        console.log(`Hermes: Rejected suggestion for row ${rowId}`);
+
+        // Optional: Check if container is now empty and display message
+        const container = document.getElementById('hermes-suggestions-container');
+        if (container && !container.querySelector('.hermes-suggestion-row')) {
+            container.innerHTML = '<p style="text-align: center; padding: 15px; color: #555;">All suggestions processed.</p>';
+        }
+    }
+```
+
+**3. Add CSS for the Trainer Panel**
+
+```javascript
+    // Add this inside the GM_addStyle call within setupUI(), alongside other styles.
+
+    /* Styles for Hermes Trainer Panel */
+    #hermes-trainer-panel {
+        display: none; /* Hidden by default */
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        max-width: 600px;
+        max-height: 80vh;
+        background-color: #f5f5f5;
+        border: 1px solid #b0b0b0;
+        border-radius: 6px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.2);
+        padding: 15px;
+        z-index: 100001; /* Slightly above log viewer? Adjust as needed */
+        font-family: sans-serif;
+        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+    }
+    #hermes-trainer-panel h2 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        text-align: center;
+        color: #333;
+        font-size: 16px;
+         flex-shrink: 0;
+    }
+     #hermes-trainer-panel p {
+         margin-top: 0;
+         margin-bottom: 15px;
+         font-size: 13px;
+         color: #555;
+         text-align: center;
+          flex-shrink: 0;
+     }
+    #hermes-suggestions-container {
+        flex-grow: 1;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        padding: 10px;
+         margin-bottom: 10px;
+    }
+    .hermes-suggestion-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 5px;
+        border-bottom: 1px solid #eee;
+    }
+     .hermes-suggestion-row:last-child {
+         border-bottom: none;
+     }
+    .suggestion-details {
+        font-size: 13px;
+        line-height: 1.4;
+    }
+     .suggestion-details strong {
+         color: #0056b3; /* Highlight token and key */
+         cursor: help; /* Indicate hoverable title */
+     }
+    .suggestion-actions button {
+        padding: 4px 8px;
+        margin-left: 5px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+    .approve-button { background-color: #28a745; color: white; border-color: #218838;}
+    .reject-button { background-color: #dc3545; color: white; border-color: #c82333;}
+
+    .hermes-trainer-controls {
+        text-align: right;
+         flex-shrink: 0;
+         margin-top: 10px;
+    }
+    .hermes-trainer-controls button {
+         padding: 6px 12px;
+         margin-left: 8px;
+         border: 1px solid #aaa;
+         border-radius: 4px;
+         cursor: pointer;
+         font-size: 13px;
+    }
+     #hermes-trainer-refresh { background-color: #17a2b8; color: white; border-color: #138496;}
+     #hermes-trainer-close { background-color: #ccc; color: #333; }
+
+```
+
+**4. Modify `setupUI` to Add the Trainer Button and Creation Call**
+
+```javascript
+    // --- UI Setup and Event Handlers ---
+    function setupUI() {
+        // ... (Keep existing loading, CSS adding) ...
+
+        // Ensure Trainer Panel CSS from Step 3 is added within GM_addStyle
+
+        uiContainer.id = 'hermes-ui-container';
+
+        // ... (Keep existing button creation: start, stop, dropdown, play, delete, clear, import, export, edit profile, view log) ...
+
+        // --- Add Train Hermes Button ---
+        const trainHermesButton = document.createElement('button');
+        trainHermesButton.textContent = '🧠 Train Hermes';
+        trainHermesButton.id = 'hermes-train';
+        trainHermesButton.onclick = () => toggleTrainerPanel(true); // Show the trainer
+
+        // Append elements in logical order
+        // ... (Append existing buttons) ...
+        uiContainer.appendChild(viewLogButton);
+        uiContainer.appendChild(trainHermesButton); // Add the new button
+        uiContainer.appendChild(statusIndicator);
+
+        // Initial population of macro dropdown
+        updateMacroDropdown();
+
+        // Create the profile editor panel structure (hidden initially)
+        createProfileEditorPanel();
+
+        // Create the log viewer panel structure (hidden initially)
+        createLogViewerPanel();
+
+        // --- Create the trainer panel structure (hidden initially) ---
+        createTrainerPanel();
+
+
+        // Append MAIN UI to body once DOM is ready
+        // ... (Keep existing DOMContentLoaded logic for appending uiContainer) ...
+
+    } // End of setupUI function
+```
+
+**5. Modify `matchProfileKey` to Use Custom Mappings**
+
+```javascript
+    /**
+     * Attempts to match a form field context string to a known profile key using heuristics.
+     * PRIORITIZES custom mappings saved by the user.
+     * @param {string} context - Combined attributes and nearby label text
+     * @param {string} fieldType - HTML input type
+     * @param {HTMLElement} field - The actual input/select/textarea element
+     * @returns {string|null} Matched profile key or null
+     */
+    function matchProfileKey(context, fieldType, field) {
+        context = context.toLowerCase();
+        const customMappings = loadCustomMappings();
+
+        // --- Check Custom Mappings First ---
+        const contextTokens = context
+             .replace(/[^a-zA-Z0-9_\-\s]/g, '') // Strip punctuation
+             .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase splitter
+             .split(/[\s\-_]+/);
+
+        for (const token of contextTokens) {
+            if (customMappings[token]) {
+                console.log(`Hermes: Matched via custom rule: '${token}' -> '${customMappings[token]}'`);
+                return customMappings[token]; // Return profile key from custom mapping
+            }
+        }
+        // --- End Custom Mapping Check ---
+
+
+        // --- Original Heuristic Rules ---
+        if (/first/.test(context) && /name/.test(context)) return 'firstName';
+        if (/last/.test(context) && /name/.test(context)) return 'lastName';
+        // Handle cases where full name might map to first name if no specific 'first' found
+        if (/full/.test(context) && /name/.test(context) && !/first|last/.test(context)) return 'firstName';
+        if (/email/.test(context)) return 'email';
+        if (/phone|tel/.test(context)) return 'phone';
+        if (/address\s*1|address\s*line\s*1|street/.test(context)) return 'address1';
+        if (/address\s*2|address\s*line\s*2|apt|suite|unit/.test(context)) return 'address2';
+        if (/city/.test(context)) return 'city';
+        if (/state|province/.test(context)) return 'state';
+        if (/zip|postal/.test(context)) return 'zip';
+        if (/country/.test(context)) return 'country';
+        // --- End Original Heuristic Rules ---
+
+        return null; // No confident match from custom or default rules
+    }
+```
+
 This completes the implementation for the Heuristic Trainer UI Panel (Phase 2.6, Part 2). Hermes now has the interface to present learning suggestions derived from its operational log, and the mechanism for the user to approve these suggestions, thereby directly enhancing its future `matchProfileKey` performance via persistent custom mappings. The guided learning loop is established.
 
 ---
