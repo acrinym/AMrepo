@@ -1160,7 +1160,7 @@ Automatically create the following directory structure if it does not exist:
 └── notes/
 
 
-
+
 
 Add a README.md in /mirror_entity/ with this content:
 """
@@ -1258,7 +1258,7 @@ Automatically create the following directory structure if it does not exist:
 └── notes/
 
 
-
+
 
 Add a README.md in /mirror_entity/ with this content:
 """
