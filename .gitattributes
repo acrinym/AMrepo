@@ -1,22 +1,46 @@
-# Normalize line endings and keep UTF-8 (emoji-safe)
-* text=auto eol=lf
+# Set default behavior to automatically normalize line endings
+* text=auto
 
-# Treat these as text (UTF-8)
-*.cs     text diff=csharp
-*.axaml  text
-*.csproj text
-*.sln    text
-*.md     text working-tree-encoding=UTF-8
-*.json   text
-*.txt    text working-tree-encoding=UTF-8
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout
+*.cs text eol=lf
+*.csproj text eol=lf
+*.sln text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.xml text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.config text eol=lf
+*.props text eol=lf
+*.targets text eol=lf
 
-# Binary
+# Declare files that will always have CRLF line endings on checkout
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Declare files that will always have LF line endings on checkout
+*.sh text eol=lf
+
+# Denote all files that are truly binary and should not be modified
 *.png binary
 *.jpg binary
-*.webp binary
+*.jpeg binary
 *.gif binary
-*.zip binary
-*.dll binary
-*.wav binary
-*.mp3 binary
 *.ico binary
+*.mov binary
+*.mp4 binary
+*.mp3 binary
+*.flv binary
+*.fla binary
+*.swf binary
+*.gz binary
+*.zip binary
+*.7z binary
+*.ttf binary
+*.eot binary
+*.woff binary
+*.woff2 binary
+*.pyc binary
+*.pdf binary
