@@ -417,6 +417,22 @@ public class AvsEffectLibraryService
 
         AddEffect(new AvsEffect
         {
+            Id = "dotgrid",
+            Name = "dotgrid",
+            DisplayName = "Dot Grid",
+            Description = "Renders a grid of dots with optional jitter and fading",
+            Type = AvsEffectType.Dot,
+            Section = AvsSection.Frame,
+            Parameters = new Dictionary<string, object>
+            {
+                ["spacing"] = 8,
+                ["jitter"] = 0,
+                ["fade"] = 0.8f
+            }
+        });
+
+        AddEffect(new AvsEffect
+        {
             Id = "fountain",
             Name = "fountain",
             DisplayName = "Fountain",
