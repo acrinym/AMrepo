@@ -57,7 +57,7 @@ def validate_pr_description(content: str) -> tuple[bool, list[str]]:
     
     # Check for specific error format if build failed
     if "❌ FAILED" in content:
-        if not re.search(r"/workspace/.*\.cs\(\d+,\d+\)", content):
+        if not re.search(r"/workspace/.*\.(cs|axaml)\(\d+,\d+", content):
             errors.append("Build failed but missing specific error format with file paths and line numbers")
     
     return len(errors) == 0, errors
