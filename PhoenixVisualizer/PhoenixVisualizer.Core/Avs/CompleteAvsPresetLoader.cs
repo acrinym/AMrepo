@@ -1,9 +1,18 @@
 using System.Text.Json;
 using PhoenixVisualizer.Core.Effects.Interfaces;
 using PhoenixVisualizer.Core.Models;
-using PhoenixVisualizer.PluginHost;
 
 namespace PhoenixVisualizer.Core.Avs;
+
+/// <summary>
+/// Interface for NS-EEL expression evaluator
+/// </summary>
+public interface INsEelEvaluator : IDisposable
+{
+    double Evaluate(string expression);
+    void SetAudioData(float bass, float mid, float treble, float volume, bool beat);
+    void SetFrameContext(int frame, double frameTime, double beatTime);
+}
 
 /// <summary>
 /// Complete AVS preset loader that converts .avs files to Phoenix effect chains
@@ -11,11 +20,11 @@ namespace PhoenixVisualizer.Core.Avs;
 /// </summary>
 public class CompleteAvsPresetLoader
 {
-    private readonly NsEelEvaluator _eelEvaluator;
+    private readonly INsEelEvaluator? _eelEvaluator;
     
-    public CompleteAvsPresetLoader()
+    public CompleteAvsPresetLoader(INsEelEvaluator? eelEvaluator = null)
     {
-        _eelEvaluator = new NsEelEvaluator();
+        _eelEvaluator = eelEvaluator;
     }
 
     /// <summary>
@@ -240,7 +249,7 @@ public class CompleteAvsPresetLoader
                         var code = param.Value.GetString() ?? "";
                         if (!string.IsNullOrWhiteSpace(code))
                         {
-                            // Load code into effect using NS-EEL evaluator
+                            // Load code into effect using NS-EEL evaluator (if available)
                             if (effectNode is IScriptableEffect scriptable)
                             {
                                 scriptable.LoadScript(code);
@@ -339,7 +348,7 @@ public class CompleteAvsPresetLoader
     /// <summary>
     /// Get AVS preset information without fully loading
     /// </summary>
-    public AvsPresetInfo GetPresetInfo(string avsFilePath)
+    public AvsPresetAnalysisInfo GetPresetInfo(string avsFilePath)
     {
         try
         {
@@ -347,7 +356,7 @@ public class CompleteAvsPresetLoader
             var presetData = JsonDocument.Parse(phoenixJson);
             var root = presetData.RootElement;
 
-            var info = new AvsPresetInfo
+            var info = new AvsPresetAnalysisInfo
             {
                 FilePath = avsFilePath,
                 FileName = Path.GetFileName(avsFilePath),
@@ -385,7 +394,7 @@ public class CompleteAvsPresetLoader
         }
         catch (Exception ex)
         {
-            return new AvsPresetInfo
+            return new AvsPresetAnalysisInfo
             {
                 FilePath = avsFilePath,
                 FileName = Path.GetFileName(avsFilePath),
@@ -410,7 +419,7 @@ public class PresetMetadata
 /// <summary>
 /// Information about an AVS preset without full loading
 /// </summary>
-public class AvsPresetInfo
+public class AvsPresetAnalysisInfo
 {
     public string FilePath { get; set; } = "";
     public string FileName { get; set; } = "";

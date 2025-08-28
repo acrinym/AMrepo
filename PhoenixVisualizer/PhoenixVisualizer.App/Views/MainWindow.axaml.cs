@@ -9,6 +9,7 @@ using PhoenixVisualizer.App.Rendering;
 using PhoenixVisualizer.App.Controls;
 using PhoenixVisualizer.Core.Diagnostics;
 using PhoenixVisualizer.App.Utils;
+using PhoenixVisualizer.Services;
 using System.Text;
 
 namespace PhoenixVisualizer.Views;
@@ -808,6 +809,11 @@ public partial class MainWindow : Window
                 }
                 return;
             }
+            if (route.Route == AvsRoute.PhoenixAvs)
+            {
+                await ProcessPhoenixAvsPreset(bytes, fileName);
+                return;
+            }
             if (route.Route == AvsRoute.Unsupported)
             {
                 await ShowDialogAsync("PhoenixVisualizer", route.Message ?? "❌ AVS preset not supported yet.");
@@ -833,6 +839,65 @@ public partial class MainWindow : Window
             {
                 RenderSurfaceControl.SetPlugin(visPlugin);
                 plug.LoadPreset(text);
+            }
+        }
+
+        /// <summary>
+        /// Process AVS preset using Phoenix native C# implementation
+        /// </summary>
+        private async Task ProcessPhoenixAvsPreset(byte[] bytes, string fileName)
+        {
+            try
+            {
+                // Save bytes to a temporary file for the loader
+                var tempFile = Path.GetTempFileName();
+                try
+                {
+                    File.WriteAllBytes(tempFile, bytes);
+                    
+                    // Use Phoenix AVS service to load the preset
+                    var phoenixService = new PhoenixAvsPresetService();
+                    var result = phoenixService.LoadPreset(tempFile);
+                    
+                    if (result.Success && result.EffectChain != null)
+                    {
+                        await ShowToastAsync($"🌟 {result.StatusSummary}");
+                        
+                        // TODO: Integrate with Phoenix visualizer
+                        // For now, show information about what was loaded
+                        var message = $"Phoenix AVS Loader Result:\n\n";
+                        message += $"• File: {fileName}\n";
+                        message += $"• Effects loaded: {result.SupportedEffectCount}/{result.TotalEffectCount}\n";
+                        
+                        if (result.UnsupportedEffectCount > 0)
+                        {
+                            message += $"• Unsupported effects: {result.UnsupportedEffectCount}\n";
+                        }
+                        
+                        if (result.PresetInfo != null)
+                        {
+                            message += $"• Has scripts: Init={result.PresetInfo.HasInitScript}, Frame={result.PresetInfo.HasFrameScript}, Beat={result.PresetInfo.HasBeatScript}\n";
+                        }
+                        
+                        message += $"\nEffect chain created with {result.EffectChain.Count} nodes.";
+                        
+                        await ShowDialogAsync("Phoenix AVS Loading", message);
+                    }
+                    else
+                    {
+                        await ShowDialogAsync("Phoenix AVS Loading", $"❌ Failed to load preset:\n{result.ErrorMessage}");
+                    }
+                }
+                finally
+                {
+                    // Clean up temp file
+                    if (File.Exists(tempFile))
+                        File.Delete(tempFile);
+                }
+            }
+            catch (Exception ex)
+            {
+                await ShowDialogAsync("PhoenixVisualizer", $"❌ Phoenix AVS loading failed: {ex.Message}");
             }
         }
 
@@ -1255,6 +1320,11 @@ public partial class MainWindow : Window
             {
                 await ShowDialogAsync("PhoenixVisualizer", "❌ No native host handle available.");
             }
+            return;
+        }
+        if (route.Route == AvsRoute.PhoenixAvs)
+        {
+            await ProcessPhoenixAvsPreset(bytes, displayName);
             return;
         }
         if (route.Route == AvsRoute.Unsupported)
