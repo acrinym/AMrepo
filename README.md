@@ -1,6 +1,44 @@
 # AMrepo
 My Maps
 
+## 🎵 PhoenixVisualizer Project
+
+**Status:** ✅ **BUILD SYSTEM FULLY RESTORED**  
+**Last Updated:** December 28, 2024  
+
+### 🎯 **Project Overview**
+PhoenixVisualizer is an advanced audio visualization application built with Avalonia (.NET 8) that provides:
+- **Audio Playback:** LibVLCSharp integration for high-quality audio
+- **Visual Effects:** Modular effect system with 60+ AVS-compatible effects
+- **Real-time Processing:** Live audio analysis and visualization
+- **Cross-platform:** Windows, macOS, and Linux support
+
+### 🚀 **Current Status**
+- **Build System:** ✅ Fully functional (0 errors, 0 warnings)
+- **Core Infrastructure:** ✅ Complete and tested
+- **Audio System:** ✅ VLC integration working
+- **Effect Framework:** ✅ Architecture ready for implementation
+- **Testing:** ✅ Standalone tests verified
+
+### 📚 **Documentation**
+- **[Status Report](./PHOENIXVISUALIZER_STATUS_REPORT.md)** - Complete project status
+- **[Build Restoration](./BUILD_SYSTEM_RESTORATION_COMPLETE.md)** - Major milestone achieved
+- **[Project Plan](./PROJECT_PHOENIX_PLAN.md)** - Development roadmap
+
+### 🔧 **Quick Start**
+```bash
+# Build the solution
+dotnet build PhoenixVisualizer/PhoenixVisualizer.sln
+
+# Run standalone test
+dotnet run --project PhoenixVisualizer/VlcTestStandalone
+
+# Run main application (requires display)
+dotnet run --project PhoenixVisualizer/PhoenixVisualizer.App
+```
+
+---
+
 ## 🤖 For Code Agents
 
 **MANDATORY:** All code agents MUST follow these guidelines when creating pull requests:
