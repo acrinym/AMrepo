@@ -1,0 +1,467 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
+        x:Class="PhoenixVisualizer.App.Views.PhxEditorWindow"
+        Title="PHX Editor - Advanced Visual Effects Composer"
+        Width="1400" Height="900"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="EditorBackground">#1E1E1E</SolidColorBrush>
+        <SolidColorBrush x:Key="PanelBackground">#2D2D30</SolidColorBrush>
+        <SolidColorBrush x:Key="AccentColor">#007ACC</SolidColorBrush>
+        <SolidColorBrush x:Key="TextColor">#F1F1F1</SolidColorBrush>
+        <SolidColorBrush x:Key="SecondaryText">#CCCCCC</SolidColorBrush>
+        <SolidColorBrush x:Key="BorderColor">#3F3F46</SolidColorBrush>
+        <SolidColorBrush x:Key="SuccessColor">#4CAF50</SolidColorBrush>
+        <SolidColorBrush x:Key="WarningColor">#FF9800</SolidColorBrush>
+        <SolidColorBrush x:Key="ErrorColor">#F44336</SolidColorBrush>
+    </Window.Resources>
+
+    <Grid Background="{StaticResource EditorBackground}">
+
+        <!-- Main Layout: Left Sidebar + Center Content + Right Properties -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="320"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Menu Bar -->
+        <Border Grid.Column="0" Grid.ColumnSpan="3" Background="{StaticResource PanelBackground}"
+                BorderBrush="{StaticResource BorderColor}" BorderThickness="0,0,0,1">
+            <Menu VerticalAlignment="Top" Background="{StaticResource PanelBackground}">
+                <MenuItem Header="File">
+                    <MenuItem Header="New Preset" Command="{Binding NewPresetCommand}" InputGesture="Ctrl+N"/>
+                    <MenuItem Header="Open Preset..." Command="{Binding OpenPresetCommand}" InputGesture="Ctrl+O"/>
+                    <MenuItem Header="Save Preset" Command="{Binding SavePresetCommand}" InputGesture="Ctrl+S"/>
+                    <MenuItem Header="Save Preset As..." Command="{Binding SavePresetAsCommand}" InputGesture="Ctrl+Shift+S"/>
+                    <MenuItem Header="Export as AVS..." Command="{Binding ExportAvsCommand}"/>
+                    <Separator/>
+                    <MenuItem Header="Import AVS Preset..." Command="{Binding ImportAvsCommand}"/>
+                    <Separator/>
+                    <MenuItem Header="Exit" Command="{Binding ExitCommand}" InputGesture="Alt+F4"/>
+                </MenuItem>
+                <MenuItem Header="Edit">
+                    <MenuItem Header="Undo" Command="{Binding UndoCommand}" InputGesture="Ctrl+Z"/>
+                    <MenuItem Header="Redo" Command="{Binding RedoCommand}" InputGesture="Ctrl+Y"/>
+                    <Separator/>
+                    <MenuItem Header="Cut" Command="{Binding CutCommand}" InputGesture="Ctrl+X"/>
+                    <MenuItem Header="Copy" Command="{Binding CopyCommand}" InputGesture="Ctrl+C"/>
+                    <MenuItem Header="Paste" Command="{Binding PasteCommand}" InputGesture="Ctrl+V"/>
+                    <Separator/>
+                    <MenuItem Header="Duplicate Effect" Command="{Binding DuplicateEffectCommand}" InputGesture="Ctrl+D"/>
+                    <MenuItem Header="Delete Effect" Command="{Binding DeleteEffectCommand}" InputGesture="Delete"/>
+                </MenuItem>
+                <MenuItem Header="View">
+                    <MenuItem Header="Preview Window" Command="{Binding TogglePreviewCommand}" InputGesture="F5"/>
+                    <MenuItem Header="Parameter Panel" Command="{Binding ToggleParametersCommand}" InputGesture="F6"/>
+                    <MenuItem Header="Effect Library" Command="{Binding ToggleLibraryCommand}" InputGesture="F7"/>
+                    <Separator/>
+                    <MenuItem Header="Fullscreen Preview" Command="{Binding FullscreenPreviewCommand}" InputGesture="F11"/>
+                </MenuItem>
+                <MenuItem Header="Tools">
+                    <MenuItem Header="Test Run" Command="{Binding TestRunCommand}" InputGesture="F5"/>
+                    <MenuItem Header="Build & Test" Command="{Binding BuildTestCommand}" InputGesture="F6"/>
+                    <MenuItem Header="Performance Monitor" Command="{Binding PerformanceMonitorCommand}"/>
+                    <Separator/>
+                    <MenuItem Header="Clear All" Command="{Binding ClearAllCommand}" InputGesture="Ctrl+Shift+Delete"/>
+                </MenuItem>
+                <MenuItem Header="Help">
+                    <MenuItem Header="PHX Editor Guide" Command="{Binding ShowGuideCommand}"/>
+                    <MenuItem Header="Keyboard Shortcuts" Command="{Binding ShowShortcutsCommand}" InputGesture="F1"/>
+                    <MenuItem Header="About PHX Editor" Command="{Binding ShowAboutCommand}"/>
+                </MenuItem>
+            </Menu>
+        </Border>
+
+        <!-- Left Sidebar: Effect Library & Stack -->
+        <Border Grid.Column="0" Grid.Row="1" Background="{StaticResource PanelBackground}"
+                BorderBrush="{StaticResource BorderColor}" BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Library Header -->
+                <Border Grid.Row="0" Background="{StaticResource AccentColor}"
+                        BorderBrush="{StaticResource BorderColor}" BorderThickness="0,0,0,1">
+                    <TextBlock Text="🎨 EFFECT LIBRARY"
+                             FontSize="12" FontWeight="Bold"
+                             Foreground="{StaticResource TextColor}"
+                             Margin="10,5"/>
+                </Border>
+
+                <!-- Effect Categories -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="5">
+
+                        <!-- Phoenix Originals -->
+                        <Expander Header="🦅 Phoenix Originals" IsExpanded="True"
+                                  Background="{StaticResource PanelBackground}"
+                                  Foreground="{StaticResource TextColor}">
+                            <StackPanel>
+                                <ListBox Items="{Binding PhoenixOriginals}"
+                                        SelectedItem="{Binding SelectedLibraryEffect}"
+                                        Background="Transparent"
+                                        BorderThickness="0">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}"
+                                                     Foreground="{StaticResource TextColor}"
+                                                     Margin="5,2"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Expander>
+
+                        <!-- AVS Converted -->
+                        <Expander Header="🎵 AVS Converted" IsExpanded="True"
+                                  Background="{StaticResource PanelBackground}"
+                                  Foreground="{StaticResource TextColor}">
+                            <StackPanel>
+                                <ListBox Items="{Binding AvsEffects}"
+                                        SelectedItem="{Binding SelectedLibraryEffect}"
+                                        Background="Transparent"
+                                        BorderThickness="0">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}"
+                                                     Foreground="{StaticResource SecondaryText}"
+                                                     Margin="5,2"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Expander>
+
+                        <!-- Research Effects -->
+                        <Expander Header="🔬 Research Effects" IsExpanded="True"
+                                  Background="{StaticResource PanelBackground}"
+                                  Foreground="{StaticResource TextColor}">
+                            <StackPanel>
+                                <ListBox Items="{Binding ResearchEffects}"
+                                        SelectedItem="{Binding SelectedLibraryEffect}"
+                                        Background="Transparent"
+                                        BorderThickness="0">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}"
+                                                     Foreground="{StaticResource WarningColor}"
+                                                     Margin="5,2"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Expander>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <!-- Center: Main Content Area -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Main Tabs: Effect Stack + Code Editor -->
+            <TabControl Grid.Row="0" Background="{StaticResource EditorBackground}"
+                       SelectedIndex="{Binding SelectedTabIndex}">
+
+                <!-- Effect Stack Tab -->
+                <TabItem Header="🎯 Effect Stack" Background="{StaticResource PanelBackground}">
+                    <Border Background="{StaticResource PanelBackground}"
+                            BorderBrush="{StaticResource BorderColor}" BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Stack Controls -->
+                            <Border Grid.Row="0" Background="{StaticResource AccentColor}"
+                                    BorderBrush="{StaticResource BorderColor}" BorderThickness="0,0,0,1">
+                                <StackPanel Orientation="Horizontal" Margin="10,5">
+                                    <Button Content="➕ Add Effect" Command="{Binding AddEffectCommand}"
+                                            Background="{StaticResource SuccessColor}"
+                                            Foreground="{StaticResource TextColor}"
+                                            Margin="0,0,5,0"/>
+                                    <Button Content="🗑️ Clear All" Command="{Binding ClearAllCommand}"
+                                            Background="{StaticResource ErrorColor}"
+                                            Foreground="{StaticResource TextColor}"
+                                            Margin="0,0,5,0"/>
+                                    <Separator/>
+                                    <TextBlock Text="Stack Count:" VerticalAlignment="Center"
+                                             Foreground="{StaticResource TextColor}" Margin="5,0"/>
+                                    <TextBlock Text="{Binding EffectStack.Count}"
+                                             Foreground="{StaticResource AccentColor}"
+                                             VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Effect Stack List -->
+                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                <ListBox Items="{Binding EffectStack}"
+                                        SelectedItem="{Binding SelectedEffect}"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Margin="5">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="{StaticResource BorderColor}"
+                                                   BorderThickness="1"
+                                                   CornerRadius="3"
+                                                   Margin="2"
+                                                   Background="{StaticResource PanelBackground}">
+                                                <Grid Margin="5">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <!-- Drag Handle -->
+                                                    <TextBlock Text="⋮⋮" Grid.Column="0"
+                                                             Foreground="{StaticResource SecondaryText}"
+                                                             Margin="0,0,5,0"
+                                                             VerticalAlignment="Center"/>
+
+                                                    <!-- Effect Info -->
+                                                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                                                        <TextBlock Text="{Binding Name}"
+                                                                 FontWeight="Bold"
+                                                                 Foreground="{StaticResource TextColor}"/>
+                                                        <TextBlock Text="{Binding Description}"
+                                                                 FontSize="11"
+                                                                 Foreground="{StaticResource SecondaryText}"/>
+                                                    </StackPanel>
+
+                                                    <!-- Controls -->
+                                                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                                        <Button Content="⚙️" Command="{Binding EditCommand}"
+                                                                Background="Transparent"
+                                                                Foreground="{StaticResource AccentColor}"
+                                                                Margin="2"/>
+                                                        <Button Content="🗑️" Command="{Binding DeleteCommand}"
+                                                                Background="Transparent"
+                                                                Foreground="{StaticResource ErrorColor}"
+                                                                Margin="2"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </ScrollViewer>
+                        </Grid>
+                    </Border>
+                </TabItem>
+
+                <!-- Code Editor Tab -->
+                <TabItem Header="💻 Code Editor" Background="{StaticResource PanelBackground}">
+                    <Border Background="{StaticResource PanelBackground}"
+                            BorderBrush="{StaticResource BorderColor}" BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Code Tabs -->
+                            <TabControl Grid.Row="0" Background="{StaticResource PanelBackground}">
+                                <TabItem Header="Init Code">
+                                    <TextBox Text="{Binding InitCode}"
+                                           Background="{StaticResource EditorBackground}"
+                                           Foreground="{StaticResource TextColor}"
+                                           FontFamily="Consolas"
+                                           FontSize="12"
+                                           AcceptsReturn="True"
+                                           TextWrapping="Wrap"
+                                           Margin="5"/>
+                                </TabItem>
+                                <TabItem Header="Per Frame">
+                                    <TextBox Text="{Binding FrameCode}"
+                                           Background="{StaticResource EditorBackground}"
+                                           Foreground="{StaticResource TextColor}"
+                                           FontFamily="Consolas"
+                                           FontSize="12"
+                                           AcceptsReturn="True"
+                                           TextWrapping="Wrap"
+                                           Margin="5"/>
+                                </TabItem>
+                                <TabItem Header="Per Point">
+                                    <TextBox Text="{Binding PointCode}"
+                                           Background="{StaticResource EditorBackground}"
+                                           Foreground="{StaticResource TextColor}"
+                                           FontFamily="Consolas"
+                                           FontSize="12"
+                                           AcceptsReturn="True"
+                                           TextWrapping="Wrap"
+                                           Margin="5"/>
+                                </TabItem>
+                                <TabItem Header="On Beat">
+                                    <TextBox Text="{Binding BeatCode}"
+                                           Background="{StaticResource EditorBackground}"
+                                           Foreground="{StaticResource TextColor}"
+                                           FontFamily="Consolas"
+                                           FontSize="12"
+                                           AcceptsReturn="True"
+                                           TextWrapping="Wrap"
+                                           Margin="5"/>
+                                </TabItem>
+                            </TabControl>
+
+                            <!-- Code Controls -->
+                            <Border Grid.Row="1" Background="{StaticResource PanelBackground}"
+                                    BorderBrush="{StaticResource BorderColor}" BorderThickness="0,1,0,0">
+                                <StackPanel Orientation="Horizontal" Margin="10,5">
+                                    <Button Content="💾 Save Code" Command="{Binding SaveCodeCommand}"
+                                            Background="{StaticResource SuccessColor}"
+                                            Foreground="{StaticResource TextColor}"
+                                            Margin="0,0,5,0"/>
+                                    <Button Content="🔄 Compile" Command="{Binding CompileCommand}"
+                                            Background="{StaticResource WarningColor}"
+                                            Foreground="{StaticResource TextColor}"
+                                            Margin="0,0,5,0"/>
+                                    <Button Content="🧪 Test" Command="{Binding TestCodeCommand}"
+                                            Background="{StaticResource AccentColor}"
+                                            Foreground="{StaticResource TextColor}"
+                                            Margin="0,0,5,0"/>
+                                    <Separator/>
+                                    <TextBlock Text="Status:" VerticalAlignment="Center"
+                                             Foreground="{StaticResource TextColor}" Margin="5,0"/>
+                                    <TextBlock Text="{Binding CodeStatus}"
+                                             Foreground="{StaticResource SuccessColor}"
+                                             VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </TabItem>
+
+            </TabControl>
+
+            <!-- Bottom Status Bar -->
+            <Border Grid.Row="1" Background="{StaticResource PanelBackground}"
+                    BorderBrush="{StaticResource BorderColor}" BorderThickness="0,1,0,0">
+                <Grid Margin="10,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="{Binding StatusMessage}"
+                             Foreground="{StaticResource SecondaryText}"
+                             VerticalAlignment="Center"/>
+
+                    <TextBlock Grid.Column="1" Text="{Binding FpsCounter}"
+                             Foreground="{StaticResource AccentColor}"
+                             VerticalAlignment="Center"
+                             Margin="10,0"/>
+
+                    <TextBlock Grid.Column="2" Text="{Binding MemoryUsage}"
+                             Foreground="{StaticResource WarningColor}"
+                             VerticalAlignment="Center"
+                             Margin="10,0"/>
+
+                    <TextBlock Grid.Column="3" Text="{Binding PresetName}"
+                             Foreground="{StaticResource SuccessColor}"
+                             VerticalAlignment="Center"
+                             Margin="10,0"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Right Sidebar: Properties & Preview -->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="300"/>
+            </Grid.RowDefinitions>
+
+            <!-- Properties Panel -->
+            <Border Grid.Row="0" Background="{StaticResource PanelBackground}"
+                    BorderBrush="{StaticResource BorderColor}" BorderThickness="1,0,0,1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Properties Header -->
+                    <Border Grid.Row="0" Background="{StaticResource AccentColor}"
+                            BorderBrush="{StaticResource BorderColor}" BorderThickness="0,0,0,1">
+                        <TextBlock Text="⚙️ PROPERTIES"
+                                 FontSize="12" FontWeight="Bold"
+                                 Foreground="{StaticResource TextColor}"
+                                 Margin="10,5"/>
+                    </Border>
+
+                    <!-- Parameters List -->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="10" x:Name="ParametersPanel">
+                            <!-- Parameters will be dynamically added here -->
+                            <TextBlock Text="Select an effect to edit its parameters"
+                                     Foreground="{StaticResource SecondaryText}"
+                                     TextAlignment="Center"
+                                     Margin="0,20"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <!-- Preview Panel -->
+            <Border Grid.Row="1" Background="{StaticResource PanelBackground}"
+                    BorderBrush="{StaticResource BorderColor}" BorderThickness="1,1,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Preview Header -->
+                    <Border Grid.Row="0" Background="{StaticResource AccentColor}"
+                            BorderBrush="{StaticResource BorderColor}" BorderThickness="0,0,0,1">
+                        <StackPanel Orientation="Horizontal" Margin="10,5">
+                            <TextBlock Text="👁️ LIVE PREVIEW"
+                                     FontSize="12" FontWeight="Bold"
+                                     Foreground="{StaticResource TextColor}"/>
+                            <Separator Margin="10,0"/>
+                            <Button Content="▶️" Command="{Binding PlayCommand}"
+                                    Background="{StaticResource SuccessColor}"
+                                    Foreground="{StaticResource TextColor}"
+                                    Width="25" Height="20"/>
+                            <Button Content="⏸️" Command="{Binding PauseCommand}"
+                                    Background="{StaticResource WarningColor}"
+                                    Foreground="{StaticResource TextColor}"
+                                    Width="25" Height="20" Margin="2,0"/>
+                            <Button Content="🔄" Command="{Binding RestartCommand}"
+                                    Background="{StaticResource AccentColor}"
+                                    Foreground="{StaticResource TextColor}"
+                                    Width="25" Height="20"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Preview Canvas -->
+                    <Border Grid.Row="1" Background="Black" Margin="5">
+                        <Canvas x:Name="PreviewCanvas"
+                               Width="300" Height="250"
+                               Background="Black">
+                            <!-- Preview will be rendered here -->
+                        </Canvas>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+    </Grid>
+</Window>

@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="600"
+             x:Class="PhoenixVisualizer.App.Views.ParameterEditor">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="EditorBackground">#1E1E1E</SolidColorBrush>
+        <SolidColorBrush x:Key="PanelBackground">#2D2D30</SolidColorBrush>
+        <SolidColorBrush x:Key="AccentColor">#007ACC</SolidColorBrush>
+        <SolidColorBrush x:Key="TextColor">#F1F1F1</SolidColorBrush>
+        <SolidColorBrush x:Key="SecondaryText">#CCCCCC</SolidColorBrush>
+        <SolidColorBrush x:Key="BorderColor">#3F3F46</SolidColorBrush>
+        <SolidColorBrush x:Key="SuccessColor">#4CAF50</SolidColorBrush>
+        <SolidColorBrush x:Key="WarningColor">#FF9800</SolidColorBrush>
+        <SolidColorBrush x:Key="ErrorColor">#F44336</SolidColorBrush>
+    </UserControl.Resources>
+
+    <Border Background="{StaticResource PanelBackground}"
+            BorderBrush="{StaticResource BorderColor}"
+            BorderThickness="1">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel x:Name="ParametersPanel" Margin="10">
+                <!-- Parameters will be dynamically added here -->
+                <TextBlock Text="Select an effect to edit parameters"
+                         Foreground="{StaticResource SecondaryText}"
+                         TextAlignment="Center"
+                         Margin="0,20"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>
