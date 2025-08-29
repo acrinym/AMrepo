@@ -13,8 +13,9 @@ using Avalonia.Threading;
 using PhoenixVisualizer.Core.Nodes;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using System.Diagnostics;
 
-namespace PhoenixVisualizer.App.Views;
+namespace PhoenixVisualizer.Views;
 
 /// <summary>
 /// PHX Editor Window - Advanced Visual Effects Composer
@@ -22,54 +23,166 @@ namespace PhoenixVisualizer.App.Views;
 /// </summary>
 public partial class PhxEditorWindow : Window
 {
+    private PhxPreviewRenderer _previewRenderer;
+    private ParameterEditor _parameterEditor;
+    private PhxCodeEngine _codeEngine;
+
     public PhxEditorWindow()
     {
         InitializeComponent();
         ViewModel = new PhxEditorViewModel();
 
+        // Initialize code engine
+        _codeEngine = new PhxCodeEngine();
+
         // Set up the preview rendering
         SetupPreviewRendering();
+
+        // Set up parameter editor
+        SetupParameterEditor();
+
+        // Wire up effect selection changes
+        WireUpEffectSelection();
+
+        // Wire up code compilation
+        WireUpCodeCompilation();
+    }
+
+    private void WireUpCodeCompilation()
+    {
+        if (ViewModel is PhxEditorViewModel vm)
+        {
+            // Wire up the compile command to execute code
+            vm.CompileCommand.Subscribe(_ => CompileCode());
+            vm.TestCodeCommand.Subscribe(_ => TestCode());
+        }
+    }
+
+    private void CompileCode()
+    {
+        if (ViewModel is PhxEditorViewModel vm)
+        {
+            try
+            {
+                // Execute initialization code
+                var initResult = _codeEngine.ExecuteInit(vm.InitCode);
+                if (!initResult.Success)
+                {
+                    vm.StatusMessage = $"Init Error: {initResult.Message}";
+                    return;
+                }
+
+                // Execute frame code
+                var frameResult = _codeEngine.ExecuteFrame(vm.FrameCode);
+                if (!frameResult.Success)
+                {
+                    vm.StatusMessage = $"Frame Error: {frameResult.Message}";
+                    return;
+                }
+
+                // Execute beat code if available
+                if (!string.IsNullOrWhiteSpace(vm.BeatCode))
+                {
+                    var beatResult = _codeEngine.ExecuteBeat(vm.BeatCode);
+                    if (!beatResult.Success)
+                    {
+                        vm.StatusMessage = $"Beat Error: {beatResult.Message}";
+                        return;
+                    }
+                }
+
+                vm.StatusMessage = "Code compiled successfully";
+                vm.CodeStatus = "Ready";
+
+            }
+            catch (Exception ex)
+            {
+                vm.StatusMessage = $"Compilation Error: {ex.Message}";
+                vm.CodeStatus = "Error";
+                Debug.WriteLine($"PHX Code compilation error: {ex}");
+            }
+        }
+    }
+
+    private void TestCode()
+    {
+        if (ViewModel is PhxEditorViewModel vm)
+        {
+            try
+            {
+                // Test point code execution
+                var pointResult = _codeEngine.ExecutePoint(vm.PointCode, 0, 100);
+                if (!pointResult.Success)
+                {
+                    vm.StatusMessage = $"Point Error: {pointResult.Message}";
+                    return;
+                }
+
+                vm.StatusMessage = $"Test successful - Point: ({pointResult.PointX:F2}, {pointResult.PointY:F2})";
+
+            }
+            catch (Exception ex)
+            {
+                vm.StatusMessage = $"Test Error: {ex.Message}";
+                Debug.WriteLine($"PHX Code test error: {ex}");
+            }
+        }
     }
 
     private void SetupPreviewRendering()
     {
-        // Set up timer for preview updates
-        var timer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromMilliseconds(16) // ~60 FPS
-        };
-
-        timer.Tick += (sender, e) => UpdatePreview();
-        timer.Start();
+        // Create the preview renderer
+        _previewRenderer = new PhxPreviewRenderer(PreviewCanvas, (PhxEditorViewModel)ViewModel);
     }
 
-    private void UpdatePreview()
+    private void SetupParameterEditor()
     {
-        if (ViewModel is PhxEditorViewModel vm && PreviewCanvas != null)
-        {
-            // Clear previous content
-            PreviewCanvas.Children.Clear();
+        // Create parameter editor and add it to the parameters panel
+        _parameterEditor = new ParameterEditor();
+        ParametersPanel.Children.Insert(0, _parameterEditor);
 
-            // Render current effect stack
-            RenderPreview(vm);
+        // Bind to selected effect changes
+        this.WhenAnyValue(x => x.ViewModel)
+            .Where(vm => vm is PhxEditorViewModel)
+            .Select(vm => (PhxEditorViewModel)vm)
+            .Subscribe(vm =>
+            {
+                vm.WhenAnyValue(x => x.SelectedEffect)
+                    .Subscribe(selectedEffect =>
+                    {
+                        if (selectedEffect != null)
+                        {
+                            _parameterEditor.UpdateParameters(
+                                selectedEffect.Name,
+                                selectedEffect.Parameters
+                            );
+                        }
+                        else
+                        {
+                            _parameterEditor.UpdateParameters("", new Dictionary<string, EffectParam>());
+                        }
+                    });
+            });
+    }
+
+    private void WireUpEffectSelection()
+    {
+        // Wire up the preview renderer to respond to play/pause/restart commands
+        if (ViewModel is PhxEditorViewModel vm)
+        {
+            vm.PlayCommand.Subscribe(_ => _previewRenderer?.Resume());
+            vm.PauseCommand.Subscribe(_ => _previewRenderer?.Pause());
+            vm.RestartCommand.Subscribe(_ => _previewRenderer?.Restart());
         }
     }
 
-    private void RenderPreview(PhxEditorViewModel vm)
+    protected override void OnClosed(EventArgs e)
     {
-        // This would integrate with our effect nodes
-        // For now, just show a placeholder
-        var textBlock = new TextBlock
-        {
-            Text = $"PHX Editor Preview\nEffects: {vm.EffectStack.Count}\nStatus: {vm.CodeStatus}",
-            Foreground = Brushes.White,
-            FontSize = 12,
-            TextAlignment = Avalonia.Media.TextAlignment.Center
-        };
+        base.OnClosed(e);
 
-        Canvas.SetLeft(textBlock, 50);
-        Canvas.SetTop(textBlock, 100);
-        PreviewCanvas.Children.Add(textBlock);
+        // Clean up resources
+        _previewRenderer?.Stop();
+        _codeEngine?.Reset();
     }
 }
 
