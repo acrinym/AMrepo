@@ -138,14 +138,69 @@ dotnet build Solution.sln -c Release --verbosity minimal
 
 ---
 
+## 🚨 **CRITICAL: Codebase Backup Requirements**
+
+### **MANDATORY: Run Codebase Backup on Every Assistant Startup**
+
+**EVERY TIME** an AI assistant starts working on this project, they **MUST** run the codebase backup script **IMMEDIATELY**:
+
+```bash
+# From the PhoenixVisualizer directory:
+cd PhoenixVisualizer
+./create_codebase_export.sh
+
+# OR for PowerShell (Windows):
+# .\export_with_build_status.ps1
+```
+
+**WHY THIS IS CRITICAL:**
+- **Immediate Backup**: Captures current state before any changes
+- **Build Status Tracking**: Records current compilation status and any issues
+- **Complete Source Export**: Text export of ALL source files, documentation, and project structure
+- **Error Tracking**: Captures any existing build errors or warnings for reference
+- **Recovery Point**: Provides restore point if changes break the build
+
+**BACKUP OUTPUT:**
+- Creates: `phoenix_visualizer_source_export_YYYY-MM-DD.txt`
+- Includes: All C# files, XAML files, documentation, build status
+- Size: Typically 1-2MB of comprehensive project data
+- Location: Project root directory
+
+**FAILURE TO BACKUP = RISK OF DATA LOSS**
+
+---
+
+## 🧹 **Obsolete Files Review - Action Required**
+
+### **IMMEDIATE CLEANUP RECOMMENDATIONS:**
+
+#### **Safe to Remove Immediately:**
+- ✅ `out.txt` - Build output log (~7.5KB)
+- ✅ `phoenix_visualizer_source_export_2025-08-28.txt` - Outdated export (~45MB)
+- ✅ `COMPLETE_CODEBASE_EXPORT.txt` - Redundant export (~9MB)
+
+#### **Needs Review:**
+- ❓ `VlcTest.cs` - Test file in root (move to `tests/` ?)
+- ❓ `check_exports.cs` - DLL checker (move to `tools/` ?)
+- ❓ `bass.dll` - Move from root to `libs/bass/`
+- ❓ Export scripts consolidation into `tools/export/`
+
+#### **Keep:**
+- ✅ `add-debug-code.disabled` - Useful debug documentation
+
+**ACTION**: Review and clean obsolete files before making changes.
+
+---
+
 ## Agent-Specific Instructions
 
 ### For Code Agents:
-1. **ALWAYS** run a build before creating the PR
-2. **CAPTURE** the complete build output (errors AND warnings)
-3. **DOCUMENT** any workarounds or temporary fixes
-4. **EXPLAIN** technical decisions made during implementation
-5. **IDENTIFY** areas that need future attention
+1. **🚨 FIRST: Run `./create_codebase_export.sh` (MANDATORY)**
+2. **ALWAYS** run a build before creating the PR
+3. **CAPTURE** the complete build output (errors AND warnings)
+4. **DOCUMENT** any workarounds or temporary fixes
+5. **EXPLAIN** technical decisions made during implementation
+6. **IDENTIFY** areas that need future attention
 
 ### For Build Status:
 - ✅ **SUCCESS**: Exit code 0, no errors, warnings acceptable
