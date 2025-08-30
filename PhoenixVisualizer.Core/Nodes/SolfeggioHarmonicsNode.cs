@@ -49,6 +49,7 @@ public class SolfeggioHarmonicsNode : IEffectNode
     private float _animationSpeed = 1.0f;
     private bool _useHelekUnits = false;
     private float _harmonicDepth = 3; // How many harmonics to show
+    private float _time = 0f; // For animation
 
     public string Name => "Solfeggio Harmonics";
     public Dictionary<string, EffectParam> Params { get; } = new()
@@ -245,44 +246,254 @@ public class SolfeggioHarmonicsNode : IEffectNode
 
     private void RenderMainPattern(SolfeggioTone tone, RenderContext ctx)
     {
-        // TODO: Implement SkiaSharp rendering for the main Solfeggio pattern
-        // This would include:
-        // - Sacred geometry patterns based on frequency
-        // - Chladni plate-style nodal patterns
-        // - Color gradients based on frequency ratios
-        // - Animated wave interference patterns
+        if (ctx.Canvas == null) return;
+        
+        // Clear canvas
+        ctx.Canvas.Clear(0xFF000000);
+        
+        // Calculate center and radius
+        float centerX = ctx.Width / 2f;
+        float centerY = ctx.Height / 2f;
+        float maxRadius = Math.Min(centerX, centerY) * 0.8f;
+        
+        // Draw sacred geometry pattern based on frequency
+        float frequencyRatio = tone.Hz / 174f; // Base frequency
+        int sides = Math.Max(3, (int)(frequencyRatio * 8f));
+        
+        // Draw polygon
+        var points = new List<Vector2>();
+        for (int i = 0; i < sides; i++)
+        {
+            float angle = i * 2f * MathF.PI / sides;
+            float radius = maxRadius * (0.5f + 0.3f * MathF.Sin(_time * 2f + angle * 3f));
+            points.Add(new Vector2(
+                centerX + radius * MathF.Cos(angle),
+                centerY + radius * MathF.Sin(angle)
+            ));
+        }
+        
+        // Draw polygon outline
+        for (int i = 0; i < points.Count; i++)
+        {
+            var p1 = points[i];
+            var p2 = points[(i + 1) % points.Count];
+            ctx.Canvas.DrawLine(p1.X, p1.Y, p2.X, p2.Y, GetSolfeggioColor(tone.Hz), 2f);
+        }
+        
+        // Draw Chladni plate-style nodal patterns
+        DrawChladniPatterns(tone, ctx, centerX, centerY, maxRadius);
+        
+        // Draw animated wave interference patterns
+        DrawWaveInterference(tone, ctx, centerX, centerY, maxRadius);
     }
 
     private void RenderHarmonicSeries(List<Harmonic> harmonics, RenderContext ctx)
     {
-        // TODO: Render harmonic series visualization
-        // Show fundamental and harmonics as concentric circles or bars
-        // Display frequency ratios and musical intervals
-        // Use harmonic-specific colors
+        if (ctx.Canvas == null || harmonics.Count == 0) return;
+        
+        float centerX = ctx.Width / 2f;
+        float centerY = ctx.Height / 2f;
+        float maxRadius = Math.Min(centerX, centerY) * 0.6f;
+        
+        // Draw fundamental frequency circle
+        float fundamentalRadius = maxRadius * 0.2f;
+        ctx.Canvas.DrawCircle(centerX, centerY, fundamentalRadius, GetSolfeggioColor(harmonics[0].Frequency), 3f);
+        
+        // Draw harmonic circles
+        for (int i = 1; i < harmonics.Count && i < 8; i++)
+        {
+            float radius = fundamentalRadius * (i + 1);
+            float alpha = 1f - (i * 0.1f);
+            uint color = GetSolfeggioColor(harmonics[i].Frequency);
+            color = ApplyAlpha(color, alpha);
+            
+            ctx.Canvas.DrawCircle(centerX, centerY, radius, color, 2f);
+            
+            // Draw frequency label
+            string label = $"{harmonics[i].Frequency:F1} Hz";
+            // Note: SkiaSharp text rendering would go here
+        }
+        
+        // Draw harmonic bars on the right side
+        float barWidth = 20f;
+        float barSpacing = 30f;
+        float startX = centerX + maxRadius + 50f;
+        
+        for (int i = 0; i < harmonics.Count && i < 12; i++)
+        {
+            float barHeight = (harmonics[i].Frequency / harmonics[0].Frequency) * 100f;
+            float barY = centerY - barHeight / 2f;
+            uint color = GetSolfeggioColor(harmonics[i].Frequency);
+            
+            ctx.Canvas.FillRectangle(startX + i * barSpacing, barY, barWidth, barHeight, color);
+        }
     }
 
     private void RenderEarthConnections(List<EarthConnection> connections, RenderContext ctx)
     {
-        // TODO: Render Earth harmonic connections
-        // Show how Earth frequencies generate Solfeggio tones
-        // Display mathematical relationships
-        // Visualize the x11 multiplication factor
+        if (ctx.Canvas == null || connections.Count == 0) return;
+        
+        float centerX = ctx.Width / 2f;
+        float centerY = ctx.Height / 2f;
+        float maxRadius = Math.Min(centerX, centerY) * 0.7f;
+        
+        // Draw Earth at center
+        ctx.Canvas.FillCircle(centerX, centerY, 30f, 0xFF4A7C59); // Earth green
+        
+        // Draw connection lines to generated frequencies
+        for (int i = 0; i < connections.Count && i < 8; i++)
+        {
+            var connection = connections[i];
+            float angle = i * 2f * MathF.PI / connections.Count;
+            float radius = maxRadius * 0.8f;
+            
+            float endX = centerX + radius * MathF.Cos(angle);
+            float endY = centerY + radius * MathF.Sin(angle);
+            
+            // Draw connection line
+            ctx.Canvas.DrawLine(centerX, centerY, endX, endY, 0xFF8B4513, 2f); // Brown line
+            
+            // Draw frequency node
+            ctx.Canvas.FillCircle(endX, endY, 15f, GetSolfeggioColor(connection.GeneratedFrequency));
+            
+            // Draw mathematical relationship
+            string relationship = $"{connection.EarthHarmonic.Note} × {connection.EarthHarmonic.Multiplier}";
+            // Note: SkiaSharp text rendering would go here
+        }
     }
 
     private void RenderLostTones(RenderContext ctx)
     {
-        // TODO: Render lost Solfeggio tones
-        // Show interpolated frequencies
-        // Display Helek conversions
-        // Visualize octave relationships
+        if (ctx.Canvas == null) return;
+        
+        float centerX = ctx.Width / 2f;
+        float centerY = ctx.Height / 2f;
+        float maxRadius = Math.Min(centerX, centerY) * 0.5f;
+        
+        // Draw lost Solfeggio tones as faded circles
+        var lostTones = new[]
+        {
+            new { Note = "C#", Hz = 277.18f, Helek = 0.5f },
+            new { Note = "D#", Hz = 311.13f, Helek = 0.5f },
+            new { Note = "F#", Hz = 369.99f, Helek = 0.5f },
+            new { Note = "G#", Hz = 415.30f, Helek = 0.5f },
+            new { Note = "A#", Hz = 466.16f, Helek = 0.5f }
+        };
+        
+        for (int i = 0; i < lostTones.Length; i++)
+        {
+            float angle = i * 2f * MathF.PI / lostTones.Length;
+            float radius = maxRadius * 0.6f;
+            
+            float x = centerX + radius * MathF.Cos(angle);
+            float y = centerY + radius * MathF.Sin(angle);
+            
+            // Draw faded circle for lost tone
+            uint color = GetSolfeggioColor(lostTones[i].Hz);
+            color = ApplyAlpha(color, 0.3f);
+            ctx.Canvas.DrawCircle(x, y, 25f, color, 2f);
+            
+            // Draw Helek indicator
+            float helekRadius = 8f;
+            ctx.Canvas.FillCircle(x, y, helekRadius, 0xFFFF6B6B); // Red for lost
+        }
     }
 
     private void RenderFrequencyInfo(SolfeggioTone tone, RenderContext ctx)
     {
-        // TODO: Render frequency information overlay
-        // Display current frequency in Hz and Helek
-        // Show musical note and meaning
-        // Display mathematical relationships
+        if (ctx.Canvas == null) return;
+        
+        // Draw frequency information overlay in top-left corner
+        float startX = 20f;
+        float startY = 20f;
+        float lineHeight = 25f;
+        
+        // Background rectangle
+        ctx.Canvas.FillRectangle(startX - 10f, startY - 10f, 300f, 150f, 0x80000000);
+        
+        // Frequency info
+        string freqText = $"Frequency: {tone.Hz:F2} Hz";
+        string noteText = $"Note: {tone.Note}";
+        string meaningText = $"Meaning: {tone.Meaning}";
+        string helekText = $"Helek: {tone.Helek:F2}";
+        
+        // Note: SkiaSharp text rendering would go here for all text elements
+        // For now, we'll draw colored rectangles to represent the text areas
+        
+        // Frequency display
+        ctx.Canvas.FillRectangle(startX, startY, 280f, 20f, GetSolfeggioColor(tone.Hz));
+        
+        // Note display
+        ctx.Canvas.FillRectangle(startX, startY + lineHeight, 280f, 20f, 0xFF6B6BFF);
+        
+        // Meaning display
+        ctx.Canvas.FillRectangle(startX, startY + lineHeight * 2, 280f, 20f, 0xFF6BFF6B);
+        
+        // Helek display
+        ctx.Canvas.FillRectangle(startX, startY + lineHeight * 3, 280f, 20f, 0xFFFF6BFF);
+    }
+
+    private void DrawChladniPatterns(SolfeggioTone tone, RenderContext ctx, float centerX, float centerY, float maxRadius)
+    {
+        // Draw Chladni plate nodal patterns based on frequency
+        float frequency = tone.Hz;
+        int nodalLines = Math.Max(3, (int)(frequency / 100f));
+        
+        for (int i = 0; i < nodalLines; i++)
+        {
+            float angle = i * 2f * MathF.PI / nodalLines + _time;
+            float radius = maxRadius * (0.3f + 0.2f * MathF.Sin(_time * 3f + i));
+            
+            // Draw nodal line
+            float x1 = centerX + radius * MathF.Cos(angle);
+            float y1 = centerY + radius * MathF.Sin(angle);
+            float x2 = centerX + radius * MathF.Cos(angle + MathF.PI);
+            float y2 = centerY + radius * MathF.Sin(angle + MathF.PI);
+            
+            ctx.Canvas.DrawLine(x1, y1, x2, y2, GetSolfeggioColor(frequency), 1f);
+        }
+    }
+
+    private void DrawWaveInterference(SolfeggioTone tone, RenderContext ctx, float centerX, float centerY, float maxRadius)
+    {
+        // Draw animated wave interference patterns
+        float frequency = tone.Hz;
+        float wavelength = 343f / frequency; // Speed of sound / frequency
+        
+        for (int i = 0; i < 20; i++)
+        {
+            float radius = maxRadius * (i / 20f);
+            float waveOffset = (_time * 2f + i * 0.5f) % (2f * MathF.PI);
+            float amplitude = MathF.Sin(waveOffset) * 10f;
+            
+            float x = centerX + (radius + amplitude) * MathF.Cos(_time + i * 0.3f);
+            float y = centerY + (radius + amplitude) * MathF.Sin(_time + i * 0.3f);
+            
+            uint color = GetSolfeggioColor(frequency);
+            color = ApplyAlpha(color, 0.7f);
+            
+            ctx.Canvas.FillCircle(x, y, 3f, color);
+        }
+    }
+
+    private uint GetSolfeggioColor(float frequency)
+    {
+        // Map frequency to color based on Solfeggio scale
+        if (frequency < 200f) return 0xFF6B6BFF;      // Blue (lower frequencies)
+        if (frequency < 300f) return 0xFF6BFF6B;      // Green (mid frequencies)
+        if (frequency < 400f) return 0xFFFFFF6B;      // Yellow (higher frequencies)
+        if (frequency < 500f) return 0xFFFF6B6B;      // Red (highest frequencies)
+        return 0xFFFF6BFF;                            // Magenta (ultra high)
+    }
+
+    private uint ApplyAlpha(uint color, float alpha)
+    {
+        byte r = (byte)(color >> 16);
+        byte g = (byte)(color >> 8);
+        byte b = (byte)color;
+        byte a = (byte)(alpha * 255);
+        
+        return (uint)((a << 24) | (r << 16) | (g << 8) | b);
     }
 
     // Data structures

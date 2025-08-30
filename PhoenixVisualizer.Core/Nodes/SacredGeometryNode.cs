@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Linq; // Added for GroupBy and OrderBy
 
 namespace PhoenixVisualizer.Core.Nodes;
 
@@ -45,6 +46,7 @@ public class SacredGeometryNode : IEffectNode
     private float _animationSpeed = 1.0f;
     private bool _useRecurringDecimals = true;
     private float _patternComplexity = 1.0f;
+    private float _time = 0f; // Added for animation phase
 
     public string Name => "Sacred Geometry";
     public Dictionary<string, EffectParam> Params { get; } = new()
@@ -116,6 +118,7 @@ public class SacredGeometryNode : IEffectNode
     public void Render(float[] waveform, float[] spectrum, RenderContext ctx)
     {
         UpdateParameters();
+        _time += ctx.DeltaTime * _animationSpeed; // Update animation time
         
         var frequencyTree = GenerateFrequencyTree();
         var mathematicalRelations = GenerateMathematicalRelations();
@@ -443,31 +446,196 @@ public class SacredGeometryNode : IEffectNode
 
     private void RenderFrequencyTree(List<FrequencyNode> tree, RenderContext ctx)
     {
-        // TODO: Implement SkiaSharp rendering for frequency tree
-        // Show hierarchical relationships between frequencies
-        // Display mathematical operations and domain transitions
+        if (ctx.Canvas == null || tree.Count == 0) return;
+        
+        float centerX = ctx.Width / 2f;
+        float centerY = ctx.Height / 2f;
+        float maxRadius = Math.Min(centerX, centerY) * 0.7f;
+        
+        // Group nodes by level
+        var nodesByLevel = tree.GroupBy(n => n.Level).OrderBy(g => g.Key).ToList();
+        
+        for (int level = 0; level < nodesByLevel.Count; level++)
+        {
+            var levelNodes = nodesByLevel[level].ToList();
+            float levelRadius = maxRadius * (0.2f + level * 0.15f);
+            
+            for (int i = 0; i < levelNodes.Count; i++)
+            {
+                var node = levelNodes[i];
+                float angle = i * 2f * MathF.PI / levelNodes.Count;
+                
+                float x = centerX + levelRadius * MathF.Cos(angle);
+                float y = centerY + levelRadius * MathF.Sin(angle);
+                
+                // Draw node
+                uint nodeColor = GetDomainColor(node.Domain, i);
+                ctx.Canvas.FillCircle(x, y, 20f, nodeColor);
+                ctx.Canvas.DrawCircle(x, y, 20f, 0xFFFFFFFF, 2f);
+                
+                // Draw connections to parent nodes
+                if (level > 0)
+                {
+                    var parentLevel = nodesByLevel[level - 1].ToList();
+                    if (parentLevel.Count > 0)
+                    {
+                        int parentIndex = i % parentLevel.Count;
+                        var parent = parentLevel[parentIndex];
+                        float parentAngle = parentIndex * 2f * MathF.PI / parentLevel.Count;
+                        float parentRadius = maxRadius * (0.2f + (level - 1) * 0.15f);
+                        
+                        float parentX = centerX + parentRadius * MathF.Cos(parentAngle);
+                        float parentY = centerY + parentRadius * MathF.Sin(parentAngle);
+                        
+                        // Draw connection line
+                        ctx.Canvas.DrawLine(parentX, parentY, x, y, 0x80FFFFFF, 1f);
+                        
+                        // Draw mathematical operation label
+                        float midX = (parentX + x) / 2f;
+                        float midY = (parentY + y) / 2f;
+                        
+                        // Draw operation indicator
+                        ctx.Canvas.FillCircle(midX, midY, 8f, 0xFF6B6BFF);
+                    }
+                }
+            }
+        }
     }
 
     private void RenderMathematicalRelations(List<MathematicalRelationship> relationships, RenderContext ctx)
     {
-        // TODO: Render mathematical relationship overlay
-        // Display formulas and examples
-        // Show frequency calculations
+        if (ctx.Canvas == null || relationships.Count == 0) return;
+        
+        // Draw mathematical relationship overlay in top-right corner
+        float startX = ctx.Width - 320f;
+        float startY = 20f;
+        float lineHeight = 30f;
+        
+        // Background rectangle
+        ctx.Canvas.FillRectangle(startX - 10f, startY - 10f, 300f, relationships.Count * lineHeight + 20f, 0x80000000);
+        
+        for (int i = 0; i < relationships.Count && i < 8; i++)
+        {
+            var relation = relationships[i];
+            float y = startY + i * lineHeight;
+            
+            // Draw relationship type header
+            ctx.Canvas.FillRectangle(startX, y, 280f, 20f, GetDomainColor(FrequencyDomain.Physical, i));
+            
+            // Draw description area
+            ctx.Canvas.FillRectangle(startX, y + 20f, 280f, 8f, 0xFF6B6BFF);
+            
+            // Note: SkiaSharp text rendering would go here for formulas and examples
+        }
     }
 
     private void RenderCymaticPatterns(List<CymaticPattern> patterns, RenderContext ctx)
     {
-        // TODO: Render cymatic patterns
-        // Draw nodal patterns based on frequency and domain
-        // Apply symmetry and color schemes
-        // Add animation effects
+        if (ctx.Canvas == null || patterns.Count == 0) return;
+        
+        float centerX = ctx.Width / 2f;
+        float centerY = ctx.Height / 2f;
+        
+        foreach (var pattern in patterns)
+        {
+            // Calculate animated position
+            float animOffset = MathF.Sin(_time + pattern.AnimationPhase) * 10f;
+            float x = pattern.Center.X + animOffset;
+            float y = pattern.Center.Y + animOffset;
+            
+            // Draw nodal pattern based on symmetry
+            DrawSymmetricalPattern(x, y, pattern.Radius, pattern.Symmetry, pattern.Color, ctx);
+            
+            // Draw wavelength rings
+            float wavelength = pattern.Wavelength;
+            for (int ring = 1; ring <= 3; ring++)
+            {
+                float ringRadius = pattern.Radius + ring * wavelength * 0.1f;
+                uint ringColor = ApplyAlpha(pattern.Color, 0.3f - ring * 0.1f);
+                ctx.Canvas.DrawCircle(x, y, ringRadius, ringColor, 1f);
+            }
+        }
     }
 
     private void RenderDomainInfo(RenderContext ctx)
     {
-        // TODO: Render domain information overlay
-        // Show current domain and its characteristics
-        // Display base frequency and mathematical relationships
+        if (ctx.Canvas == null) return;
+        
+        // Draw domain information overlay in bottom-left corner
+        float startX = 20f;
+        float startY = ctx.Height - 120f;
+        
+        // Background rectangle
+        ctx.Canvas.FillRectangle(startX - 10f, startY - 10f, 300f, 100f, 0x80000000);
+        
+        // Current domain display
+        var currentDomain = FrequencyDomain.Physical; // This would come from current state
+        uint domainColor = GetDomainColor(currentDomain, 0);
+        
+        // Draw domain header
+        ctx.Canvas.FillRectangle(startX, startY, 280f, 25f, domainColor);
+        
+        // Draw domain characteristics
+        ctx.Canvas.FillRectangle(startX, startY + 30f, 280f, 15f, 0xFF6BFF6B);
+        ctx.Canvas.FillRectangle(startX, startY + 50f, 280f, 15f, 0xFF6B6BFF);
+        ctx.Canvas.FillRectangle(startX, startY + 70f, 280f, 15f, 0xFFFFFF6B);
+        
+        // Note: SkiaSharp text rendering would go here for domain names and characteristics
+    }
+
+    private void DrawSymmetricalPattern(float x, float y, float radius, int symmetry, uint color, RenderContext ctx)
+    {
+        if (ctx.Canvas == null) return;
+        
+        // Draw symmetry-based nodal pattern
+        for (int i = 0; i < symmetry; i++)
+        {
+            float angle = i * 2f * MathF.PI / symmetry + _time * 0.5f;
+            float nodalRadius = radius * (0.3f + 0.2f * MathF.Sin(_time * 2f + i));
+            
+            float nodalX = x + nodalRadius * MathF.Cos(angle);
+            float nodalY = y + nodalRadius * MathF.Sin(angle);
+            
+            // Draw nodal point
+            ctx.Canvas.FillCircle(nodalX, nodalY, 5f, color);
+            
+            // Draw connecting lines between nodal points
+            if (i > 0)
+            {
+                float prevAngle = (i - 1) * 2f * MathF.PI / symmetry + _time * 0.5f;
+                float prevRadius = radius * (0.3f + 0.2f * MathF.Sin(_time * 2f + (i - 1)));
+                float prevX = x + prevRadius * MathF.Cos(prevAngle);
+                float prevY = y + prevRadius * MathF.Sin(prevAngle);
+                
+                ctx.Canvas.DrawLine(prevX, prevY, nodalX, nodalY, ApplyAlpha(color, 0.6f), 1f);
+            }
+        }
+        
+        // Connect last to first
+        if (symmetry > 1)
+        {
+            float firstAngle = _time * 0.5f;
+            float firstRadius = radius * (0.3f + 0.2f * MathF.Sin(_time * 2f));
+            float firstX = x + firstRadius * MathF.Cos(firstAngle);
+            float firstY = y + firstRadius * MathF.Sin(firstAngle);
+            
+            float lastAngle = (symmetry - 1) * 2f * MathF.PI / symmetry + _time * 0.5f;
+            float lastRadius = radius * (0.3f + 0.2f * MathF.Sin(_time * 2f + (symmetry - 1)));
+            float lastX = x + lastRadius * MathF.Cos(lastAngle);
+            float lastY = y + lastRadius * MathF.Sin(lastAngle);
+            
+            ctx.Canvas.DrawLine(lastX, lastY, firstX, firstY, ApplyAlpha(color, 0.6f), 1f);
+        }
+    }
+
+    private uint ApplyAlpha(uint color, float alpha)
+    {
+        byte r = (byte)(color >> 16);
+        byte g = (byte)(color >> 8);
+        byte b = (byte)color;
+        byte a = (byte)(alpha * 255);
+        
+        return (uint)((a << 24) | (r << 16) | (g << 8) | b);
     }
 
     // Data structures

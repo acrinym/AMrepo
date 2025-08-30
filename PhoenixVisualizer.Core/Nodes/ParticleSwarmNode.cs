@@ -1,150 +1,103 @@
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace PhoenixVisualizer.Core.Nodes;
 
-/// <summary>
-/// Particle Swarm effect node - Creates dynamic particle systems driven by audio frequencies
-/// Particles respond to FFT bins with position, size, and color mapping
-/// </summary>
 public class ParticleSwarmNode : IEffectNode
 {
-    // Particle data structure
-    private class Particle
-    {
-        public float X, Y;
-        public float VX, VY;
-        public float Size;
-        public float Life;
-        public uint Color;
-        public int FreqBin; // Which frequency bin this particle responds to
-    }
-
-    private readonly List<Particle> _particles = new();
-    private readonly Random _random = new();
-
     public string Name => "Particle Swarm";
     public Dictionary<string, EffectParam> Params { get; } = new()
     {
-        ["count"] = new EffectParam {
-            Label = "Particle Count",
-            Type = "slider",
-            Min = 50,
-            Max = 1000,
-            FloatValue = 200
-        },
-        ["speed"] = new EffectParam {
-            Label = "Movement Speed",
-            Type = "slider",
-            Min = 0.1f,
-            Max = 5f,
-            FloatValue = 1f
-        },
-        ["sizeMin"] = new EffectParam {
-            Label = "Min Size",
-            Type = "slider",
-            Min = 1,
-            Max = 10,
-            FloatValue = 2f
-        },
-        ["sizeMax"] = new EffectParam {
-            Label = "Max Size",
-            Type = "slider",
-            Min = 5,
-            Max = 20,
-            FloatValue = 8f
-        },
-        ["colorMode"] = new EffectParam {
-            Label = "Color Mode",
-            Type = "dropdown",
-            StringValue = "spectrum",
-            Options = new() { "spectrum", "rainbow", "mono", "energy" }
-        },
-        ["baseColor"] = new EffectParam {
-            Label = "Base Color",
-            Type = "color",
-            ColorValue = "#00FFCC"
-        },
-        ["trail"] = new EffectParam {
-            Label = "Trail Effect",
-            Type = "checkbox",
-            BoolValue = true
-        },
-        ["attraction"] = new EffectParam {
-            Label = "Center Attraction",
-            Type = "slider",
-            Min = 0,
-            Max = 1,
-            FloatValue = 0.3f
-        }
+        ["count"] = new EffectParam{ Label="Particle Count", Type="slider", Min=100, Max=2000, FloatValue=300 },
+        ["speed"] = new EffectParam{ Label="Speed", Type="slider", Min=0.1f, Max=3f, FloatValue=1f },
+        ["color"] = new EffectParam{ Label="Color", Type="color", ColorValue="#00FFCC" },
+        ["size"] = new EffectParam{ Label="Particle Size", Type="slider", Min=1f, Max=5f, FloatValue=2f },
+        ["fftReactivity"] = new EffectParam{ Label="FFT Reactivity", Type="slider", Min=0, Max=2f, FloatValue=1f }
     };
+
+    private float _time = 0f;
+    private List<Particle> _particles = new();
+    private bool _initialized = false;
 
     public void Render(float[] waveform, float[] spectrum, RenderContext ctx)
     {
-        UpdateParticles(spectrum, ctx);
-        RenderParticles(ctx);
+        if (ctx.Canvas == null) return;
+
+        _time += 0.016f * Params["speed"].FloatValue;
+
+        // Initialize particles if needed
+        if (!_initialized)
+        {
+            InitializeParticles(ctx);
+            _initialized = true;
+        }
+
+        // Clear canvas
+        ctx.Canvas.Clear(0xFF000000);
+
+        // Get parameters
+        float particleSize = Params["size"].FloatValue;
+        float fftReactivity = Params["fftReactivity"].FloatValue;
+        uint baseColor = ParseColor(Params["color"].ColorValue);
+
+        // Update and render particles
+        UpdateParticles(ctx, waveform, spectrum, fftReactivity);
+        RenderParticles(ctx, baseColor, particleSize);
     }
 
-    private void UpdateParticles(float[] spectrum, RenderContext ctx)
+    private void InitializeParticles(RenderContext ctx)
     {
-        int targetCount = (int)Params["count"].FloatValue;
-        float speed = Params["speed"].FloatValue;
-        float sizeMin = Params["sizeMin"].FloatValue;
-        float sizeMax = Params["sizeMax"].FloatValue;
-        string colorMode = Params["colorMode"].StringValue;
-        string baseColorHex = Params["baseColor"].ColorValue;
-        float attraction = Params["attraction"].FloatValue;
+        int count = (int)Params["count"].FloatValue;
+        _particles.Clear();
 
-        uint baseColor = ParseHexColor(baseColorHex);
-        float centerX = ctx.Width * 0.5f;
-        float centerY = ctx.Height * 0.5f;
-
-        // Maintain target particle count
-        while (_particles.Count < targetCount)
+        for (int i = 0; i < count; i++)
         {
-            var particle = new Particle
+            _particles.Add(new Particle
             {
-                X = (float)_random.NextDouble() * ctx.Width,
-                Y = (float)_random.NextDouble() * ctx.Height,
-                VX = ((float)_random.NextDouble() - 0.5f) * speed * 2,
-                VY = ((float)_random.NextDouble() - 0.5f) * speed * 2,
-                Size = sizeMin + (float)_random.NextDouble() * (sizeMax - sizeMin),
-                Life = 1f,
-                FreqBin = _random.Next(Math.Max(1, spectrum.Length))
-            };
-            _particles.Add(particle);
+                X = Random.Shared.NextSingle() * ctx.Width,
+                Y = Random.Shared.NextSingle() * ctx.Height,
+                VX = (Random.Shared.NextSingle() - 0.5f) * 2f,
+                VY = (Random.Shared.NextSingle() - 0.5f) * 2f,
+                Life = Random.Shared.NextSingle(),
+                Size = Random.Shared.NextSingle() * 2f + 1f
+            });
         }
+    }
 
-        while (_particles.Count > targetCount)
+    private void UpdateParticles(RenderContext ctx, float[] waveform, float[] spectrum, float fftReactivity)
+    {
+        float centerX = ctx.Width / 2f;
+        float centerY = ctx.Height / 2f;
+
+        // Calculate audio energy
+        float audioEnergy = 0f;
+        if (spectrum.Length > 0)
         {
-            _particles.RemoveAt(_particles.Count - 1);
-        }
-
-        // Update existing particles
-        for (int i = _particles.Count - 1; i >= 0; i--)
-        {
-            var particle = _particles[i];
-
-            // Get frequency bin energy
-            float energy = 0;
-            if (particle.FreqBin < spectrum.Length)
+            for (int i = 0; i < Math.Min(spectrum.Length, 50); i++)
             {
-                energy = spectrum[particle.FreqBin];
+                audioEnergy += spectrum[i];
             }
+            audioEnergy /= Math.Min(spectrum.Length, 50);
+        }
 
-            // Apply frequency-based forces
-            float force = energy * 2f;
-            particle.VX += (float)(_random.NextDouble() - 0.5) * force;
-            particle.VY += (float)(_random.NextDouble() - 0.5) * force;
-
+        foreach (var particle in _particles)
+        {
             // Apply center attraction
             float dx = centerX - particle.X;
             float dy = centerY - particle.Y;
-            float distance = (float)Math.Sqrt(dx * dx + dy * dy);
+            float distance = MathF.Sqrt(dx * dx + dy * dy);
             if (distance > 0)
             {
-                particle.VX += (dx / distance) * attraction * speed * 0.1f;
-                particle.VY += (dy / distance) * attraction * speed * 0.1f;
+                particle.VX += (dx / distance) * 0.1f;
+                particle.VY += (dy / distance) * 0.1f;
+            }
+
+            // Apply audio-driven forces
+            if (audioEnergy > 0.1f)
+            {
+                particle.VX += (Random.Shared.NextSingle() - 0.5f) * audioEnergy * fftReactivity;
+                particle.VY += (Random.Shared.NextSingle() - 0.5f) * audioEnergy * fftReactivity;
             }
 
             // Apply damping
@@ -152,9 +105,9 @@ public class ParticleSwarmNode : IEffectNode
             particle.VY *= 0.98f;
 
             // Limit velocity
-            float maxVel = speed * 3f;
-            particle.VX = Math.Clamp(particle.VX, -maxVel, maxVel);
-            particle.VY = Math.Clamp(particle.VY, -maxVel, maxVel);
+            float maxVel = 3f;
+            particle.VX = Math.Max(-maxVel, Math.Min(maxVel, particle.VX));
+            particle.VY = Math.Max(-maxVel, Math.Min(maxVel, particle.VY));
 
             // Update position
             particle.X += particle.VX;
@@ -166,153 +119,76 @@ public class ParticleSwarmNode : IEffectNode
             if (particle.Y < 0) particle.Y = ctx.Height;
             if (particle.Y > ctx.Height) particle.Y = 0;
 
-            // Update size based on energy
-            particle.Size = sizeMin + energy * (sizeMax - sizeMin);
-
-            // Update color
-            particle.Color = CalculateParticleColor(particle, energy, colorMode, baseColor, spectrum);
-
-            // Update life (particles fade over time)
-            particle.Life -= 0.005f;
-            if (particle.Life <= 0)
-            {
-                // Respawn particle
-                particle.X = (float)_random.NextDouble() * ctx.Width;
-                particle.Y = (float)_random.NextDouble() * ctx.Height;
-                particle.VX = ((float)_random.NextDouble() - 0.5f) * speed * 2;
-                particle.VY = ((float)_random.NextDouble() - 0.5f) * speed * 2;
-                particle.Life = 1f;
-                particle.FreqBin = _random.Next(Math.Max(1, spectrum.Length));
-            }
+            // Update life cycle
+            particle.Life += 0.01f;
+            if (particle.Life > 1f) particle.Life = 0f;
         }
     }
 
-    private void RenderParticles(RenderContext ctx)
+    private void RenderParticles(RenderContext ctx, uint baseColor, float particleSize)
     {
-        bool trail = Params["trail"].BoolValue;
-
         foreach (var particle in _particles)
         {
+            // Calculate particle color based on life
+            uint particleColor = CalculateParticleColor(baseColor, particle.Life);
+            float size = particle.Size * particleSize;
+            
             // Draw particle
-            // TODO: Replace with SkiaSharp drawing
-            // ctx.Canvas.FillCircle(particle.X, particle.Y, particle.Size, particle.Color);
+            ctx.Canvas!.FillCircle(particle.X, particle.Y, size, particleColor);
+            
+            // Add glow effect
+            uint glowColor = ApplyAlpha(particleColor, 0.3f);
+            ctx.Canvas.DrawCircle(particle.X, particle.Y, size * 2f, glowColor, false);
+        }
+    }
 
-            if (trail)
+    private uint CalculateParticleColor(uint baseColor, float life)
+    {
+        // Create color variation based on particle life
+        byte r = (byte)(baseColor >> 16);
+        byte g = (byte)(baseColor >> 8);
+        byte b = (byte)baseColor;
+
+        // Add life-based variation
+        float lifeFactor = 0.5f + 0.5f * MathF.Sin(life * MathF.PI * 2f);
+        r = (byte)(r * (0.7f + lifeFactor * 0.3f));
+        g = (byte)(g * (0.7f + lifeFactor * 0.3f));
+        b = (byte)(b * (0.7f + lifeFactor * 0.3f));
+
+        return (uint)((255 << 24) | (r << 16) | (g << 8) | b);
+    }
+
+    private uint ApplyAlpha(uint color, float alpha)
+    {
+        byte r = (byte)(color >> 16);
+        byte g = (byte)(color >> 8);
+        byte b = (byte)color;
+        byte a = (byte)(alpha * 255);
+        
+        return (uint)((a << 24) | (r << 16) | (g << 8) | b);
+    }
+
+    private uint ParseColor(string colorString)
+    {
+        // Simple hex color parser
+        if (colorString.StartsWith("#") && colorString.Length == 7)
+        {
+            string hex = colorString.Substring(1);
+            if (uint.TryParse(hex, System.Globalization.NumberStyles.HexNumber, null, out uint color))
             {
-                // Draw trail
-                float trailX = particle.X - particle.VX * 3;
-                float trailY = particle.Y - particle.VY * 3;
-                uint trailColor = (particle.Color & 0x00FFFFFF) | 0x40u << 24;
-
-                // TODO: Draw trail line
-                // ctx.Canvas.DrawLine(particle.X, particle.Y, trailX, trailY, trailColor, particle.Size * 0.3f);
+                return 0xFF000000 | color; // Add full alpha
             }
         }
+        return 0xFF00FFCC; // Default cyan
     }
 
-    private uint CalculateParticleColor(Particle particle, float energy, string colorMode, uint baseColor, float[] spectrum)
+    private class Particle
     {
-        switch (colorMode)
-        {
-            case "spectrum":
-                // Map frequency bin to color
-                if (spectrum.Length > 0)
-                {
-                    float freqRatio = particle.FreqBin / (float)spectrum.Length;
-                    return SpectrumToColor(freqRatio, energy);
-                }
-                return baseColor;
-
-            case "rainbow":
-                // Rainbow based on frequency
-                float hue = particle.FreqBin / 32f; // Assuming typical 32-bin spectrum
-                return HsvToRgb(hue, 0.8f, 0.6f + energy * 0.4f);
-
-            case "mono":
-                // Monochrome with intensity based on energy
-                float intensity = 0.3f + energy * 0.7f;
-                byte gray = (byte)(intensity * 255);
-                return 0xFF000000 | ((uint)gray << 16) | ((uint)gray << 8) | gray;
-
-            case "energy":
-                // Energy-based color intensity
-                float r = energy * 255;
-                float g = (1f - energy) * 255;
-                float b = energy * energy * 255;
-                return 0xFF000000 | ((uint)r << 16) | ((uint)g << 8) | (uint)b;
-
-            default:
-                return baseColor;
-        }
-    }
-
-    private uint SpectrumToColor(float freqRatio, float intensity)
-    {
-        // Map frequency ratio to visible spectrum colors
-        float hue = freqRatio * 0.8f; // 0-0.8 for visible spectrum
-        return HsvToRgb(hue, 1f, 0.4f + intensity * 0.6f);
-    }
-
-    private uint HsvToRgb(float hue, float saturation, float brightness)
-    {
-        float c = brightness * saturation;
-        float x = c * (1 - Math.Abs((hue * 6) % 2 - 1));
-        float m = brightness - c;
-
-        float r, g, b;
-        if (hue < 1f/6f)
-        {
-            r = c; g = x; b = 0;
-        }
-        else if (hue < 2f/6f)
-        {
-            r = x; g = c; b = 0;
-        }
-        else if (hue < 3f/6f)
-        {
-            r = 0; g = c; b = x;
-        }
-        else if (hue < 4f/6f)
-        {
-            r = 0; g = x; b = c;
-        }
-        else if (hue < 5f/6f)
-        {
-            r = x; g = 0; b = c;
-        }
-        else
-        {
-            r = c; g = 0; b = x;
-        }
-
-        byte red = (byte)((r + m) * 255);
-        byte green = (byte)((g + m) * 255);
-        byte blue = (byte)((b + m) * 255);
-
-        return 0xFF000000 | ((uint)red << 16) | ((uint)green << 8) | blue;
-    }
-
-    private uint ParseHexColor(string hexColor)
-    {
-        if (string.IsNullOrEmpty(hexColor) || !hexColor.StartsWith("#"))
-            return 0xFFFFFFFF;
-
-        try
-        {
-            string hex = hexColor.Substring(1);
-            if (hex.Length == 6)
-            {
-                uint r = Convert.ToUInt32(hex.Substring(0, 2), 16);
-                uint g = Convert.ToUInt32(hex.Substring(2, 2), 16);
-                uint b = Convert.ToUInt32(hex.Substring(4, 2), 16);
-                return 0xFF000000 | (r << 16) | (g << 8) | b;
-            }
-        }
-        catch
-        {
-            // Fall back to white on parsing error
-        }
-
-        return 0xFFFFFFFF;
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float VX { get; set; }
+        public float VY { get; set; }
+        public float Life { get; set; }
+        public float Size { get; set; }
     }
 }

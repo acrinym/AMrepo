@@ -99,8 +99,12 @@ public class ShaderVisualizerNode : IEffectNode
             {
                 Vector2 uv = GetUVCoordinates(x, y, ctx.Width, ctx.Height);
                 Vector4 color = MainImage(uv);
-                // TODO: Set pixel color in canvas
-                // ctx.Canvas.SetPixel(x, y, color);
+                // Set pixel color in canvas
+                if (ctx.Canvas != null)
+                {
+                    uint pixelColor = Vector4ToUint(color);
+                    ctx.Canvas.FillCircle(x, y, 1f, pixelColor);
+                }
             }
         }
     }
@@ -161,6 +165,17 @@ public class ShaderVisualizerNode : IEffectNode
         float u = (2.0f * x - width) / height;
         float v = (2.0f * y - height) / height;
         return new Vector2(u, v);
+    }
+
+    private uint Vector4ToUint(Vector4 color)
+    {
+        // Convert Vector4 (0-1 range) to uint color
+        byte r = (byte)(Math.Max(0, Math.Min(255, color.X * 255)));
+        byte g = (byte)(Math.Max(0, Math.Min(255, color.Y * 255)));
+        byte b = (byte)(Math.Max(0, Math.Min(255, color.Z * 255)));
+        byte a = (byte)(Math.Max(0, Math.Min(255, color.W * 255)));
+        
+        return (uint)((a << 24) | (r << 16) | (g << 8) | b);
     }
 
     private Vector4 MainImage(Vector2 uv)
