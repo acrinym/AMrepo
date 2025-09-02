@@ -1,5 +1,29 @@
 # 🤖 Code Agent Guidelines for Pull Requests
 
+## Project Status: UNIFIED AVS SYSTEM IMPLEMENTED ✅
+
+**Current Milestone:** Regex-Free AVS Import Pipeline Complete - Zero Regex Architecture
+**Date:** January 2025
+**Impact:** Complete elimination of regex-based parsing nightmares
+
+### **🎯 MAJOR NEW MILESTONE ACHIEVED**
+- ✅ **Unified AVS Architecture:** Complete regex elimination and type-based parsing
+- ✅ **AvsFileDetector.cs:** Structured file type detection with confidence scoring
+- ✅ **PhoenixAvsParser.cs:** Multi-superscope text parsing with state machine logic
+- ✅ **WinampAvsParser.cs:** Safe binary framing with ASCII extraction from config blobs
+- ✅ **UnifiedAvsService.cs:** Single orchestration point for all AVS file types
+- ✅ **UnifiedAvsVisualizer.cs:** Clean visualization ready for PEL integration
+- ✅ **Entry Point Updates:** MainWindow, PresetManager updated to use new system
+- ✅ **Debug Logging:** Extensive `### JUSTIN DEBUG:` logging throughout pipeline
+- ✅ **Build Success:** Perfect compilation with new architecture
+
+### **🚨 CRITICAL ISSUES IDENTIFIED**
+- **Phoenix AVS Files:** Show NO debug logs when loading (generic pattern displayed)
+- **Preset Switching:** Memory leaks - cannot cleanly switch between presets
+- **Debug Pipeline:** Need to trace why Phoenix files fall back to generic rendering
+
+---
+
 ## Overview
 This document provides mandatory guidelines for all code agents creating pull requests. These guidelines ensure consistent, informative, and actionable PR descriptions that enable effective code review and project management.
 
@@ -351,3 +375,97 @@ Before submitting any PR, verify:
 - [ ] Dependencies are properly documented
 
 **Remember:** The goal is to provide reviewers and future developers with complete context to understand, review, and continue the work effectively.
+
+🔗 Library Source & Documentation (Exact Links)
+
+These entries reflect what’s actually referenced in the current .csproj files (versions included). If a package is removed or added, update this table in the PR. Versions verified in PhoenixVisualizer.App\PhoenixVisualizer.csproj and the LibVLC test projects. 
+ 
+
+Avalonia (UI stack)
+
+Avalonia 11.3.3 → Source: https://github.com/AvaloniaUI/Avalonia
+ • Docs: https://docs.avaloniaui.net/
+ 
+GitHub
+Avalonia Docs
+
+Avalonia.Desktop 11.3.3 → Source: https://github.com/AvaloniaUI/Avalonia
+ • Docs: https://docs.avaloniaui.net/
+ 
+GitHub
+Avalonia Docs
+
+Avalonia.Themes.Fluent 11.3.3 → Source: https://github.com/AvaloniaUI/Avalonia
+ • Docs: https://docs.avaloniaui.net/
+ 
+GitHub
+Avalonia Docs
+
+Avalonia.Fonts.Inter 11.3.3 → Source: https://github.com/AvaloniaUI/Avalonia
+ • Docs: https://docs.avaloniaui.net/
+ 
+GitHub
+Avalonia Docs
+
+Avalonia.Diagnostics 11.3.3 (Debug-only) → Source: https://github.com/AvaloniaUI/Avalonia
+ • Docs: https://docs.avaloniaui.net/
+ 
+GitHub
+Avalonia Docs
+
+Editor & MVVM
+
+AvaloniaEdit 0.10.12 → Source: https://github.com/AvaloniaUI/AvaloniaEdit
+ • Docs (NuGet page): https://www.nuget.org/packages/Avalonia.AvaloniaEdit
+ 
+NuGet
+
+CommunityToolkit.Mvvm 8.2.1 → Source: https://github.com/CommunityToolkit/dotnet
+ • Docs: https://learn.microsoft.com/dotnet/communitytoolkit/mvvm/generators/overview
+ 
+GitHub
+Microsoft Learn
+
+ReactiveUI 19.5.41 → Source: https://github.com/reactiveui/ReactiveUI
+ • Docs: https://www.reactiveui.net/
+ 
+ReactiveUI
++1
+
+ReactiveUI.Fody 19.5.41 → Source: https://github.com/reactiveui/ReactiveUI
+ (Fody package history/discussions) • Notes: Library has shifting support; prefer Toolkit source generators where practical. 
+GitHub
+
+Roslyn (runtime codegen / analyzers)
+
+Microsoft.CodeAnalysis 4.8.0 (+ CSharp, CSharp.Workspaces)
+Source: https://github.com/dotnet/roslyn
+ • Docs: https://learn.microsoft.com/dotnet/csharp/roslyn-sdk/
+ 
+GitHub
+Microsoft Learn
+
+Metrics / Diagnostics
+
+System.Diagnostics.PerformanceCounter 8.0.1 (Windows-only API)
+Docs: https://learn.microsoft.com/dotnet/api/system.diagnostics.performancecounter
+ • Cross-platform alternative: EventCounters https://learn.microsoft.com/dotnet/core/diagnostics/event-counters
+ 
+Microsoft Learn
++1
+
+Media playback (✅ new stack)
+
+LibVLCSharp 3.9.4 → Source: https://github.com/videolan/libvlcsharp
+ • Docs: https://code.videolan.org/videolan/LibVLCSharp/-/tree/master/docs
+ 
+GitHub
+GitLab
+
+VideoLAN.LibVLC.Windows 3.0.21 (native binaries) → Package: https://www.nuget.org/packages/VideoLAN.LibVLC.Windows
+ • VLC Source: https://github.com/videolan/vlc
+ 
+NuGet
+GitHub
+
+Internal projects : PhoenixVisualizer.Core, PhoenixVisualizer.AvsEngine, PhoenixVisualizer.Visuals, PhoenixVisualizer.Audio, PhoenixVisualizer.Plugins.*, PhoenixVisualizer.Plots, PhoenixVisualizer.Editor, etc.
