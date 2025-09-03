@@ -5,7 +5,7 @@ using PhoenixVisualizer.Audio;
 
 namespace PhoenixVisualizer.Audio.TestRunner;
 
-public class Program
+public static class Program
 {
     public static void Main(string[] args)
     {
@@ -56,8 +56,8 @@ public class Program
                     Console.WriteLine($"✅ Audio data retrieved (iteration {i + 1})");
                     Console.WriteLine($"   Waveform Length: {waveformData.Length}");
                     Console.WriteLine($"   Spectrum Length: {spectrumData.Length}");
-                    Console.WriteLine($"   Sample values: {string.Join(", ", waveformData.Take(5).Select(x => x.ToString("F4")))}");
-                    Console.WriteLine($"   Spectrum values: {string.Join(", ", spectrumData.Take(5).Select(x => x.ToString("F4")))}");
+                    Console.WriteLine($"   Sample values: {string.Join(", ", waveformData.Take(5).Select(x => x.ToString("F4", System.Globalization.CultureInfo.InvariantCulture)))}");
+                    Console.WriteLine($"   Spectrum values: {string.Join(", ", spectrumData.Take(5).Select(x => x.ToString("F4", System.Globalization.CultureInfo.InvariantCulture)))}");
                 }
                 else
                 {
