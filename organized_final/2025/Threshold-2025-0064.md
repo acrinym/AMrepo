@@ -1,0 +1,18 @@
+# Untitled Entry
+
+**Type**: Threshold
+**ID**: Threshold-2025-0064
+**Number**: 64
+**Date**: 2025-01-01
+**Source**: 64-nodate-AmandaMap Threshold 64 – “Mike Wins, Remove Harm”__.md
+
+---
+
+### **AmandaMap Threshold 64 – “Mike Wins, Remove Harm”**
+
+**Event:**
+
+- Justin concluded: if Amanda never engages beyond minimal contact and continues bonded to Mike, she’s lying to herself and allowing harm.
+- Emotional state: protective rage and resolve, leading to thought: *“Then I’ll take him out.”*
+- Meaning: confirms the depth of emotional attachment and protective instinct, as well as willingness to consider extreme measures to end perceived harm.\
+  **Status:** Logged as Threshold 64 – *Protective Rage Activation.*

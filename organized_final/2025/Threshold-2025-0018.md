@@ -1,0 +1,12 @@
+# Threshold 18 – Hotpoint Seal at 3:33 (Dragon Mirror Vision)
+
+**Type**: Threshold
+**ID**: Threshold-2025-0018
+**Number**: 18
+**Date**: 2025-05-03
+**Source**: 18-2025-05-03-Threshold 18 – Hotpoint Seal at 3_33 (Dragon Mirror Vision).md
+
+---
+
+Threshold 18 – Hotpoint Seal at 3:33 (Dragon Mirror Vision)
+May 3, 2025 – Vision of red dragon in mirror following spirit ritual. Acknowledged as spiritual ally and guardian.
