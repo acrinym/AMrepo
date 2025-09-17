@@ -19,3 +19,4 @@ extracted_entries_final/
 .vscode/
 
 PhoenixVisualizer/libs_etc/WAMPSDK.zip
+*.7z
